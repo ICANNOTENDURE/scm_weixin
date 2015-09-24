@@ -1,0 +1,56 @@
+/**
+ * 通过模板生成Dto 
+ * template by zxx
+ */
+package {$packageName}.service.{$modulesName}.impl;
+
+import org.springframework.stereotype.Service;
+import com.dhcc.framework.app.service.CommonService;
+import com.dhcc.framework.app.service.CommonServiceImpl;
+import com.dhcc.framework.common.PagerModel;
+import javax.annotation.Resource;
+
+import {$packageName}.service.{$modulesName}.{$businessName}Service;
+import {$packageName}.dao.{$modulesName}.{$entityName}Dao;
+import {$packageName}.dto.{$modulesName}.{$businessName}Dto;
+import {$packageName}.entity.{$modulesName}.{$entityName};
+
+@Service("{$businessName_1lower}Service")
+public class {$businessName}ServiceImpl implements {$businessName}Service {
+
+	@Resource
+	private {$entityName}Dao {$entityName_1lower}Dao;
+	@Resource
+	private CommonService commonService;
+
+	public void list({$businessName}Dto dto){
+	
+		PagerModel pagerModel = dto.getPageModel();
+		//调用DAO 拼接查询条件
+		{$entityName_1lower}Dao.buildPagerModelQuery(pagerModel, dto);
+		//调用分页查询方法
+		commonService.fillPagerModelData(pagerModel);
+	}
+	
+	public void save({$businessName}Dto dto){
+	
+		{$entityName_1lower}Dao.save(dto.get{$entityName}());
+	}
+	
+	public void delete({$businessName}Dto dto){
+	
+		{$entityName_1lower}Dao.delete(dto.get{$entityName}());
+	}
+	
+	public void update({$businessName}Dto dto){
+	
+		{$entityName_1lower}Dao.update(dto.get{$entityName}());
+	}
+	
+	public {$entityName} findById({$businessName}Dto dto){
+	
+		dto.set{$entityName}({$entityName_1lower}Dao.findById(dto.get{$entityName}()));
+		return dto.get{$entityName}();
+	}
+
+}

@@ -1,0 +1,23 @@
+/**
+ * 通过模板生成Service
+ * template by zxx
+ */
+package {$packageName}.service.{$modulesName};
+
+import {$packageName}.dto.{$modulesName}.{$businessName}Dto;
+import {$packageName}.entity.{$modulesName}.{$entityName};
+
+public interface {$businessName}Service {
+
+	public void list({$businessName}Dto dto);
+	
+	public void save({$businessName}Dto dto);
+	
+	public void delete({$businessName}Dto dto);
+	
+	public void update({$businessName}Dto dto);
+	
+	public {$entityName} findById({$businessName}Dto dto);
+	
+
+}

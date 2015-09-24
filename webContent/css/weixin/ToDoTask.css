@@ -1,0 +1,53 @@
+abbr, address, article, aside, audio, b, blockquote, body, button, canvas, caption, cite, code, dd, del, details, dfn, div, dl, dt, em, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, html, i, iframe, img, input, ins, kbd, label, legend, li, mark, menu, nav, object, ol, p, pre, q, samp, section, select, small, span, strong, sub, summary, sup, table, tbody, td, tfoot, th, thead, time, tr, ul, var, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    
+    vertical-align: baseline;
+    background: 0 0;
+}
+.deliver-history-list li .title {
+    font-size: 18px;
+    font-weight: 400;
+}
+.deliver-history-list li header h1 {
+    display: inline;
+}
+.ellipsis {
+    display: inherit;
+    overflow: hidden;
+    word-break: break-all;
+    word-wrap: normal;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    -ms-text-overflow: ellipsis;
+}
+.deliver-history-list li p {
+    color: #666;
+}
+.deliver-history-list li .time {
+    color: #aaa;
+}
+.deliver-history-list li:after {
+    content: '';
+    height: 0;
+    width: 0;
+}
+.deliver-history-list li .status {
+    position: absolute;
+    bottom: 10px;
+    right: 0;
+    padding-right:10px;
+}
+.deliver-history-list li .salary {
+    color: #FF8C03;
+}
+.deliver-history-list li {
+    position: relative;
+    line-height: 1.7em;
+    padding: 10px 0;
+    overflow: hidden;
+    border-bottom: 1px solid #eee;
+}

@@ -1,0 +1,26 @@
+.textLabel {
+	margin-top: 0px;
+	margin-left: 0px;
+	font-size: 12px;
+	text-align: right;
+	background-color: #E6F1FA;
+	width: 20%;
+}
+
+.textParent {
+	margin-top: 0px;
+	margin-left: 0px;
+	font-size: 12px;
+	text-align: left;
+	background-color: #F5FAFD;
+	width: 30%;
+}
+
+.textLine {
+	border: 0px;
+	border-bottom: 1px solid #6A7885; /* 下划线效果 */
+	background-color: transparent; /* 背景色透明 */
+	color: #000000;
+	text-align: left;
+}
+

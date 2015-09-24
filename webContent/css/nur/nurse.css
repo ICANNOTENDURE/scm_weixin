@@ -1,0 +1,175 @@
+
+#amz-hero {
+	background: #10a0ea;
+}
+.amz-notify {
+	padding: 1em;
+	background-color: rgba(0,0,0,.15);
+	color: #ddd
+}
+
+.amz-notify a {
+	color: #eee
+}
+
+.amz-notify a .amz-notify-divider {
+	color: #ccc;
+	padding: 0 5px
+}
+
+.amz-notify .am-g {
+	position: relative
+}
+
+.subscribe-field {
+	margin: 10px 0
+}
+
+
+@media only screen and (min-width:641px) {
+	.amz-notify .am-g .subscribe-field {
+		padding-right: 5px;
+		margin: 0
+	}
+
+	.amz-notify {
+		line-height: 40px
+	}
+
+	.amz-notify .am-form-field,.amz-notify .am-btn {
+		height: 40px;
+		padding-top: 0;
+		padding-bottom: 0
+	}
+}
+@media only screen and (min-width:641px) {
+	.amz-notify {
+		font-size: 1.4rem
+	}
+}
+
+
+#admin-content{
+	padding: 10em;
+}
+/*
+gallery.html css
+*/
+
+.gallery-list li {
+  padding: 10px;
+}
+
+.gallery-list a {
+  color: #666;
+}
+
+.gallery-list a:hover {
+  color: #3bb4f2;
+}
+
+.gallery-title {
+  margin-top: 6px;
+  font-size: 1.4rem;
+}
+
+.gallery-desc {
+  font-size: 1.2rem;
+  margin-top: 4px;
+}
+
+.footer p {
+      color: #7f8c8d;
+      margin: 0;
+      padding: 15px 0;
+      text-align: center;
+      background: #eee;
+    }
+
+
+.table-main {
+  font-size: 1.4rem;
+  padding-left: 0px;
+  padding-bottom: 0px;
+  padding-right: 0px;
+  padding-top: 0px;
+}
+
+.table-main button {
+  background: #fff;
+}
+
+.table-check {
+  width: 30px;
+}
+.table-orderno {
+  width: 100px;
+}
+.table-id {
+  width: 50px;
+}
+.table-title{
+  width: 350px;
+}
+.table-price{
+  width: 100px;
+}
+.table-uom{
+  width: 100px;
+}
+.table-qty{
+  width: 200px;
+}
+.table-sum{
+  width: 150px;
+}
+.table-wet{
+  width: 50px;
+}
+@media only screen and (max-width: 640px) {
+  .table-select {
+    margin-top: 10px;
+    margin-left: 5px;
+  }
+}
+
+
+.search-box__tabs-container {
+	position: relative;
+	float: left;
+	width: 63px;
+	height: 38px;
+	border: 2px solid #2db8ad;
+	border-right: none;
+}
+
+.search-box__button {
+	float: left;
+	width: 65px;
+	margin: 0;
+	height: 42px;
+	line-height: 42px;
+	border: none;
+	color: #fff;
+	background: #2bb8aa;
+	cursor: pointer;
+	-webkit-appearance: none;
+	border-radius: 0;
+}
+
+.search-box__input {
+	float: left;
+	margin: 0;
+	padding: 6px 5px;
+	border: 2px solid #2db8ad;
+	border-right: none;
+	border-radius: 0;
+	width: 488px;
+	height: 26px;
+	line-height: 26px;
+}
+
+
+
+
+

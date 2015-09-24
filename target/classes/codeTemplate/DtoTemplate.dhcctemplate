@@ -1,0 +1,24 @@
+/**
+ * Dto 
+ * template by zxx
+ */
+package {$packageName}.dto.{$modulesName};
+
+import {$packageName}.entity.{$modulesName}.{$entityName};
+import com.dhcc.framework.transmission.dto.BaseDto;
+
+public class {$businessName}Dto extends BaseDto {
+
+	private {$entityName} {$entityName_1lower};
+
+	
+	public {$entityName} get{$entityName}() {
+		return {$entityName_1lower};
+	}
+
+	
+	public void set{$entityName}({$entityName} {$entityName_1lower}) {
+		this.{$entityName_1lower} = {$entityName_1lower};
+	}
+	
+}

@@ -1,0 +1,33 @@
+.scrollspy-nav {
+	z-index: 1200;
+	background-color: #f9f9f9;
+	width: 100%;
+	border: 1px solid #eee;
+}
+
+.scrollspy-nav ul {
+	margin: 0;
+	padding: 0
+}
+
+.scrollspy-nav li {
+	display: inline-block;
+	list-style: none;
+	border-right: 1px solid #eee
+}
+
+.scrollspy-nav a {
+	color: rgb(102, 102, 102);
+	padding: 10px 20px;
+	display: inline-block;
+}
+
+.scrollspy-nav a.am-active {
+	color: #fff;
+	font-weight: 700;
+	background: #2BB8AA;
+}
+
+.am-panel {
+	margin-top: 20px
+}

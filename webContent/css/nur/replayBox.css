@@ -1,0 +1,201 @@
+.ds-replybox {
+	width: auto;
+	font-size: 12px;
+	z-index: 3;
+	margin: 8px 0;
+	padding: 0 0 0 60px;
+	position: relative;
+	_zoom: 1
+}
+
+.ds-replybox:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden
+}
+
+.ds-replybox .ds-avatar {
+	position: absolute;
+	top: 0;
+	left: 0
+}
+
+.ds-replybox .ds-avatar img {
+	width: 50px;
+	height: 50px;
+	visibility: visible;
+	margin: 0
+}
+
+.ds-inline-replybox {
+	margin: 8px 0 2px 0;
+	padding-left: 38px
+}
+
+.ds-inline-replybox .ds-avatar img {
+	width: 30px;
+	height: 30px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.22)
+}
+
+.ds-textarea-wrapper {
+	position: relative;
+	border: 1px solid #ccc;
+	border-bottom: none;
+	padding-right: 20px;
+	background: #fff url("//static.duoshuo.com/images/bg_sprites.png") 0
+		-90px repeat-x;
+	overflow: hidden
+}
+
+.ds-textarea-wrapper textarea {
+	box-shadow: none;
+	-webkit-appearance: none;
+	overflow: auto;
+	padding: 10px;
+	height: 54px;
+	margin: 0;
+	resize: none;
+	color: #999;
+	width: 100%
+}
+
+.ds-textarea-wrapper textarea:focus {
+	color: #333
+}
+
+.ds-textarea-wrapper .ds-hidden-text {
+	word-wrap: break-word;
+	visibility: hidden;
+	position: absolute;
+	top: 0;
+	left: 10px;
+	right: 10px
+}
+
+.ds-textarea-wrapper textarea,#ds-thread #ds-reset .ds-textarea-wrapper .ds-hidden-text
+	{
+	display: block;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 13px;
+	line-height: 20px;
+	border: none
+}
+
+.ds-post-toolbar {
+	position: relative;
+	width: 100%;
+	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+	background-color: rgba(0, 0, 0, 0);
+}
+
+.ds-gradient-bg {
+	background: #f8f8f8;
+}
+
+.ds-post-options {
+	border-bottom-left-radius: 2px;
+	border-color: #ddd;
+	height: 36px;
+	position: relative;
+	margin-right: 100px;
+	border: 1px solid #ccc;
+	border-right: none;
+}
+
+.ds-post-button {
+	position: absolute;
+	width: 150px;
+	right: 0;
+	top: 0;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	border-bottom-right-radius: 2px;
+	background: rgb(43, 184, 170);
+	color: #fff;
+	text-shadow: none;
+	box-shadow: none;
+	border: 1px solid #ddd;
+	height: 36px;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.ds-post-button:hover {
+	background-position: 0 -15px;
+	background: #09aa83;
+	color: #fff;
+	text-shadow: none;
+}
+
+
+
+.comment-footer{
+	font-size: 12px;
+}
+.comment-footer a{
+	color: #333;
+	margin: 0 6px 0 0;
+    padding: 0 6px 0 0;
+}
+
+#ds-ctx {
+  font-size: 13px;
+  margin-bottom: 15px;	
+  border-left: 3px solid #ccc;
+  background-color: rgba(0,0,0,0.03);
+  padding: 0;
+  margin: 8px 0;
+}
+#ds-ctx .ds-ctx-entry {
+  padding: 6px;
+  margin: 0;
+  border-bottom: 1px solid #e6e6e6;
+}
+#ds-ctx .ds-avatar {
+  border-radius: 50%;
+  box-shadow: 0 1px 1px rgba(255,255,255,0.75);
+  position: relative;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  background-color: #fff;
+  float: left;
+  margin: 0;
+  width: 30px;
+  height: 30px;
+}
+#ds-ctx .ds-avatar ul li ol li{
+	list-style: none;
+	display: block;
+}
+#ds-ctx .ds-avatar img {
+  width: 30px;
+  height: 30px;
+  box-shadow: none;
+}
+#ds-ctx .ds-ctx-body {
+  margin-left: 38px;
+}
+
+#ds-ctx .ds-ctx-head {
+  position: relative;
+  _zoom: 1;
+  line-height: 1em;
+  padding: 1px 0 0;
+  margin: 0 0 .25em;
+}
+#ds-ctx .ds-ctx-content {
+  position: relative;
+  _zoom: 1;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  line-height: 1.5em;
+}
+#ds-ctx .ds-ctx-entry .ds-time {
+  font-size: 12px;
+  margin-left: 8px;
+  color: #999;
+}
+    

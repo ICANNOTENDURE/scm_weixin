@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="prepare-package-clean" basedir=".">
+	<description>
+		dhcc build file
+	</description>
+
+	<property name="srcDir" location="src/main/java" />
+	<property name="webDir" location="webContent" />
+	<property name="lib.dir" location="${webDir}/WEB-INF/lib" />
+
+	<property name="distDir" location="${webDir}" />
+	<property name="dist.lib" location="${distDir}/WEB-INF/lib" />
+	<property name="dist.classes" location="${distDir}/WEB-INF/classes" />
+	<property name="targetDir" location="${distDir}/target" />
+
+	<target name="prepare-package-clean">
+		<echo message="clean lib jar and class start====" />
+		<delete dir="${dist.classes}" />
+		<delete dir="${dist.lib}\" />
+		<echo message="clean lib jar and class end====" />
+	</target>
+	<target name="package-clean">
+		<echo message="clean jersey and jar and other  jar start =====" />
+		<delete file="${dist.lib}\jersey-core-1.17.1.jar" />
+		<delete file="${dist.lib}\jersey-server-1.17.1.jar" />
+		<delete file="${dist.lib}\jersey-servlet-1.17.1.jar" />
+		<delete file="${dist.lib}\javassist-3.11.0.GA.jar" />
+		<delete file="${dist.lib}\xml-apis-1.0.b2.jar" />
+		<delete file="${dist.lib}\jackson-core-asl-1.9.11.jar" />
+		<delete file="${dist.lib}\jackson-mapper-asl-1.9.11.jar" />
+		<delete file="${dist.lib}\c3p0-0.9.1.1.jar" />
+
+		<echo message="clean jersey and jar and other  jar end =====" />
+	</target>
+	<target name="init" depends="prepare-package-clean">
+		<tstamp />
+		<echo message="distDir ${distDir}" />
+		<echo message="dist.classes dir ${dist.classes}" />
+		<echo message="dist.lib ${dist.lib}" />
+
+	</target>
+
+	<target name="compile" depends="init">
+		<echo message="compile java ================== " />
+		<mkdir dir="${dist.lib}" />
+		<mkdir dir="${dist.classes}" />
+		<javac encoding="utf-8" srcdir="${srcDir}" destdir="${dist.classes}">
+			<classpath refid="classpath" />
+		</javac>
+	</target>
+
+</project>
+
+

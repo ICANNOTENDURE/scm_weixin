@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd 
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd"
+	default-autowire="byName">
+	<context:annotation-config />
+	<!-- 自动扫描注入 -->
+	<context:component-scan
+		base-package="com.dhcc.framework.common,
+	              com.dhcc.framework,
+	              com.dhcc.**.dao,
+	              com.dhcc.**.service,
+	              com.dhcc.**.blh,
+	              com.dhcc.**.web" />
+
+	<!-- 引入属性文件 -->
+	<context:property-placeholder location="classpath:hibernate.properties" />
+	
+	<!-- webservice -->
+	<import resource="applicationOrderStateWSServer.xml" />
+	
+	<!-- 数据源配置 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<!-- Connection Info -->
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+
+		<!-- Connection Pooling Info -->
+		<property name="maxIdle" value="${config.maxIdleTime}" />
+		<property name="maxActive" value="${dbcp.maxActive}" />
+		<property name="defaultAutoCommit" value="false" />
+		<property name="timeBetweenEvictionRunsMillis" value="3600000" />
+		<property name="minEvictableIdleTimeMillis" value="3600000" />
+	</bean>
+	<!-- sessionFactory 配置 -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref local="dataSource" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+				<prop key="hibernate.use_sql_comments">${hibernate.use_sql_comments}</prop>
+				<prop key="hibernate.cache.use_second_level_cache">${hibernate.use_second_level_cache}</prop>
+				<prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
+			</props>
+		</property>
+		<property name="packagesToScan">
+			<list>
+				<value>com.dhcc.scm.entity</value>
+				<value>com.dhcc.framework.common.entity</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<!-- 事物管理配置 -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<!-- 注解方式配置事物 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<aop:aspectj-autoproxy />
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="get*" propagation="REQUIRES_NEW"
+				rollback-for="BaseException,DataBaseException" />
+			<tx:method name="find*" propagation="REQUIRES_NEW"
+				read-only="true" />
+			<tx:method name="query*" propagation="REQUIRES_NEW"
+				read-only="true" />
+			<tx:method name="load*" propagation="REQUIRES_NEW" />
+			<tx:method name="submit*" propagation="REQUIRED"
+				rollback-for="BaseException,DataBaseException" />
+			<tx:method name="save*" propagation="REQUIRED"
+				rollback-for="BaseException,DataBaseException,Exception" />
+			<tx:method name="update*" propagation="REQUIRED"
+				rollback-for="BaseException,DataBaseException" />
+			<tx:method name="*delete*" propagation="REQUIRED"
+				rollback-for="BaseException,DataBaseException" />
+			<tx:method name="*add*" propagation="REQUIRED"
+				rollback-for="BaseException,DataBaseException" />
+			<tx:method name="change*" propagation="REQUIRED"
+				rollback-for="BaseException,DataBaseException" />
+			<tx:method name="execute*" propagation="REQUIRED"
+				rollback-for="BaseException,DataBaseException" />
+			<tx:method name="resultParse*" propagation="REQUIRED"
+				rollback-for="BaseException,DataBaseException" />
+			<tx:method name="upgrade" propagation="REQUIRES_NEW"
+				rollback-for="BaseException,DataBaseException" />
+			<tx:method name="*" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+	<aop:config>
+		<aop:advisor pointcut="execution(* com.dhcc..service..*Service*.*(..))"
+			advice-ref="txAdvice" />
+	</aop:config>
+	<bean id="businessLogPointcut" class="com.dhcc.framework.aop.BusinessLogPointcut"
+		scope="singleton">
+	</bean>
+	<bean id="businessLogAdvice" class="com.dhcc.framework.aop.BusinessLogAdvice"
+		scope="singleton">
+	</bean>
+	<bean id="businessLogAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
+		<property name="advice" ref="businessLogAdvice"></property>
+		<property name="pointcut" ref="businessLogPointcut"></property>
+	</bean>
+	<bean id="dictionaryHolder" class="java.util.HashMap">
+		<constructor-arg>
+			<map>
+				<entry key="gender" value="com.dhcc.scm.entity.dict.Gender" />
+				<entry key="city" value="com.dhcc.scm.entity.dict.City" />
+				<entry key="usestate" value="com.dhcc.scm.entity.dict.UseState" />
+				<entry key="systemType" value="com.dhcc.scm.entity.dict.SystemType" />
+				<entry key="sex" value="com.dhcc.scm.entity.dict.Sex" />
+				<entry key="taskTimeType" value="com.dhcc.scm.entity.dict.TaskTimeType" />
+			</map>
+		</constructor-arg>
+	</bean>
+	
+
+	<!--企业号应用信息，可配置多个-->
+    <bean id="configStorage" class="me.chanjar.weixin.cp.api.WxCpInMemoryConfigStorage">
+        <property name="corpId" value="wxd10f849e6ac518ea"/>
+        <property name="corpSecret" value="WfTLMRDCjsbLOn4pIa0b3C673SQJEeq-SfDWBX2TIAqvLqSlGZAL5Aq7QKit9EEP"/>
+        <property name="agentId" value="0"/>
+        <property name="aesKey" value="7PPUEigwPE8fLwSeJWjP4EmzwCVmWxEVfQuW8yT0dZp"/>
+        <property name="token" value="scm2015"/>
+    </bean>
+
+    <bean id="wxCpService" class="me.chanjar.weixin.cp.api.WxCpServiceImpl">
+        <property name="wxCpConfigStorage" ref="configStorage"/>
+    </bean>
+
+    <bean id="messageRouter" class="me.chanjar.weixin.cp.api.WxCpMessageRouter">
+        <constructor-arg name="wxCpService" ref="wxCpService"/>
+    </bean>
+
+    <bean id="wxCpCryptUtil" class="me.chanjar.weixin.cp.util.crypto.WxCpCryptUtil">
+        <constructor-arg name="wxCpConfigStorage" ref="configStorage"/>
+    </bean>
+</beans>

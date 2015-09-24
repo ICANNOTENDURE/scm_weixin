@@ -1,0 +1,214 @@
+@charset "utf-8";
+/* Remove Float */
+
+.menu {
+	position: relative;
+	width: 100%;
+	margin: 0;
+	height: 40px;
+	background-color: #2BB8AA;
+	margin-top: 10px
+}
+
+.menu div {
+	position: absolute;
+	top: 0px;
+	height: 40px;
+	font-family: "Microsoft Yahei";
+}
+
+.menu .all-sort {
+	left: 0px;
+	width: 200px;
+	padding: 0 20px;
+	font-size: 14px;
+}
+
+.menu .all-sort a {
+	color: #FFF;
+	display: block;
+	width: 100%;
+	height: 100%;
+	line-height: 40px;
+}
+
+.menu .nav { left:210px; }
+.menu .nav ul li { float:left; width:85px; line-height:40px; }
+.menu .nav ul li a { display:block; width:100%; color:#FFF; text-align:center; font:700 15px/40px "Microsoft Yahei"; }
+.menu .nav ul li a:hover, .menu .nav ul li a.current { background:#00c3b0; text-decoration:none; }
+
+
+
+.wrap {
+	z-index:100;
+	position: absolute;
+	width: 0px;
+	margin: 0px;
+}
+
+.all-sort-list {
+	position: relative;
+	width: 200px;
+	border: 2px solid #2BB8AA;
+	border-top: none;
+	padding: 3px 3px 3px 0px;
+	background: #fafafa;
+}
+
+.all-sort-list .item {
+	
+	height: 51px;
+	border-top: 1px solid rgb(237, 237, 237);
+}
+.all-sort-list .item:first-child {
+	border-top:none;
+}
+
+
+.all-sort-list .item h3 {
+	height: 51px;
+	line-height: 42px;
+	border: 1px 0px;
+	width: 199px;
+	overflow: hidden;
+	color: rgb(51, 51, 51);
+	font-weight: bold;
+}
+
+.all-sort-list .hover h3 {
+	position: relative;
+	z-index: 100;
+	background: #f7f7f7;
+	border-color: #DDD;
+	border-width: 1px 0px;
+	border-style: solid;
+	color: #2BB8AA;
+}
+
+.all-sort-list .item span {
+	padding: 0px 20px;
+}
+
+ul,ol {
+	list-style: none;
+}
+
+.all-sort-list .item-list {
+	display: none;
+	position: absolute;
+	width: 705px;
+	min-height: 200px;
+	_height: 200px;
+	background: #f7f7f7;
+	left: 198px;
+	box-shadow: 0px 0px 10px #f7f7f7;
+	border: 2px solid #DDD;
+	top: 3px;
+	z-index: auto;
+	font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial,
+		"Microsoft YaHei", FreeSans, Arimo, "Droid Sans",
+		"wenquanyi micro hei", "Hiragino Sans GB", "Hiragino Sans GB W3",
+		"FontAwesome", sans-serif;
+	border-left-width: 0px;	
+}
+
+.all-sort-list .item-list .close {
+	position: absolute;
+	width: 26px;
+	height: 26px;
+	color: #FFFFFF;
+	cursor: pointer;
+	top: -1px;
+	right: -26px;
+	font-size: 20px;
+	line-height: 20px;
+	text-align: center;
+	background: rgba(0, 0, 0, 0.6);
+	background-color: transparent\9;
+	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=1,
+		startColorstr='#60000000', endColorstr='#60000000');
+}
+
+.item-list .subitem {
+	float: left;
+	padding: 0px 4px 0px 8px;
+	font: 12px/150% Arial, Verdana, "\5b8b\4f53";
+}
+
+.item-list .subitem dl {
+	border-top: 1px solid #EEE;
+	padding: 6px 0px;
+	overflow: hidden;
+	zoom: 1;
+	margin: 0px
+}
+
+.item-list .subitem dt {
+	float: left;
+	line-height: 22px;
+	text-align: right;
+	padding: 3px 6px 0px 0px;
+	font-weight: 700;
+	width: 150px
+}
+
+.item-list .subitem dt a {
+	color: #666;
+}
+
+.item-list .subitem dd {
+	float: left;
+	width: 415px;
+	padding: 6px 0;
+	overflow: hidden;
+	margin: 0px
+}
+
+.item-list .subitem dd a {
+	float: left;
+	padding: 0 8px;
+	margin: 4px 0;
+	line-height: 16px;
+	height: 16px;
+	border-left: 1px solid #e0e0e0;
+	white-space: nowrap;
+	color: #666;
+}
+
+.item-list .cat-right dd a {
+	color: #666;
+	text-decoration: none;
+	margin: 4px 0;
+}
+
+.item-list .subitem dd a:hover,.item-list .cat-right dd a:hover {
+	color: #0e90d2;
+	text-decoration: underline;
+}
+
+.item-list .cat-right {
+	float: right;
+	width: 210px;
+}
+
+.item-list .cat-right dl {
+	width: 194px;
+	padding: 6px 8px;
+}
+
+.item-list .cat-right dd {
+	padding-top: 6px;
+	line-height: 22px;
+	overflow: hidden;
+	padding: 3px 0px 0px;
+}
+
+.item-list .cat-right dt {
+	padding: 3px 6px 0px 0px;
+	font-weight: 700;
+	color: #E4393C;
+}
+
+.item-list .cat-right dd a:hover {
+	color: #666;
+}

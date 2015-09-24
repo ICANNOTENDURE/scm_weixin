@@ -1,0 +1,71 @@
+/**
+ *  
+ * template by zxx
+ */
+package {$packageName}.dao.{$modulesName};
+
+import java.util.Map;
+import java.util.HashMap;
+
+import org.springframework.stereotype.Repository;
+import  com.dhcc.framework.common.PagerModel;
+import com.dhcc.framework.transmission.dto.BaseDto;
+import com.dhcc.framework.hibernate.dao.HibernatePersistentObjectDAO;
+import {$packageName}.entity.{$modulesName}.{$entityName};
+import {$packageName}.dto.{$modulesName}.{$businessName}Dto;
+
+@Repository
+public class {$entityName}Dao extends HibernatePersistentObjectDAO<{$entityName}> {
+
+	public void buildPagerModelQuery(PagerModel pagerModel,BaseDto dto) {
+	
+		{$businessName}Dto {$businessName_1lower}Dto = ({$businessName}Dto) dto;
+		{$entityName} {$entityName_1lower} = {$businessName_1lower}Dto.get{$entityName}();
+
+		pagerModel.setCountProName(super.getIdName({$entityName}.class));
+		StringBuilder hqlStr = new StringBuilder();
+		Map<String,Object> hqlParamMap = new HashMap<String,Object>();
+		
+		buildQuery(hqlParamMap, {$entityName_1lower}, hqlStr);
+		pagerModel.setQueryHql(hqlStr.toString());
+		pagerModel.setHqlParamMap(hqlParamMap);
+	}
+
+	/** 
+	 * 拼接查询条件的方法  
+	 * @param hql
+	 * @return
+	 */
+	private void buildQuery(Map hqlParamMap,{$entityName} {$entityName_1lower},StringBuilder hqlStr){
+		//拼接查询条件
+		hqlStr.append(" from {$entityName} where 1=1 ");
+		//接下来拼接其他查询条件 如下示例代码所示
+		//hqlStr.append("WHERE YEAR=:year ");
+		//hqlParamMap.put("year", year);
+		//hqlStr.append("AND MONTH=:month ");
+		//hqlParamMap.put("month", month);
+		//hqlStr.append("AND DAY=:day ");
+		//hqlParamMap.put("day", day);
+	}
+		
+	public void save({$entityName} {$entityName_1lower}){
+	
+		super.save({$entityName_1lower});
+	}
+	
+	public void delete({$entityName} {$entityName_1lower}){
+		
+		super.delete({$entityName_1lower});
+	}
+	
+	public void update({$entityName} {$entityName_1lower}){
+	
+		super.update({$entityName_1lower});
+	}
+	
+	public {$entityName} findById({$entityName} {$entityName_1lower}){
+
+		return super.findById({$entityName_1lower}.get{$entityName}Id());
+
+	} 
+}

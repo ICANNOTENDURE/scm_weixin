@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<include file="struts-default.xml"> </include>
+	<package name="basePackage" extends="struts-default"></package>
+	<bean type="com.opensymphony.xwork2.ActionProxyFactory" name="struts2"
+		class="com.dhcc.framework.web.struts2.DhccActionProxyFactory" />
+	<constant name="struts.actionProxyFactory" value="struts2" />
+	<constant name="struts.objectFactory" value="spring"></constant>
+	<constant name="struts.i18n.encoding" value="utf-8"></constant>
+	<constant name="struts.locale" value="zh_CN"></constant>
+	<constant name="struts.convention.action.suffix" value="do,htm"> </constant>
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	<constant name="struts.convention.result.path" value="/WEB-INF/jsp/"> </constant>
+	<constant name="struts.convention.action.name.lowercase"
+		value="true"> </constant>
+	<constant name="struts.convention.exclude.packages"
+		value="org.apache.struts.*,org.apache.struts2.*,org.springframework.web.struts.*,org.springframework.web.struts2.*,org.hibernate."> </constant>
+	<constant name="struts.convention.action.mapAllMatches" value="true"> </constant>
+	<constant name="struts.action.extension" value="htm"> </constant>
+	<constant name="struts.convention.default.parent.package"
+		value="default"></constant>
+	<constant name="struts.convention.action.disableScanning"
+		value="false"></constant>
+	<!-- 	
+	<constant name="struts.convention.action.includeJars"
+		value=".*?/dhcc-pms-client*.*?jar(!/)?,.*?/dhcc-core*.*?jar(!/)?" />
+	 -->																		
+	 <constant name="struts.multipart.maxSize" value="104857600"/>
+	<constant name="struts.convention.action.packages" value="com.dhcc.scm.web" />
+	<constant name="struts.multipart.saveDir" value="/tmp"></constant>
+	<package name="default" extends="struts-default">
+		<interceptors>
+		    <!-- 
+			<interceptor name="securityCheck"
+				class="com.dhcc.framework.web.security.UrlSecurityCheckInterceptor"></interceptor>
+			 -->
+			 <interceptor name="weixinCheck"
+				class="com.dhcc.framework.web.security.OAuth2Interceptor"></interceptor>
+				<interceptor-stack name="defaultStack">
+				 
+				 <!-- 微信登录用户验证 -->   
+				<interceptor-ref name="weixinCheck" />
+				<!--     	
+				<interceptor-ref name="securityCheck" />
+				 -->
+				<!--配置fileUpload的拦截器-->
+           		<interceptor-ref name="fileUpload">
+             		<param name="maximumSize">104857600</param>
+           		</interceptor-ref>
+           		
+				<interceptor-ref name="exception" />
+				<interceptor-ref name="actionMappingParams" />
+				<interceptor-ref name="params">
+					<param name="excludeParams">dojo\..*,^struts\..*,^session\..*,^request\..*,^application\..*,^servlet(Request|Response)\..*,parameters\...*</param>
+				</interceptor-ref>
+			</interceptor-stack>
+			<interceptor-stack name="dhccStack">
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="dhccStack"></default-interceptor-ref>
+		<global-results>
+			<result name="success">/index.jsp</result>
+			<result name="returnJson">/json.txt</result>
+			<result name="loginUrl">/login.htm</result>
+		</global-results>
+	</package>
+</struts>
