@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<project name="maven-antrun-" default="main"  >
-<target name="main">
-  <property name="compile_classpath" refid="maven.compile.classpath"/>
-  <ant antfile="D:\用户目录\SVN_SCM\scm/build.xml" target="prepare-package-clean"/>
-</target>
-</project>
