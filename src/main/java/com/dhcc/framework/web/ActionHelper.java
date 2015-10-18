@@ -159,7 +159,17 @@ public abstract class ActionHelper {
 		}
 		return false;
 	}
-
+	
+	
+	protected static boolean isAndroidRequest() {
+		
+		String requestType = WebContextHolder.getContext().getRequest().getParameter("requestType");
+		if (requestType != null && "apk".equals(requestType)) {
+			return true;
+		}
+		return false;
+	}
+	
 	protected static boolean isPrintStack() {
 		if ("true".equals(PropertiesBean.getInstance().getProperty(
 				"conf.printStackTrace"))) {

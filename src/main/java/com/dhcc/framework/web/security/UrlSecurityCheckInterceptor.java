@@ -96,8 +96,21 @@ public class UrlSecurityCheckInterceptor implements Interceptor,
 		return false;
 	}
 	
+	protected static boolean isAndroidRequest() {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		String requestType = request.getParameter("requestType");
+		if (requestType != null && "apk".equals(requestType)) {
+			return true;
+		}
+		return false;
+	}
+	
 	private  boolean urlCheck(String currSecUrl) {
 		if (!isAuthentication) {
+			return true;
+		}
+		//android不需要验证登录
+		if(isAndroidRequest()){
 			return true;
 		}
 		Set<String> allCheckUrl = getNeedCheckUrls();

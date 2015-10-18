@@ -227,7 +227,10 @@ public abstract class BaseAction extends ActionSupport {
 		if (page.contains("testCon")) {
 			return null;
 		}
-		
+		//android客户端访问
+		if (ActionHelper.isAndroidRequest()){
+			return null;
+		}
 		return page;
 	}
 
