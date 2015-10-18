@@ -59,6 +59,11 @@ public class WebContextFilter implements Filter {
 					this.goAjaxPageRest(response);
 					return;
 				}
+				if((request.getParameter("requestType")!=null)&&(request.getParameter("requestType").equals("apk"))){
+					chain.doFilter(request, response);
+					WebContextHolder.clearContext();
+					return;
+				}
 				this.goLoginPage(request, response);
 				return;
 			}
