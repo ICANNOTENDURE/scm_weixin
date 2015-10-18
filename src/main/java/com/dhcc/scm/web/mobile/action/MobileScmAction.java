@@ -10,6 +10,8 @@ import org.apache.struts2.convention.annotation.Result;
 import org.springframework.context.annotation.Scope;
 
 import com.dhcc.framework.annotation.Blh;
+import com.dhcc.framework.annotation.JResult;
+import com.dhcc.framework.annotation.JsonResults;
 import com.dhcc.framework.exception.BaseException;
 import com.dhcc.framework.transmission.dto.BaseDto;
 import com.dhcc.framework.transmission.event.BusinessRequest;
@@ -32,6 +34,7 @@ import com.dhcc.scm.dto.mobile.MobileScmDto;
 		@Result(name = "operateResult", location = "/WEB-INF/jsp/common/operateResult.jsp"),
 		@Result(name = "listMain", location = "/WEB-INF/jsp/hop/HopIncNews.jsp")})
 @Blh("mobileScmBlh")
+@JsonResults({@JResult(BlhMethod="findById",ognlExpress="dto.wxDepart")})
 public class MobileScmAction extends BaseAction {
 
 	private static final long serialVersionUID = 1L;
@@ -40,6 +43,10 @@ public class MobileScmAction extends BaseAction {
 
 	@Override
 	public String directlyJump() {
+		if(super.getBusinessFlow().equals("hopIncNewsDetail")){
+			return "hopIncNewsDetail";
+			
+		}
 		return null;
 	}
 
