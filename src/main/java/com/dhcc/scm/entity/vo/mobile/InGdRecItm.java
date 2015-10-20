@@ -28,10 +28,22 @@ public class InGdRecItm {
 		
 		private String vendor;
 		
+		private String scmid;
+		
 		private String result="1";
 		
 		
 		
+		
+		
+		public String getScmid() {
+			return scmid;
+		}
+
+		public void setScmid(String scmid) {
+			this.scmid = scmid;
+		}
+
 		public String getResult() {
 			return result;
 		}

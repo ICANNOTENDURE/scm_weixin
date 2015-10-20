@@ -55,9 +55,6 @@ public class MobileScmBlh extends AbstractBaseBlh {
 			if(orderDetailSub!=null){
 				inGdRecItm.setBatno(orderDetailSub.getOrdSubBatNo());
 				inGdRecItm.setExpDate(orderDetailSub.getOrdSubExpDate());
-				
-				//inGdRecItm.setQty(orderDetailSub.getOrderSubHisQty());
-				//inGdRecItm.setRp(orderDetailSub.getOrderSubHisRp());
 				inGdRecItm.setResult("0");
 				OrderDetail orderDetail=commonService.get(OrderDetail.class, orderDetailSub.getOrdSubDetailId());
 				float fac=orderDetail.getOrderFac().floatValue();
@@ -72,6 +69,7 @@ public class MobileScmBlh extends AbstractBaseBlh {
 				}
 				Vendor vendor=commonService.get(Vendor.class, orderDetail.getOrderVenId());
 				inGdRecItm.setVendor(vendor.getName());
+				inGdRecItm.setScmid(barCode);
 			}
 		}
 		super.writeJSON(inGdRecItm);
