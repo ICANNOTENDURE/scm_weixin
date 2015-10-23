@@ -9,6 +9,8 @@ import java.io.IOException;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
 
 import com.dhcc.framework.app.blh.AbstractBaseBlh;
@@ -28,6 +30,7 @@ import com.google.gson.JsonObject;
 public class MobileScmBlh extends AbstractBaseBlh {
 
 
+	private static Log logger = LogFactory.getLog(MobileScmBlh.class);
 
 	@Resource
 	private CommonService commonService;
@@ -56,6 +59,7 @@ public class MobileScmBlh extends AbstractBaseBlh {
 		String barCode=super.getParameter("value");
 		InGdRecItm inGdRecItm=new InGdRecItm();
 		if(StringUtils.isNotBlank(barCode)){
+			logger.info("barCode:"+barCode);
 			OrderDetailSub orderDetailSub=commonService.get(OrderDetailSub.class, barCode);
 			if(orderDetailSub!=null){
 				OrderDetail orderDetail=commonService.get(OrderDetail.class, orderDetailSub.getOrdSubDetailId());
@@ -111,14 +115,17 @@ public class MobileScmBlh extends AbstractBaseBlh {
 			String userid=super.getParameter("userid");
 			jsonObject.addProperty("resultCode", "-1");
 			jsonObject.addProperty("value", barCodeStr);
-			jsonObject.addProperty("userid", userid);
+			jsonObject.addProperty("userid", Long.valueOf(userid));
 			mobileScmService.cmpInGdRec(jsonObject);
 			operateResult.setResultCode(jsonObject.get("resultCode").toString());
-			operateResult.setResultContent(jsonObject.get("resultMsg").toString());
+			if(jsonObject.get("resultMsg")!=null){
+				operateResult.setResultContent(jsonObject.get("resultMsg").toString());
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			operateResult.setResultCode("-3");
-			operateResult.setResultContent(e.getMessage());
+			operateResult.setResultContent(e.getLocalizedMessage());
 		}finally{
 			super.writeJSON(operateResult);
 		}

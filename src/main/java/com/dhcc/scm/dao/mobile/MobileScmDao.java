@@ -67,23 +67,25 @@ public class MobileScmDao extends HibernatePersistentObjectDAO<OrderDetailSub> {
 		if(appParams.size()>=1){
 			insertFlag=true;
 		}
-		String userId=jsonObject.get("userid").toString();
+		Long userId=jsonObject.get("userid").getAsLong();
 		if(StringUtils.isNotBlank(jsonObject.get("value").toString())){
 			String[] subOrderIds = jsonObject.get("value").toString().split(",");
 			for (String subId : subOrderIds) {
-				logger.info("subId:"+subId.equals(StringUtils.trim(subId)));
-				OrderDetailSub orderDetailSub = super.get(OrderDetailSub.class,StringUtils.trim(subId));
+				OrderDetailSub orderDetailSub = super.get(OrderDetailSub.class,subId.replaceAll("\"",""));
 				if(orderDetailSub==null){
 					errMsg.append("条码"+subId+"错误,系统无此条码");
+					logger.info(errMsg.toString());
 					continue;
 				}
-				if(!orderDetailSub.getOrdSubStatus().equals("Y")){
+				if(!StringUtils.equals(orderDetailSub.getOrdSubStatus(), "Y")){
 					errMsg.append("条码"+subId+"已入库,不能再入");
+					logger.info(errMsg.toString());
 					continue;
 				}	
 				OrderDetail orderDetail=super.get(OrderDetail.class,orderDetailSub.getOrdSubDetailId());
 				if(orderDetail==null){
 					errMsg.append("呵呵,这是啥bug");
+					logger.info(errMsg.toString());
 					continue;
 				}
 				//更新发货表
@@ -92,7 +94,7 @@ public class MobileScmDao extends HibernatePersistentObjectDAO<OrderDetailSub> {
 				// 存执行记录
 				ExeState exeState = new ExeState();
 				exeState.setStateId(4l);
-				exeState.setUserid(Long.valueOf(userId));
+				exeState.setUserid(userId);
 				exeState.setOrdId(orderDetailSub.getOrdSubDetailId());
 				exeState.setExedate(new java.sql.Timestamp(new Date().getTime()));
 				exeState.setRemark("pda 入库(mobile scm)");
