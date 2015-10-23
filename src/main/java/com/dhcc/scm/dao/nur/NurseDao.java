@@ -15,6 +15,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -40,6 +42,7 @@ import com.dhcc.scm.entity.ord.OrdShopping;
 import com.dhcc.scm.entity.ord.OrderDetail;
 import com.dhcc.scm.entity.ord.OrderDetailSub;
 import com.dhcc.scm.entity.ord.State;
+import com.dhcc.scm.entity.sys.SysAppParam;
 import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.ven.VenInc;
 import com.dhcc.scm.entity.ven.VenIncPic;
@@ -56,7 +59,9 @@ import com.dhcc.scm.ws.his.dhcclient.SCIInpoUmInfoRtMain;
 
 @Repository
 public class NurseDao extends HibernatePersistentObjectDAO<VenInc> {
-
+	
+	private static Log logger = LogFactory.getLog(NurseDao.class);
+	
 	@Resource
 	private JdbcTemplateWrapper jdbcTemplateWrapper;
 	
@@ -685,6 +690,13 @@ public class NurseDao extends HibernatePersistentObjectDAO<VenInc> {
 
 		com.dhcc.scm.ws.his.dhcclient.OperateResult operateResult = new com.dhcc.scm.ws.his.dhcclient.OperateResult();
 		if(org.apache.commons.lang.StringUtils.isNotBlank(dto.getOrderIdStr())){
+			String[] appPropertyNames = { "appCode", "appValue" };
+			Object[] appValues = {"INSERTHIS", "3"};
+			List<SysAppParam> appParams=super.findByProperties(SysAppParam.class, appPropertyNames, appValues);
+			boolean insertFlag=false;
+			if(appParams.size()>=1){
+				insertFlag=true;
+			}
 			String[] orderIds = dto.getOrderIdStr().split(",");
 			for (String orderId : orderIds) {
 				OrderDetail orderDetail = super.get(OrderDetail.class, Long.valueOf(orderId.trim()));
@@ -753,12 +765,14 @@ public class NurseDao extends HibernatePersistentObjectDAO<VenInc> {
 				}
 				orderDetail.setOrderRecQty(orderDetail.getOrderRecQty().floatValue() + devHopQty);
 				super.saveOrUpdate(orderDetail);
-				// 调his接口
-				SCI sci = new SCI();
-				operateResult = sci.getSCISoap().inpohhImport(infoRtMain);
-				dto.setOperateResultWs(operateResult);
-				if (!operateResult.getResultCode().equals("1")) {
-					throw new RuntimeException();
+				if(insertFlag){
+					// 调his接口
+					SCI sci = new SCI();
+					operateResult = sci.getSCISoap().inpohhImport(infoRtMain);
+					dto.setOperateResultWs(operateResult);
+					if (!operateResult.getResultCode().equals("1")) {
+						throw new RuntimeException();
+					}
 				}
 			}
 		}

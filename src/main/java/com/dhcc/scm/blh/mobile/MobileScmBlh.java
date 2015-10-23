@@ -20,6 +20,9 @@ import com.dhcc.scm.entity.ord.OrderDetail;
 import com.dhcc.scm.entity.ord.OrderDetailSub;
 import com.dhcc.scm.entity.ven.Vendor;
 import com.dhcc.scm.entity.vo.mobile.InGdRecItm;
+import com.dhcc.scm.entity.vo.ws.OperateResult;
+import com.dhcc.scm.service.mobile.MobileScmService;
+import com.google.gson.JsonObject;
 
 @Component
 public class MobileScmBlh extends AbstractBaseBlh {
@@ -28,7 +31,9 @@ public class MobileScmBlh extends AbstractBaseBlh {
 
 	@Resource
 	private CommonService commonService;
-
+	
+	@Resource
+	private MobileScmService mobileScmService;
 
 
 	public MobileScmBlh() {
@@ -53,25 +58,69 @@ public class MobileScmBlh extends AbstractBaseBlh {
 		if(StringUtils.isNotBlank(barCode)){
 			OrderDetailSub orderDetailSub=commonService.get(OrderDetailSub.class, barCode);
 			if(orderDetailSub!=null){
-				inGdRecItm.setBatno(orderDetailSub.getOrdSubBatNo());
-				inGdRecItm.setExpDate(orderDetailSub.getOrdSubExpDate());
-				inGdRecItm.setResult("0");
 				OrderDetail orderDetail=commonService.get(OrderDetail.class, orderDetailSub.getOrdSubDetailId());
-				float fac=orderDetail.getOrderFac().floatValue();
-				inGdRecItm.setQty(orderDetailSub.getOrderSubQty()*fac);
-				inGdRecItm.setRp(orderDetailSub.getOrderSubRp()/fac);
-				HopInc hopInc=commonService.get(HopInc.class, orderDetail.getOrderHopIncId());
-				inGdRecItm.setDesc(hopInc.getIncName());
-				inGdRecItm.setUom(hopInc.getIncUomname());
-				if(hopInc.getIncManfid()!=null){
-					HopManf hopManf=commonService.get(HopManf.class, hopInc.getIncManfid());
-					inGdRecItm.setManf(hopManf.getManfName());
+				if(orderDetail.getOrderState().longValue()>4){
+					if(orderDetailSub.getOrdSubStatus().equals("T")){
+						inGdRecItm.setResultCode("-2");
+						inGdRecItm.setResultMsg("该条码已入库,不能重复入库");
+					}else{
+						inGdRecItm.setResultCode("0");
+						inGdRecItm.setBatno(orderDetailSub.getOrdSubBatNo());
+						inGdRecItm.setExpDate(orderDetailSub.getOrdSubExpDate());
+						float fac=orderDetail.getOrderFac().floatValue();
+						inGdRecItm.setQty(orderDetailSub.getOrderSubQty()*fac);
+						inGdRecItm.setRp(orderDetailSub.getOrderSubRp()/fac);
+						HopInc hopInc=commonService.get(HopInc.class, orderDetail.getOrderHopIncId());
+						inGdRecItm.setDesc(hopInc.getIncName());
+						inGdRecItm.setUom(hopInc.getIncUomname());
+						if(hopInc.getIncManfid()!=null){
+							HopManf hopManf=commonService.get(HopManf.class, hopInc.getIncManfid());
+							inGdRecItm.setManf(hopManf.getManfName());
+						}
+						Vendor vendor=commonService.get(Vendor.class, orderDetail.getOrderVenId());
+						inGdRecItm.setVendor(vendor.getName());
+						inGdRecItm.setScmid(barCode);
+					}
+				}else{
+					inGdRecItm.setResultCode("-3");
+					inGdRecItm.setResultMsg("该条码不能使用");
 				}
-				Vendor vendor=commonService.get(Vendor.class, orderDetail.getOrderVenId());
-				inGdRecItm.setVendor(vendor.getName());
-				inGdRecItm.setScmid(barCode);
 			}
 		}
 		super.writeJSON(inGdRecItm);
+	}
+	
+	
+	/**
+	 * 
+	* @Title: saveBarCode 
+	* @Description: TODO(药库pda确认收货) 
+	* @param @param res
+	* @param @throws IOException    设定文件 
+	* @return void    返回类型 
+	* @throws 
+	* @author zhouxin   
+	* @date 2015年10月20日 下午4:11:48
+	 */
+	public void saveBarCode(BusinessRequest res) throws IOException{
+		
+		OperateResult operateResult=new OperateResult();
+		JsonObject jsonObject = new JsonObject();
+		try {
+			String barCodeStr=super.getParameter("value");
+			String userid=super.getParameter("userid");
+			jsonObject.addProperty("resultCode", "-1");
+			jsonObject.addProperty("value", barCodeStr);
+			jsonObject.addProperty("userid", userid);
+			mobileScmService.cmpInGdRec(jsonObject);
+			operateResult.setResultCode(jsonObject.get("resultCode").toString());
+			operateResult.setResultContent(jsonObject.get("resultMsg").toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+			operateResult.setResultCode("-3");
+			operateResult.setResultContent(e.getMessage());
+		}finally{
+			super.writeJSON(operateResult);
+		}
 	}
 }

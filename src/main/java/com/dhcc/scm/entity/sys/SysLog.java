@@ -11,7 +11,6 @@ package com.dhcc.scm.entity.sys;
 
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -40,8 +39,7 @@ public class SysLog implements Serializable {
 	@Column(name="ID")
 	private String opId;
 	
-	@Column(name="VERSION")
-	private BigInteger version;
+	
 
 	@Column(name="OPUSER")
 	private String opUser;
@@ -211,16 +209,5 @@ public class SysLog implements Serializable {
 		this.opResult = opResult;
 	}
 
-	public BigInteger getVersion() {
-		return version;
-	}
-
-	public void setVersion(BigInteger version) {
-		this.version = version;
-	};
-	
-	
-	
-	
 
 }

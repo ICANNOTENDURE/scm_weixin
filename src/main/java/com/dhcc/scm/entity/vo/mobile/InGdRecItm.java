@@ -30,12 +30,23 @@ public class InGdRecItm {
 		
 		private String scmid;
 		
-		private String result="1";
+		private String resultCode="1";
+		
+		private String resultMsg="";
 		
 		
 		
 		
 		
+		
+		public String getResultMsg() {
+			return resultMsg;
+		}
+
+		public void setResultMsg(String resultMsg) {
+			this.resultMsg = resultMsg;
+		}
+
 		public String getScmid() {
 			return scmid;
 		}
@@ -44,12 +55,14 @@ public class InGdRecItm {
 			this.scmid = scmid;
 		}
 
-		public String getResult() {
-			return result;
+		
+
+		public String getResultCode() {
+			return resultCode;
 		}
 
-		public void setResult(String result) {
-			this.result = result;
+		public void setResultCode(String resultCode) {
+			this.resultCode = resultCode;
 		}
 
 		public String getDesc() {

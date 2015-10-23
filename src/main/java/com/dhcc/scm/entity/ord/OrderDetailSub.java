@@ -26,7 +26,7 @@ public class OrderDetailSub implements Serializable {
 	@Id
 	@GenericGenerator(name="systemUUID",strategy="uuid")
 	@GeneratedValue(generator="systemUUID")
-	@Column(name="ordsub_id", unique=true, nullable=false)
+	@Column(name="ORDSUB_ID", unique=true, nullable=false)
 	private String ordSubId;
 	
 	@Column(name="ordsub_detail_id")
