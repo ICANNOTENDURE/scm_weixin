@@ -60,6 +60,9 @@ public class MobileScmBlh extends AbstractBaseBlh {
 		InGdRecItm inGdRecItm=new InGdRecItm();
 		if(StringUtils.isNotBlank(barCode)){
 			logger.info("barCode:"+barCode);
+			//String servicePassword=PropertiesBean.getInstance().getProperty("confg.serviceKey");
+			//barCode=AESCoder.aesCbcDecrypt(barCode, servicePassword);
+			//logger.info("barCodeDecrypt:"+barCode);
 			OrderDetailSub orderDetailSub=commonService.get(OrderDetailSub.class, barCode);
 			if(orderDetailSub!=null){
 				OrderDetail orderDetail=commonService.get(OrderDetail.class, orderDetailSub.getOrdSubDetailId());

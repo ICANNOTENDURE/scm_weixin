@@ -1,56 +1,54 @@
 package com.dhcc.framework.util;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-
-import javax.imageio.ImageIO;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.dhcc.framework.common.config.PropertiesBean;
 import com.dhcc.framework.web.context.WebContextHolder;
 import com.dhcc.scm.tool.security.AESCoder;
-import com.swetake.util.Qrcode;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
 
-public final class QrCodeUtil {	
+public final class QrCodeUtil {
 	
 	
-	
-	public static void EncoderQrCode(String content) throws IOException {
-		Qrcode qrcode = new Qrcode();  
-        qrcode.setQrcodeErrorCorrect('M');  
-        qrcode.setQrcodeEncodeMode('B');  
-        qrcode.setQrcodeVersion(7);  
-//        if(content == null || !content.equals("")){
-//        	content = "DHCC";
-//        }
-        String servicePassword=PropertiesBean.getInstance().getProperty("confg.serviceKey");
-        content=AESCoder.aesCbcEncrypt(content, servicePassword);
-        byte[] bstr = content.getBytes("UTF-8");  
-        BufferedImage bi = new BufferedImage(139, 139,BufferedImage.TYPE_INT_RGB);  
-        Graphics2D g = bi.createGraphics();  
-        g.setBackground(Color.WHITE);   //
-        g.clearRect(0, 0, 139, 139);  
-        g.setColor(Color.BLACK);    //
-        if (bstr.length > 0 && bstr.length < 123) {  
-            boolean[][] b = qrcode.calQrcode(bstr);  
-            for (int i = 0; i < b.length; i++) {  
-                for (int j = 0; j < b.length; j++) {  
-                    if (b[j][i]) {  
-                        g.fillRect(j * 3 + 2, i * 3 + 2, 3, 3);  
-                    }  
-                }  
-  
-            }  
-        }  
-        g.dispose();  
-        bi.flush();   
-		WebContextHolder.getContext().getResponse().setContentType("image/png");
-	    ImageIO.write(bi, "png",  WebContextHolder.getContext().getResponse().getOutputStream());
-	}
-	
-	public static void DcoderQrCode(String path){
+	/**
+	 * 
+	* @Title: QrCode 
+	* @Description: TODO(生成二维码) 
+	* @param @param content
+	* 				二维码内容
+	* @param @param encryptFlag
+	* 				是否加密:true()
+	* @param @throws IOException
+	* @param @throws WriterException    设定文件 
+	* @return void    返回类型 
+	* @throws 
+	* @author zhouxin   
+	* @date 2015年10月23日 下午5:11:32
+	 */
+	public static void QrCode(String content,boolean encryptFlag) throws IOException, WriterException {
 		
+		if(encryptFlag){
+			String servicePassword = PropertiesBean.getInstance().getProperty("confg.serviceKey");
+			content = AESCoder.aesCbcEncrypt(content, servicePassword);
+		}
+		int width = 300; // 图像宽度
+		int height = 300; // 图像高度
+		String format = "png";// 图像类型
+		Map<EncodeHintType, Object> hints = new HashMap<EncodeHintType, Object>();
+		hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+		BitMatrix bitMatrix = new MultiFormatWriter().encode(content, BarcodeFormat.QR_CODE, width, height, hints);// 生成矩阵
+		MatrixToImageWriter.writeToStream(bitMatrix, format, WebContextHolder.getContext().getResponse().getOutputStream());
+	}
+
+	public static void DcoderQrCode(String path) {
+
 	}
 
 }
