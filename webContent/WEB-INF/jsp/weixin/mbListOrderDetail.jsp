@@ -10,7 +10,7 @@
 <META name="apple-mobile-web-app-capable" content="yes">
 <META name="apple-mobile-web-app-status-bar-style" content="black">
 <%@include file="/WEB-INF/jsp/common/amaze.jsp"%>
-<title>东华电子商务</title>
+<title>东华医疗供应链(SCI)</title>
 <script type="text/javascript">
 	$(function() {
 		$(".am-icon-chevron-left").on('click', function() {

@@ -16,7 +16,7 @@
 <script src="<%=request.getContextPath()%>/js/esl/esl.js"></script>
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/js/dhcc/pms/nur/nurIncDetail.js"></script>
-<title>东华电子商务平台(SCI)</title>
+<title>东华医疗供应链(SCI)</title>
 <style type="text/css">
 /*商品标签*/
 .msg-text {

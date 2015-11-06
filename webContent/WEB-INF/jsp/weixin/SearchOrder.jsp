@@ -12,7 +12,7 @@
 <%@include file="/WEB-INF/jsp/common/amaze.jsp"%>
 <link href="<%=request.getContextPath()%>/css/weixin/ToDoTask.css"
 	rel="stylesheet" type="text/css" />
-<title>东华电子商务</title>
+<title>东华医疗供应链(SCI)</title>
 <script type="text/javascript">
 	$(function() {
 		$("#search").on('click', function() {

@@ -60,7 +60,7 @@ $(function(){
 				style="height: 42px">
 				<a
 					href="<%=request.getContextPath()%>/nur/nurseCtrl!nurseManageMain.htm"
-					style="color: #2bb8aa"> <span class="am-text-xl">东华电子商务(SCI)</span></a>
+					style="color: #2bb8aa"> <span class="am-text-xl">东华医疗供应链(SCI)</span></a>
 			</div>
 			<div class="am-u-lg-7 am-u-end">
 
