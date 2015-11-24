@@ -125,7 +125,7 @@ public class HopIncDao extends HibernatePersistentObjectDAO<HopInc> {
 	@SuppressWarnings("unchecked")
 	public List<HopIncVo> getIncInfo(List<HopIncVo> list) {
 		StringBuffer hqlBuffer = new StringBuffer();
-		hqlBuffer.append(" select new com.dhcc.pms.entity.vo.hop.HopIncVo(");
+		hqlBuffer.append(" select new com.dhcc.scm.entity.vo.hop.HopIncVo(");
 		hqlBuffer.append(" h.incId, ");
 		hqlBuffer.append(" h.incCode, ");
 		hqlBuffer.append(" h.incName, ");		

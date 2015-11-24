@@ -131,7 +131,7 @@ public class HopCtlocDao extends HibernatePersistentObjectDAO<HopCtloc> {
 	public List<HopCtlocVo> getListInfo(PagerModel pagerModel,List<HopCtlocVo> hopCtlocVos,HopCtloc hopCtloc) {			
 		Map<String,Object> hqlParamMap = new HashMap<String,Object>();
 		StringBuffer hqlBuffer = new StringBuffer();
-		hqlBuffer.append(" select new com.dhcc.pms.entity.vo.hop.HopCtlocVo(");
+		hqlBuffer.append(" select new com.dhcc.scm.entity.vo.hop.HopCtlocVo(");
 		hqlBuffer.append(" h.hopCtlocId, ");
 		hqlBuffer.append(" h.code, ");
 		hqlBuffer.append(" h.name, ");
