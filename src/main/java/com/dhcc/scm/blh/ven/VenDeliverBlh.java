@@ -845,11 +845,14 @@ public void upload(BusinessRequest res) throws IOException{
 				OrderDetail orderDetail=commonService.get(OrderDetail.class, Long.valueOf(ordno));
 				Hospital hospital=commonService.get(Hospital.class, orderDetail.getOrderHopId());
 				HopCtloc ctloc=commonService.get(HopCtloc.class, orderDetail.getOrderRecLoc());
-				HopCtlocDestination hopCtlocDestination=commonService.get(HopCtlocDestination.class, orderDetail.getOrderRecDestination());
 				PrintVo printVo=new PrintVo();
 				printVo.setHisno(orderDetail.getOrderNo());
 				printVo.setOrderDate(orderDetail.getOrderDate());
-				printVo.setDestination(hopCtlocDestination.getDestination());
+				if(orderDetail.getOrderRecDestination()!=null){
+					HopCtlocDestination hopCtlocDestination=commonService.get(HopCtlocDestination.class, orderDetail.getOrderRecDestination());
+					printVo.setDestination(hopCtlocDestination.getDestination());
+				}
+				
 				printVo.setHopname(hospital.getHospitalName());
 				printVo.setRecloc(ctloc.getName());
 				
