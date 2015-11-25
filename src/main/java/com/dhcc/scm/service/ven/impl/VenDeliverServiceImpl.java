@@ -180,12 +180,12 @@ public class VenDeliverServiceImpl implements VenDeliverService {
 				OrderDetail orderDetail=details.get(0);
 				Hospital hospital=venDeliverDao.get(Hospital.class, orderDetail.getOrderHopId());
 				HopCtloc ctloc=venDeliverDao.get(HopCtloc.class, orderDetail.getOrderRecLoc());
-				HopCtlocDestination hopCtlocDestination=venDeliverDao.get(HopCtlocDestination.class, orderDetail.getOrderRecDestination());
+				if(orderDetail.getOrderRecDestination()!=null){
+					HopCtlocDestination hopCtlocDestination=venDeliverDao.get(HopCtlocDestination.class, orderDetail.getOrderRecDestination());
+					deliverVo.setDestination(hopCtlocDestination.getDestination());
+				}
 				List<State> states=venDeliverDao.findByProperty(State.class, "stateSeq",Long.valueOf(orderDetail.getOrderState()));
-				
-	
 				deliverVo.setSerialno(AESCoder.aesCbcEncrypt(orderDetail.getOrderId().toString(), servicePassword));
-				deliverVo.setDestination(hopCtlocDestination.getDestination());
 				deliverVo.setHopname(hospital.getHospitalName());
 				deliverVo.setRecloc(ctloc.getName());
 				if(states.size()>0){
