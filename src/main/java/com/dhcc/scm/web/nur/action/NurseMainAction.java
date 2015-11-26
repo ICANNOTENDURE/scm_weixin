@@ -60,7 +60,8 @@ import com.dhcc.scm.service.ven.VendorService;
 @Scope("prototype")
 @Action(value = "nurseCtrl", results = { @Result(name = "auditOrd", location = "/WEB-INF/jsp/nur/auditOrd.jsp"), @Result(name = "nurOrdImp", location = "/WEB-INF/jsp/nur/NurOrdImp.jsp"), @Result(name = "nurseDestination", location = "/WEB-INF/jsp/nur/nurDestination.jsp"), @Result(name = "nurseManageMain", location = "/WEB-INF/jsp/nur/nurseMain.jsp"), @Result(name = "nurseIncDetail", location = "/WEB-INF/jsp/nur/nurIncDetail.jsp"), @Result(name = "catGroupList", location = "/WEB-INF/jsp/nur/nurseMain.jsp"), @Result(name = "getSubGroupByID", location = "/WEB-INF/jsp/nur/nurseMain.jsp"), @Result(name = "nurseOrder", location = "/WEB-INF/jsp/nur/nurseOrder.jsp"), @Result(name = "nursePay", location = "/WEB-INF/jsp/nur/nursePay.jsp"), @Result(name = "nurseInfomation", location = "/WEB-INF/jsp/nur/nurInfomation.jsp"), @Result(name = "getOrderStateById", location = "/WEB-INF/jsp/nur/nurseOrder.jsp"), @Result(name = "nurDestination", location = "/WEB-INF/jsp/nur/nurDestination.jsp"),
 		@Result(name = "saveInfo", location = "/WEB-INF/jsp/nur/nurInfomation.jsp"), @Result(name = "findLocDesctionComboList", location = "/WEB-INF/jsp/nur/nurDestination.jsp"), @Result(name = "setDefault", location = "/WEB-INF/jsp/nur/nurDestination.jsp"), @Result(name = "saveDest", location = "/WEB-INF/jsp/nur/nurDestination.jsp"), @Result(name = "deleteDest", location = "/WEB-INF/jsp/nur/nurDestination.jsp"), @Result(name = "vendorRegist", location = "/WEB-INF/jsp/nur/vendorRegistInfo.jsp"), @Result(name = "registSucess", location = "/WEB-INF/jsp/nur/registSuccess.jsp"), @Result(name = "upload", location = "/WEB-INF/jsp/nur/vendorRegistInfo.jsp"), @Result(name = "auditResult", location = "/WEB-INF/jsp/nur/vendorRegistResult.jsp"), @Result(name = "queryAudit", location = "/WEB-INF/jsp/nur/queryVenAuditResult.jsp"), @Result(name = "noResult", location = "/WEB-INF/jsp/nur/noResults.jsp"), @Result(name = "checkVenUnique", location = "/WEB-INF/jsp/nur/vendorRegistInfo.jsp"),
-		@Result(name = "checkVenAudit", location = "/WEB-INF/jsp/nur/vendorRegistResult.jsp"), })
+		@Result(name = "checkVenAudit", location = "/WEB-INF/jsp/nur/vendorRegistResult.jsp"),
+		@Result(name = "nurPrint", location = "/WEB-INF/jsp/nur/NurPrint.jsp")})
 @Blh("nurseBlh")
 public class NurseMainAction extends BaseAction {
 
@@ -402,6 +403,10 @@ public class NurseMainAction extends BaseAction {
 		// 审批订单
 		if ("auditOrd".equals(super.getBusinessFlow())) {
 			return "auditOrd";
+		}
+		// 打印条码
+		if ("nurPrint".equals(super.getBusinessFlow())) {
+			return "nurPrint";
 		}
 		return null; // 返回null时不会跳转
 	}
