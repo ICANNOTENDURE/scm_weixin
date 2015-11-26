@@ -29,6 +29,9 @@ import com.dhcc.scm.dto.ven.VenDeliverDto;
 		@Result(name = "printLabel", location = "/WEB-INF/jsp/ven/PrintLabel.jsp"),
 		@Result(name = "printLabelNew", location = "/WEB-INF/jsp/ven/PrintLabelNew.jsp"),
 		@Result(name = "print", location = "/WEB-INF/jsp/ven/Print.jsp"),
+		@Result(name = "PrintOrder", location = "/WEB-INF/jsp/ven/PrintOrder.jsp"),
+		@Result(name = "PrintByQty", location = "/WEB-INF/jsp/ven/PrintByQty.jsp"),
+		@Result(name = "PrintByQtySelect", location = "/WEB-INF/jsp/ven/PrintByQtySelect.jsp"),
 		@Result(name = "importInvByOrderItm", location = "/WEB-INF/jsp/ven/importInvByOrderItm.jsp"),})
 @Blh("venDeliverBlh")
 @JsonResults({@JResult(BlhMethod="findById",ognlExpress="dto.venDeliver"),

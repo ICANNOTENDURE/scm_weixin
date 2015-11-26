@@ -24,13 +24,32 @@ public class PrintVo implements java.io.Serializable{
 	
 	private Float amt;
 	
+	private Long ordrid;
 	
+	private String orderno;
 	
 	private List<DeliverItmVo> deliverItmVos;
 	
 	
 	
 	
+	
+	public Long getOrdrid() {
+		return ordrid;
+	}
+
+	public void setOrdrid(Long ordrid) {
+		this.ordrid = ordrid;
+	}
+
+	public String getOrderno() {
+		return orderno;
+	}
+
+	public void setOrderno(String orderno) {
+		this.orderno = orderno;
+	}
+
 	public Float getAmt() {
 		return amt;
 	}

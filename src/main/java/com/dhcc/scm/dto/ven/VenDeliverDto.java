@@ -14,6 +14,7 @@ import com.dhcc.framework.transmission.dto.BaseDto;
 import com.dhcc.scm.entity.ord.OrderDetailSub;
 import com.dhcc.scm.entity.ven.VenDeliver;
 import com.dhcc.scm.entity.ven.VenDeliveritm;
+import com.dhcc.scm.entity.vo.ven.PrintByQtyVo;
 import com.dhcc.scm.entity.vo.ven.PrintVo;
 
 public class VenDeliverDto extends BaseDto {
@@ -43,11 +44,20 @@ public class VenDeliverDto extends BaseDto {
 	private String uploadFileName;
 	private String impId;
 	private String printFlag;
+	private List<PrintByQtyVo> printByQtyVos;
 	
 	
 	
-	
-	
+
+	public List<PrintByQtyVo> getPrintByQtyVos() {
+		return printByQtyVos;
+	}
+
+
+	public void setPrintByQtyVos(List<PrintByQtyVo> printByQtyVos) {
+		this.printByQtyVos = printByQtyVos;
+	}
+
 
 	public String getPrintFlag() {
 		return printFlag;

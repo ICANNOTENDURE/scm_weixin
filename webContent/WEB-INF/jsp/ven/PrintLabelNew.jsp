@@ -98,55 +98,57 @@
             });
             window.open($WEB_ROOT_PATH+"/ven/venDeliverCtrl!Print.htm?dto.ordIdStr="+orderStr);
     	});
-    	
-    	//打印
-    	$('#printItmCheck').on('click',function(){
-    		
-    		var selected = $("#searchOrderTableItm").datagrid('getSelections');
-
+    	//打印订单(按订单)
+    	$('#printOrderBTN').on('click',function(){
+    		var selected = $("#searchOrderTable").datagrid('getSelections');
     		if (selected.length == 0) {
     			$CommonUI.alert("请选择！");
                 return;
             }
-
+    		orderStr="";
             $.each(selected, function (index, item) {
-            	$("#qrCodeItm"+item.deliveritmid).jqprint();
+            	if(orderStr==""){
+            		orderStr=item.serialno;
+            	}else{
+            		orderStr=orderStr+","+item.serialno;
+            	};
             });
+            window.open($WEB_ROOT_PATH+"/ven/venDeliverCtrl!PrintOrder.htm?dto.ordIdStr="+orderStr);
     	});
-    	
-    	//打印全部明细
-    	$('#printItmAll').on('click',function(){
-    		
+    	//打印明细(按数量)
+    	$('#printByQtyBTN').on('click',function(){
     		var selected = $("#searchOrderTable").datagrid('getSelections');
-
     		if (selected.length == 0) {
-    			$CommonUI.alert("请选择2！");
+    			$CommonUI.alert("请选择！");
                 return;
             }
-
+    		orderStr="";
             $.each(selected, function (index, item) {
-            	//$("#qrCode"+item.deliverid).jqprint();
-            	$.post(
-            			$WEB_ROOT_PATH+'/ven/venDeliverCtrl!getDeliveritms.htm',
-            			{
-            				'dto.venDeliver.deliverId':item.deliverid
-            			},
-            			function(data){
-            				$.each(data, function (index, item) {
-            					//alert(item.deliverId)
-            					//$('#qrcode').html("<img   src="+$WEB_ROOT_PATH+'/sys/qrCodeCtrl!encoderQrAndroid.htm?dto.content='+item.deliverId+" style='height: 80;width: 80px'> </img>");
-            					//alert($('#qrcode').html())
-            					//$("#qrCode").jqprint();
-            					//document.getElementById("WebBrowser").ExecWB(6,1);
-            				});
-            				$('#qrcode').html("");
-            			},
-            			'json'
-            			
-            	);
+            	if(orderStr==""){
+            		orderStr=item.serialno;
+            	}else{
+            		orderStr=orderStr+","+item.serialno;
+            	};
             });
+            window.open($WEB_ROOT_PATH+"/ven/venDeliverCtrl!PrintByQty.htm?dto.ordIdStr="+orderStr);
     	});
-    	
+     	//打印明细(按数量,勾选明细)
+    	$('#printByQtySelectBTN').on('click',function(){
+    		var selected = $("#searchOrderTableItm").datagrid('getSelections');
+    		if (selected.length == 0) {
+    			$CommonUI.alert("请选择！");
+                return;
+            }
+    		orderStr="";
+            $.each(selected, function (index, item) {
+            	if(orderStr==""){
+            		orderStr=item.deliveritmid;
+            	}else{
+            		orderStr=orderStr+","+item.deliveritmid;
+            	};
+            });
+            window.open($WEB_ROOT_PATH+"/ven/venDeliverCtrl!PrintByQtySelect.htm?dto.ordIdStr="+orderStr);
+    	});
     });
  
 function enCode(value,row,index){
@@ -246,11 +248,10 @@ function enCodeItm(value,row,index){
 				<option value="2">未打印</option>
 			</select>	
 		 	<a href="#" class="linkbutton" iconCls="icon-search" id="searchOrderTool">查询</a>
-		 	<a href="#" class="linkbutton" iconCls="icon-print" id="printBTN" plain=true>打印随行单</a>
-		 	<!-- 
-		 	<a href="#" class="linkbutton" iconCls="icon-print" id="printItmAll" plain=true>打印明细(全部)</a>
-		 	<a href="#" class="linkbutton" iconCls="icon-print" id="printItmCheck" plain=true>打印明细(选择)</a>
-		 	 -->
+		 	<a href="#" class="linkbutton" iconCls="icon-print" id="printBTN" plain=true>打印随行单(按商品)</a>
+		 	<a href="#" class="linkbutton" iconCls="icon-print" id="printOrderBTN" plain=true>打印订单(按订单)</a>
+		 	<a href="#" class="linkbutton" iconCls="icon-print" id="printByQtyBTN" plain=true>打印明细(按数量)</a>
+		 	<a href="#" class="linkbutton" iconCls="icon-print" id="printByQtySelectBTN" plain=true>打印明细(按数量,勾选明细)</a>
 		 	<div id="qrcode" ></div>
 		 </div>
 	</div>

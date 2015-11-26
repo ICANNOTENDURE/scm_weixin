@@ -49,6 +49,8 @@ public class OrderDetailSub implements Serializable {
 	@Column(name="ordsub_date")
 	private Date ordSubDate;
 	
+	//Y: 发货
+	//T:入库
 	@Column(name="ordsub_status")
 	private String ordSubStatus;
 	
