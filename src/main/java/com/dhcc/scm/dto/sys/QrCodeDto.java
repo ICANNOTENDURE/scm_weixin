@@ -13,6 +13,27 @@ public class QrCodeDto extends BaseDto {
 
 	private String content;
 	
+	private String codeType;
+	
+	private int seq;
+	
+	
+
+	public String getCodeType() {
+		return codeType;
+	}
+
+	public void setCodeType(String codeType) {
+		this.codeType = codeType;
+	}
+
+	public int getSeq() {
+		return seq;
+	}
+
+	public void setSeq(int seq) {
+		this.seq = seq;
+	}
 
 	/**
 	 * @return the content

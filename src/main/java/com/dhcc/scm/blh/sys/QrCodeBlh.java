@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.dhcc.framework.app.blh.AbstractBaseBlh;
 import com.dhcc.framework.transmission.event.BusinessRequest;
+import com.dhcc.framework.util.JsonUtils;
 import com.dhcc.framework.util.QrCodeUtil;
 import com.dhcc.scm.dto.sys.QrCodeDto;
 import com.google.zxing.WriterException;
@@ -40,7 +41,7 @@ public class QrCodeBlh extends AbstractBaseBlh {
 	 */
 	public void qrAndroid(BusinessRequest res) throws IOException, WriterException{
 		QrCodeDto dto=super.getDto(QrCodeDto.class, res);
-		QrCodeUtil.QrCode(dto.getContent(),false);
+		QrCodeUtil.QrCode(JsonUtils.toJson(dto),false);
 	}
 	/**
 	 * 
@@ -56,6 +57,6 @@ public class QrCodeBlh extends AbstractBaseBlh {
 	 */
 	public void encoderQrAndroid(BusinessRequest res) throws IOException, WriterException{
 		QrCodeDto dto=super.getDto(QrCodeDto.class, res);
-		QrCodeUtil.QrCode(dto.getContent(),true);
+		QrCodeUtil.QrCode(JsonUtils.toJson(dto),true);
 	}
 }

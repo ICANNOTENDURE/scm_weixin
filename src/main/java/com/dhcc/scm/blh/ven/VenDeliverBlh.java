@@ -1172,7 +1172,7 @@ public class VenDeliverBlh extends AbstractBaseBlh {
 					for (int i = 0; i < orderDetailSub.getOrderSubQty(); i++) {
 						PrintByQtyVo printByQtyVo = new PrintByQtyVo();
 						printByQtyVo.setSeq(i + 1);
-						printByQtyVo.setDeliveritmid(venInc.getVenIncName());
+						printByQtyVo.setVenincname(venInc.getVenIncName());
 						printByQtyVo.setDeliveritmid(orderDetailSub.getOrdSubId());
 						printByQtyVos.add(printByQtyVo);
 					}
