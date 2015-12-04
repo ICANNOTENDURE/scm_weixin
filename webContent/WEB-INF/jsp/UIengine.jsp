@@ -102,7 +102,7 @@
 				'authenTicket/authenTicketCtrl!getLoginInfo.htm',
 				function(data){
 					$(".text-semibold").html(data.userName);
-					$("#loginInfo").html(data.userName);
+					$("#loginInfo").find("p").html(data.userName);
 				},
 				"json"
 		);
@@ -183,7 +183,7 @@
 						<img src="dist/img/user2-160x160.jpg" class="img-circle"
 							alt="User Image">
 					</div>
-					<div class="pull-left info">
+					<div class="pull-left info" id="loginInfo">
 						<p>Alexander Pierce</p>
 						<!-- Status -->
 						<a href="#"><i class="fa fa-circle text-success"></i> Online</a>
@@ -227,10 +227,12 @@
 			<ul class="nav nav-tabs nav-justified control-sidebar-tabs">
 				<li class="active"><a href="#control-sidebar-home-tab"
 					data-toggle="tab"><i class="fa fa-home"></i></a></li>
-				<li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i
-						class="fa fa-gears"></i></a></li>
-			</ul>
 
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane" id="control-sidebar-home-tab">
+				</div>
+			</div>
 		</aside>
 		<!-- /.control-sidebar -->
 		<!-- Add the sidebar's background. This div must be placed
