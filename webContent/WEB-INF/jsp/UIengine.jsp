@@ -20,6 +20,12 @@
 <link rel="stylesheet" href="<%=request.getContextPath()%>/dist/css/skins/_all-skins.min.css">
 <!-- jQuery 2.1.4 -->
 <script src="<%=request.getContextPath()%>/js/jquery/jQuery-2.1.4.min.js"></script>
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
 <script type="text/javascript">
 	$(function() {
 		$.ajaxSettings.async = false;
@@ -91,27 +97,34 @@
 			});
 		});
 		//修改个人信息
-		$(".editinfo").click(function(){
+		$("#editinfo").click(function(){
 			$("#content-wrapper iframe").attr("src","./normalAccount/normalAccountCtrl!editInfo.htm");
 		});
 		//修改个人信息
-		$(".editpassword").click(function(){
+		$("#editpassword").click(function(){
 			$("#content-wrapper iframe").attr("src","./normalAccount/normalAccountCtrl!editPassword.htm");
 		});
 		$.post(
 				'authenTicket/authenTicketCtrl!getLoginInfo.htm',
 				function(data){
-					$(".text-semibold").html(data.userName);
-					$("#loginInfo").find("p").html(data.userName);
+					$(".loginUserName").find("p").html(data.userName);
+					$("#loginUserName").html(data.userName);
 				},
 				"json"
 		);
 		$("#content-wrapper iframe").attr("src","./chart/chartCtrl!index.htm");
+		try{
+			$("#mainIframe").height($("#mainIframe").contents().find("body")[0].scrollHeight + 50);
+			$("#mainIframe").height($("#mainIframe").contents().find("body")[0].clientHeight + 50);
+		}catch(e){}
+		var myDate=new Date()
+		$("#currdate").html(myDate.getFullYear()+"-"+(myDate.getMonth()+1)+"-"+myDate.getDate());
+		
 	});
 </script>
 
 </head>
-<body class="hold-transition skin-green sidebar-mini">
+<body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
 	<div class="wrapper">
 
 		<!-- Main Header -->
@@ -136,12 +149,21 @@
 						<li class="dropdown user user-menu">
 							<!-- Menu Toggle Button --> <a href="#" class="dropdown-toggle"
 							data-toggle="dropdown"> <!-- The user image in the navbar-->
-								<img src="dist/img/user2-160x160.jpg" class="user-image"
-								alt="User Image"> <!-- hidden-xs hides the username on small devices so only the image appears. -->
-								<span class="hidden-xs">Alexander Pierce</span>
+								<img src="dist/img/avatar5.png" class="user-image"
+								alt="User Image"> 
+								<!-- hidden-xs hides the username on small devices so only the image appears. -->
+								<span class="hidden-xs" id="loginUserName">Dhcc</span>
 						</a>
 							<ul class="dropdown-menu">
-								<!-- Menu Body -->
+							 <!-- User image -->
+				                <li class="user-header loginUserName">
+				                   <img src="dist/img/avatar5.png" class="img-circle" alt="User Image">
+				                   <p>
+				                     Dhcc
+				                   </p>
+				                   <small id="currdate"></small>
+				                </li>
+								<!-- Menu Body 
 								<li class="user-body">
 									<div class="col-xs-4 text-center">
 										<a href="#">Followers</a>
@@ -153,13 +175,15 @@
 										<a href="#">Friends</a>
 									</div>
 								</li>
+								-->
 								<!-- Menu Footer-->
 								<li class="user-footer">
 									<div class="pull-left">
-										<a href="#" class="btn btn-default btn-flat">Profile</a>
+										<a href="#" class="btn btn-default btn-flat" id="editinfo">个人信息</a>
+										<a href="#" class="btn btn-default btn-flat" id="editpassword">修改密码</a>
 									</div>
 									<div class="pull-right">
-										<a href="#" class="btn btn-default btn-flat" id="quitBTN">Sign out</a>
+										<a href="#" class="btn btn-default btn-flat" id="quitBTN">退出</a>
 									</div>
 								</li>
 							</ul>
@@ -180,13 +204,13 @@
 				<!-- Sidebar user panel (optional) -->
 				<div class="user-panel">
 					<div class="pull-left image">
-						<img src="dist/img/user2-160x160.jpg" class="img-circle"
+						<img src="dist/img/avatar5.png" class="img-circle"
 							alt="User Image">
 					</div>
-					<div class="pull-left info" id="loginInfo">
-						<p>Alexander Pierce</p>
+					<div class="pull-left info loginUserName">
+						<p>Dhcc</p>
 						<!-- Status -->
-						<a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+						<a href="#"><i class="fa fa-circle text-success"></i> 在线</a>
 					</div>
 				</div>
 				<!-- /.search form -->
@@ -206,7 +230,7 @@
 
 
 				<!-- Your Page Content Here -->
-				<iframe name="mainIframe" frameborder="0" src="" style="width: 100%; height: 600px;"></iframe>
+				<iframe name="mainIframe" frameborder="0" src="" style="width: 100%; height: 600px;" id="mainIframe"></iframe>
 		
 			<!-- /.content -->
 		</div>
@@ -249,5 +273,26 @@
 	<!-- AdminLTE App -->
 	<script src="<%=request.getContextPath()%>/dist/js/app.min.js"></script>
 	<script src="<%=request.getContextPath()%>/dist/js/demo.js"></script>
+	
+	<!-- modal -->
+	<div class="example-modal">
+      <div class="modal modal-danger">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Modal Danger</h4>
+            </div>
+            <div class="modal-body">
+              <p>One fine body&hellip;</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-outline">Save changes</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+    </div><!-- /.example-modal -->
 </body>
 </html>

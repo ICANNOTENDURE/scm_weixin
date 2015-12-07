@@ -62,13 +62,13 @@
 //          + "<p>Activate the fixed layout. You can't use fixed and boxed layouts together</p>"
 //          + "</div>"
 //          //Boxed layout
-//          + "<div class='form-group'>"
-//          + "<label class='control-sidebar-subheading'>"
-//          + "<input type='checkbox' data-layout='layout-boxed'class='pull-right'/> "
-//          + "Boxed Layout"
-//          + "</label>"
-//          + "<p>Activate the boxed layout</p>"
-//          + "</div>"
+          + "<div class='form-group'>"
+          + "<label class='control-sidebar-subheading'>"
+          + "<input type='checkbox' data-layout='layout-boxed'class='pull-right'/> "
+          + "固定宽度"
+          + "</label>"
+          + "<p>整个界面都是固定宽度</p>"
+          + "</div>"
           //Sidebar Toggle
           + "<div class='form-group'>"
           + "<label class='control-sidebar-subheading'>"
@@ -331,6 +331,5 @@
     if ($('body').hasClass('sidebar-collapse')) {
       $("[data-layout='sidebar-collapse']").attr('checked', 'checked');
     }
-
   }
 })(jQuery, $.AdminLTE);
