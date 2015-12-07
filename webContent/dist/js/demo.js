@@ -284,7 +284,6 @@
     var tmp = get('skin');
     if (tmp && $.inArray(tmp, my_skins))
       change_skin(tmp);
-
     //Add the change skin listener
     $("[data-skin]").on('click', function (e) {
       e.preventDefault();
