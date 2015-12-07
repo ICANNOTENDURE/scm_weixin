@@ -114,10 +114,11 @@
 		);
 		$("#content-wrapper iframe").attr("src","./chart/chartCtrl!index.htm");
 		try{
+			$("#mainIframe").height($("#mainIframe").contents().find("body")[0].scrollHeight + 50);
 			if(navigator.appName=="Netscape"){
-				$("#mainIframe").height($("#mainIframe").contents().find("body")[0].scrollHeight + 50);
+				
 			}else{
-				$("#mainIframe").height($("#mainIframe").contents().find("body")[0].clientHeight + 50);
+				//$("#mainIframe").height($("#mainIframe").contents().find("body")[0].clientHeight + 50);
 			}
 		}catch(e){}
 		var myDate=new Date()
