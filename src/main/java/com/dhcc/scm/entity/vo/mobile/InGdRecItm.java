@@ -34,11 +34,19 @@ public class InGdRecItm {
 		
 		private String resultMsg="";
 		
+		private int seq;
 		
 		
 		
 		
-		
+		public int getSeq() {
+			return seq;
+		}
+
+		public void setSeq(int seq) {
+			this.seq = seq;
+		}
+
 		public String getResultMsg() {
 			return resultMsg;
 		}
