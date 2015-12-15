@@ -9,12 +9,14 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
 
 import com.dhcc.framework.app.blh.AbstractBaseBlh;
 import com.dhcc.framework.app.service.CommonService;
 import com.dhcc.framework.transmission.event.BusinessRequest;
-import com.dhcc.framework.util.JsonUtils;
 import com.dhcc.scm.entity.hop.HopInc;
 import com.dhcc.scm.entity.manf.HopManf;
 import com.dhcc.scm.entity.ord.OrderDetail;
@@ -22,14 +24,15 @@ import com.dhcc.scm.entity.ord.OrderDetailSub;
 import com.dhcc.scm.entity.ven.Vendor;
 import com.dhcc.scm.entity.vo.mobile.InGdRec;
 import com.dhcc.scm.entity.vo.mobile.InGdRecItm;
-import com.dhcc.scm.entity.vo.mobile.QrCode;
 import com.dhcc.scm.entity.vo.ws.OperateResult;
 import com.dhcc.scm.service.mobile.MobileScmService;
 import com.google.gson.JsonObject;
 
 @Component
 public class MobileScmBlh extends AbstractBaseBlh {
-
+	
+	private static Log logger = LogFactory.getLog(MobileScmBlh.class);
+	
 	@Resource
 	private CommonService commonService;
 
@@ -53,13 +56,19 @@ public class MobileScmBlh extends AbstractBaseBlh {
 	 */
 	public void getBarCodeInfo(BusinessRequest res) throws IOException {
 
-		String barCode = super.getParameter("value");
-		QrCode qrCode = JsonUtils.toObject(barCode, QrCode.class);
+		String content = super.getParameter("content");
+		String codeType = super.getParameter("codeType");
+		String seqStr = super.getParameter("seq");
+		Integer seq =0;
+		if(StringUtils.isNotBlank(seqStr)){
+			seq=Integer.valueOf(seqStr);
+		}
+		logger.info("content:"+content);
 		InGdRec gdRec = new InGdRec();
-		gdRec.setCodeType(qrCode.getCodeType());
-		switch (qrCode.getCodeType()) {
+		gdRec.setCodeType(codeType);
+		switch (codeType) {
 		case "ByOrder":
-			List<OrderDetail> details=commonService.findByProperty(OrderDetail.class, "orderNo", qrCode.getContent());
+			List<OrderDetail> details=commonService.findByProperty(OrderDetail.class, "orderNo",content);
 			for(OrderDetail detail:details){
 				List<OrderDetailSub> detailSubs=commonService.findByProperty(OrderDetailSub.class, "ordSubDetailId", detail.getOrderId());
 				for(OrderDetailSub detailSub:detailSubs){
@@ -80,7 +89,7 @@ public class MobileScmBlh extends AbstractBaseBlh {
 						}
 						Vendor vendor = commonService.get(Vendor.class, detail.getOrderVenId());
 						inGdRecItm.setVendor(vendor.getName());
-						inGdRecItm.setScmid(qrCode.getContent());
+						inGdRecItm.setScmid(content);
 						gdRec.getGdRecItms().add(inGdRecItm);
 					}
 				}
@@ -88,7 +97,7 @@ public class MobileScmBlh extends AbstractBaseBlh {
 			break;
 		default:
 			InGdRecItm inGdRecItm = new InGdRecItm();
-			OrderDetailSub orderDetailSub = commonService.get(OrderDetailSub.class, qrCode.getContent());
+			OrderDetailSub orderDetailSub = commonService.get(OrderDetailSub.class, content);
 			if (orderDetailSub != null) {
 				OrderDetail orderDetail = commonService.get(OrderDetail.class, orderDetailSub.getOrdSubDetailId());
 				if (orderDetail.getOrderState().longValue() > 4) {
@@ -100,9 +109,9 @@ public class MobileScmBlh extends AbstractBaseBlh {
 						inGdRecItm.setBatno(orderDetailSub.getOrdSubBatNo());
 						inGdRecItm.setExpDate(orderDetailSub.getOrdSubExpDate());
 						float fac = orderDetail.getOrderFac().floatValue();
-						if(qrCode.getCodeType().equals("ByOty")){
+						if(codeType.equals("ByOty")){
 							inGdRecItm.setQty(1);
-							inGdRecItm.setSeq(qrCode.getSeq());
+							inGdRecItm.setSeq(seq);
 						}else{
 							inGdRecItm.setQty(orderDetailSub.getOrderSubQty() * fac);
 						}
@@ -116,7 +125,7 @@ public class MobileScmBlh extends AbstractBaseBlh {
 						}
 						Vendor vendor = commonService.get(Vendor.class, orderDetail.getOrderVenId());
 						inGdRecItm.setVendor(vendor.getName());
-						inGdRecItm.setScmid(qrCode.getContent());
+						inGdRecItm.setScmid(content);
 						gdRec.getGdRecItms().add(inGdRecItm);
 					}
 				} else {

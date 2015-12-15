@@ -3,12 +3,19 @@
  */
 package com.dhcc.scm.entity.vo.mobile;
 
+import java.io.Serializable;
 
 
 
-public class QrCode {
+
+public class QrCode implements Serializable{
 	
-private String content;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private String content;
 
 	private String codeType;
 	
