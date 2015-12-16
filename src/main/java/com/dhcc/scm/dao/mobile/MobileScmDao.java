@@ -73,6 +73,9 @@ public class MobileScmDao extends HibernatePersistentObjectDAO<OrderDetailSub> {
 			String[] subOrderIds = jsonObject.get("value").toString().split(",");
 			for (String subId : subOrderIds) {
 				logger.info("subId:"+subId.replaceAll("\"",""));
+				if(StringUtils.isBlank(subId.replaceAll("\"",""))){
+					continue;
+				}
 				OrderDetailSub orderDetailSub = super.get(OrderDetailSub.class,subId.replaceAll("\"",""));
 				if(orderDetailSub==null){
 					errMsg.append("条码"+subId+"错误,系统无此条码");
@@ -189,6 +192,9 @@ public class MobileScmDao extends HibernatePersistentObjectDAO<OrderDetailSub> {
 		if(StringUtils.isNotBlank(jsonObject.get("value").toString())){
 			String[] subOrderIds = jsonObject.get("value").toString().split(",");
 			for (String subId : subOrderIds) {
+				if(StringUtils.isBlank(subId.replaceAll("\"",""))){
+					continue;
+				}
 				OrdLabel ordLabel = super.get(OrdLabel.class,subId.replaceAll("\"",""));
 				if(ordLabel==null){
 					errMsg.append("条码"+subId+"错误,系统无此条码");
