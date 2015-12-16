@@ -48,6 +48,7 @@ import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.HopCtlocDestination;
 import com.dhcc.scm.entity.hop.Hospital;
 import com.dhcc.scm.entity.ord.ExeState;
+import com.dhcc.scm.entity.ord.OrdLabel;
 import com.dhcc.scm.entity.ord.Order;
 import com.dhcc.scm.entity.ord.OrderDetail;
 import com.dhcc.scm.entity.ord.OrderDetailSub;
@@ -1109,7 +1110,6 @@ public class VenDeliverBlh extends AbstractBaseBlh {
 			}
 			String[] ords = dto.getOrdIdStr().split(",");
 			for (String ordno : ords) {
-
 				ordno = AESCoder.aesCbcDecrypt(ordno.trim(), servicePassword);
 				OrderDetail orderDetail = commonService.get(OrderDetail.class, Long.valueOf(ordno));
 				Hospital hospital = commonService.get(Hospital.class, orderDetail.getOrderHopId());
@@ -1161,21 +1161,42 @@ public class VenDeliverBlh extends AbstractBaseBlh {
 	 */
 	public String PrintByQtySelect(BusinessRequest res) {
 		VenDeliverDto dto = super.getDto(VenDeliverDto.class, res);
+
 		if (org.apache.commons.lang.StringUtils.isNotBlank(dto.getOrdIdStr())) {
+			String insertFlag = "N";
 			List<PrintByQtyVo> printByQtyVos = new ArrayList<PrintByQtyVo>();
 			String[] ords = dto.getOrdIdStr().split(",");
 			for (String ordno : ords) {
 				OrderDetailSub orderDetailSub = commonService.get(OrderDetailSub.class, ordno);
 				if (orderDetailSub != null) {
+					List<OrdLabel> ordLabels = commonService.findByProperty(OrdLabel.class, "labelParentId", ordno);
+					if (ordLabels.size() == 0) {
+						insertFlag = "Y";
+					}
 					OrderDetail detail = commonService.get(OrderDetail.class, orderDetailSub.getOrdSubDetailId());
 					VenInc venInc = commonService.get(VenInc.class, detail.getOrderVenIncId());
-					for (int i = 0; i < orderDetailSub.getOrderSubQty(); i++) {
-						PrintByQtyVo printByQtyVo = new PrintByQtyVo();
-						printByQtyVo.setSeq(i + 1);
-						printByQtyVo.setVenincname(venInc.getVenIncName());
-						printByQtyVo.setDeliveritmid(orderDetailSub.getOrdSubId());
-						printByQtyVos.add(printByQtyVo);
+					if (insertFlag.equals("Y")) {
+						for (int i = 0; i < orderDetailSub.getOrderSubQty(); i++) {
+							PrintByQtyVo printByQtyVo = new PrintByQtyVo();
+							printByQtyVo.setSeq(i + 1);
+							printByQtyVo.setVenincname(venInc.getVenIncName());
+							OrdLabel ordLabel = new OrdLabel(orderDetailSub.getOrdSubId(), "D");
+							commonService.saveOrUpdate(ordLabel);
+							printByQtyVo.setDeliveritmid(ordLabel.getLabelId());
+							printByQtyVos.add(printByQtyVo);
+						}
+					}else{
+						int i=0;
+						for(OrdLabel label:ordLabels){
+							i++;
+							PrintByQtyVo printByQtyVo = new PrintByQtyVo();
+							printByQtyVo.setSeq(i + 1);
+							printByQtyVo.setVenincname(venInc.getVenIncName());
+							printByQtyVo.setDeliveritmid(label.getLabelId());
+							printByQtyVos.add(printByQtyVo);
+						}
 					}
+
 				}
 			}
 			dto.setPrintByQtyVos(printByQtyVos);
@@ -1197,17 +1218,35 @@ public class VenDeliverBlh extends AbstractBaseBlh {
 				OrderDetail orderDetail = commonService.get(OrderDetail.class, Long.valueOf(ordno));
 				if (orderDetail != null) {
 					VenInc venInc = commonService.get(VenInc.class, orderDetail.getOrderVenIncId());
-					String[] propertyNames = {"ordSubDetailId","ordSubStatus"};
-					Object[] values = {orderDetail.getOrderId(),"Y"};
+					String[] propertyNames = { "ordSubDetailId", "ordSubStatus" };
+					Object[] values = { orderDetail.getOrderId(), "Y" };
 					List<OrderDetailSub> detailSubs = commonService.findByProperties(OrderDetailSub.class, propertyNames, values);
 					for (OrderDetailSub orderDetailSub : detailSubs) {
-						for (int i = 0; i < orderDetailSub.getOrderSubQty(); i++) {
-							PrintByQtyVo printByQtyVo = new PrintByQtyVo();
-							printByQtyVo.setSeq(i + 1);
-							printByQtyVo.setVenincname(venInc.getVenIncName());
-							printByQtyVo.setDeliveritmid(orderDetailSub.getOrdSubId());
-							printByQtyVo.setOrderno(orderDetail.getOrderNo());
-							printByQtyVos.add(printByQtyVo);
+						String insertFlag="N";
+						List<OrdLabel> ordLabels = commonService.findByProperty(OrdLabel.class, "labelParentId", orderDetailSub.getOrdSubId());
+						if (ordLabels.size() == 0) {
+							insertFlag = "Y";
+						}
+						if (insertFlag.equals("Y")) {
+							for (int i = 0; i < orderDetailSub.getOrderSubQty(); i++) {
+								PrintByQtyVo printByQtyVo = new PrintByQtyVo();
+								printByQtyVo.setSeq(i + 1);
+								printByQtyVo.setVenincname(venInc.getVenIncName());
+								OrdLabel ordLabel = new OrdLabel(orderDetailSub.getOrdSubId(), "D");
+								commonService.saveOrUpdate(ordLabel);
+								printByQtyVo.setDeliveritmid(ordLabel.getLabelId());
+								printByQtyVos.add(printByQtyVo);
+							}
+						}else{
+							int i=0;
+							for(OrdLabel label:ordLabels){
+								i++;
+								PrintByQtyVo printByQtyVo = new PrintByQtyVo();
+								printByQtyVo.setSeq(i + 1);
+								printByQtyVo.setVenincname(venInc.getVenIncName());
+								printByQtyVo.setDeliveritmid(label.getLabelId());
+								printByQtyVos.add(printByQtyVo);
+							}
 						}
 					}
 				}
@@ -1216,7 +1255,7 @@ public class VenDeliverBlh extends AbstractBaseBlh {
 		}
 		return "PrintByQty";
 	}
-	
+
 	public String PrintOrder(BusinessRequest res) {
 		VenDeliverDto dto = super.getDto(VenDeliverDto.class, res);
 		if (org.apache.commons.lang.StringUtils.isNotBlank(dto.getOrdIdStr())) {

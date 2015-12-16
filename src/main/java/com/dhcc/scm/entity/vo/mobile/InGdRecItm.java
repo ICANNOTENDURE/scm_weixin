@@ -36,9 +36,19 @@ public class InGdRecItm {
 		
 		private int seq;
 		
+		private String labelId;
 		
 		
 		
+		
+		public String getLabelId() {
+			return labelId;
+		}
+
+		public void setLabelId(String labelId) {
+			this.labelId = labelId;
+		}
+
 		public int getSeq() {
 			return seq;
 		}

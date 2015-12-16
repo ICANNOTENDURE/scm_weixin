@@ -19,6 +19,7 @@ import com.dhcc.framework.app.service.CommonService;
 import com.dhcc.framework.transmission.event.BusinessRequest;
 import com.dhcc.scm.entity.hop.HopInc;
 import com.dhcc.scm.entity.manf.HopManf;
+import com.dhcc.scm.entity.ord.OrdLabel;
 import com.dhcc.scm.entity.ord.OrderDetail;
 import com.dhcc.scm.entity.ord.OrderDetailSub;
 import com.dhcc.scm.entity.ven.Vendor;
@@ -30,9 +31,9 @@ import com.google.gson.JsonObject;
 
 @Component
 public class MobileScmBlh extends AbstractBaseBlh {
-	
+
 	private static Log logger = LogFactory.getLog(MobileScmBlh.class);
-	
+
 	@Resource
 	private CommonService commonService;
 
@@ -59,21 +60,21 @@ public class MobileScmBlh extends AbstractBaseBlh {
 		String content = super.getParameter("content");
 		String codeType = super.getParameter("codeType");
 		String seqStr = super.getParameter("seq");
-		Integer seq =0;
-		if(StringUtils.isNotBlank(seqStr)){
-			seq=Integer.valueOf(seqStr);
+		Integer seq = 0;
+		if (StringUtils.isNotBlank(seqStr)) {
+			seq = Integer.valueOf(seqStr);
 		}
-		logger.info("content:"+content);
+
 		InGdRec gdRec = new InGdRec();
 		gdRec.setCodeType(codeType);
 		switch (codeType) {
 		case "ByOrder":
-			List<OrderDetail> details=commonService.findByProperty(OrderDetail.class, "orderNo",content);
-			for(OrderDetail detail:details){
-				List<OrderDetailSub> detailSubs=commonService.findByProperty(OrderDetailSub.class, "ordSubDetailId", detail.getOrderId());
-				for(OrderDetailSub detailSub:detailSubs){
+			List<OrderDetail> details = commonService.findByProperty(OrderDetail.class, "orderNo", content);
+			for (OrderDetail detail : details) {
+				List<OrderDetailSub> detailSubs = commonService.findByProperty(OrderDetailSub.class, "ordSubDetailId", detail.getOrderId());
+				for (OrderDetailSub detailSub : detailSubs) {
 					InGdRecItm inGdRecItm = new InGdRecItm();
-					if (!detailSub.getOrdSubStatus().equals("T")){
+					if (!detailSub.getOrdSubStatus().equals("T")) {
 						inGdRecItm.setResultCode("0");
 						inGdRecItm.setBatno(detailSub.getOrdSubBatNo());
 						inGdRecItm.setExpDate(detailSub.getOrdSubExpDate());
@@ -97,43 +98,56 @@ public class MobileScmBlh extends AbstractBaseBlh {
 			break;
 		default:
 			InGdRecItm inGdRecItm = new InGdRecItm();
-			OrderDetailSub orderDetailSub = commonService.get(OrderDetailSub.class, content);
-			if (orderDetailSub != null) {
-				OrderDetail orderDetail = commonService.get(OrderDetail.class, orderDetailSub.getOrdSubDetailId());
-				if (orderDetail.getOrderState().longValue() > 4) {
-					if (orderDetailSub.getOrdSubStatus().equals("T")) {
-						gdRec.setResultCode("-2");
-						gdRec.setResultComtent("该条码已入库,不能重复入库");
-					} else {
-						gdRec.setResultCode("0");
-						inGdRecItm.setBatno(orderDetailSub.getOrdSubBatNo());
-						inGdRecItm.setExpDate(orderDetailSub.getOrdSubExpDate());
-						float fac = orderDetail.getOrderFac().floatValue();
-						if(codeType.equals("ByOty")){
-							inGdRecItm.setQty(1);
-							inGdRecItm.setSeq(seq);
-						}else{
-							inGdRecItm.setQty(orderDetailSub.getOrderSubQty() * fac);
-						}
-						inGdRecItm.setRp(orderDetailSub.getOrderSubRp() / fac);
-						HopInc hopInc = commonService.get(HopInc.class, orderDetail.getOrderHopIncId());
-						inGdRecItm.setDesc(hopInc.getIncName());
-						inGdRecItm.setUom(hopInc.getIncUomname());
-						if (hopInc.getIncManfid() != null) {
-							HopManf hopManf = commonService.get(HopManf.class, hopInc.getIncManfid());
-							inGdRecItm.setManf(hopManf.getManfName());
-						}
-						Vendor vendor = commonService.get(Vendor.class, orderDetail.getOrderVenId());
-						inGdRecItm.setVendor(vendor.getName());
-						inGdRecItm.setScmid(content);
-						gdRec.getGdRecItms().add(inGdRecItm);
-					}
-				} else {
-					gdRec.setResultCode("-3");
-					gdRec.setResultComtent("条码错误");
-				}
+			String orderDetailSubId="";
+			if (codeType.equals("ByQty")) {
+				OrdLabel label = commonService.get(OrdLabel.class, content);
+				orderDetailSubId=label.getLabelParentId();
+			} else {
+				orderDetailSubId=content;
 			}
-			
+			OrderDetailSub orderDetailSub=commonService.get(OrderDetailSub.class, orderDetailSubId);
+			if(orderDetailSub==null){
+				gdRec.setResultComtent("条码错误01");
+				super.writeJSON(gdRec);
+				return;
+			}
+			OrderDetail orderDetail = commonService.get(OrderDetail.class, orderDetailSub.getOrdSubDetailId());
+			if (orderDetail.getOrderState().longValue() > 2) {
+				if (orderDetailSub.getOrdSubStatus().equals("T")) {
+					gdRec.setResultComtent("该条码已入库,不能重复入库");
+				} else {
+					gdRec.setResultCode("0");
+					inGdRecItm.setBatno(orderDetailSub.getOrdSubBatNo());
+					inGdRecItm.setExpDate(orderDetailSub.getOrdSubExpDate());
+					float fac = orderDetail.getOrderFac().floatValue();
+					boolean flag=codeType.equals("ByQty");
+					//奇葩，非要我这样写？
+					if (flag) {
+						inGdRecItm.setQty(1);
+						inGdRecItm.setSeq(seq);
+						inGdRecItm.setScmid(orderDetailSub.getOrdSubId());
+						inGdRecItm.setLabelId(content);
+					} else {
+						inGdRecItm.setScmid(content);
+						inGdRecItm.setQty(orderDetailSub.getOrderSubQty() * fac);
+					}
+					inGdRecItm.setRp(orderDetailSub.getOrderSubRp() / fac);
+					HopInc hopInc = commonService.get(HopInc.class, orderDetail.getOrderHopIncId());
+					inGdRecItm.setDesc(hopInc.getIncName());
+					inGdRecItm.setUom(hopInc.getIncUomname());
+					if (hopInc.getIncManfid() != null) {
+						HopManf hopManf = commonService.get(HopManf.class, hopInc.getIncManfid());
+						inGdRecItm.setManf(hopManf.getManfName());
+					}
+					Vendor vendor = commonService.get(Vendor.class, orderDetail.getOrderVenId());
+					inGdRecItm.setVendor(vendor.getName());
+					
+					gdRec.getGdRecItms().add(inGdRecItm);
+				}
+			} else {
+				gdRec.setResultComtent("条码错误-状态不对");
+			}
+
 			break;
 		}
 		super.writeJSON(gdRec);

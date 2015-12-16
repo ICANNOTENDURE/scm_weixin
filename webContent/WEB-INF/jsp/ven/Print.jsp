@@ -75,7 +75,7 @@ body {font:12px/1.5  "宋体";color:#333}
 										id="deliverItmVos">
 					    <tr>
 							<td>${venincncode}</td>
-							<td><img  src="<%=request.getContextPath()%>/sys/qrCodeCtrl!qrAndroid.htm?dto.content=${deliveritmid}" style='height: 100;width: 100px'> </img></td>
+							<td><img  src="<%=request.getContextPath()%>/sys/qrCodeCtrl!qrAndroid.htm?dto.content=${deliveritmid}&dto.codeType='ByInc'" style='height: 100;width: 100px'> </img></td>
 							<td><div class="p-name">${venincname}</div></td>
 							<td>${invno}</td>
 							<td>${batno}</td>
