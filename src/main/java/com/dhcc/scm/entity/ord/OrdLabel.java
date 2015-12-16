@@ -1,12 +1,15 @@
 package com.dhcc.scm.entity.ord;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -33,7 +36,11 @@ public class OrdLabel implements Serializable {
 	//D:发货
 	@Column(name="LABEL_STATUS")
 	private String labelStatus;
-
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="label_ingdrec_date")
+	private Date labelIngdrecDate;
+	
 	public String getLabelId() {
 		return labelId;
 	}
@@ -66,6 +73,14 @@ public class OrdLabel implements Serializable {
 
 	public OrdLabel() {
 		super();
+	}
+
+	public Date getLabelIngdrecDate() {
+		return labelIngdrecDate;
+	}
+
+	public void setLabelIngdrecDate(Date labelIngdrecDate) {
+		this.labelIngdrecDate = labelIngdrecDate;
 	}
 	
 	

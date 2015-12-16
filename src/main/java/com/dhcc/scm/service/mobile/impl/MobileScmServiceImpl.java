@@ -23,5 +23,12 @@ public class MobileScmServiceImpl implements MobileScmService {
 		mobileScmDao.cmpOrderDetail(jsonObject);
 	}
 
+	@Override
+	public void cmpOrderDetailByQty(JsonObject jsonObject) {
+		// TODO Auto-generated method stub
+		mobileScmDao.cmpOrderDetailByQty(jsonObject);
+		
+	}
+
 
 }

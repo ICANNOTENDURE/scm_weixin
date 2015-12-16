@@ -98,52 +98,60 @@ public class MobileScmBlh extends AbstractBaseBlh {
 			break;
 		default:
 			InGdRecItm inGdRecItm = new InGdRecItm();
-			String orderDetailSubId="";
+			String orderDetailSubId = "";
 			if (codeType.equals("ByQty")) {
 				OrdLabel label = commonService.get(OrdLabel.class, content);
-				orderDetailSubId=label.getLabelParentId();
+				orderDetailSubId = label.getLabelParentId();
+				if(StringUtils.equals(label.getLabelStatus(), "T")){
+					gdRec.setResultComtent("该条码已入库,不能重复入库");
+					super.writeJSON(gdRec);
+					return;
+				}
+				
 			} else {
-				orderDetailSubId=content;
+				orderDetailSubId = content;
 			}
-			OrderDetailSub orderDetailSub=commonService.get(OrderDetailSub.class, orderDetailSubId);
-			if(orderDetailSub==null){
+			OrderDetailSub orderDetailSub = commonService.get(OrderDetailSub.class, orderDetailSubId);
+			if (orderDetailSub == null) {
 				gdRec.setResultComtent("条码错误01");
+				super.writeJSON(gdRec);
+				return;
+			}
+			if (orderDetailSub.getOrdSubStatus().equals("T")) {
+				gdRec.setResultComtent("该条码已入库,不能重复入库");
 				super.writeJSON(gdRec);
 				return;
 			}
 			OrderDetail orderDetail = commonService.get(OrderDetail.class, orderDetailSub.getOrdSubDetailId());
 			if (orderDetail.getOrderState().longValue() > 2) {
-				if (orderDetailSub.getOrdSubStatus().equals("T")) {
-					gdRec.setResultComtent("该条码已入库,不能重复入库");
+				gdRec.setResultCode("0");
+				inGdRecItm.setBatno(orderDetailSub.getOrdSubBatNo());
+				inGdRecItm.setExpDate(orderDetailSub.getOrdSubExpDate());
+				float fac = orderDetail.getOrderFac().floatValue();
+				boolean flag = codeType.equals("ByQty");
+				// 奇葩，非要我这样写？
+				if (flag) {
+					inGdRecItm.setQty(1);
+					inGdRecItm.setSeq(seq);
+					inGdRecItm.setScmid(orderDetailSub.getOrdSubId());
+					inGdRecItm.setLabelId(content);
 				} else {
-					gdRec.setResultCode("0");
-					inGdRecItm.setBatno(orderDetailSub.getOrdSubBatNo());
-					inGdRecItm.setExpDate(orderDetailSub.getOrdSubExpDate());
-					float fac = orderDetail.getOrderFac().floatValue();
-					boolean flag=codeType.equals("ByQty");
-					//奇葩，非要我这样写？
-					if (flag) {
-						inGdRecItm.setQty(1);
-						inGdRecItm.setSeq(seq);
-						inGdRecItm.setScmid(orderDetailSub.getOrdSubId());
-						inGdRecItm.setLabelId(content);
-					} else {
-						inGdRecItm.setScmid(content);
-						inGdRecItm.setQty(orderDetailSub.getOrderSubQty() * fac);
-					}
-					inGdRecItm.setRp(orderDetailSub.getOrderSubRp() / fac);
-					HopInc hopInc = commonService.get(HopInc.class, orderDetail.getOrderHopIncId());
-					inGdRecItm.setDesc(hopInc.getIncName());
-					inGdRecItm.setUom(hopInc.getIncUomname());
-					if (hopInc.getIncManfid() != null) {
-						HopManf hopManf = commonService.get(HopManf.class, hopInc.getIncManfid());
-						inGdRecItm.setManf(hopManf.getManfName());
-					}
-					Vendor vendor = commonService.get(Vendor.class, orderDetail.getOrderVenId());
-					inGdRecItm.setVendor(vendor.getName());
-					
-					gdRec.getGdRecItms().add(inGdRecItm);
+					inGdRecItm.setScmid(content);
+					inGdRecItm.setQty(orderDetailSub.getOrderSubQty() * fac);
 				}
+				inGdRecItm.setRp(orderDetailSub.getOrderSubRp() / fac);
+				HopInc hopInc = commonService.get(HopInc.class, orderDetail.getOrderHopIncId());
+				inGdRecItm.setDesc(hopInc.getIncName());
+				inGdRecItm.setUom(hopInc.getIncUomname());
+				if (hopInc.getIncManfid() != null) {
+					HopManf hopManf = commonService.get(HopManf.class, hopInc.getIncManfid());
+					inGdRecItm.setManf(hopManf.getManfName());
+				}
+				Vendor vendor = commonService.get(Vendor.class, orderDetail.getOrderVenId());
+				inGdRecItm.setVendor(vendor.getName());
+
+				gdRec.getGdRecItms().add(inGdRecItm);
+
 			} else {
 				gdRec.setResultComtent("条码错误-状态不对");
 			}
@@ -170,11 +178,17 @@ public class MobileScmBlh extends AbstractBaseBlh {
 		JsonObject jsonObject = new JsonObject();
 		try {
 			String barCodeStr = super.getParameter("value");
+			String codeType = super.getParameter("codeType");
 			String userid = super.getParameter("userid");
 			jsonObject.addProperty("resultCode", "-1");
 			jsonObject.addProperty("value", barCodeStr);
 			jsonObject.addProperty("userid", Long.valueOf(userid));
-			mobileScmService.cmpInGdRec(jsonObject);
+			boolean flag = codeType.trim().equals("ByQty");
+			if (flag) {
+				mobileScmService.cmpOrderDetailByQty(jsonObject);
+			} else {
+				mobileScmService.cmpInGdRec(jsonObject);
+			}
 			operateResult.setResultCode(jsonObject.get("resultCode").toString());
 			if (jsonObject.get("resultMsg") != null) {
 				operateResult.setResultContent(jsonObject.get("resultMsg").toString());

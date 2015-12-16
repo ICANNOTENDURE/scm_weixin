@@ -10,4 +10,6 @@ import com.google.gson.JsonObject;
 public interface MobileScmService {
 	
 	public void cmpInGdRec(JsonObject jsonObject);
+	
+	public void cmpOrderDetailByQty(JsonObject jsonObject);
 }

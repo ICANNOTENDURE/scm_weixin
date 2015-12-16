@@ -76,7 +76,9 @@ public class OrderDetailSub implements Serializable {
 	@Column(name="ORDSUB_IMP_ID")
 	private String orderSubImpId;
 	
-	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="ordsub_ingdrec_date")
+	private Date ordIngdrecDate;
 	
 	public String getOrderSubImpId() {
 		return orderSubImpId;
@@ -198,5 +200,13 @@ public class OrderDetailSub implements Serializable {
 		this.orderSubRp = orderSubRp;
 	}
 
+	public Date getOrdIngdrecDate() {
+		return ordIngdrecDate;
+	}
 
+	public void setOrdIngdrecDate(Date ordIngdrecDate) {
+		this.ordIngdrecDate = ordIngdrecDate;
+	}
+
+	
 }
