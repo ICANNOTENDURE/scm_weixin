@@ -72,6 +72,7 @@ public class MobileScmDao extends HibernatePersistentObjectDAO<OrderDetailSub> {
 		if(StringUtils.isNotBlank(jsonObject.get("value").toString())){
 			String[] subOrderIds = jsonObject.get("value").toString().split(",");
 			for (String subId : subOrderIds) {
+				logger.info("subId:"+subId.replaceAll("\"",""));
 				OrderDetailSub orderDetailSub = super.get(OrderDetailSub.class,subId.replaceAll("\"",""));
 				if(orderDetailSub==null){
 					errMsg.append("条码"+subId+"错误,系统无此条码");
@@ -101,6 +102,15 @@ public class MobileScmDao extends HibernatePersistentObjectDAO<OrderDetailSub> {
 				exeState.setExedate(new java.sql.Timestamp(new Date().getTime()));
 				exeState.setRemark("pda 入库(mobile scm)");
 				super.saveOrUpdate(exeState);
+				
+				List<OrdLabel> labels=super.findByProperty(OrdLabel.class, "labelParentId", orderDetailSub.getOrdSubId());
+				if(labels.size()>0){
+					for(OrdLabel ordLabel:labels){
+						ordLabel.setLabelStatus("T");
+						ordLabel.setLabelIngdrecDate(new Date());
+						super.saveOrUpdate(ordLabel);
+					}
+				}
 				
 				//调用插入his中间表接口
 				float fac = orderDetail.getOrderFac();

@@ -183,8 +183,8 @@ public class MobileScmBlh extends AbstractBaseBlh {
 			jsonObject.addProperty("resultCode", "-1");
 			jsonObject.addProperty("value", barCodeStr);
 			jsonObject.addProperty("userid", Long.valueOf(userid));
-			boolean flag = codeType.trim().equals("ByQty");
-			if (flag) {
+			logger.info("codeType:"+codeType);
+			if (StringUtils.equals(codeType.trim(), "ByQty")) {
 				mobileScmService.cmpOrderDetailByQty(jsonObject);
 			} else {
 				mobileScmService.cmpInGdRec(jsonObject);
