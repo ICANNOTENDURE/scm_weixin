@@ -117,7 +117,7 @@ public class MobileScmBlh extends AbstractBaseBlh {
 				super.writeJSON(gdRec);
 				return;
 			}
-			if (orderDetailSub.getOrdSubStatus().equals("T")) {
+			if (orderDetailSub.getOrdSubStatus().equals("T")&& !StringUtils.equals(codeType,"ByQty")) {
 				gdRec.setResultComtent("该条码已入库,不能重复入库");
 				super.writeJSON(gdRec);
 				return;
