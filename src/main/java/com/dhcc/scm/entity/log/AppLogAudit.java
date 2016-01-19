@@ -15,18 +15,8 @@ import org.hibernate.annotations.GenericGenerator;
 import java.util.Date;
 
 
-/**
- * 
-* <p>标题: AppLogAudit.java</p>
-* <p>业务描述:日志审计类</p>
-* <p>公司:东华软件股份公司</p>
-* <p>版权:dhcc2013</p>
-* @author 于鸿
-* @date 2013年9月2日
-* @version V1.0
- */
 @Entity
-@Table(name="T_APP_LOG_AUDIT",schema="PMS")
+@Table(name="T_APP_LOG_AUDIT")
 public class AppLogAudit implements Serializable {
 	private static final long serialVersionUID = 1L;
 

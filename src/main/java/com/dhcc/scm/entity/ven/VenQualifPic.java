@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 
@@ -21,8 +20,9 @@ public class VenQualifPic implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="T_VEN_QUALIF_PIC_ID_GENERATOR", sequenceName="SEQUENCE_VEN_QUALIF_PIC")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="T_VEN_QUALIF_PIC_ID_GENERATOR")
+	//@SequenceGenerator(name="T_VEN_QUALIF_PIC_ID_GENERATOR", sequenceName="SEQUENCE_VEN_QUALIF_PIC")
+	//@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="T_VEN_QUALIF_PIC_ID_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="QUALIF_PIC_ID")
 	private long id;
 

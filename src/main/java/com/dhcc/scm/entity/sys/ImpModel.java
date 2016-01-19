@@ -5,11 +5,9 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 
 /**
@@ -23,9 +21,9 @@ public class ImpModel implements Serializable {
 	
 	@Id
 	@Column(name = "IMPMODEL_ID")
-	@GenericGenerator(name="idGenerator",strategy="sequence",
-	parameters={@Parameter(name="sequence",value="SEQUENCE_SYS_IMPMODEL")})
-	@GeneratedValue(generator="idGenerator")
+	//@GenericGenerator(name="idGenerator",strategy="sequence", parameters={@Parameter(name="sequence",value="SEQUENCE_SYS_IMPMODEL")})
+	//@GeneratedValue(generator="idGenerator")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long impModelId;
 
 	@Column(name = "IMPMODEL_TYPE")

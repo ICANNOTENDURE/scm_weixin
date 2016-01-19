@@ -17,9 +17,7 @@ import org.springframework.stereotype.Component;
 import com.dhcc.framework.app.blh.AbstractBaseBlh;
 import com.dhcc.framework.exception.DataBaseException;
 import com.dhcc.framework.transmission.event.BusinessRequest;
-import com.dhcc.scm.dto.platformManage.SystemVersionDto;
 import com.dhcc.scm.dto.userManage.FuncDto;
-import com.dhcc.scm.entity.platformManage.SystemVersion;
 import com.dhcc.scm.entity.userManage.Func;
 import com.dhcc.scm.service.userManage.FuncService;
 import com.dhcc.scm.tool.func.FuncComparator;
@@ -170,29 +168,6 @@ public class FuncBlh extends AbstractBaseBlh{
 			FuncDto funcDto = super.getDto(FuncDto.class, req);
 			
 			this.funcService.getFuncListBySystemType(funcDto);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new DataBaseException(e.getMessage(), e);
-		}
-	}
-	
-	/**
-	 * 
-	* 方法名:          getSystemVersion
-	* 方法功能描述:        获取系统类型
-	* @param:         
-	* @return:        
-	* @Author:        聂文来
-	* @Create Date:   2013年11月4日 下午3:20:09
-	 */
-	public void getSystemVersion(BusinessRequest req){
-		try {
-			FuncDto funcDto = super.getDto(FuncDto.class, req);
-			SystemVersionDto systemVersionDto = new SystemVersionDto();
-			systemVersionDto.setColumnName(funcDto.getColumnName());
-			systemVersionDto.setColumnValue(funcDto.getColumnValue());
-			List<SystemVersion> systemVersions = this.funcService.getSystemVersion(systemVersionDto);
-			funcDto.setSystemVersions(systemVersions);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new DataBaseException(e.getMessage(), e);

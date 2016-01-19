@@ -5,12 +5,10 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 
 @Entity
@@ -24,9 +22,9 @@ public class Vendor implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GenericGenerator(name="idGenerator",strategy="sequence",
-	parameters={@Parameter(name="sequence",value="SEQ_VENDOR")})
-	@GeneratedValue(generator="idGenerator")
+	//@GenericGenerator(name="idGenerator",strategy="sequence", parameters={@Parameter(name="sequence",value="SEQ_VENDOR")})
+	//@GeneratedValue(generator="idGenerator")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="VEN_ID")
 	private Long vendorId;
 	

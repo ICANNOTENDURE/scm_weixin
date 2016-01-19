@@ -2,9 +2,7 @@ package com.dhcc.scm.service.userManage;
 
 import java.util.List;
 
-import com.dhcc.scm.dto.platformManage.SystemVersionDto;
 import com.dhcc.scm.dto.userManage.FuncDto;
-import com.dhcc.scm.entity.platformManage.SystemVersion;
 import com.dhcc.scm.entity.userManage.Func;
 
 /**
@@ -72,17 +70,6 @@ public interface FuncService {
 	* @Create Date:   2013年11月4日 下午7:36:04
 	 */
 	public void getFuncListBySystemType(FuncDto funcDto) throws Exception;
-	
-	/**
-	 * 
-	* 方法名:          getSystemVersion
-	* 方法功能描述:    获取系统类型
-	* @param:         
-	* @return:        
-	* @Author:        聂文来
-	* @Create Date:   2013年11月4日 下午3:22:16
-	 */
-	public List<SystemVersion> getSystemVersion(SystemVersionDto systemVersionDto) throws Exception;
 	
 	/***
 	 * 

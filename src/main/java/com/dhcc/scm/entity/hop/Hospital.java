@@ -6,11 +6,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 
 /**
@@ -19,15 +17,15 @@ import org.hibernate.annotations.Parameter;
  */
 @Entity
 @Table(name="T_SYS_HOSPITAL")
-@NamedQuery(name="Hospital.findAll", query="SELECT h FROM Hospital h")
 public class Hospital implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	
 	@Id
-	@GenericGenerator(name="idGenerator",strategy="sequence",
-	parameters={@Parameter(name="sequence",value="SEQUENCE_SYS_HOSPITAL")})
-	@GeneratedValue(generator="idGenerator")	
+	//@GenericGenerator(name="idGenerator",strategy="sequence", parameters={@Parameter(name="sequence",value="SEQUENCE_SYS_HOSPITAL")})
+	@GenericGenerator(name="idGenerator",strategy="identity")
+	@GeneratedValue(generator="idGenerator")
+	
 	@Column(name="HOSPITAL_ID", unique=true, nullable=false, precision=22)
 	private Long hospitalId;
 

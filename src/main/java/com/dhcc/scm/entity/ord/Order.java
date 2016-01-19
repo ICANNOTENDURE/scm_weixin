@@ -18,8 +18,9 @@ public class Order implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="T_ORD_ORDER_ORDERID_GENERATOR", sequenceName="SEQUENCE_ORD_ORDER")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="T_ORD_ORDER_ORDERID_GENERATOR")
+	//@SequenceGenerator(name="T_ORD_ORDER_ORDERID_GENERATOR", sequenceName="SEQUENCE_ORD_ORDER")
+	//@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="T_ORD_ORDER_ORDERID_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="ORDER_ID")
 	private Long orderId;
 

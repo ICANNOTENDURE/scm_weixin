@@ -1,13 +1,15 @@
 package com.dhcc.scm.entity.sys;
 
 import java.io.Serializable;
-
-import javax.persistence.*;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
 import java.math.BigDecimal;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 
 /**
@@ -22,9 +24,9 @@ public class SysDict implements Serializable {
 	
 	@Id
 	@Column(name = "DIC_ID")
-	@GenericGenerator(name="idGenerator",strategy="sequence",
-	parameters={@Parameter(name="sequence",value="SEQ_SYSDIC")})
-	@GeneratedValue(generator="idGenerator")
+	//@GenericGenerator(name="idGenerator",strategy="sequence", parameters={@Parameter(name="sequence",value="SEQ_SYSDIC")})
+	//@GeneratedValue(generator="idGenerator")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "DIC_NAME")

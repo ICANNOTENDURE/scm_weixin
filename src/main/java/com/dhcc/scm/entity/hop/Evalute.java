@@ -11,7 +11,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 /**
  * 
@@ -28,8 +27,8 @@ public class Evalute implements Serializable {
 
 	
 	@Id
-	@GenericGenerator(name="idGenerator",strategy="sequence",
-	parameters={@Parameter(name="sequence",value="SEQUENCE_HOP_EVALUTE")})
+	//@GenericGenerator(name="idGenerator",strategy="sequence", parameters={@Parameter(name="sequence",value="SEQUENCE_HOP_EVALUTE")})
+	@GenericGenerator(name="idGenerator",strategy="identity")
 	@GeneratedValue(generator="idGenerator")	
 	@Column(name="ELE_ID", unique=true, nullable=false, precision=22)
 	private Long evaluteId;

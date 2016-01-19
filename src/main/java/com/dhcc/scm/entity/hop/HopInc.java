@@ -10,7 +10,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 
 /**
@@ -23,11 +22,11 @@ public class HopInc implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GenericGenerator(name="idGenerator",strategy="sequence",
-	parameters={@Parameter(name="sequence",value="SEQUENCE_HOP_INC")})
+	//@GenericGenerator(name="idGenerator",strategy="sequence", parameters={@Parameter(name="sequence",value="SEQUENCE_HOP_INC")})
 	@GeneratedValue(generator="idGenerator")	
 //	@GenericGenerator(name="idGenerator",strategy="uuid")
 //	@GeneratedValue(generator="idGenerator")
+	@GenericGenerator(name="idGenerator",strategy="identity")
 	@Column(name="INC_ID", unique=true, nullable=false, precision=22)
 	private Long incId;
 

@@ -8,6 +8,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -16,9 +17,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -35,10 +33,10 @@ public class NormalAccount implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GenericGenerator(name="idGenerator",strategy="sequence",
-	parameters={@Parameter(name="sequence",value="Seq_SYS_NORMAL_ACCOUNT")})
-	@GeneratedValue(generator="idGenerator")
+	//@GenericGenerator(name="idGenerator",strategy="sequence",parameters={@Parameter(name="sequence",value="Seq_SYS_NORMAL_ACCOUNT")})
+	//@GeneratedValue(generator="idGenerator")
 	//@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="ACCOUNT_ID")
 	private Long accountId;
 	

@@ -9,12 +9,12 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import com.dhcc.framework.common.PagerModel;
+import com.dhcc.framework.common.entity.vo.fusioncharts.Chart;
 import com.dhcc.framework.hibernate.dao.HibernatePersistentObjectDAO;
 import com.dhcc.framework.jdbc.JdbcTemplateWrapper;
 import com.dhcc.framework.transmission.dto.BaseDto;
 import com.dhcc.framework.web.context.WebContextHolder;
 import com.dhcc.scm.dto.chart.OrdVenDistributionDto;
-import com.dhcc.scm.entity.demo.Student;
 import com.dhcc.scm.entity.vo.chart.BarVO;
 import com.dhcc.scm.entity.vo.chart.ChartVO;
 import com.dhcc.scm.entity.vo.chart.ChartVenHotSaleVO;
@@ -26,7 +26,7 @@ import com.dhcc.scm.entity.vo.chart.EvaluteChartVO;
  *
  */
 @Repository
-public class ChartDao extends HibernatePersistentObjectDAO<Student> {
+public class ChartDao extends HibernatePersistentObjectDAO<Chart> {
 	
 	@Resource
 	private JdbcTemplateWrapper jdbcTemplateWrapper;

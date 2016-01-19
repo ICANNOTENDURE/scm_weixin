@@ -13,7 +13,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 @Entity
 @Table(name = "T_CAT_GROUPPROPERTY")
@@ -25,8 +24,8 @@ public class CatGroupProperty implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GenericGenerator(name="idGenerator",strategy="sequence",
-	parameters={@Parameter(name="sequence",value="SEQUENCE_CAT_GROUPPROPERTY")})
+	//@GenericGenerator(name="idGenerator",strategy="sequence", parameters={@Parameter(name="sequence",value="SEQUENCE_CAT_GROUPPROPERTY")})
+	@GenericGenerator(name="idGenerator",strategy="identity")
 	@GeneratedValue(generator="idGenerator")	
 	@Column(name="GRP_PRO_ID", unique=true, nullable=false)
 	private Long grpProId;

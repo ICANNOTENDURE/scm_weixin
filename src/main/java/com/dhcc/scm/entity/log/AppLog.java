@@ -14,18 +14,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
 
-/**
- * 
-* <p>标题: AppLog.java</p>
-* <p>业务描述:应用日志类</p>
-* <p>公司:东华软件股份公司</p>
-* <p>版权:dhcc2013</p>
-* @author 于鸿
-* @date 2013年9月2日
-* @version V1.0
- */
 @Entity
-@Table(name="T_APP_LOG",schema="PMS")
+@Table(name="T_APP_LOG")
 public class AppLog implements Serializable {
 	private static final long serialVersionUID = 1L;
 

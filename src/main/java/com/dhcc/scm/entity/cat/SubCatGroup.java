@@ -12,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 /**
  * @author duyadong
@@ -28,7 +27,8 @@ public class SubCatGroup implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GenericGenerator(name = "idGenerator", strategy = "sequence", parameters = { @Parameter(name = "sequence", value = "SEQUENCE_CAT_CATGROUPITM") })
+	//@GenericGenerator(name = "idGenerator", strategy = "sequence", parameters = { @Parameter(name = "sequence", value = "SEQUENCE_CAT_CATGROUPITM") })
+	@GenericGenerator(name="idGenerator",strategy="identity")
 	@GeneratedValue(generator = "idGenerator")
 	@Column(name = "SDGI_ID", unique = true, nullable = false, precision = 22)
 	private Integer subGroupID;

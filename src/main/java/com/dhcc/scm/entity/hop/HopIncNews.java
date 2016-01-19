@@ -11,7 +11,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 
 @Entity
@@ -21,8 +20,8 @@ public class HopIncNews implements Serializable {
 
 	
 	@Id
-	@GenericGenerator(name="idGenerator",strategy="sequence",
-	parameters={@Parameter(name="sequence",value="SEQUENCE_HOP_INCNEWS")})
+	//@GenericGenerator(name="idGenerator",strategy="sequence", parameters={@Parameter(name="sequence",value="SEQUENCE_HOP_INCNEWS")})
+	@GenericGenerator(name="idGenerator",strategy="identity")
 	@GeneratedValue(generator="idGenerator")	
 	@Column(name="INCNEWS_ID", unique=true, nullable=false)
 	private Long incNewsId;

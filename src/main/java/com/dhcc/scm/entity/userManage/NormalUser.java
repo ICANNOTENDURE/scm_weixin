@@ -6,13 +6,11 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 @Entity
 @Table(name = "T_SYS_NORMAL_USER")
@@ -26,9 +24,10 @@ public class NormalUser implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GenericGenerator(name = "idGenerator", strategy = "sequence", parameters = { @Parameter(name = "sequence", value = "Seq_NormalUser") })
-	@GeneratedValue(generator = "idGenerator")
+	//@GenericGenerator(name = "idGenerator", strategy = "sequence", parameters = { @Parameter(name = "sequence", value = "Seq_NormalUser") })
+	//@GeneratedValue(generator = "idGenerator")
 	//@GenericGenerator(name="idGenerator", strategy="foreign", parameters=@Parameter(name="property", value="FK_ACCOUNT_RF_USER"))
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "USER_ID")
 	private Long userId;
 	

@@ -3,7 +3,6 @@ package com.dhcc.scm.dto.userManage;
 import java.util.List;
 
 import com.dhcc.framework.transmission.dto.BaseDto;
-import com.dhcc.scm.entity.platformManage.SystemVersion;
 import com.dhcc.scm.entity.userManage.Func;
 
 /**
@@ -107,21 +106,7 @@ public class FuncDto extends BaseDto{
 		this.func = func;
 	}
 	
-	//系统类型
-	private List<SystemVersion> systemVersions;
 
-	/**  
-	 * @return systemVersions 
-	 */
-	public List<SystemVersion> getSystemVersions() {
-		return systemVersions;
-	}
-	/**  
-	 * @param systemVersions systemVersions 
-	 */
-	public void setSystemVersions(List<SystemVersion> systemVersions) {
-		this.systemVersions = systemVersions;
-	}
 	
 	private String columnName;
 	private String columnValue;

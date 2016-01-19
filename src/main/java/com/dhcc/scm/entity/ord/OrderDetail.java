@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -25,8 +24,9 @@ public class OrderDetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="T_ORD_DETAIL_DETAILID_GENERATOR", sequenceName="SEQUENCE_ORD_DETAIL")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="T_ORD_DETAIL_DETAILID_GENERATOR")
+	//@SequenceGenerator(name="T_ORD_DETAIL_DETAILID_GENERATOR", sequenceName="SEQUENCE_ORD_DETAIL")
+	//@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="T_ORD_DETAIL_DETAILID_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="ORDER_ID")
 	private Long orderId;
 	

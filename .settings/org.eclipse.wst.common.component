@@ -5,6 +5,7 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
         <wb-resource deploy-path="/" source-path="/webContent"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/mysql"/>
 		<property name="java-output-path" value="/baseArchetype/build/classes"/>
 		<property name="component.exclusion.patterns" value="WEB-INF/lib/jersey-core-1.17.1.jar"/>
         <property name="context-root" value="scm"/>

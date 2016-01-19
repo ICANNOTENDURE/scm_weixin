@@ -5,7 +5,6 @@ import java.util.List;
 import com.dhcc.framework.transmission.dto.BaseDto;
 import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.HopVendor;
-import com.dhcc.scm.entity.platformManage.SystemVersion;
 import com.dhcc.scm.entity.userManage.Func;
 import com.dhcc.scm.entity.userManage.Role;
 import com.dhcc.scm.entity.userManage.RoleFunc;
@@ -305,22 +304,7 @@ public class RoleDto extends BaseDto{
 	public void setRoleFuncs(List<RoleFunc> roleFuncs) {
 		this.roleFuncs = roleFuncs;
 	}
-	
-	//系统类型
-	private List<SystemVersion> systemVersions;
 
-	/**  
-	 * @return systemVersions 
-	 */
-	public List<SystemVersion> getSystemVersions() {
-		return systemVersions;
-	}
-	/**  
-	 * @param systemVersions systemVersions 
-	 */
-	public void setSystemVersions(List<SystemVersion> systemVersions) {
-		this.systemVersions = systemVersions;
-	}
 	
 	
 }

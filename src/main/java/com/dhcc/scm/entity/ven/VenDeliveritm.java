@@ -1,7 +1,9 @@
 package com.dhcc.scm.entity.ven;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.util.Date;
 
 
@@ -38,8 +40,9 @@ public class VenDeliveritm implements Serializable {
 
 
 	@Id
-	@SequenceGenerator(name="T_VEN_DELIVERITM_DELIVERITMID_GENERATOR", sequenceName="SEQUENCE_VEN_DELIVERITM")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="T_VEN_DELIVERITM_DELIVERITMID_GENERATOR")
+	//@SequenceGenerator(name="T_VEN_DELIVERITM_DELIVERITMID_GENERATOR", sequenceName="SEQUENCE_VEN_DELIVERITM")
+	//@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="T_VEN_DELIVERITM_DELIVERITMID_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="DELIVERITM_ID")
 	public Long getDeliveritmId() {
 		return this.deliveritmId;

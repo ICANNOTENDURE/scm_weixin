@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -15,9 +16,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -45,9 +43,9 @@ public class Role implements java.io.Serializable{
 	 * @return roleId 
 	 */
 	@Id
-	@GenericGenerator(name="idGenerator",strategy="sequence",
-	parameters={@Parameter(name="sequence",value="Seq_SYS_ROLE")})
-	@GeneratedValue(generator="idGenerator")
+	//@GenericGenerator(name="idGenerator",strategy="sequence", parameters={@Parameter(name="sequence",value="Seq_SYS_ROLE")})
+	//@GeneratedValue(generator="idGenerator")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	//@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name = "ROLE_ID")
 	public Long getRoleId() {

@@ -6,13 +6,11 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 
 /**
@@ -25,9 +23,9 @@ public class VenIncAdvice implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GenericGenerator(name="idGenerator",strategy="sequence",
-	parameters={@Parameter(name="sequence",value="SEQUENCE_VENINCADVICE")})
-	@GeneratedValue(generator="idGenerator")	
+	//@GenericGenerator(name="idGenerator",strategy="sequence", parameters={@Parameter(name="sequence",value="SEQUENCE_VENINCADVICE")})
+	//@GeneratedValue(generator="idGenerator")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="VENINCADVICE_ID", unique=true, nullable=false)
 	private Long venIncAdviceId;
 

@@ -6,11 +6,8 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.dhcc.scm.dao.platformManage.SystemVersionDao;
 import com.dhcc.scm.dao.userManage.FuncDao;
-import com.dhcc.scm.dto.platformManage.SystemVersionDto;
 import com.dhcc.scm.dto.userManage.FuncDto;
-import com.dhcc.scm.entity.platformManage.SystemVersion;
 import com.dhcc.scm.entity.userManage.Func;
 import com.dhcc.scm.service.userManage.FuncService;
 
@@ -29,8 +26,6 @@ public class FuncServiceImpl implements FuncService{
 	@Resource
 	private FuncDao funcDao;
 	
-	@Resource
-	private SystemVersionDao systemVersionDao;
 	
 	/**
 	 * 
@@ -132,19 +127,6 @@ public class FuncServiceImpl implements FuncService{
 		this.funcDao.structuringFunc(func);
 	}
 	
-	/**
-	 * 
-	* 方法名:          getSystemVersion
-	* 方法功能描述:    获取系统类型
-	* @param:         
-	* @return:        
-	* @Author:        聂文来
-	* @Create Date:   2013年11月4日 下午3:22:16
-	 */
-	@Override
-	public List<SystemVersion> getSystemVersion(SystemVersionDto systemVersionDto) throws Exception {
-		return this.systemVersionDao.findSystemVersion(systemVersionDto);
-	}
 
 	/**
 	 * 

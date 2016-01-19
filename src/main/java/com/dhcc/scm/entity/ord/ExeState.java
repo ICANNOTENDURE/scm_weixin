@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 
@@ -23,8 +22,8 @@ public class ExeState implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="T_ORD_EXESTATE_EXESTATEID_GENERATOR", sequenceName="SEQUENCE_ORD_EXESTATE")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="T_ORD_EXESTATE_EXESTATEID_GENERATOR")
+	//@SequenceGenerator(name="T_ORD_EXESTATE_EXESTATEID_GENERATOR", sequenceName="SEQUENCE_ORD_EXESTATE")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="EXESTATE_ID")
 	private Long exestateId;
 

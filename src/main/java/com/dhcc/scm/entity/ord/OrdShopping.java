@@ -2,7 +2,13 @@ package com.dhcc.scm.entity.ord;
 
 import java.io.Serializable;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 /**
@@ -15,8 +21,9 @@ public class OrdShopping implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="T_ORD_SHOPPING_SHOPID_GENERATOR", sequenceName="SEQUENCE_ORD_SHOPPING")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="T_ORD_SHOPPING_SHOPID_GENERATOR")
+	//@SequenceGenerator(name="T_ORD_SHOPPING_SHOPID_GENERATOR", sequenceName="SEQUENCE_ORD_SHOPPING")
+	//@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="T_ORD_SHOPPING_SHOPID_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="SHOP_ID")
 	private Long shopId;
 

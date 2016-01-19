@@ -5,11 +5,9 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 
 @Entity
@@ -18,9 +16,9 @@ public class WxDepart implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GenericGenerator(name="idGenerator",strategy="sequence",
-	parameters={@Parameter(name="sequence",value="SEQUENCE_WX_DEPART")})
-	@GeneratedValue(generator="idGenerator")	
+	//@GenericGenerator(name="idGenerator",strategy="sequence",parameters={@Parameter(name="sequence",value="SEQUENCE_WX_DEPART")})
+	//@GeneratedValue(generator="idGenerator")	
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "WXDEPART_ID", unique = true, nullable = false)
 	private Integer wxDepartId;
 

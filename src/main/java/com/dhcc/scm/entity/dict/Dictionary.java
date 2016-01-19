@@ -62,9 +62,10 @@ public class Dictionary extends BaseDictionary implements Serializable {
 	 * @return dictId 
 	 */
 	@Id
-	@GenericGenerator(name="idGenerator",strategy="sequence",
-	parameters={@Parameter(name="sequence",value="Seq_SysDic")})
+	//@GenericGenerator(name="idGenerator",strategy="sequence", parameters={@Parameter(name="sequence",value="Seq_SysDic")})
+	@GenericGenerator(name="idGenerator",strategy="identity")
 	@GeneratedValue(generator="idGenerator")
+	
 	@Column(name = "DIC_ID", unique=true, nullable=false, length=32)
 	public Integer getDictId() {
 		return dictId;

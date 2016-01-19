@@ -17,7 +17,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -29,8 +28,9 @@ public class SysAppParam implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="T_SYS_APPPARAM_APPPARAMID_GENERATOR", sequenceName="SEQUENCE_SYS_APP_PARAM")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="T_SYS_APPPARAM_APPPARAMID_GENERATOR")
+	//@SequenceGenerator(name="T_SYS_APPPARAM_APPPARAMID_GENERATOR", sequenceName="SEQUENCE_SYS_APP_PARAM")
+	//@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="T_SYS_APPPARAM_APPPARAMID_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="APP_ID")
 	private Long appId;
 	

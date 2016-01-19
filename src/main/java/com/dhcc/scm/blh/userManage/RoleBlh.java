@@ -18,11 +18,9 @@ import com.dhcc.framework.app.service.CommonService;
 import com.dhcc.framework.common.BaseConstants;
 import com.dhcc.framework.exception.DataBaseException;
 import com.dhcc.framework.transmission.event.BusinessRequest;
-import com.dhcc.scm.dto.platformManage.SystemVersionDto;
 import com.dhcc.scm.dto.userManage.RoleDto;
 import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.HopVendor;
-import com.dhcc.scm.entity.platformManage.SystemVersion;
 import com.dhcc.scm.entity.userManage.Func;
 import com.dhcc.scm.entity.userManage.RoleFunc;
 import com.dhcc.scm.entity.userManage.RoleLoc;
@@ -214,28 +212,7 @@ public class RoleBlh extends AbstractBaseBlh{
 		}
 	}
 	
-	/**
-	 * 
-	* 方法名:          getSystemVersion
-	* 方法功能描述:    获取系统类型代码
-	* @param:         
-	* @return:        
-	* @Author:        聂文来
-	* @Create Date:   2013年11月4日 下午3:55:09
-	 */
-	public void getSystemVersion(BusinessRequest req){
-		try {
-			RoleDto roleDto = super.getDto(RoleDto.class, req);
-			SystemVersionDto systemVersionDto = new SystemVersionDto();
-			systemVersionDto.setColumnName(roleDto.getColumnName());
-			systemVersionDto.setColumnValue(roleDto.getColumnValue());
-			List<SystemVersion> systemVersions = this.roleService.getSystemVersion(systemVersionDto);
-			roleDto.setSystemVersions(systemVersions);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new DataBaseException(e.getMessage(), e);
-		}
-	}
+
 	
 	
 	

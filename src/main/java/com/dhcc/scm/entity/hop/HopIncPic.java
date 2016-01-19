@@ -6,11 +6,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 
 /**
@@ -19,13 +17,12 @@ import org.hibernate.annotations.Parameter;
  */
 @Entity
 @Table(name="T_HOP_INC_PIC")
-@NamedQuery(name="HopIncPic.findAll", query="SELECT h FROM HopIncPic h")
 public class HopIncPic implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GenericGenerator(name="idGenerator",strategy="sequence",
-	parameters={@Parameter(name="sequence",value="SEQUENCE_HOP_INC_PIC")})
+	//@GenericGenerator(name="idGenerator",strategy="sequence", parameters={@Parameter(name="sequence",value="SEQUENCE_HOP_INC_PIC")})
+	@GenericGenerator(name="idGenerator",strategy="identity")
 	@GeneratedValue(generator="idGenerator")	
 	@Column(name="INC_PIC_ID", unique=true, nullable=false, precision=22)
 	private Long hopIncPicId;

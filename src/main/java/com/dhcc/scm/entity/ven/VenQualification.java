@@ -11,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,8 +27,9 @@ public class VenQualification implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="T_VEN_QUALIFICATION_ID_GENERATOR", sequenceName="SEQUENCE_VEN_QUALIFICATION")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="T_VEN_QUALIFICATION_ID_GENERATOR")
+	//@SequenceGenerator(name="T_VEN_QUALIFICATION_ID_GENERATOR", sequenceName="SEQUENCE_VEN_QUALIFICATION")
+	//@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="T_VEN_QUALIFICATION_ID_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="QUALIFICATION_ID")
 	private Long venQualificationId;
 

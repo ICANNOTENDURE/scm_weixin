@@ -1,10 +1,6 @@
 package com.dhcc.scm.service.userManage;
 
-import java.util.List;
-
-import com.dhcc.scm.dto.platformManage.SystemVersionDto;
 import com.dhcc.scm.dto.userManage.RoleDto;
-import com.dhcc.scm.entity.platformManage.SystemVersion;
 import com.dhcc.scm.entity.userManage.Role;
 
 /**
@@ -97,16 +93,6 @@ public interface RoleService {
 	 */
 	public void normalAccountList(RoleDto roleDto) throws Exception;
 	
-	/**
-	 * 
-	* 方法名:          getSystemVersion
-	* 方法功能描述:    获取系统类型
-	* @param:         
-	* @return:        
-	* @Author:        聂文来
-	* @Create Date:   2013年11月4日 下午3:57:26
-	 */
-	public List<SystemVersion> getSystemVersion(SystemVersionDto systemVersionDto) throws Exception;
 	
 	/**
 	 * 

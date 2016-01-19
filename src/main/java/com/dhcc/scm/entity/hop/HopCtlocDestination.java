@@ -10,7 +10,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 /**
  * The persistent class for the T_SYS_CTLOC_DESTINATION database table.
@@ -23,8 +22,8 @@ public class HopCtlocDestination implements Serializable {
 
 	
 	@Id
-	@GenericGenerator(name="idGenerator",strategy="sequence",
-	parameters={@Parameter(name="sequence",value="SEQUENCE_SYS_CTLOC_DESTINATION")})
+	//@GenericGenerator(name="idGenerator",strategy="sequence", parameters={@Parameter(name="sequence",value="SEQUENCE_SYS_CTLOC_DESTINATION")})
+	@GenericGenerator(name="idGenerator",strategy="identity")
 	@GeneratedValue(generator="idGenerator")
 	@Column(name="CTLOCDES_ID")	
 	private Long hopCtlocDestinationId;

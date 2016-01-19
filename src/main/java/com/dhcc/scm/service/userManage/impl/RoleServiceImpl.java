@@ -8,13 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.dhcc.framework.app.service.CommonService;
 import com.dhcc.framework.common.PagerModel;
-import com.dhcc.scm.dao.platformManage.SystemVersionDao;
 import com.dhcc.scm.dao.userManage.FuncDao;
 import com.dhcc.scm.dao.userManage.RoleDao;
-import com.dhcc.scm.dto.platformManage.SystemVersionDto;
 import com.dhcc.scm.dto.userManage.FuncDto;
 import com.dhcc.scm.dto.userManage.RoleDto;
-import com.dhcc.scm.entity.platformManage.SystemVersion;
 import com.dhcc.scm.entity.userManage.Func;
 import com.dhcc.scm.entity.userManage.Role;
 import com.dhcc.scm.service.userManage.RoleService;
@@ -35,8 +32,6 @@ public class RoleServiceImpl implements RoleService{
 	private RoleDao roleDao;
 	@Resource
 	private FuncDao funcDao;
-	@Resource
-	private SystemVersionDao systemVersionDao;
 	@Resource
 	private CommonService commonService;
 
@@ -148,20 +143,6 @@ public class RoleServiceImpl implements RoleService{
 	@Override
 	public void normalAccountList(RoleDto roleDto) throws Exception {
 		this.roleDao.queryNormalAccountByPageModel(roleDto);
-	}
-
-	/**
-	 * 
-	* 方法名:          getSystemVersion
-	* 方法功能描述:    获取系统类型
-	* @param:         
-	* @return:        
-	* @Author:        聂文来
-	* @Create Date:   2013年11月4日 下午3:57:26
-	 */
-	@Override
-	public List<SystemVersion> getSystemVersion(SystemVersionDto systemVersionDto) throws Exception {
-		return this.systemVersionDao.findSystemVersion(systemVersionDto);
 	}
 
 	/**

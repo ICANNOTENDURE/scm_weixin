@@ -15,7 +15,7 @@ import com.dhcc.framework.jdbc.JdbcTemplateWrapper;
 import com.dhcc.framework.transmission.dto.BaseDto;
 import com.dhcc.framework.web.context.WebContextHolder;
 import com.dhcc.scm.dto.comment.CommentDto;
-import com.dhcc.scm.entity.demo.Student;
+import com.dhcc.scm.entity.hop.Evalute;
 import com.dhcc.scm.entity.vo.chart.ChartVO;
 import com.dhcc.scm.entity.vo.comment.CommentVenVO;
 
@@ -25,7 +25,7 @@ import com.dhcc.scm.entity.vo.comment.CommentVenVO;
  * 
  */
 @Repository
-public class CommentDao extends HibernatePersistentObjectDAO<Student> {
+public class CommentDao extends HibernatePersistentObjectDAO<Evalute> {
 	
 	@Resource
 	private CommentDao commentDao;
