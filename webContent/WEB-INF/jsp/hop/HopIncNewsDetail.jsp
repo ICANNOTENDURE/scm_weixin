@@ -58,7 +58,7 @@
 					</div>
 
 					<div class="am-article-bd">
-						<p class="am-article-lead" style="min-height: 350px">${dto.hopIncNews.incNewsContetnt}</p>
+						${dto.hopIncNews.incNewsContetnt}
 					</div>
 					</article>
 				</div>
