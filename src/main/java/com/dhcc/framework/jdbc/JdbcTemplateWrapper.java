@@ -27,7 +27,7 @@ public class JdbcTemplateWrapper {
 	private static Log logger = LogFactory.getLog(JdbcTemplateWrapper.class);
 	
 	private JdbcTemplate jdbcTemplate;
-	private String dbType ="oracle";
+	private String dbType ="mysql";
 	
 	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 

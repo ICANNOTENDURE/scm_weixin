@@ -162,7 +162,7 @@ public class NurseDao extends HibernatePersistentObjectDAO<VenInc> {
 		hqlBuffer.append("from t_ven_inc t1 ");
 		hqlBuffer.append("left join t_ven_hop_inc t2 on t1.VEN_INC_ROWID=t2.VEN_INC_ID ");
 		hqlBuffer.append("left join t_hop_inc t3 on t2.HOP_INC_ID=t3.INC_ID ");
-		hqlBuffer.append("left join t_ven_inc_pic t8 on t2.ven_inc_id=t8.VEN_INC_PIC_VENINCID and t8.VEN_INC_PIC_SEQ=1");
+		hqlBuffer.append("left join t_ven_inc_pic t8 on t2.ven_inc_id=t8.VEN_INC_PIC_VENINCID and t8.VEN_INC_PIC_SEQ=1 ");
 		hqlBuffer.append("left join t_ven_vendor t5 on t5.ven_id=t1.ven_inc_venid ");
 		hqlBuffer.append("left join t_hop_vendor t10 on t10.H_VENDORID=t1.ven_inc_venid ");
 		hqlBuffer.append("left join t_hop_manf t6 on t1.VEN_INC_MANFID=t6.id ");
