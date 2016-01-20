@@ -74,13 +74,14 @@ public class ChartDao extends HibernatePersistentObjectDAO<Chart> {
 		StringBuffer hqlBuffer = new StringBuffer();
 		Map<String, Object> hqlParamMap = new HashMap<String, Object>();
 		
-		hqlBuffer.append("select to_char(t1.ORDER_ODATE,'yyyy-MM')as  name , ");
+		//hqlBuffer.append("select to_char(t1.ORDER_ODATE,'yyyy-MM')as  name , ");
+		hqlBuffer.append("select date_format(t1.ORDER_ODATE,'%Y-%c')as  name , ");
 		hqlBuffer.append(" sum(t1.ORDER_VEN_QTY) as value, ");
 		hqlBuffer.append(" sum(t2.devqty)  as value1 ");
 		hqlBuffer.append(" from T_ORD_ORDERDETAIL t1  ");
 		hqlBuffer.append(" left join (SELECT ORDSUB_DETAIL_ID,sum(ORDSUB_QTY) as devqty from T_ORD_ORDERDETAILSUB GROUP BY ORDSUB_DETAIL_ID) t2 on t2.ORDSUB_DETAIL_ID=t1.ORDER_ID ");
-		hqlBuffer.append(" where  t1.ORDER_ODATE>=sysdate-365 ");
-		hqlBuffer.append(" group by to_char(t1.ORDER_ODATE,'yyyy-MM')    ");
+		hqlBuffer.append(" where  t1.ORDER_ODATE>=NOW()-365 ");
+		hqlBuffer.append(" group by date_format(t1.ORDER_ODATE,'%Y-%c')    ");
 		dto.setChartVOs(jdbcTemplateWrapper.queryAllMatchListWithParaMap(hqlBuffer.toString(), ChartVO.class, hqlParamMap, 1, 6, "name"));
 	
 	}
@@ -184,7 +185,8 @@ public class ChartDao extends HibernatePersistentObjectDAO<Chart> {
 		StringBuffer hqlBuffer = new StringBuffer();
 		Map<String, Object> hqlParamMap = new HashMap<String, Object>();
 		hqlBuffer.append("select ");
-		hqlBuffer.append(" to_char(t1.ORDER_ODATE,'yyyy-MM')as  name, ");
+		//hqlBuffer.append(" to_char(t1.ORDER_ODATE,'yyyy-MM')as  name, ");
+		hqlBuffer.append(" date_format(t1.ORDER_ODATE,'%Y-%c')as  name, ");
 		hqlBuffer.append(" T2.CTLOC_NAME as value1, ");
 		hqlBuffer.append(" avg(t1.ORDER_RP)  as value ");
 		hqlBuffer.append(" from T_ORD_ORDERDETAIL T1   ");
@@ -203,7 +205,7 @@ public class ChartDao extends HibernatePersistentObjectDAO<Chart> {
 			hqlBuffer.append(" and T3.VEN_INC_CATID=:subcatid");
 			hqlParamMap.put("subcatid", dto.getSubCatId());
 		}
-		hqlBuffer.append(" GROUP BY to_char(t1.ORDER_ODATE,'yyyy-MM'),t2.CTLOC_NAME ");
+		hqlBuffer.append(" GROUP BY date_format(t1.ORDER_ODATE,'%Y-%m'),t2.CTLOC_NAME ");
 		hqlBuffer.append(" order BY  name  ");
 		dto.setChartVOs(jdbcTemplateWrapper.queryAllMatchListWithParaMap(hqlBuffer.toString(), ChartVO.class, hqlParamMap));
 	
@@ -225,12 +227,12 @@ public class ChartDao extends HibernatePersistentObjectDAO<Chart> {
 		StringBuffer hqlBuffer = new StringBuffer();
 		Map<String, Object> hqlParamMap = new HashMap<String, Object>();
 		
-		hqlBuffer.append("select to_char(t1.ORDER_ODATE,'yyyy-MM-dd')as  name , ");
+		hqlBuffer.append("select date_format(t1.ORDER_ODATE,'%Y-%c-%e')as  name , ");
 		hqlBuffer.append(" sum(t1.ORDER_VEN_QTY*t1.ORDER_RP) as value ");
 		hqlBuffer.append(" from T_ORD_ORDERDETAIL t1  ");
-		hqlBuffer.append(" where  t1.ORDER_ODATE>=sysdate-7 ");
+		hqlBuffer.append(" where  t1.ORDER_ODATE>=NOW()-7 ");
 		hqlBuffer.append(" and t1.ORDER_VEN_ID= "+Long.valueOf(WebContextHolder.getContext().getVisit().getUserInfo().getVendorIdLong()));
-		hqlBuffer.append(" group by to_char(t1.ORDER_ODATE,'yyyy-MM-dd') ");
+		hqlBuffer.append(" group by date_format(t1.ORDER_ODATE,'%Y-%c-%e') ");
 		dto.setChartVOs(jdbcTemplateWrapper.queryAllMatchListWithParaMap(hqlBuffer.toString(), ChartVO.class, hqlParamMap));
 	
 	}
@@ -253,7 +255,7 @@ public class ChartDao extends HibernatePersistentObjectDAO<Chart> {
 		hqlBuffer.append("select t1.ORDER_VEN_INC_ID as  incid , ");
 		hqlBuffer.append(" sum(t1.ORDER_VEN_QTY) as orderqty ");
 		hqlBuffer.append(" from T_ORD_ORDERDETAIL t1  ");
-		hqlBuffer.append(" where  t1.ORDER_ODATE>=sysdate-30 ");
+		hqlBuffer.append(" where  t1.ORDER_ODATE>=NOW()-30 ");
 		hqlBuffer.append(" and t1.ORDER_VEN_ID= "+Long.valueOf(WebContextHolder.getContext().getVisit().getUserInfo().getVendorIdLong()));
 		hqlBuffer.append(" group by t1.ORDER_VEN_INC_ID order by orderqty desc");
 		dto.setChartVenHotSaleVOs(jdbcTemplateWrapper.queryAllMatchListWithParaMap(hqlBuffer.toString(), ChartVenHotSaleVO.class, hqlParamMap, 1, 6, "orderqty"));

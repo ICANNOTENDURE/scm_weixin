@@ -5,11 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.StatelessSession;
 import org.springframework.stereotype.Repository;
 
 import com.dhcc.framework.common.PagerModel;
-import com.dhcc.framework.exception.DataBaseException;
 import com.dhcc.framework.hibernate.dao.HibernatePersistentObjectDAO;
 import com.dhcc.framework.transmission.dto.BaseDto;
 import com.dhcc.framework.web.context.WebContextHolder;
@@ -121,21 +119,22 @@ public class RoleDao extends HibernatePersistentObjectDAO<Role>{
 	* @Create Date:   2013年11月11日 下午4:55:57
 	 */
 	public void saveRoleFuncs(List<RoleFunc> roleFuncs) throws Exception{
-		StatelessSession session = null;
-		try {
-			session = this.getSessionFactory().openStatelessSession();
-			session.beginTransaction();
-			for(int i=0;i<roleFuncs.size();i++){
-				session.insert(roleFuncs.get(i));
-			}
-			session.getTransaction().commit();
-		} catch (Exception e) {
-			throw new DataBaseException(e.getMessage(), e);
-		}finally{
-			if(session!=null){
-				session.close();
-			}
-		}
+		super.batchSaveOrUpdate(roleFuncs);
+//		StatelessSession session = null;
+//		try {
+//			session = this.getSessionFactory().openStatelessSession();
+//			session.beginTransaction();
+//			for(int i=0;i<roleFuncs.size();i++){
+//				session.insert(roleFuncs.get(i));
+//			}
+//			session.getTransaction().commit();
+//		} catch (Exception e) {
+//			throw new DataBaseException(e.getMessage(), e);
+//		}finally{
+//			if(session!=null){
+//				session.close();
+//			}
+//		}
 		
 	}
 	
