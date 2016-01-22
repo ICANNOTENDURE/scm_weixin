@@ -98,7 +98,7 @@
 					<td class="textLabel">大类:</td>
 					<td class="textParent"><input id="group" class="combobox"
 						type="text" style="width: 250px;" /></td>
-					<td class="textLabel">类祖:</td>
+					<td class="textLabel">类组:</td>
 					<td class="textParent"><input style="width: 250px;"
 						class="combobox" id="catgroup" /></td>
 				</tr>
