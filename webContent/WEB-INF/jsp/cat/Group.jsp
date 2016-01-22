@@ -79,7 +79,7 @@
 				data-options="toolbar:'#toolbar', fit:true, fitColumns:true,singleSelect:true,pagination:true">
 			</table>
 		</div>
-		<div data-options="region:'east',title:'类祖',iconCls:'icon-edit'"  style="width: 650px">
+		<div data-options="region:'east',title:'类组',iconCls:'icon-edit'"  style="width: 650px">
             <table id="datagrid2" style="width:250px "  class="datagrid"
 				data-options="toolbar:'#toolbar2', fit:true,fitColumns:true,pagination:true"> 
 			</table>

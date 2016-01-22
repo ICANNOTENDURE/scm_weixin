@@ -29,7 +29,7 @@
 		大类:<input style="width: 200px;"
 						class="combobox" type="text" 
 						 id="group" />
-		类祖:<input style="width: 200px;"
+		类组:<input style="width: 200px;"
 						class="combobox" type="text" 
 						 id="catgroup" />
 		
@@ -106,7 +106,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="textLabel" style="text-align: right; width: 20%">类祖:</td>
+					<td class="textLabel" style="text-align: right; width: 20%">类组:</td>
 					<td class="textParent" style="text-align: left; width: 30%"><input
 						style="width: 250px;"  type="text"
 						id="propertyCatGroup" readonly="readonly"></input>
