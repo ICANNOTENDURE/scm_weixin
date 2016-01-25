@@ -98,7 +98,7 @@ public class HopIncBlh extends AbstractBaseBlh {
 	
 		HopIncDto dto = super.getDto(HopIncDto.class, res);
 		if(dto.getHopInc().getIncId()==null){
-			dto.getHopInc().setIncHospid(Long.valueOf(super.getLoginInfo().get("HOPID").toString()));
+			dto.getHopInc().setIncHospid(Long.valueOf(super.getLoginInfo().get("HOSPID").toString()));
 		}else{
 			List<HopIncAlias> hopIncAlias=commonService.findByProperty(HopIncAlias.class, "incAliaIncId", dto.getHopInc().getIncId());
 			if(hopIncAlias.size()>0){
