@@ -1,16 +1,12 @@
 package com.dhcc.scm.entity.ven;
 
 import java.io.Serializable;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -60,26 +56,26 @@ public class VenQualifType implements Serializable {
 	
 	
 	
-	@OneToMany(cascade={CascadeType.ALL})
-	@JoinColumn(name="QUALIFICATION_ID")
-	private List<VenQualification> venQualifications;
-	
-	
-	
-	
-	/**
-	 * @return the venQualifications
-	 */
-	public List<VenQualification> getVenQualifications() {
-		return venQualifications;
-	}
-
-	/**
-	 * @param venQualifications the venQualifications to set
-	 */
-	public void setVenQualifications(List<VenQualification> venQualifications) {
-		this.venQualifications = venQualifications;
-	}
+//	@OneToMany(cascade={CascadeType.REMOVE})
+//	@JoinColumn(name="QUALIFICATION_ID",nullable=true)
+//	private List<VenQualification> venQualifications;
+//	
+//	
+//	
+//	
+//	/**
+//	 * @return the venQualifications
+//	 */
+//	public List<VenQualification> getVenQualifications() {
+//		return venQualifications;
+//	}
+//
+//	/**
+//	 * @param venQualifications the venQualifications to set
+//	 */
+//	public void setVenQualifications(List<VenQualification> venQualifications) {
+//		this.venQualifications = venQualifications;
+//	}
 
 	@Transient
 	private VenQualification venQualification;
