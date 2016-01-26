@@ -52,7 +52,6 @@
 					<input type="hidden" name="dto.venInc.venIncVenid" />
 					<input type="hidden" name="dto.venInc.venIncOrderQty" />
 					<input type="hidden" name="dto.venInc.venIncCommentNum" />
-					<input type="hidden" name="dto.venInc.venIncQty" />
 					<input type="hidden" name="dto.venInc.venIncResQty" />
 					<input type="hidden" name="dto.venInc.venIncAvailQty" />
 				</tr>
