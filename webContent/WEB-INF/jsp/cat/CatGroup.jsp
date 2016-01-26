@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Dic</title>
 <%@include file="/WEB-INF/jsp/common/scriptInc.jsp"%>
-<script type="text/javascript"
+<script type="text/javascript"双击维护所属类组
 	src="<%=request.getContextPath()%>/js/dhcc/pms/cat/CatGroup.js"></script>
 </head>
 <body>
@@ -155,7 +155,7 @@
 				data-options="toolbar:'#toolbar', fit:true, fitColumns:true,singleSelect:true,pagination:true">
 			</table>
 		</div>
-		<div data-options="region:'east',title:'小类维护        (双击维护所属大类)',iconCls:'icon-edit'" style="width: 600px">
+		<div data-options="region:'east',title:'小类维护        (双击维护所属类组)',iconCls:'icon-edit'" style="width: 600px">
             <table id="datagrid2"  class="datagrid"
 				data-options="toolbar:'#toolbar2', fit:true,fitColumns:true,pagination:true"> 
 			</table>
