@@ -90,7 +90,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="textLabel" style="text-align: right; width: 20%">小类描述</td>
+					<td class="textLabel" style="text-align: right; width: 20%">小类描述:</td>
 					<td class="textParent" style="text-align: left; width: 30%"><input
 						style="width: 250px;" class="validatebox" type="text"
 						name="dto.subCatGroup.subGroupName" id="subGroupName" data-options="required:true"></input>
