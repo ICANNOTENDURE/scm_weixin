@@ -15,8 +15,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -60,7 +58,6 @@ import com.dhcc.scm.ws.his.dhcclient.SCIInpoUmInfoRtMain;
 @Repository
 public class NurseDao extends HibernatePersistentObjectDAO<VenInc> {
 	
-	private static Log logger = LogFactory.getLog(NurseDao.class);
 	
 	@Resource
 	private JdbcTemplateWrapper jdbcTemplateWrapper;
@@ -472,7 +469,7 @@ public class NurseDao extends HibernatePersistentObjectDAO<VenInc> {
 			orderDetail.setDevQty(devQty * orderDetail.getOrderFac().floatValue());
 			if(orderDetail.getOrderState()!=null){
 				List<State> states=super.findByProperty(State.class, "stateSeq", orderDetail.getOrderState());
-				if(states!=null){
+				if(states.size()>0){
 					orderDetail.setStateDesc(states.get(0).getStateName());
 				}
 			}
