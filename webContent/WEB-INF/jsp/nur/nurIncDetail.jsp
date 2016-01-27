@@ -70,6 +70,10 @@
 	line-height: 0;
 	font-size: 0;
 }
+
+.am-control-thumbs li {
+  width: 100%/4; /* n 为轮播图数量 */
+}
 </style>
 
 </head>
@@ -79,6 +83,15 @@
 
 	<div class="am-g">
 		<div class="am-u-lg-3 am-u-lg-offset-1">
+						
+			<div class="am-slider am-slider-default" data-am-flexslider id="demo-slider-0">
+			  <ul class="am-slides">
+				<s:iterator value="dto.venIncPics" status="all" id="venIncPics">
+			    		<li><img src="<%=request.getContextPath()%>/uploadPic/${venIncPics.venIncPicPath}" /></li>
+				</s:iterator>
+			  </ul>
+			</div>
+			<!--  
 			<div data-am-widget="slider" class="am-slider am-slider-default"
 				data-am-slider="{&quot;animation&quot;:&quot;slide&quot;,&quot;controlNav&quot;:&quot;thumbnails&quot;}">
 				<ul class="am-slides">
@@ -92,6 +105,7 @@
 					</s:iterator>
 				</ul>
 			</div>
+			-->
 		</div>
 		<div class="am-u-lg-3">
 			<hr>
