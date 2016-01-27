@@ -50,10 +50,6 @@ $(function(){
     	var barNames=[];
     	var barValues=[];
     	var barValue1s=[];
-    	MaxQty=0;
-    	var MaxMonth="";
-    	MinQty=0;
-    	var MinMonth="";
     	$.post(
     			getContextPath()+'/chart/chartCtrl!listEvalute.htm',
 
@@ -83,18 +79,12 @@ $(function(){
     	);
     	$.post(
     			getContextPath()+'/chart/chartCtrl!listOrdReqQty.htm',
-
     			function(data){
     				$.each(data.names,function(i){
     					barNames.push(data.names[i]);
     					barValues.push(parseFloat(data.values[i]));
     					barValue1s.push(parseFloat(data.value1s[i]));
   					});
-    				MaxQty=parseFloat(data.maxQty);
-    				MaxMonth=data.maxMonth;
-    				MinQty=parseFloat(data.minQty);
-    				MinMonth=data.minMonth;
-    				
     			},
     			'json'
     	);
@@ -105,7 +95,6 @@ $(function(){
                 'echarts/chart/bar' : '<%=request.getContextPath()%>/js/esl/echarts'
             }
         });
-        
         // 使用
         require(
             [
@@ -296,9 +285,9 @@ $(function(){
 				    ]
 				};
                 // 为echarts对象加载数据 
-                myChart.setOption(option);
                 myChartSub.setOption(option2); 
                 evalute.setOption(evaluteOption);
+                if(barNames.length>0) myChart.setOption(option);
             }
         );
         function getContextPath(){

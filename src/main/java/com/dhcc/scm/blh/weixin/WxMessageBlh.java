@@ -395,7 +395,9 @@ public class WxMessageBlh extends AbstractBaseBlh {
 					detail.setIncName(venInc.getVenIncName());
 				}
 				dto.setOrderDetails(details);
-				dto.setAccpectFlag(details.get(0).getOrderState());
+				if(details.size()>0){
+					dto.setAccpectFlag(details.get(0).getOrderState());
+				}
 			}
 		}
 		return "mbListOrderDetail";
