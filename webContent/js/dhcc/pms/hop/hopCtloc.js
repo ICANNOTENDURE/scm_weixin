@@ -28,7 +28,7 @@ $(function (){
 	    method:'post',
 	    fit:true,
 	    rownumbers:true,
-	    pageList : [10, 20, 30],          // 可以设置每页记录条数的列表
+	    pageList : [20, 40, 60],          // 可以设置每页记录条数的列表
 	    pageSize : 20, 
 	    columns:[[ 
             {field:'hopCtlocId',title:'科室ID',width:100},

@@ -5,6 +5,8 @@ $(function (){
 	    url:$WEB_ROOT_PATH+'/ord/stateCtrl!list.htm',
 	    iconCls:'icon-edit',//图标
 	    method:'post',
+	    pageList : [20, 40, 60],
+	    pageSize : 20,
 	    fit:true,
 	    columns:[[ 
             {field:'ck1',checkbox:true},  
