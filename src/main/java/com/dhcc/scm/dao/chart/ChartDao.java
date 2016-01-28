@@ -227,12 +227,12 @@ public class ChartDao extends HibernatePersistentObjectDAO<Chart> {
 		StringBuffer hqlBuffer = new StringBuffer();
 		Map<String, Object> hqlParamMap = new HashMap<String, Object>();
 		
-		hqlBuffer.append("select date_format(t1.ORDER_ODATE,'%Y-%c-%e')as  name , ");
+		hqlBuffer.append("select date_format(t1.ORDER_ODATE,'%Y-%m-%e')as  name , ");
 		hqlBuffer.append(" sum(t1.ORDER_VEN_QTY*t1.ORDER_RP) as value ");
 		hqlBuffer.append(" from T_ORD_ORDERDETAIL t1  ");
-		hqlBuffer.append(" where  t1.ORDER_ODATE>=NOW()-7 ");
+		hqlBuffer.append(" where  t1.ORDER_ODATE>=CURDATE()-7 ");
 		hqlBuffer.append(" and t1.ORDER_VEN_ID= "+Long.valueOf(WebContextHolder.getContext().getVisit().getUserInfo().getVendorIdLong()));
-		hqlBuffer.append(" group by date_format(t1.ORDER_ODATE,'%Y-%c-%e') ");
+		hqlBuffer.append(" group by date_format(t1.ORDER_ODATE,'%Y-%m-%e') ");
 		dto.setChartVOs(jdbcTemplateWrapper.queryAllMatchListWithParaMap(hqlBuffer.toString(), ChartVO.class, hqlParamMap));
 	
 	}
@@ -255,7 +255,7 @@ public class ChartDao extends HibernatePersistentObjectDAO<Chart> {
 		hqlBuffer.append("select t1.ORDER_VEN_INC_ID as  incid , ");
 		hqlBuffer.append(" sum(t1.ORDER_VEN_QTY) as orderqty ");
 		hqlBuffer.append(" from T_ORD_ORDERDETAIL t1  ");
-		hqlBuffer.append(" where  t1.ORDER_ODATE>=NOW()-30 ");
+		hqlBuffer.append(" where  t1.ORDER_ODATE>=CURDATE()-30 ");
 		hqlBuffer.append(" and t1.ORDER_VEN_ID= "+Long.valueOf(WebContextHolder.getContext().getVisit().getUserInfo().getVendorIdLong()));
 		hqlBuffer.append(" group by t1.ORDER_VEN_INC_ID order by orderqty desc");
 		dto.setChartVenHotSaleVOs(jdbcTemplateWrapper.queryAllMatchListWithParaMap(hqlBuffer.toString(), ChartVenHotSaleVO.class, hqlParamMap, 1, 6, "orderqty"));
