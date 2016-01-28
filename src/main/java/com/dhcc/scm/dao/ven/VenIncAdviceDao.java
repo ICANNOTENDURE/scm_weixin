@@ -157,10 +157,10 @@ public class VenIncAdviceDao extends HibernatePersistentObjectDAO<VenIncAdvice> 
 		Map<String, Object> hqlParamMap = new HashMap<String, Object>();
 		StringBuffer hqlBuffer = new StringBuffer();
 		hqlBuffer.append(" select ");
-		hqlBuffer.append(" COUNT (*) as qty, ");
-		hqlBuffer.append(" t1.VENINCADVICE_INC_ID as inc ");
-		hqlBuffer.append("from ");
-		hqlBuffer.append("T_VEN_INC_ADVICE t1 left join T_VEN_INC t2 on t1.VENINCADVICE_INC_ID=t2.VEN_INC_ROWID ");
+		hqlBuffer.append(" count(*)  qty, ");
+		hqlBuffer.append(" t1.VENINCADVICE_INC_ID  inc ");
+		hqlBuffer.append(" from ");
+		hqlBuffer.append(" T_VEN_INC_ADVICE t1 left join T_VEN_INC t2 on t1.VENINCADVICE_INC_ID=t2.VEN_INC_ROWID ");
 		hqlBuffer.append(" left join T_VEN_VENDOR t3 on t3.VEN_ID=t2.VEN_INC_VENID ");
 		hqlBuffer.append(" where 1=1 ");
 
