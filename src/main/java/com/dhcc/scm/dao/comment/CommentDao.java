@@ -87,7 +87,7 @@ public class CommentDao extends HibernatePersistentObjectDAO<Evalute> {
 		}
 		hqlBuffer.append(" and t3.H_HOPID ="+WebContextHolder.getContext().getVisit().getUserInfo().getHopId());
 		hqlBuffer.append(" group by t3.H_NAME,t3.H_VENID ");
-		hqlBuffer.append(") ) where 1=1 ");
+		hqlBuffer.append(") as yy ) as yyy where 1=1 ");
 		if(StringUtils.isNotBlank(dto.getQueryResult())){
 			if(StringUtils.isNotBlank(dto.getQueryCondition())){
 				if(StringUtils.isNotBlank(dto.getQueryType())){
@@ -208,7 +208,7 @@ public class CommentDao extends HibernatePersistentObjectDAO<Evalute> {
 		}
 		hqlBuffer.append(" and t3.H_HOPID ="+WebContextHolder.getContext().getVisit().getUserInfo().getHopId());
 		hqlBuffer.append(" group by t4.VEN_INC_ROWID,t4.VEN_INC_NAME,t3.H_NAME ");
-		hqlBuffer.append(") ) where 1=1 ");
+		hqlBuffer.append(") as yy ) as yyy where 1=1 ");
 		if(StringUtils.isNotBlank(dto.getQueryResult())){
 			if(StringUtils.isNotBlank(dto.getQueryCondition())){
 				if(StringUtils.isNotBlank(dto.getQueryType())){
