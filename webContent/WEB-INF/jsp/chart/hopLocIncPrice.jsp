@@ -85,7 +85,7 @@
 						});
 						
 						// 加载echart
-						require([ 'echarts', 'echarts/chart/bar', // 使用柱状图就加载bar模块，按需加载
+						require([ 'echarts', 'echarts/chart/bar', 'echarts/chart/line', // 使用柱状图就加载bar模块，按需加载
 						], function(ec) {
 							// 基于准备好的dom，初始化echarts图表
 							var barChart = ec.init(document.getElementById('bar'));

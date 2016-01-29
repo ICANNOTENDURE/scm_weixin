@@ -53,8 +53,8 @@ public class ChartDao extends HibernatePersistentObjectDAO<Chart> {
 
 		StringBuffer hqlBuffer = new StringBuffer();
 		Map<String, Object> hqlParamMap = new HashMap<String, Object>();
-		hqlBuffer.append("select count(*) as value , ");
-		hqlBuffer.append("t.ORDER_VEN_ID,t1.NAME as name ");
+		hqlBuffer.append(" select count(*) as value , ");
+		hqlBuffer.append(" t.ORDER_VEN_ID,t1.NAME as name ");
 		hqlBuffer.append(" from T_ORD_ORDERDETAIL t,t_ven_vendor t1   ");
 		hqlBuffer.append(" where  t1.VEN_ID=t.ORDER_VEN_ID  group by t.ORDER_VEN_ID,t1.NAME   ");		
 		dto.setChartVOs(jdbcTemplateWrapper.queryAllMatchListWithParaMap(hqlBuffer.toString(), ChartVO.class, hqlParamMap, 1, 5, "name"));
@@ -119,19 +119,20 @@ public class ChartDao extends HibernatePersistentObjectDAO<Chart> {
 		Map<String, Object> hqlParamMap = new HashMap<String, Object>();
 		hqlBuffer.append(" select  ");
 		hqlBuffer.append(" T2.CTLOC_NAME as name , ");
-		hqlBuffer.append(" SUM (T1.ORDER_RP * T1.ORDER_VEN_QTY) as value ");
+		hqlBuffer.append(" SUM(T1.ORDER_RP * T1.ORDER_VEN_QTY) as value ");
 		hqlBuffer.append(" FROM ");
 		hqlBuffer.append(" T_ORD_ORDERDETAIL t1, ");
 		hqlBuffer.append(" T_SYS_CTLOC t2 ");
 		hqlBuffer.append(" WHERE T1.ORDER_RECLOC = t2.CTLOC_ID ");
 		if(dto.getStartDate()!=null){
-			hqlBuffer.append(" and T1.ORDER_ODATE+1>=:startdate");
+			hqlBuffer.append(" and T1.ORDER_ODATE>=:startdate ");
 			hqlParamMap.put("startdate", dto.getStartDate());
 		}else{
 			return;
 		}
+		
 		if(dto.getEndDate()!=null){
-			hqlBuffer.append(" and T1.ORDER_ODATE-1<=:enddate");
+			hqlBuffer.append(" and T1.ORDER_ODATE<=:enddate ");
 			hqlParamMap.put("enddate", dto.getEndDate());
 		}else{
 			return;
@@ -168,7 +169,7 @@ public class ChartDao extends HibernatePersistentObjectDAO<Chart> {
 			hqlParamMap.put("startdate", dto.getStartDate());
 		}
 		if(dto.getEndDate()!=null){
-			hqlBuffer.append(" and T1.ORDER_ODATE-1<=:enddate");
+			hqlBuffer.append(" and T1.ORDER_ODATE<=:enddate");
 			hqlParamMap.put("enddate", dto.getEndDate());
 		}
 		if(dto.getSubCatId()!=0){
@@ -186,7 +187,7 @@ public class ChartDao extends HibernatePersistentObjectDAO<Chart> {
 		Map<String, Object> hqlParamMap = new HashMap<String, Object>();
 		hqlBuffer.append("select ");
 		//hqlBuffer.append(" to_char(t1.ORDER_ODATE,'yyyy-MM')as  name, ");
-		hqlBuffer.append(" date_format(t1.ORDER_ODATE,'%Y-%c')as  name, ");
+		hqlBuffer.append(" date_format(t1.ORDER_ODATE,'%Y-%c') as  name, ");
 		hqlBuffer.append(" T2.CTLOC_NAME as value1, ");
 		hqlBuffer.append(" avg(t1.ORDER_RP)  as value ");
 		hqlBuffer.append(" from T_ORD_ORDERDETAIL T1   ");
@@ -194,11 +195,11 @@ public class ChartDao extends HibernatePersistentObjectDAO<Chart> {
 		hqlBuffer.append(" left join T_VEN_INC t3 on T1.ORDER_VEN_INC_ID = t3.VEN_INC_ROWID ");
 		hqlBuffer.append(" WHERE  1=1 ");
 		if(dto.getStartDate()!=null){
-			hqlBuffer.append(" and T1.ORDER_ODATE>=:startdate");
+			hqlBuffer.append(" and T1.ORDER_ODATE>=:startdate ");
 			hqlParamMap.put("startdate", dto.getStartDate());
 		}
 		if(dto.getEndDate()!=null){
-			hqlBuffer.append(" and T1.ORDER_ODATE-1<=:enddate");
+			hqlBuffer.append(" and T1.ORDER_ODATE<=:enddate ");
 			hqlParamMap.put("enddate", dto.getEndDate());
 		}
 		if(dto.getSubCatId()!=0){
@@ -277,20 +278,36 @@ public class ChartDao extends HibernatePersistentObjectDAO<Chart> {
 	public void listLocAmtGrpByDate(OrdVenDistributionDto dto){
 		StringBuffer hqlBuffer = new StringBuffer();
 		Map<String, Object> hqlParamMap = new HashMap<String, Object>();
-		String grpType="yyyy-MM-dd";
+		//String grpType="yyyy-MM-dd";
+		String grpType="%Y-%m-%d";
 		if(StringUtils.isNotBlank(dto.getQueryType())){
 			if(!dto.getQueryType().equals("0")){
 				grpType=dto.getQueryType();
 			}
-			
+			if(dto.getQueryType().equals("yyyy")){
+				grpType="%Y";
+			}
+			if(dto.getQueryType().equals("yyyy-MM-dd")){
+				grpType="%Y-%m-%d";
+			}
+			if(dto.getQueryType().equals("yyyy-MM")){
+				grpType="%Y-%m";
+			}
+			if(dto.getQueryType().equals("q")){
+				grpType="%Y-%m";
+			}
+			if(dto.getQueryType().equals("iw")){
+				grpType="%Y-%u";
+			}
 		}
 		hqlBuffer.append(" select  ");
-		hqlBuffer.append(" to_char(t1.ORDER_ODATE,'"+grpType+"') legend, ");
+		hqlBuffer.append(" date_format(t1.ORDER_ODATE,'"+grpType+"') legend, ");
+		//hqlBuffer.append(" to_char(t1.ORDER_ODATE,'"+grpType+"') legend, ");
 		hqlBuffer.append(" T2.CTLOC_NAME as category , ");
 		if((StringUtils.isNotBlank(dto.getHopIncId()))&&(!dto.getHopIncId().equals("0"))){
-			hqlBuffer.append(" round(avg (NVL(T1.ORDER_RP ,0)),2) as serie ");
+			hqlBuffer.append(" round(avg(IFNULL(T1.ORDER_RP ,0)),2) as serie ");
 		}else{
-			hqlBuffer.append(" SUM (T1.ORDER_RP * T1.ORDER_VEN_QTY) as serie ");
+			hqlBuffer.append(" SUM(T1.ORDER_RP * T1.ORDER_VEN_QTY) as serie ");
 		}
 		hqlBuffer.append(" FROM ");
 		hqlBuffer.append(" T_ORD_ORDERDETAIL t1, ");
@@ -301,7 +318,7 @@ public class ChartDao extends HibernatePersistentObjectDAO<Chart> {
 			hqlParamMap.put("startdate", dto.getStartDate());
 		}
 		if(dto.getEndDate()!=null){
-			hqlBuffer.append(" and T1.ORDER_ODATE-1<=:enddate");
+			hqlBuffer.append(" and T1.ORDER_ODATE<=:enddate");
 			hqlParamMap.put("enddate", dto.getEndDate());
 		}
 		if((StringUtils.isNotBlank(dto.getHopIncId()))&&(!dto.getHopIncId().equals("0"))){
@@ -309,7 +326,7 @@ public class ChartDao extends HibernatePersistentObjectDAO<Chart> {
 			hqlParamMap.put("hopincid", dto.getHopIncId());
 		}
 		hqlBuffer.append(" and T1.ORDER_HOP_ID="+WebContextHolder.getContext().getVisit().getUserInfo().getHopId());
-		hqlBuffer.append(" GROUP BY to_char(t1.ORDER_ODATE,'"+grpType+"'),t2.CTLOC_NAME ");
+		hqlBuffer.append(" GROUP BY date_format(t1.ORDER_ODATE,'"+grpType+"'),t2.CTLOC_NAME ");
 		hqlBuffer.append(" order BY   legend ");
 		dto.setBarVOs(jdbcTemplateWrapper.queryAllMatchListWithParaMap(hqlBuffer.toString(), BarVO.class, hqlParamMap));
 	
@@ -332,7 +349,7 @@ public class ChartDao extends HibernatePersistentObjectDAO<Chart> {
 
 		hqlBuffer.append(" select  ");
 		hqlBuffer.append(" T2.VEN_INC_NAME name, ");
-		hqlBuffer.append(" round(SUM (T1.ORDER_RP * T1.ORDER_VEN_QTY),2) as value ");
+		hqlBuffer.append(" round(SUM(T1.ORDER_RP * T1.ORDER_VEN_QTY),2) as value ");
 		hqlBuffer.append(" FROM ");
 		hqlBuffer.append(" T_ORD_ORDERDETAIL t1 ");
 		hqlBuffer.append(" LEFT JOIN T_VEN_INC t2 ON t1.ORDER_VEN_INC_ID = t2.VEN_INC_ROWID ");
@@ -342,7 +359,7 @@ public class ChartDao extends HibernatePersistentObjectDAO<Chart> {
 			hqlParamMap.put("startdate", dto.getStartDate());
 		}
 		if(dto.getEndDate()!=null){
-			hqlBuffer.append(" and T1.ORDER_ODATE-1<=:enddate");
+			hqlBuffer.append(" and T1.ORDER_ODATE<=:enddate");
 			hqlParamMap.put("enddate", dto.getEndDate());
 		}
 		hqlBuffer.append(" and T1.ORDER_RECLOC="+WebContextHolder.getContext().getVisit().getUserInfo().getLocId());
@@ -370,7 +387,7 @@ public class ChartDao extends HibernatePersistentObjectDAO<Chart> {
 		hqlBuffer.append(" select  ");
 		hqlBuffer.append(" t5.SG_DESC name, ");
 		hqlBuffer.append(" t4.SDG_DESC value1, ");
-		hqlBuffer.append(" SUM (T1.ORDER_RP * T1.ORDER_VEN_QTY) as value ");
+		hqlBuffer.append(" SUM(T1.ORDER_RP * T1.ORDER_VEN_QTY) as value ");
 		hqlBuffer.append(" FROM ");
 		hqlBuffer.append(" T_ORD_ORDERDETAIL t1 ");
 		hqlBuffer.append(" LEFT JOIN T_VEN_INC t2 ON t1.ORDER_VEN_INC_ID = t2.VEN_INC_ROWID ");
@@ -383,7 +400,7 @@ public class ChartDao extends HibernatePersistentObjectDAO<Chart> {
 			hqlParamMap.put("startdate", dto.getStartDate());
 		}
 		if(dto.getEndDate()!=null){
-			hqlBuffer.append(" and T1.ORDER_ODATE-1<=:enddate");
+			hqlBuffer.append(" and T1.ORDER_ODATE<=:enddate");
 			hqlParamMap.put("enddate", dto.getEndDate());
 		}
 		hqlBuffer.append(" and T1.ORDER_RECLOC="+WebContextHolder.getContext().getVisit().getUserInfo().getLocId());
