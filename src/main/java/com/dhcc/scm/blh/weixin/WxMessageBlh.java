@@ -30,6 +30,8 @@ import me.chanjar.weixin.cp.bean.WxCpXmlOutMessage;
 import me.chanjar.weixin.cp.util.crypto.WxCpCryptUtil;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.stereotype.Component;
 
@@ -57,7 +59,10 @@ import com.dhcc.scm.service.weixin.WxMessageService;
 
 @Component
 public class WxMessageBlh extends AbstractBaseBlh {
-
+	
+	
+	private static Log logger = LogFactory.getLog(WxMessageBlh.class);
+	
 	@Resource
 	private WxCpInMemoryConfigStorage configStorage;
 
@@ -374,6 +379,7 @@ public class WxMessageBlh extends AbstractBaseBlh {
 			article1.setTitle("新订单提醒");
 			article1.setDescription(sb.toString());
 			article1.setUrl(host + "weixin/wxMessageCtrl!mbListOrderDetail.htm?dto.orderDetail.orderNo=" + orderDetail.getOrderNo());
+			logger.debug("setUrl:"+article1.getUrl());
 			cpMessage.getArticles().add(article1);
 
 			wxCpService.messageSend(cpMessage);
