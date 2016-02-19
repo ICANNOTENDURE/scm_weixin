@@ -32,7 +32,9 @@
 			class="linkbutton" data-options="iconCls:'icon-edit',plain:true"
 			onclick="javascript:editUser()">修改</a> <a class="linkbutton"
 			data-options="iconCls:'icon-remove',plain:true"
-			onclick="javascript:delUser()">删除</a><input style='width: 250px;'
+			onclick="javascript:delUser()">删除</a><a class="linkbutton"
+			data-options="iconCls:'icon-add',plain:true"
+			onclick="javascript:inviteUser()">邀请关注</a><input style='width: 250px;'
 			type='text' id="queryUser"></input> <a class="linkbutton"
 			data-options="iconCls:'icon-search',plain:true"
 			onclick="javascript:selectUser()">查询</a>
