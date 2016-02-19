@@ -295,7 +295,7 @@ public class VendorBlh extends AbstractBaseBlh {
 		//生成随机文件名
 		String newFileName =smDateFormat.format(date) +UUID.randomUUID()+ com.dhcc.framework.util.FileUtils.getFileExp(dto.getUploadFileName());
 		//获取文件存储路径
-		String storageFileName = ServletActionContext.getServletContext().getRealPath("/uploads");
+		String storageFileName = ServletActionContext.getServletContext().getRealPath(File.separator+"uploads");
 		//判断文件存储路径是否存在，若不存在则自动新建
 		File document = new File(storageFileName);
 		if (!document.exists()) {
