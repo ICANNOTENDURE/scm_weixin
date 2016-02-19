@@ -6,6 +6,7 @@ package com.dhcc.scm.blh.weixin;
 
 import javax.annotation.Resource;
 
+import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.cp.api.WxCpService;
 import me.chanjar.weixin.cp.bean.WxCpUser;
 
@@ -119,4 +120,18 @@ public class WxUserBlh extends AbstractBaseBlh {
 		
 	}
 	
+	//邀请关注
+	public void invite(BusinessRequest res){
+		WxUserDto dto = super.getDto(WxUserDto.class, res);
+		int type=2;
+		try {
+			type = wxCpService.invite(dto.getWxUser().getWxUserId(), "");
+		} catch (WxErrorException e) {
+			e.printStackTrace();
+			super.writeResult(e.getMessage());
+		}finally{
+			super.writeResult(String.valueOf(type));
+		}
+		
+	}
 }
