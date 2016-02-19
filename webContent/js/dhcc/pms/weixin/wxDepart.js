@@ -176,6 +176,21 @@ function delUser() {
 		}, 'json');
 	});
 }
+//邀请关注
+function inviteUser() {
+	if ($CommonUI.getDataGrid("#datagridUser").datagrid('getSelections').length != 1) {
+		$CommonUI.alert('请选一个邀请');
+		return;
+	}
+
+	var row = $CommonUI.getDataGrid("#datagridUser") .datagrid('getSelected');
+	$.post($WEB_ROOT_PATH + "/weixin/wxUserCtrl!invite.htm", {
+		'dto.wxUser.wxUserId' : row.wxUserId
+	}, function(data) {
+		$CommonUI.alert(data);
+	});
+	
+}
 function selectDepart() {
 	$CommonUI.getDataGrid("#datagridDepart").datagrid('load', {
 		'dto.wxDepart.wxDepartName' : $("#queryDepart").val()
