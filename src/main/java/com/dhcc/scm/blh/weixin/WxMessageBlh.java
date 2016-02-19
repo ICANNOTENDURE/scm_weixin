@@ -20,9 +20,14 @@ import javax.servlet.http.Cookie;
 
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
+import me.chanjar.weixin.cp.api.WxCpInMemoryConfigStorage;
+import me.chanjar.weixin.cp.api.WxCpMessageRouter;
 import me.chanjar.weixin.cp.api.WxCpService;
 import me.chanjar.weixin.cp.bean.WxCpDepart;
 import me.chanjar.weixin.cp.bean.WxCpMessage;
+import me.chanjar.weixin.cp.bean.WxCpXmlMessage;
+import me.chanjar.weixin.cp.bean.WxCpXmlOutMessage;
+import me.chanjar.weixin.cp.util.crypto.WxCpCryptUtil;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
@@ -53,6 +58,12 @@ import com.dhcc.scm.service.weixin.WxMessageService;
 @Component
 public class WxMessageBlh extends AbstractBaseBlh {
 
+	@Resource
+	private WxCpInMemoryConfigStorage configStorage;
+
+	@Resource
+	private WxCpMessageRouter messageRouter;
+	
 	@Resource
 	private WxMessageService wxMessageService;
 
@@ -544,5 +555,45 @@ public class WxMessageBlh extends AbstractBaseBlh {
 		WxMessageDto dto = super.getDto(WxMessageDto.class, res);
 		dto.setTitle("订单查询");
 		return "searchOrder";
+	}
+	
+	
+	
+	public void testCon(BusinessRequest res) {
+
+		String msgSignature = super.getParameter("msg_signature");
+		String nonce = super.getParameter("nonce");
+		String timestamp = super.getParameter("timestamp");
+		String echostr = super.getParameter("echostr");
+		if (StringUtils.isNotBlank(echostr)) {
+			if (!wxCpService.checkSignature(msgSignature, timestamp, nonce, echostr)) {
+				// 消息签名不正确，说明不是公众平台发过来的消息
+				super.writeResult("非法请求");
+				return;
+			}
+			try {
+				WxCpCryptUtil cryptUtil = new WxCpCryptUtil(configStorage);
+				String plainText = cryptUtil.decrypt(echostr);
+				// 说明是一个仅仅用来验证的请求，回显echostr
+				super.writeResult(plainText);
+				return;
+			} catch (Exception e) {
+				super.writeResult(e.getLocalizedMessage());
+				e.printStackTrace();
+			}
+		}
+
+		WxCpXmlMessage inMessage;
+		try {
+			inMessage = WxCpXmlMessage.fromEncryptedXml(WebContextHolder.getContext().getRequest().getInputStream(), configStorage, timestamp, nonce, msgSignature);
+			WxCpXmlOutMessage outMessage = messageRouter.route(inMessage);
+			if (outMessage != null) {
+				super.writeResult(outMessage.toEncryptedXml(configStorage));
+				return;
+			}
+		} catch (Exception e) {
+			super.writeResult("err" + e.getMessage());
+		}
+
 	}
 }
