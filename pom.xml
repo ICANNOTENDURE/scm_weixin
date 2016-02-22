@@ -87,7 +87,7 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 	<parent>
 		<groupId>com.dhcc.framework</groupId>
 		<artifactId>parent-archetype</artifactId>
@@ -102,13 +102,8 @@
 			<artifactId>sigar</artifactId>
 			<version>1.6.4</version>
 		</dependency>
-		<!-- 
-		<dependency>
-			<groupId>com.dhcc.client</groupId>
-			<artifactId>dhcc-monitor-client</artifactId>
-			<version>1.1.1</version>
-		</dependency>
-		 -->
+		<!-- <dependency> <groupId>com.dhcc.client</groupId> <artifactId>dhcc-monitor-client</artifactId> 
+			<version>1.1.1</version> </dependency> -->
 		<!-- Job依赖包 -->
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
@@ -127,76 +122,63 @@
 			<artifactId>pinyin4j</artifactId>
 			<version>2.5.0</version>
 		</dependency>
-		
+
 		<!-- webservice -->
 		<dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-frontend-jaxws</artifactId>
-            <version>2.7.8</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-transports-http</artifactId>
-            <version>2.7.8</version>
-        </dependency> 
-		
-		<!-- 二维码 -->
-		<dependency>  
-            <groupId>com.google.zxing</groupId>  
-            <artifactId>core</artifactId>  
-            <version>3.0.0</version>  
-        </dependency>  
-        <dependency>  
-            <groupId>com.google.zxing</groupId>  
-            <artifactId>javase</artifactId>  
-            <version>3.0.0</version>  
-        </dependency> 
-        <!--  
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-frontend-jaxws</artifactId>
+			<version>2.7.8</version>
+		</dependency>
 		<dependency>
-            <groupId>com.swetake</groupId>
-            <artifactId>swetake-core</artifactId>
-            <version>1.2</version>
-        </dependency>
-        -->
-        <!-- 解码 
-        <dependency>
-            <groupId>jp.sourceforge.qrcode</groupId>
-            <artifactId>qrcode-core</artifactId>
-            <version>1.6</version>
-        </dependency>
-        -->
-        <!-- poi 解析excel2007-->
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>3.9</version>
-        </dependency>
-        <!-- weixin企业号应用 -->
-        <dependency>
-		  	<groupId>me.chanjar</groupId>
-		  	<artifactId>weixin-java-cp</artifactId>
-		  	<version>1.2.0</version>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-transports-http</artifactId>
+			<version>2.7.8</version>
+		</dependency>
+
+		<!-- 二维码 -->
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>javase</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+		<!-- <dependency> <groupId>com.swetake</groupId> <artifactId>swetake-core</artifactId> 
+			<version>1.2</version> </dependency> -->
+		<!-- 解码 <dependency> <groupId>jp.sourceforge.qrcode</groupId> <artifactId>qrcode-core</artifactId> 
+			<version>1.6</version> </dependency> -->
+		<!-- poi 解析excel2007 -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.9</version>
+		</dependency>
+		<!-- weixin企业号应用 -->
+		<dependency>
+			<groupId>me.chanjar</groupId>
+			<artifactId>weixin-java-cp</artifactId>
+			<version>1.2.0</version>
 		</dependency>
 		<!-- weixin需要的 -->
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
 			<version>1.9</version>
-		</dependency> 
+		</dependency>
+		<!-- weixin公众号 -->
+		<dependency>
+			<groupId>me.chanjar</groupId>
+			<artifactId>weixin-java-mp</artifactId>
+			<version>1.3.3</version>
+		</dependency>
 	</dependencies>
-	<!-- 发布构建管理 
-	<distributionManagement>
-		<repository>
-			<id>releases</id>
-			<name>dhcc_releases</name>
-			<url>http://222.90.66.14:8081/nexus/content/repositories/dhcc_releases/</url>
-		</repository>
-		<snapshotRepository>
-			<id>Snapshots</id>
-			<name>dhcc_snapshots</name>
-			<url>http://222.90.66.14:8081/nexus/content/repositories/dhcc_snapshots/</url>
-		</snapshotRepository>
-	</distributionManagement>
-	-->
+	<!-- 发布构建管理 <distributionManagement> <repository> <id>releases</id> <name>dhcc_releases</name> 
+		<url>http://222.90.66.14:8081/nexus/content/repositories/dhcc_releases/</url> 
+		</repository> <snapshotRepository> <id>Snapshots</id> <name>dhcc_snapshots</name> 
+		<url>http://222.90.66.14:8081/nexus/content/repositories/dhcc_snapshots/</url> 
+		</snapshotRepository> </distributionManagement> -->
 	<!-- 发布构建管理 -->
 </project>

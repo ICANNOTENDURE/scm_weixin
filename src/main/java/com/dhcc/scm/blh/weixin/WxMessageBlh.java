@@ -17,6 +17,7 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
@@ -28,6 +29,11 @@ import me.chanjar.weixin.cp.bean.WxCpMessage;
 import me.chanjar.weixin.cp.bean.WxCpXmlMessage;
 import me.chanjar.weixin.cp.bean.WxCpXmlOutMessage;
 import me.chanjar.weixin.cp.util.crypto.WxCpCryptUtil;
+import me.chanjar.weixin.mp.api.WxMpConfigStorage;
+import me.chanjar.weixin.mp.api.WxMpMessageRouter;
+import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.bean.WxMpXmlMessage;
+import me.chanjar.weixin.mp.bean.WxMpXmlOutMessage;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -59,16 +65,15 @@ import com.dhcc.scm.service.weixin.WxMessageService;
 
 @Component
 public class WxMessageBlh extends AbstractBaseBlh {
-	
-	
+
 	private static Log logger = LogFactory.getLog(WxMessageBlh.class);
-	
+
 	@Resource
 	private WxCpInMemoryConfigStorage configStorage;
 
 	@Resource
 	private WxCpMessageRouter messageRouter;
-	
+
 	@Resource
 	private WxMessageService wxMessageService;
 
@@ -77,7 +82,16 @@ public class WxMessageBlh extends AbstractBaseBlh {
 
 	@Resource
 	private WxCpService wxCpService;
-
+	
+	@Resource
+	private WxMpService wxMpService;
+	
+	@Resource
+	private WxMpMessageRouter wxMpMessageRouter;
+	
+	@Resource
+	private  WxMpConfigStorage wxMpConfigStorage;
+	
 	public WxMessageBlh() {
 
 	}
@@ -379,7 +393,7 @@ public class WxMessageBlh extends AbstractBaseBlh {
 			article1.setTitle("新订单提醒");
 			article1.setDescription(sb.toString());
 			article1.setUrl(host + "weixin/wxMessageCtrl!mbListOrderDetail.htm?dto.orderDetail.orderNo=" + orderDetail.getOrderNo());
-			logger.debug("setUrl:"+article1.getUrl());
+			logger.debug("setUrl:" + article1.getUrl());
 			cpMessage.getArticles().add(article1);
 
 			wxCpService.messageSend(cpMessage);
@@ -412,7 +426,7 @@ public class WxMessageBlh extends AbstractBaseBlh {
 					detail.setIncName(venInc.getVenIncName());
 				}
 				dto.setOrderDetails(details);
-				if(details.size()>0){
+				if (details.size() > 0) {
 					dto.setAccpectFlag(details.get(0).getOrderState());
 				}
 			}
@@ -471,7 +485,7 @@ public class WxMessageBlh extends AbstractBaseBlh {
 	public String listToDoTask(BusinessRequest res) throws IOException {
 
 		WxMessageDto dto = super.getDto(WxMessageDto.class, res);
-		String userIdString =super.getWeiXinId();
+		String userIdString = super.getWeiXinId();
 		dto.setTitle("订单查询");
 		if (org.apache.commons.lang3.StringUtils.isBlank(userIdString)) {
 			dto.setTitle("请登录");
@@ -489,7 +503,7 @@ public class WxMessageBlh extends AbstractBaseBlh {
 		try {
 			WxDepart wxDepart = commonService.get(WxDepart.class, wxUser.getWxUserDepartId());
 			dto.setVenid(wxDepart.getWxDepartScmId());
-		
+
 			wxMessageService.listToDoTask(dto);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -512,7 +526,7 @@ public class WxMessageBlh extends AbstractBaseBlh {
 
 		WxMessageDto dto = super.getDto(WxMessageDto.class, res);
 		OperateResult operateResult = new OperateResult();
-		String userIdString =super.getWeiXinId();
+		String userIdString = super.getWeiXinId();
 		if (org.apache.commons.lang3.StringUtils.isBlank(userIdString)) {
 			operateResult.setResultCode("1");
 			operateResult.setResultContent("登录超时");
@@ -544,27 +558,24 @@ public class WxMessageBlh extends AbstractBaseBlh {
 		}
 		super.writeJSON(operateResult);
 	}
-	
-	
+
 	/**
 	 * 
-	* @Title: searchOrder 
-	* @Description: TODO(跳到查询条件页面) 
-	* @param @param res
-	* @param @return    设定文件 
-	* @return String    返回类型 
-	* @throws 
-	* @author zhouxin   
-	* @date 2015年9月18日 下午2:52:46
+	 * @Title: searchOrder
+	 * @Description: TODO(跳到查询条件页面)
+	 * @param @param res
+	 * @param @return 设定文件
+	 * @return String 返回类型
+	 * @throws
+	 * @author zhouxin
+	 * @date 2015年9月18日 下午2:52:46
 	 */
-	public String searchOrder(BusinessRequest res){
+	public String searchOrder(BusinessRequest res) {
 		WxMessageDto dto = super.getDto(WxMessageDto.class, res);
 		dto.setTitle("订单查询");
 		return "searchOrder";
 	}
-	
-	
-	
+
 	public void testCon(BusinessRequest res) {
 
 		String msgSignature = super.getParameter("msg_signature");
@@ -602,4 +613,50 @@ public class WxMessageBlh extends AbstractBaseBlh {
 		}
 
 	}
+
+	// 下面是公众号的
+	// 2016-02-22
+
+	public void checkSignature(BusinessRequest res) throws IOException {
+		
+		HttpServletRequest request=WebContextHolder.getContext().getRequest();
+		String signature = getParameter("signature");
+		String nonce = getParameter("nonce");
+		String timestamp = getParameter("timestamp");
+		if (!wxMpService.checkSignature(timestamp, nonce, signature)) {
+			// 消息签名不正确，说明不是公众平台发过来的消息
+			writeResult("非法请求");
+			return;
+		}
+
+		String echostr = getParameter("echostr");
+		if (StringUtils.isNotBlank(echostr)) {
+			// 说明是一个仅仅用来验证的请求，回显echostr
+			writeResult(echostr);
+			return;
+		}
+
+		String encryptType = StringUtils.isBlank(getParameter("encrypt_type")) ? "raw" : getParameter("encrypt_type");
+
+		if ("raw".equals(encryptType)) {
+			// 明文传输的消息
+			WxMpXmlMessage inMessage = WxMpXmlMessage.fromXml(request.getInputStream());
+			WxMpXmlOutMessage outMessage = wxMpMessageRouter.route(inMessage);
+			writeResult(outMessage.toXml());
+			return;
+		}
+
+		if ("aes".equals(encryptType)) {
+			// 是aes加密的消息
+			String msgSignature = getParameter("msg_signature");
+			WxMpXmlMessage inMessage = WxMpXmlMessage.fromEncryptedXml(request.getInputStream(), wxMpConfigStorage, timestamp, nonce, msgSignature);
+			WxMpXmlOutMessage outMessage = wxMpMessageRouter.route(inMessage);
+			writeResult(outMessage.toEncryptedXml(wxMpConfigStorage));
+			return;
+		}
+
+		writeResult("不可识别的加密类型");
+		return;
+	}
+
 }
