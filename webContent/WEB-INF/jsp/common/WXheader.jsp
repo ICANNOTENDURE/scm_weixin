@@ -17,6 +17,7 @@
 		<ul class="am-menu-nav am-avg-sm-1 am-collapse">
 			<li><a href="<%=request.getContextPath()%>/weixin/wxMessageCtrl!listToDoTask.htm" class="">代办任务</a></li>
 			<li><a href="<%=request.getContextPath()%>/weixin/wxMessageCtrl!searchOrder.htm" class="">订单查询</a></li>
+			<li><a href="<%=request.getContextPath()%>/weixin/wxMessageCtrl!searchOrder.htm" class="">订单查询</a></li>
 			<li class="am-parent"><a href="#c3" class="">设置</a>
 				<ul class="am-menu-sub am-collapse  am-avg-sm-4 ">
 					<li class=""><a href="##" class="">个人信息</a></li>

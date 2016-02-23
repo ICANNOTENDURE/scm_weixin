@@ -56,6 +56,7 @@
     	var MaxMonth="";
     	var MinQty="";
     	var MinMonth="";
+    	alert(2)
     	$.post(
     			getContextPath()+'/chart/chartCtrl!listOrdVenDistribution.htm',
 
@@ -92,7 +93,6 @@
                 'echarts/chart/bar' : '<%=request.getContextPath()%>/js/esl/echarts'
             }
         });
-        
         // 使用
         require(
             [

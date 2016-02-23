@@ -5,7 +5,6 @@ import java.util.Date;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
-import com.dhcc.framework.common.log.BusinessLogUtil;
 import com.dhcc.framework.web.context.Visit;
 import com.dhcc.framework.web.context.WebContextHolder;
 

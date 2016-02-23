@@ -25,7 +25,7 @@ $(function() {
         	var uploadid=$(this).find("input[name='upload']").attr("id");
         	var  venQualifyTypeId=$(this).find("input[name='dto.venQualificationList.venQualification.venQualifyTypeId']").attr("id");
         	var  venQualificationId=$(this).find("input[name='dto.venQualificationList.venQualification.venQualificationId']").attr("id");
-  
+        	var vendorId=$("#vendorId").val();
         	$(this).find("input[name='upload']").uploadify({
                 'swf': $WEB_ROOT_PATH + '/images/uploadify.swf',
                 'uploader': $WEB_ROOT_PATH + '/ven/vendorCtrl!upload.htm',
@@ -42,7 +42,7 @@ $(function() {
                 'removeCompleted':true,
                 //开始上传时传递参数
                 'onUploadStart': function(file) {
-                	$("#"+uploadid).uploadify("settings", 'formData', {'dto.vendor.vendorId':$("#detail input[name='dto.vendor.vendorId']").val(),'dto.uploadFileName': file.name,'dto.venQualifTypeVO.qualif' : venQualificationId,'dto.venQualifTypeVO.type' : venQualifyTypeId});
+                	$("#"+uploadid).uploadify("settings", 'formData', {'dto.vendor.vendorId':vendorId,'dto.uploadFileName': file.name,'dto.venQualifTypeVO.qualif' : venQualificationId,'dto.venQualifTypeVO.type' : venQualifyTypeId});
                 },
                 //取消上传
                 'onCancel':function(){

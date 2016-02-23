@@ -22,7 +22,7 @@
 		<form id="detail" method="post" >
 			<table style="width: 100%;">
 				<tr style="display: none">
-					<input type="hidden" name="dto.vendor.vendorId" value="<s:property value="dto.vendor.vendorId"/>"/>
+					<input type="hidden" name="dto.vendor.vendorId" value="<s:property value="dto.vendor.vendorId"/>" id="vendorId" />
 				</tr>
 				<tr>
 					<td class="textLabel">代码:</td>
