@@ -616,7 +616,18 @@ public class WxMessageBlh extends AbstractBaseBlh {
 
 	// 下面是公众号的
 	// 2016-02-22
-
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
 	public void checkSignature(BusinessRequest res) throws IOException {
 		
 		HttpServletRequest request=WebContextHolder.getContext().getRequest();
@@ -658,5 +669,6 @@ public class WxMessageBlh extends AbstractBaseBlh {
 		writeResult("不可识别的加密类型");
 		return;
 	}
-
+	
+	
 }
