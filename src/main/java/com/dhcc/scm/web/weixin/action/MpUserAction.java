@@ -23,6 +23,7 @@ import com.dhcc.scm.dto.weixin.MpUserDto;
 @Scope("prototype")
 @Action(value = "mpUserCtrl", results = {
 		@Result(name = "list", location = "/WEB-INF/jsp/weixin/MpUser.jsp"),
+		@Result(name = "MpSubscribe", location = "/WEB-INF/jsp/weixin/MpSubscribe.jsp"),
 		@Result(name = "listMain", location = "/WEB-INF/jsp/weixin/MpUser.jsp")})
 @Blh("mpUserBlh")
 @JsonResults({@JResult(BlhMethod="findById",ognlExpress="dto.mpUser")})
@@ -37,6 +38,9 @@ public class MpUserAction extends BaseAction {
 		//直接返回jsp
 		if("listMain".equals(super.getBusinessFlow())){
 			return "listMain";
+		}
+		if("MpSubscribe".equals(super.getBusinessFlow())){
+			return "MpSubscribe";
 		}
 		return null;
 	}
