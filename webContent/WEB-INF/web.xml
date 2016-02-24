@@ -32,7 +32,7 @@
 		<init-param>
 			<param-name>urlMath</param-name>
 			<param-value>^((?!authenTicket/authenTicketCtrl!getTicket.htm|dhccApi|authenTicket/authenTicketCtrl!getTicket.htm
-		|authenTicket/authenTicketCtrl|login.htm|nur/nurseCtrl!vendorRegist.htm|nur/nurseCtrl!saveVendor.htm|nur/nurseCtrl!registSucess.htm|nur/nurseCtrl!upload.htm|nur/nurseCtrl!auditResult.htm|nur/nurseCtrl!queryAudit.htm|nur/nurseCtrl!checkVenUnique.htm|nur/nurseCtrl!checkVenAudit.htm|ven/vendorCtrl!deleteUpload.htm|demo/demoCtrl!testCon.htm|weixin/wxMessageCtrl!).)*$</param-value>
+		|authenTicket/authenTicketCtrl|login.htm|nur/nurseCtrl!vendorRegist.htm|nur/nurseCtrl!saveVendor.htm|nur/nurseCtrl!registSucess.htm|nur/nurseCtrl!upload.htm|nur/nurseCtrl!auditResult.htm|nur/nurseCtrl!queryAudit.htm|nur/nurseCtrl!checkVenUnique.htm|nur/nurseCtrl!checkVenAudit.htm|ven/vendorCtrl!deleteUpload.htm|demo/demoCtrl!testCon.htm|weixin/wxMessageCtrl!|weixin/mpUserCtrl!).)*$</param-value>
 		</init-param>
 		<init-param>
 			<param-name>loginUrl</param-name>
