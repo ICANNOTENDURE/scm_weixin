@@ -34,6 +34,9 @@
 </script>
 </head>
 <body>
+	
+	<s:property value="dto.operateResult.resultCode"/>
+	<s:property value="dto.mpUser.wxMpOpenId"/>
 	<div class="am-container" style="padding-top: 20px">
 		<div class="am-form ">
 			<section class="am-panel am-panel-primary">
