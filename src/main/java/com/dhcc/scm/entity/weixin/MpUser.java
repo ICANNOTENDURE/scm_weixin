@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 //微信公众号和sci关联表
 @Entity
@@ -35,10 +37,12 @@ public class MpUser implements Serializable {
 	private String wxMpNickname;
 	
 	//关注公众号时间
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="wx_mp_subscribe_wx_time")
 	private Date wxMpSubscribeWxTime;
 	
 	//关联供应链时间
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="wx_mp_subscribe_sci_time")
 	private Date wxMpSubscribeSciTime;
 	

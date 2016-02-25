@@ -9,15 +9,14 @@ import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.context.annotation.Scope;
 
+import com.dhcc.framework.annotation.Blh;
+import com.dhcc.framework.annotation.JResult;
+import com.dhcc.framework.annotation.JsonResults;
 import com.dhcc.framework.exception.BaseException;
 import com.dhcc.framework.transmission.dto.BaseDto;
 import com.dhcc.framework.transmission.event.BusinessRequest;
 import com.dhcc.framework.web.BaseAction;
-import com.dhcc.framework.annotation.Blh;
-import com.dhcc.framework.annotation.JResult;
-import com.dhcc.framework.annotation.JsonResults;
 import com.dhcc.scm.dto.weixin.MpUserDto;
-
 
 @Namespace(value = "/weixin")
 @Scope("prototype")
