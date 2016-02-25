@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Dic</title>
 <%@include file="/WEB-INF/jsp/common/scriptInc.jsp"%>
-<script type="text/javascript"
+<script type="text/javascript"双击维护所属类组
 	src="<%=request.getContextPath()%>/js/dhcc/pms/cat/CatGroup.js"></script>
 </head>
 <body>
@@ -90,7 +90,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="textLabel" style="text-align: right; width: 20%">小类描述</td>
+					<td class="textLabel" style="text-align: right; width: 20%">小类描述:</td>
 					<td class="textParent" style="text-align: left; width: 30%"><input
 						style="width: 250px;" class="validatebox" type="text"
 						name="dto.subCatGroup.subGroupName" id="subGroupName" data-options="required:true"></input>
@@ -155,7 +155,7 @@
 				data-options="toolbar:'#toolbar', fit:true, fitColumns:true,singleSelect:true,pagination:true">
 			</table>
 		</div>
-		<div data-options="region:'east',title:'小类维护        (双击维护所属大类)',iconCls:'icon-edit'" style="width: 600px">
+		<div data-options="region:'east',title:'小类维护        (双击维护所属类组)',iconCls:'icon-edit'" style="width: 600px">
             <table id="datagrid2"  class="datagrid"
 				data-options="toolbar:'#toolbar2', fit:true,fitColumns:true,pagination:true"> 
 			</table>
