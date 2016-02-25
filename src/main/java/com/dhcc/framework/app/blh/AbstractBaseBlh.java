@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import me.chanjar.weixin.cp.api.WxCpService;
+import me.chanjar.weixin.mp.bean.result.WxMpUser;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -170,6 +171,15 @@ public abstract class AbstractBaseBlh implements BusinessLogicHandler {
 		}
 		logger.info("weixin_userIdString:"+userIdString);
 		return userIdString;
+	}
+	
+	/**
+	 * 获取微信公众号openid
+	 * @return
+	 */
+	public WxMpUser getWxMpUser(){
+		WxMpUser wxMpUser =(WxMpUser)WebContextHolder.getContext().getSessionAttr(BaseConstants.WEIXIN_MP_USER);
+		return wxMpUser;
 	}
 	
 }

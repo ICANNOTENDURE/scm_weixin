@@ -5,7 +5,9 @@ package com.dhcc.framework.common;
  * @author liuyg
  */
 public abstract class BaseConstants {
+	
 
+	
 	/**
 	 * session中存放当前用户ID的key
 	 */
@@ -113,5 +115,10 @@ public abstract class BaseConstants {
 	 * 微信id
 	 */
 	public static final String WEIXIN_SESSION_ID="WEIXINSESSIONID";
-
+	
+	/**
+	 * 微信公众号id
+	 */
+	public static final String WEIXIN_MP_USER="WXMPUSER";
+	
 }

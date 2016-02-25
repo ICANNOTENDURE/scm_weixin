@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Scope;
 import com.dhcc.framework.annotation.Blh;
 import com.dhcc.framework.annotation.JResult;
 import com.dhcc.framework.annotation.JsonResults;
+import com.dhcc.framework.annotation.MpOAuthRequired;
+import com.dhcc.framework.annotation.MpOAuthRequireds;
 import com.dhcc.framework.exception.BaseException;
 import com.dhcc.framework.transmission.dto.BaseDto;
 import com.dhcc.framework.transmission.event.BusinessRequest;
@@ -26,6 +28,7 @@ import com.dhcc.scm.dto.weixin.MpUserDto;
 		@Result(name = "listMain", location = "/WEB-INF/jsp/weixin/MpUser.jsp")})
 @Blh("mpUserBlh")
 @JsonResults({@JResult(BlhMethod="findById",ognlExpress="dto.mpUser")})
+@MpOAuthRequireds({@MpOAuthRequired(BlhMethod="searchOrder"),@MpOAuthRequired(BlhMethod="listToDoTask")})
 public class MpUserAction extends BaseAction {
 	
 	private static final long serialVersionUID = 1L;
