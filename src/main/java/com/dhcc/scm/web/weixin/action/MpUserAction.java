@@ -28,7 +28,7 @@ import com.dhcc.scm.dto.weixin.MpUserDto;
 		@Result(name = "listMain", location = "/WEB-INF/jsp/weixin/MpUser.jsp")})
 @Blh("mpUserBlh")
 @JsonResults({@JResult(BlhMethod="findById",ognlExpress="dto.mpUser")})
-@MpOAuthRequireds({@MpOAuthRequired(BlhMethod="searchOrder"),@MpOAuthRequired(BlhMethod="listToDoTask")})
+@MpOAuthRequireds({@MpOAuthRequired(BlhMethod="MpSci"),@MpOAuthRequired(BlhMethod="saveWeiXinOpenId"),@MpOAuthRequired(BlhMethod="deleteWeiXinOpenId")})
 public class MpUserAction extends BaseAction {
 	
 	private static final long serialVersionUID = 1L;
