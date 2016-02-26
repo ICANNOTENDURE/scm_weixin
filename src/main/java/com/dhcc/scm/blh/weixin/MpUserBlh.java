@@ -161,7 +161,7 @@ public class MpUserBlh extends AbstractBaseBlh {
 			dto.getMpUser().setWxMpSubscribeSciTime(new Date());
 			dto.getMpUser().setWxMpNickname(wxMpUser.getNickname());
 			dto.getMpUser().setWxMpHeadimgurl(wxMpUser.getHeadImgUrl());
-			
+			dto.getMpUser().setWxMpSend("1");
 			commonService.saveOrUpdate(dto.getMpUser());
 			operateResult.setResultCode("0");
 		} else {
