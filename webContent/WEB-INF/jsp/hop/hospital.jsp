@@ -74,7 +74,7 @@
 	<div id="searchHospWin" class="dialog" title="条件查询"
 		data-options="modal:true,width:400,height:250,closed:true,buttons:'#searchBtnDiv0'"
 		style="vertical-align: middle;">
-		<table style="width: 100%;" cellspacing="10">				
+		<table style="width: 100%;" >				
 			<tr>
 				<td class="textLabel">医院代码:</td>
 				<td class="textParent"><input style="width: 250px;"

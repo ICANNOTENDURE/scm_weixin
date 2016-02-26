@@ -19,9 +19,6 @@
 				function() {
 					$.post($WEB_ROOT_PATH + "/weixin/mpUserCtrl!saveWeiXinOpenId.htm", {
 						'dto.mpUser.wxMpOpenId' : $("#openId").val(),
-						'dto.mpUser.wxMpHeadimgurl' : $("#wxMpHeadimgurl") .val(),
-						'dto.mpUser.wxMpNickname' : $("#wxMpNickname").val(),
-						'dto.mpUser.wxMpUnionid' : $("#wxMpUnionid").val(),
 						'dto.username' : $("#mp_userName").val(),
 						'dto.passwd' : $("#mp_password").val()
 					}, function(data) {
@@ -51,7 +48,7 @@
 </script>
 </head>
 <body>
-	
+	<!--
 	<s:property value="dto.operateResult.resultCode" />
 	<s:property value="dto.operateResult.resultContent" />
 	
@@ -59,7 +56,7 @@
 	<s:property value="dto.mpUser.wxMpHeadimgurl" />
 	<s:property value="dto.mpUser.wxMpNickname" />
 	<s:property value="dto.mpUser.wxMpUnionid" />
-	<!--  
+	  
 	-->
 	<input type="hidden" id="openId"
 		value="<s:property value="dto.mpUser.wxMpOpenId"/>" />
@@ -110,10 +107,12 @@
 				    <li>帐号:<s:property value="dto.username"/></li>
 				    <li>单位名称:<s:property value="dto.depart"/></li>
 				    <li>微信昵称:<s:property value="dto.mpUser.wxMpNickname"/></li>
-				    <li>关联时间:<s:property value="dto.mpUser.wxMpSubscribeSciTime"/></li>
+				    <li>绑定时间:<s:property value="dto.mpUser.wxMpSubscribeSciTime"/></li>
 				    <li>关注公众号时间:<s:property value="dto.mpUser.wxMpSubscribeWxTime"/></li>
 				    <li>微信openid:<s:property value="dto.mpUser.wxMpOpenId"/></li>
+				    <!-- 
 				    <li>微信wxMpUnionid:<s:property value="dto.mpUser.wxMpUnionid"/></li>
+				  	-->
 				  </ul>
 				</div>
 				<div class="am-cf">

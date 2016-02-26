@@ -48,6 +48,19 @@ public class MpUser implements Serializable {
 	
 	@Column(name="wx_mp_headimgurl")
 	private String wxMpHeadimgurl;
+	
+	@Column(name="wx_mp_send")
+	private String wxMpSend;
+	
+	
+	
+	public String getWxMpSend() {
+		return wxMpSend;
+	}
+
+	public void setWxMpSend(String wxMpSend) {
+		this.wxMpSend = wxMpSend;
+	}
 
 	public Long getWxMpUserId() {
 		return wxMpUserId;

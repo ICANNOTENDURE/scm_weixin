@@ -5,7 +5,9 @@
 package com.dhcc.scm.blh.weixin;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -72,6 +74,10 @@ public class MpUserBlh extends AbstractBaseBlh {
 
 	// 删除
 	public void delete(BusinessRequest res) {
+		
+		MpUserDto dto = super.getDto(MpUserDto.class, res);
+		MpUser mpUser=commonService.get(MpUser.class, dto.getMpUser().getWxMpUserId());
+		commonService.delete(mpUser);
 
 	}
 
@@ -122,9 +128,16 @@ public class MpUserBlh extends AbstractBaseBlh {
 		return "MpSubscribe";
 	}
    
+
 	/**
-	 * 验证,保存微信openid和sci用户
-	 * @param res
+	 * 
+	* @Title: saveWeiXinOpenId 
+	* @Description: TODO(验证,保存微信openid和sci用户) 
+	* @param @param res    设定文件 
+	* @return void    返回类型 
+	* @throws 
+	* @author zhouxin   
+	* @date 2016年2月26日 上午8:50:55
 	 */
 	public void saveWeiXinOpenId(BusinessRequest res) {
 
@@ -158,16 +171,25 @@ public class MpUserBlh extends AbstractBaseBlh {
 	}
 	
 	
+	/**
+	 * 
+	* @Title: deleteWeiXinOpenId 
+	* @Description: TODO(删除sci和微信关联) 
+	* @param @param res    设定文件 
+	* @return void    返回类型 
+	* @throws 
+	* @author zhouxin   
+	* @date 2016年2月26日 上午8:51:06
+	 */
 	public void deleteWeiXinOpenId(BusinessRequest res) {
 
 		MpUserDto dto = super.getDto(MpUserDto.class, res);
 		OperateResult operateResult = new OperateResult();
 		dto.setOperateResult(operateResult);
 		try {
-			List<MpUser> mpUsers=commonService.findByProperty(MpUser.class, "wxMpOpenId",dto.getMpUser().getWxMpOpenId());
-			for(MpUser mpUser:mpUsers){
-				commonService.delete(mpUser);
-			}
+			Map<String,Object> praAndValueMap=new HashMap<String, Object>();
+			praAndValueMap.put("wxMpOpenId", dto.getMpUser().getWxMpOpenId());
+			commonService.comonDelete(MpUser.class, praAndValueMap);
 			operateResult.setResultCode("0");
 		} catch (Exception e) {
 			e.printStackTrace();
