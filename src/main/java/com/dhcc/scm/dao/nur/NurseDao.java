@@ -27,6 +27,7 @@ import com.dhcc.framework.jdbc.JdbcTemplateWrapper;
 import com.dhcc.framework.transmission.dto.BaseDto;
 import com.dhcc.framework.util.StringUtils;
 import com.dhcc.framework.web.context.WebContextHolder;
+import com.dhcc.scm.blh.weixin.MpMessageBlh;
 import com.dhcc.scm.blh.weixin.WxMessageBlh;
 import com.dhcc.scm.dto.nur.NurseIncDto;
 import com.dhcc.scm.entity.hop.Evalute;
@@ -64,6 +65,9 @@ public class NurseDao extends HibernatePersistentObjectDAO<VenInc> {
 	
 	@Resource
 	private WxMessageBlh wxMessageBlh;
+	
+	@Resource
+	private MpMessageBlh mpMessageBlh;
 	
 	public void buildPagerModelQuery(PagerModel pagerModel, BaseDto dto) {
 
@@ -312,7 +316,8 @@ public class NurseDao extends HibernatePersistentObjectDAO<VenInc> {
 				state=orderDetail.getOrderState();
 			}
 			if(state.longValue()==1){
-				wxMessageBlh.sendMessByOrd(detailGroupByVenVo.getOrderDetails().get(0));
+				//wxMessageBlh.sendMessByOrd(detailGroupByVenVo.getOrderDetails().get(0));
+				mpMessageBlh.sendMessByOrd(detailGroupByVenVo.getOrderDetails().get(0));
 			}
 		}
 	}

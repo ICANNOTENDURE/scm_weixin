@@ -23,7 +23,7 @@ import com.dhcc.scm.dto.weixin.MpUserDto;
 @Action(value = "mpMessageCtrl", results = {
 		@Result(name = "list", location = "/WEB-INF/jsp/weixin/MpUser.jsp"),
 		@Result(name = "listMain", location = "/WEB-INF/jsp/weixin/MpUser.jsp")})
-@Blh("mpUserBlh")
+@Blh("mpMessageBlh")
 @JsonResults({@JResult(BlhMethod="findById",ognlExpress="dto.mpUser")})
 public class MpMessageAction extends BaseAction {
 	

@@ -21,7 +21,6 @@ import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.HopCtlocDestination;
 import com.dhcc.scm.entity.hop.Hospital;
 import com.dhcc.scm.entity.ord.OrderDetail;
-import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.userManage.NormalUser;
 import com.dhcc.scm.entity.weixin.MpUser;
 
@@ -40,7 +39,7 @@ public class MpMessageBlh extends AbstractBaseBlh {
 
 	public void sendMessByOrd(OrderDetail orderDetail) {
 		try {
-			String host = PropertiesBean.getInstance().getProperty("config.sci.dhs");
+			String host = PropertiesBean.getInstance().getProperty("config.sci.dns");
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
 
 			Long vendorId = orderDetail.getOrderVenId();
@@ -72,10 +71,11 @@ public class MpMessageBlh extends AbstractBaseBlh {
 			
 			for(NormalUser normalUser:normalUsers){
 				String[] propertyNames={"wxMpSciPointer","wxMpSend"};
-				Object[] values={normalUser.getUserId(),"1"};
+				Object[] values={normalUser.getNormalAccount().getAccountId(),"1"};
 				List<MpUser> mpUsers=commonService.findByProperties(MpUser.class, propertyNames, values);
 				for(MpUser mpUser:mpUsers){
-					WxMpCustomMessage.NEWS().toUser(mpUser.getWxMpOpenId()).addArticle(article1).build();
+					//WxMpCustomMessage.NEWS().toUser(mpUser.getWxMpOpenId()).addArticle(article1).build();
+					wxMpService.customMessageSend(WxMpCustomMessage.NEWS().toUser(mpUser.getWxMpOpenId()).addArticle(article1).build());
 				}
 			}
 			
