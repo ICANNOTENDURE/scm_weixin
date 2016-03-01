@@ -14,6 +14,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "T_SYS_NORMAL_USER")
 public class NormalUser implements Serializable {
@@ -86,7 +88,7 @@ public class NormalUser implements Serializable {
 	@Column(name = "LOCID")
 	private Long locId;
 	
-	
+	@JsonIgnore
 	@OneToOne(mappedBy="normalUser",fetch=FetchType.EAGER)
 	private NormalAccount normalAccount;
 	

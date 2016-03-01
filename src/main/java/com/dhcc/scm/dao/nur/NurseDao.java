@@ -295,7 +295,6 @@ public class NurseDao extends HibernatePersistentObjectDAO<VenInc> {
 
 		for (Map.Entry<String, OrderDetailGroupByVenVo> entry : dto.getVenMap().entrySet()) {
 			OrderDetailGroupByVenVo detailGroupByVenVo = entry.getValue();
-			Long state=0l;
 			for (OrderDetail orderDetail : detailGroupByVenVo.getOrderDetails()) {
 				super.save(orderDetail);
 				//更新供应商商品的销量
@@ -313,12 +312,12 @@ public class NurseDao extends HibernatePersistentObjectDAO<VenInc> {
 				exeState.setExedate(new java.sql.Timestamp(new Date().getTime()));
 				super.save(exeState);
 				super.delete(detailGroupByVenVo.getOrdShoppings());
-				state=orderDetail.getOrderState();
+				if(orderDetail.getOrderState().longValue()==1){
+					//wxMessageBlh.sendMessByOrd(detailGroupByVenVo.getOrderDetails().get(0));
+					mpMessageBlh.sendMessByOrd(detailGroupByVenVo.getOrderDetails().get(0));
+				}
 			}
-			if(state.longValue()==1){
-				//wxMessageBlh.sendMessByOrd(detailGroupByVenVo.getOrderDetails().get(0));
-				mpMessageBlh.sendMessByOrd(detailGroupByVenVo.getOrderDetails().get(0));
-			}
+		
 		}
 	}
 
