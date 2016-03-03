@@ -30,7 +30,7 @@ import com.dhcc.scm.dto.weixin.MpUserDto;
 		@Result(name = "listMain", location = "/WEB-INF/jsp/weixin/MpUser.jsp")})
 @Blh("mpMessageBlh")
 @JsonResults({@JResult(BlhMethod="findById",ognlExpress="dto.mpUser")})
-@MpOAuthRequireds({@MpOAuthRequired(BlhMethod="mpToDoTask"),@MpOAuthRequired(BlhMethod="accpectOrder"),@MpOAuthRequired(BlhMethod="mpSearchOrder")})
+@MpOAuthRequireds({@MpOAuthRequired(BlhMethod="mpToDoTask"),@MpOAuthRequired(BlhMethod="accpectOrder")})
 
 public class MpMessageAction extends BaseAction {
 	
