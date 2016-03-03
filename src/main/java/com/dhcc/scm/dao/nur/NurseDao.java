@@ -312,12 +312,11 @@ public class NurseDao extends HibernatePersistentObjectDAO<VenInc> {
 				exeState.setExedate(new java.sql.Timestamp(new Date().getTime()));
 				super.save(exeState);
 				super.delete(detailGroupByVenVo.getOrdShoppings());
-				if(orderDetail.getOrderState().longValue()==1){
-					//wxMessageBlh.sendMessByOrd(detailGroupByVenVo.getOrderDetails().get(0));
-					mpMessageBlh.sendMessByOrd(detailGroupByVenVo.getOrderDetails().get(0));
-				}
 			}
-		
+			if(detailGroupByVenVo.getOrderDetails().get(0).getOrderState().longValue()==1){
+				//wxMessageBlh.sendMessByOrd(detailGroupByVenVo.getOrderDetails().get(0));
+				mpMessageBlh.sendMessByOrd(detailGroupByVenVo.getOrderDetails().get(0));
+			}
 		}
 	}
 
