@@ -16,7 +16,7 @@
 		$(".am-icon-chevron-left").on('click', function() {
 			window.history.back();
 		});
-		$(".am-btn-danger").on('click', function() {
+		$("#accpectFlagBTN").on('click', function() {
 			$('#common-modal-loading').modal({closeViaDimmer:false});
 			$.post(
 					$WEB_ROOT_PATH + "/weixin/mpMessageCtrl!accpectOrder.htm", 
@@ -27,6 +27,7 @@
 						$('#common-modal-loading').modal('close');
 						if(data.resultCode=="0"){
 							$('#common-alert').modal();
+							$("#accpectFlagBTN").remove();
 						}else{
 							  $('#common-confirm-bd').html(data.resultContent);
 							  $('#common-confirm').modal({
@@ -73,7 +74,7 @@
 		</tbody>
 	</table>
 	<s:if test="dto.accpectFlag==1">
-		<button type="button" class="am-btn am-btn-danger am-btn-block" data-am-loading="{spinner: 'circle-o-notch', loadingText: '加载中...', resetText: '加载过了'}">确认接收定单</button>
+		<button type="button" class="am-btn am-btn-danger am-btn-block" data-am-loading="{spinner: 'circle-o-notch', loadingText: '加载中...', resetText: '加载过了'}" id="accpectFlagBTN">确认接收定单</button>
 	</s:if>
 	<!--页脚-->
 <%@include file="/WEB-INF/jsp/common/WXfooter.jsp"%>
