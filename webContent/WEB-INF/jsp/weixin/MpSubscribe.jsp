@@ -10,8 +10,6 @@
 <META name="apple-mobile-web-app-capable" content="yes">
 <META name="apple-mobile-web-app-status-bar-style" content="black">
 <%@include file="/WEB-INF/jsp/common/amaze.jsp"%>
-<link href="<%=request.getContextPath()%>/css/weixin/ToDoTask.css"
-	rel="stylesheet" type="text/css" />
 <title>东华医疗供应链(SCI)</title>
 <script type="text/javascript">
 	$(function() {

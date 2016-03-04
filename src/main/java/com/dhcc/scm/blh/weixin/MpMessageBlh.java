@@ -173,7 +173,7 @@ public class MpMessageBlh extends AbstractBaseBlh {
 					ExeState exeState = new ExeState();
 					exeState.setRemark("手机微信确认");
 					exeState.setStateId(Long.valueOf(2));
-					exeState.setUserid(getMpUserId());
+					exeState.setUserid(getMpUserId().getAccountId());
 					exeState.setOrdId(orderDetail.getOrderId());
 					exeState.setExedate(new java.sql.Timestamp(new Date().getTime()));
 					commonService.saveOrUpdate(exeState);
@@ -220,13 +220,10 @@ public class MpMessageBlh extends AbstractBaseBlh {
 	public String mpToDoTask(BusinessRequest res) {
 
 		MpUserDto dto = super.getDto(MpUserDto.class, res);
-		Long userId= super.getMpUserId();
-		dto.setTitle("订单查询");
-		if (userId==null) {
-			dto.setTitle("请关联帐号");
-			return "mpToDoTask";
+		NormalAccount normalAccount=super.getMpUserId();
+		if(normalAccount==null){
+			return "MpSubscribe";
 		}
-		NormalAccount normalAccount=commonService.get(NormalAccount.class, userId);
 		WxMessageDto messageDto=new WxMessageDto();
 		messageDto.setEnd(dto.getEndDate());
 		messageDto.setStart(dto.getStartDate());

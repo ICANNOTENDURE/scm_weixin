@@ -189,7 +189,10 @@ public abstract class AbstractBaseBlh implements BusinessLogicHandler {
 		return wxMpUser;
 	}
 	
-	public Long getMpUserId(){
+	public NormalAccount getMpUserId(){
+		if(getWxMpUser()==null){
+			return null;
+		}
 		List<MpUser> mpUsers=commonService.findByProperty(MpUser.class, "wxMpOpenId", getWxMpUser().getOpenId());
 		if(mpUsers.size()==0){
 			return null;
@@ -198,7 +201,7 @@ public abstract class AbstractBaseBlh implements BusinessLogicHandler {
 		if(normalAccount==null){
 			return null;
 		}
-		return normalAccount.getAccountId();
+		return normalAccount;
 	}
 	
 }

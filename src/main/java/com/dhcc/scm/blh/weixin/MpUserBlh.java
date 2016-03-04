@@ -22,6 +22,7 @@ import com.dhcc.framework.app.blh.AbstractBaseBlh;
 import com.dhcc.framework.app.service.CommonService;
 import com.dhcc.framework.transmission.event.BusinessRequest;
 import com.dhcc.scm.dto.weixin.MpUserDto;
+import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.ven.Vendor;
 import com.dhcc.scm.entity.vo.ws.OperateResult;
@@ -115,6 +116,10 @@ public class MpUserBlh extends AbstractBaseBlh {
 			if (normalAccount.getNormalUser().getType().intValue() == 2) {
 				Vendor vendor = commonService.get(Vendor.class, normalAccount.getNormalUser().getVendorId());
 				dto.setDepart(vendor.getName());
+			}
+			if (normalAccount.getNormalUser().getType().intValue() == 1) {
+				HopCtloc hopCtloc = commonService.get(HopCtloc.class, normalAccount.getNormalUser().getLocId());
+				dto.setDepart(hopCtloc.getName());
 			}
 			dto.setUsername(normalAccount.getAccountAlias());
 			operateResult.setResultCode("0");
