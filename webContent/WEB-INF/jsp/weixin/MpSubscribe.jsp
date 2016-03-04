@@ -17,31 +17,36 @@
 	$(function() {
 		$(".am-btn-primary").on( 'click',
 				function() {
+					$('#common-modal-loading').modal({closeViaDimmer:false});
 					$.post($WEB_ROOT_PATH + "/weixin/mpUserCtrl!saveWeiXinOpenId.htm", {
 						'dto.mpUser.wxMpOpenId' : $("#openId").val(),
 						'dto.username' : $("#mp_userName").val(),
 						'dto.passwd' : $("#mp_password").val()
 					}, function(data) {
+						$('#common-modal-loading').modal('close');
 						if (data.resultCode == "0") {
 							window.location.reload();
 						} else {
-							$('.am-modal-bd').html(data.resultContent);
+							$('#common-alert-bd').html(data.resultContent);
+							$('#common-alert').modal();
+							
 						}
-						$('#my-alert').modal();
 					}, 'json');
 		 });
 		
 		$(".am-btn-danger").on( 'click',
 				function() {
+					$('#common-modal-loading').modal({closeViaDimmer:false});
 					$.post($WEB_ROOT_PATH + "/weixin/mpUserCtrl!deleteWeiXinOpenId.htm", {
 						'dto.mpUser.wxMpOpenId' : $("#openId").val()
 					}, function(data) {
 						if (data.resultCode == "0") {
 							window.location.reload();
 						} else {
-							$('.am-modal-bd').html(data.resultContent);
+							$('#common-modal-loading').modal('close');
+							$('#common-alert-bd').html(data.resultContent);
+							$('#common-alert').modal();
 						}
-						$('#my-alert').modal();
 					}, 'json');
 		 });
 	});
@@ -122,15 +127,6 @@
 		</div>
 	
 	</s:else>	
-	<div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">
-		<div class="am-modal-dialog">
-			<div class="am-modal-hd">错误</div>
-			<div class="am-modal-bd"></div>
-			<div class="am-modal-footer">
-				<span class="am-modal-btn">确定</span>
-			</div>
-		</div>
-	</div>
 	<%@include file="/WEB-INF/jsp/common/WXfooter.jsp"%>
 </body>
 </html>

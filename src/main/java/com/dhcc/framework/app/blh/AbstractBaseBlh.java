@@ -2,6 +2,7 @@ package com.dhcc.framework.app.blh;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -12,6 +13,7 @@ import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.dhcc.framework.app.service.CommonService;
 import com.dhcc.framework.common.BaseConstants;
 import com.dhcc.framework.exception.BaseException;
 import com.dhcc.framework.transmission.dto.BaseDto;
@@ -21,6 +23,8 @@ import com.dhcc.framework.transmission.event.RequestEvent;
 import com.dhcc.framework.transmission.event.ResponseEvent;
 import com.dhcc.framework.util.JsonUtils;
 import com.dhcc.framework.web.context.WebContextHolder;
+import com.dhcc.scm.entity.userManage.NormalAccount;
+import com.dhcc.scm.entity.weixin.MpUser;
 
 /**
  * blh 抽像类 所有BLH都要继承它
@@ -34,6 +38,9 @@ public abstract class AbstractBaseBlh implements BusinessLogicHandler {
 	
 	@Resource
 	private WxCpService wxCpService;
+	
+	@Resource
+	private CommonService commonService;
 	
 	public AbstractBaseBlh() {
 
@@ -180,6 +187,18 @@ public abstract class AbstractBaseBlh implements BusinessLogicHandler {
 	public WxMpUser getWxMpUser(){
 		WxMpUser wxMpUser =(WxMpUser)WebContextHolder.getContext().getSessionAttr(BaseConstants.WEIXIN_MP_USER);
 		return wxMpUser;
+	}
+	
+	public Long getMpUserId(){
+		List<MpUser> mpUsers=commonService.findByProperty(MpUser.class, "wxMpOpenId", getWxMpUser().getOpenId());
+		if(mpUsers.size()==0){
+			return null;
+		}
+		NormalAccount normalAccount = commonService.get(NormalAccount.class, mpUsers.get(0).getWxMpSciPointer());
+		if(normalAccount==null){
+			return null;
+		}
+		return normalAccount.getAccountId();
 	}
 	
 }
