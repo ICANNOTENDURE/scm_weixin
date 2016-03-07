@@ -19,6 +19,7 @@ import com.dhcc.framework.transmission.event.BusinessRequest;
 import com.dhcc.scm.dto.weixin.MpInGdRecDto;
 import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.vo.weixin.WxJsapiSign;
+import com.dhcc.scm.entity.vo.ws.OperateResult;
 
 @Component
 public class MpInGdRecBlh extends AbstractBaseBlh {
@@ -38,8 +39,11 @@ public class MpInGdRecBlh extends AbstractBaseBlh {
 	
 	public String mpInGdRec(BusinessRequest res) {
 		
+		MpInGdRecDto dto = super.getDto(MpInGdRecDto.class, res);
+		dto.setTitle("入库");
 		NormalAccount normalAccount=super.getMpUserId();
 		if(normalAccount==null){
+			dto.setOperateResult(new OperateResult());
 			return "mpSubscribe";
 		}
 		if(normalAccount.getNormalUser().getType().longValue()!=1){

@@ -125,7 +125,6 @@ public class MpUserBlh extends AbstractBaseBlh {
 			operateResult.setResultCode("0");
 			dto.setMpUser(mpUsers.get(0));
 		}else{
-			operateResult.setResultCode("1");
 			MpUser mpUser = new MpUser();
 			mpUser.setWxMpOpenId(wxMpUser.getOpenId());
 			dto.setMpUser(mpUser);

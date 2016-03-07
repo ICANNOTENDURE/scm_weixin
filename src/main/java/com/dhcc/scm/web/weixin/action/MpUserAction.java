@@ -24,7 +24,7 @@ import com.dhcc.scm.dto.weixin.MpUserDto;
 @Scope("prototype")
 @Action(value = "mpUserCtrl", results = {
 		@Result(name = "list", location = "/WEB-INF/jsp/weixin/MpUser.jsp"),
-		@Result(name = "MpSubscribe", location = "/WEB-INF/jsp/weixin/MpSubscribe.jsp"),
+		@Result(name = "MpSubscribe", location = "/WEB-INF/jsp/weixin/mpSubscribe.jsp"),
 		@Result(name = "listMain", location = "/WEB-INF/jsp/weixin/MpUser.jsp")})
 @Blh("mpUserBlh")
 @JsonResults({@JResult(BlhMethod="findById",ognlExpress="dto.mpUser")})

@@ -157,7 +157,6 @@ public class MpMessageBlh extends AbstractBaseBlh {
 			return;
 		}
 		if(getMpUserId()==null){
-			operateResult.setResultCode("1");
 			operateResult.setResultContent("用户未关联");
 			super.writeJSON(operateResult);
 			return;
@@ -201,6 +200,11 @@ public class MpMessageBlh extends AbstractBaseBlh {
 	 */
 	public String mpSearchOrder(BusinessRequest res) {
 		MpUserDto dto = super.getDto(MpUserDto.class, res);
+		NormalAccount normalAccount=super.getMpUserId();
+		if(normalAccount==null){
+			dto.setOperateResult(new OperateResult());
+			return "mpSubscribe";
+		}
 		dto.setTitle("订单查询");
 		return "mpSearchOrder";
 	}
@@ -222,6 +226,7 @@ public class MpMessageBlh extends AbstractBaseBlh {
 		MpUserDto dto = super.getDto(MpUserDto.class, res);
 		NormalAccount normalAccount=super.getMpUserId();
 		if(normalAccount==null){
+			dto.setOperateResult(new OperateResult());
 			return "MpSubscribe";
 		}
 		WxMessageDto messageDto=new WxMessageDto();

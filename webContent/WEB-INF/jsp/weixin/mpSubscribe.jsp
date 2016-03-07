@@ -69,7 +69,8 @@
 		value="<s:property value="dto.mpUser.wxMpNickname"/>" />
 	<input type="hidden" id="wxMpUnionid"
 		value="<s:property value="dto.mpUser.wxMpUnionid"/>" />
-	<s:if test="dto.operateResult.resultCode==1">
+	<s:property value="dto.operateResult.resultCode"/>	
+	<s:if test="dto.operateResult.resultCode lt 0">
 		<div class="am-container" style="padding-top: 20px">
 			<div class="am-form ">
 				<section class="am-panel am-panel-primary">

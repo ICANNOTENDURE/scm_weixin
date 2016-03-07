@@ -22,7 +22,7 @@ import com.dhcc.scm.dto.weixin.MpInGdRecDto;
 @Scope("prototype")
 @Action(value = "mpInGdRecCtrl", results = {
 		@Result(name = "noPermission", location = "/WEB-INF/jsp/weixin/noPermission.jsp"),
-		@Result(name = "mpSubscribe", location = "/WEB-INF/jsp/weixin/MpSubscribe.jsp"),
+		@Result(name = "mpSubscribe", location = "/WEB-INF/jsp/weixin/mpSubscribe.jsp"),
 		@Result(name = "mpInGdRec", location = "/WEB-INF/jsp/weixin/mpInGdRec.jsp")})
 @Blh("mpInGdRecBlh")
 @MpOAuthRequireds({@MpOAuthRequired(BlhMethod="mpInGdRec")})
