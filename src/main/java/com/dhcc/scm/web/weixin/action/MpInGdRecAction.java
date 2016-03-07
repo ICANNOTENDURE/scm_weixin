@@ -10,6 +10,8 @@ import org.apache.struts2.convention.annotation.Result;
 import org.springframework.context.annotation.Scope;
 
 import com.dhcc.framework.annotation.Blh;
+import com.dhcc.framework.annotation.MpOAuthRequired;
+import com.dhcc.framework.annotation.MpOAuthRequireds;
 import com.dhcc.framework.exception.BaseException;
 import com.dhcc.framework.transmission.dto.BaseDto;
 import com.dhcc.framework.transmission.event.BusinessRequest;
@@ -23,6 +25,7 @@ import com.dhcc.scm.dto.weixin.MpInGdRecDto;
 		@Result(name = "mpSubscribe", location = "/WEB-INF/jsp/weixin/MpSubscribe.jsp"),
 		@Result(name = "mpInGdRec", location = "/WEB-INF/jsp/weixin/mpInGdRec.jsp")})
 @Blh("mpInGdRecBlh")
+@MpOAuthRequireds({@MpOAuthRequired(BlhMethod="mpInGdRec")})
 public class MpInGdRecAction extends BaseAction {
 	
 	private static final long serialVersionUID = 1L;
