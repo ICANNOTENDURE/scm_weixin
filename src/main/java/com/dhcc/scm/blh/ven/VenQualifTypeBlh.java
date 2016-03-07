@@ -5,9 +5,7 @@
 package com.dhcc.scm.blh.ven;
 
 import javax.annotation.Resource;
-
 import org.springframework.stereotype.Component;
-
 import com.dhcc.framework.app.blh.AbstractBaseBlh;
 import com.dhcc.framework.app.service.CommonService;
 import com.dhcc.framework.transmission.event.BusinessRequest;
