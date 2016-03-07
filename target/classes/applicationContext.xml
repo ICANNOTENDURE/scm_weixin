@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:jee="http://www.springframework.org/schema/jee"
-	xmlns:tx="http://www.springframework.org/schema/tx" 
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:aop="http://www.springframework.org/schema/aop" 
-	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:cache="http://www.springframework.org/schema/cache"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 						http://www.springframework.org/schema/beans/spring-beans-3.1.xsd 
@@ -32,10 +29,10 @@
 
 	<!-- 引入属性文件 -->
 	<context:property-placeholder location="classpath:hibernate.properties" />
-	
+
 	<!-- webservice -->
 	<import resource="applicationOrderStateWSServer.xml" />
-	
+
 	<!-- 数据源配置 -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
@@ -142,26 +139,41 @@
 			</map>
 		</constructor-arg>
 	</bean>
-	
 
-	<!--企业号应用信息，可配置多个-->
-    <bean id="configStorage" class="me.chanjar.weixin.cp.api.WxCpInMemoryConfigStorage">
-        <property name="corpId" value="wxd10f849e6ac518ea"/>
-        <property name="corpSecret" value="WfTLMRDCjsbLOn4pIa0b3C673SQJEeq-SfDWBX2TIAqvLqSlGZAL5Aq7QKit9EEP"/>
-        <property name="agentId" value="0"/>
-        <property name="aesKey" value="7PPUEigwPE8fLwSeJWjP4EmzwCVmWxEVfQuW8yT0dZp"/>
-        <property name="token" value="scm2015"/>
-    </bean>
 
-    <bean id="wxCpService" class="me.chanjar.weixin.cp.api.WxCpServiceImpl">
-        <property name="wxCpConfigStorage" ref="configStorage"/>
-    </bean>
+	<!--企业号应用信息，可配置多个 -->
+	<bean id="configStorage" class="me.chanjar.weixin.cp.api.WxCpInMemoryConfigStorage">
+		<property name="corpId" value="wxd10f849e6ac518ea" />
+		<property name="corpSecret"
+			value="WfTLMRDCjsbLOn4pIa0b3C673SQJEeq-SfDWBX2TIAqvLqSlGZAL5Aq7QKit9EEP" />
+		<property name="agentId" value="0" />
+		<property name="aesKey" value="7PPUEigwPE8fLwSeJWjP4EmzwCVmWxEVfQuW8yT0dZp" />
+		<property name="token" value="scm2015" />
+	</bean>
 
-    <bean id="messageRouter" class="me.chanjar.weixin.cp.api.WxCpMessageRouter">
-        <constructor-arg name="wxCpService" ref="wxCpService"/>
-    </bean>
+	<bean id="wxCpService" class="me.chanjar.weixin.cp.api.WxCpServiceImpl">
+		<property name="wxCpConfigStorage" ref="configStorage" />
+	</bean>
 
-    <bean id="wxCpCryptUtil" class="me.chanjar.weixin.cp.util.crypto.WxCpCryptUtil">
-        <constructor-arg name="wxCpConfigStorage" ref="configStorage"/>
-    </bean>
+	<bean id="messageRouter" class="me.chanjar.weixin.cp.api.WxCpMessageRouter">
+		<constructor-arg name="wxCpService" ref="wxCpService" />
+	</bean>
+
+	<bean id="wxCpCryptUtil" class="me.chanjar.weixin.cp.util.crypto.WxCpCryptUtil">
+		<constructor-arg name="wxCpConfigStorage" ref="configStorage" />
+	</bean>
+
+	<!--微信公众号号应用信息，可配置多个 -->
+	<bean id="wxMpConfigStorage" class="me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage">
+		<property name="appId" value="wxe08ec1b2e3246d0a" />
+		<property name="secret" value="91dacb79c9e270ae240d45477a1ed5bb" />
+		<property name="aesKey" value="p8QEKCmUo0mkvv83ziLCRChspTiMlClWPjGzZsIHipA" />
+		<property name="token" value="sci2016" />
+	</bean>
+	<bean id="wxMpService" class="me.chanjar.weixin.mp.api.WxMpServiceImpl">
+		<property name="wxMpConfigStorage" ref="wxMpConfigStorage" />
+	</bean>
+	<bean id="wxMpMessageRouter" class="me.chanjar.weixin.mp.api.WxMpMessageRouter">
+		<constructor-arg name="wxMpService" ref="wxMpService" />
+	</bean>
 </beans>
