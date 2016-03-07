@@ -40,7 +40,7 @@
 				scanType : [ "qrCode", "barCode" ], // 可以指定扫二维码还是一维码，默认二者都有
 				success : function(res) {
 					var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
-					alert(result)
+					$("#doc-ta-bak").html(result);
 				}
 			});
 		});
@@ -51,7 +51,7 @@
 				sourceType : [ 'album', 'camera' ], // 可以指定来源是相册还是相机，默认二者都有
 				success : function(res) {
 					var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-
+					
 				}
 			});
 		});
@@ -60,23 +60,39 @@
 </head>
 <body>
 	<%@include file="/WEB-INF/jsp/common/mpWXheader.jsp"%>
-
 	<form class="am-form am-form-horizontal">
-		<div
-			class="am-form-group am-form-success am-form-icon am-form-feedback">
-			<label for="doc-ipt-3-a" class="am-u-sm-2 am-form-label">电子邮件</label>
-			<div class="am-u-sm-10">
-				<input type="email" id="doc-ipt-3-a" class="am-form-field"
-					placeholder="输入你的电子邮件"> <span class="am-icon-warning"></span>
+		<fieldset>
+			<div class="am-form-group ">
+				<label for="doc-ds-ipt-user">建单人:</label> <input type="text"
+					id="doc-ds-ipt-user" class="am-form-field"
+					value='<s:property value="dto.user"/>' disabled>
 			</div>
-		</div>
+
+			<div class="am-form-group">
+				<label for="oc-ds-select-loc">入库科室：</label> <input type="text"
+					id="doc-ds-ipt-loc" class="am-form-field"
+					value='<s:property value="dto.loc"/>' disabled>
+			</div>
+
+			<div class="am-form-group">
+				<label for="oc-ds-select-date">入库日期：</label> <input type="text"
+					id="doc-ds-ipt-date" class="am-form-field"
+					value='<s:property value="dto.date"/>' disabled>
+			</div>
+			<div class="am-form-group">
+				<label for="doc-ta-bak">备注</label>
+				<textarea class="" rows="3" id="doc-ta-bak"></textarea>
+			</div>
+			<button type="button" class="am-btn am-btn-primary am-btn-block"
+				id="scanpic">扫描条码</button>
+			<button type="button" class="am-btn am-btn-primary am-btn-block"
+				id="uppic">上传图片</button>
+		</fieldset>
 	</form>
 	<hr>
-	<button type="button" class="am-btn am-btn-primary am-btn-block"
-		id="scanpic">扫一扫</button>
 
-	<button type="button" class="am-btn am-btn-primary am-btn-block"
-		id="uppic">上传图片</button>
+
+
 	<%@include file="/WEB-INF/jsp/common/WXfooter.jsp"%>
 </body>
 </html>

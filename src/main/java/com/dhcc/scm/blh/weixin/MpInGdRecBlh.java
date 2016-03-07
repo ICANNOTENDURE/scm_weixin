@@ -17,9 +17,11 @@ import com.dhcc.framework.app.blh.AbstractBaseBlh;
 import com.dhcc.framework.app.service.CommonService;
 import com.dhcc.framework.transmission.event.BusinessRequest;
 import com.dhcc.scm.dto.weixin.MpInGdRecDto;
+import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.vo.weixin.WxJsapiSign;
 import com.dhcc.scm.entity.vo.ws.OperateResult;
+import com.dhcc.scm.tool.datetime.OperTime;
 
 @Component
 public class MpInGdRecBlh extends AbstractBaseBlh {
@@ -49,6 +51,11 @@ public class MpInGdRecBlh extends AbstractBaseBlh {
 		if(normalAccount.getNormalUser().getType().longValue()!=1){
 			return "noPermission";
 		}
+		dto.setUser(normalAccount.getAccountAlias());
+		HopCtloc hopCtloc=commonService.get(HopCtloc.class, normalAccount.getNormalUser().getLocId());
+		dto.setLoc(hopCtloc.getName());
+		new OperTime();
+		dto.setDate(OperTime.getCurrentDate());
 		return "mpInGdRec";
 	}
 	
