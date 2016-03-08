@@ -18,6 +18,7 @@
 			<li><a href="<%=request.getContextPath()%>/weixin/mpMessageCtrl!mpToDoTask.htm" class="">代办任务</a></li>
 			<li><a href="<%=request.getContextPath()%>/weixin/mpMessageCtrl!mpSearchOrder.htm" class="">订单查询</a></li>
 			<li><a href="<%=request.getContextPath()%>/weixin/mpUserCtrl!MpSci.htm" class="">解除绑定</a></li>
+			<li><a href="<%=request.getContextPath()%>/weixin/mpInGdRecCtrl!mpInGdRec.htm" class="">入库</a></li>
 			<li class="am-parent"><a href="#c3" class="">设置</a>
 				<ul class="am-menu-sub am-collapse  am-avg-sm-4 ">
 					<li class=""><a href="##" class="">个人信息</a></li>
