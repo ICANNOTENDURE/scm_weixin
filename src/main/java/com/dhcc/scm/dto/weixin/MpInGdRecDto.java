@@ -19,8 +19,18 @@ public class MpInGdRecDto extends BaseDto {
 	private String loc;
 	private String date;
 	
+	private String barcode;
 	
 	
+	
+	public String getBarcode() {
+		return barcode;
+	}
+
+	public void setBarcode(String barcode) {
+		this.barcode = barcode;
+	}
+
 	public String getUser() {
 		return user;
 	}

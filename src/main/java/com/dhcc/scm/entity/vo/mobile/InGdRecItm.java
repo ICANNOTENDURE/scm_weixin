@@ -28,6 +28,8 @@ public class InGdRecItm {
 		
 		private String vendor;
 		
+		private String invno;
+		
 		private String scmid;
 		
 		private String resultCode="1";
@@ -41,6 +43,14 @@ public class InGdRecItm {
 		
 		
 		
+		public String getInvno() {
+			return invno;
+		}
+
+		public void setInvno(String invno) {
+			this.invno = invno;
+		}
+
 		public String getLabelId() {
 			return labelId;
 		}

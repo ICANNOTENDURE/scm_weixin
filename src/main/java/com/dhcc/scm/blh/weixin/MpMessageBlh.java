@@ -13,6 +13,8 @@ import javax.annotation.Resource;
 
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.WxMpCustomMessage;
+import me.chanjar.weixin.mp.bean.WxMpTemplateData;
+import me.chanjar.weixin.mp.bean.WxMpTemplateMessage;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
 
 import org.springframework.stereotype.Component;
@@ -52,6 +54,43 @@ public class MpMessageBlh extends AbstractBaseBlh {
 	}
 
 	public void sendMessByOrd(OrderDetail orderDetail) {
+		try {
+			String host = PropertiesBean.getInstance().getProperty("config.sci.dns");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+			Long vendorId = orderDetail.getOrderVenId();
+			List<NormalUser> normalUsers=commonService.findByProperty(NormalUser.class, "vendorId", vendorId);
+			if(normalUsers.size()==0){
+				return;
+			}
+			Hospital hospital = commonService.get(Hospital.class, orderDetail.getOrderHopId());
+			WxMpTemplateMessage templateMessage = new WxMpTemplateMessage();
+			templateMessage.setTemplateId("");
+			templateMessage.setUrl(host + "weixin/mpMessageCtrl!mpListOrderDetail.htm?dto.orderDetail.orderNo=" + orderDetail.getOrderNo());
+			templateMessage.getDatas().add(new WxMpTemplateData("first", hospital.getHospitalName()+"给您的新订单", "#173177"));
+			templateMessage.getDatas().add(new WxMpTemplateData("订单时间", sdf.format(orderDetail.getOrderDate()) , "#173177"));
+			if (orderDetail.getOrderRecDestination() != null) {
+				HopCtlocDestination ctlocDestination = commonService.get(HopCtlocDestination.class, orderDetail.getOrderRecDestination());
+				templateMessage.getDatas().add(new WxMpTemplateData("收货地址", ctlocDestination.getDestination(), "#173177"));
+			}
+			templateMessage.getDatas().add(new WxMpTemplateData("订单号", orderDetail.getOrderNo(), "#173177"));
+			templateMessage.getDatas().add(new WxMpTemplateData("remark", "请您及时处理订单，谢谢", "#173177"));
+			for(NormalUser normalUser:normalUsers){
+				String[] propertyNames={"wxMpSciPointer","wxMpSend"};
+				Object[] values={normalUser.getNormalAccount().getAccountId(),"1"};
+				List<MpUser> mpUsers=commonService.findByProperties(MpUser.class, propertyNames, values);
+				for(MpUser mpUser:mpUsers){
+					templateMessage.setToUser(mpUser.getWxMpOpenId());
+					wxMpService.templateSend(templateMessage);
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
+	}
+	
+	public void customMessage(OrderDetail orderDetail){
 		try {
 			String host = PropertiesBean.getInstance().getProperty("config.sci.dns");
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
@@ -97,7 +136,6 @@ public class MpMessageBlh extends AbstractBaseBlh {
 			e.printStackTrace();
 		}
 	}
-	
 	
 	
 	/**
