@@ -272,6 +272,7 @@ public class MpMessageBlh extends AbstractBaseBlh {
 	public String mpToDoTask(BusinessRequest res) {
 
 		MpUserDto dto = super.getDto(MpUserDto.class, res);
+		dto.setTitle("代办任务");
 		NormalAccount normalAccount=super.getMpUserId();
 		if(normalAccount==null){
 			dto.setOperateResult(new OperateResult());
@@ -281,6 +282,7 @@ public class MpMessageBlh extends AbstractBaseBlh {
 		messageDto.setEnd(dto.getEndDate());
 		messageDto.setStart(dto.getStartDate());
 		messageDto.setVenid(normalAccount.getNormalUser().getVendorId());
+		messageDto.setLocid(normalAccount.getNormalUser().getLocId());
 		wxMessageService.listToDoTask(messageDto);
 		dto.setOrderInfos(messageDto.getOrderInfos());
 		dto.setPageModel(messageDto.getPageModel());

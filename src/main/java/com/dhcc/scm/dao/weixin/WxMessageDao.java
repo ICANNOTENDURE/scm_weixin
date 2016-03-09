@@ -119,6 +119,11 @@ public class WxMessageDao extends HibernatePersistentObjectDAO<WxMessage> {
 			hqlBuffer.append(" and ORDER_VEN_ID=:venid");
 			hqlParamMap.put("venid", dto.getVenid());
 		}
+		if(dto.getLocid()!=null){
+			hqlBuffer.append(" and ORDER_RECLOC=:locid");
+			hqlParamMap.put("locid", dto.getLocid());
+			hqlBuffer.append(" and ORDER_STATE>3");
+		}
 		hqlBuffer.append(" group by ORDER_NO,ORDER_ODATE,T2.HOSPITAL_name,t3.CTLOCDES_DESTINATION,t4.STATE_NAME  ORDER BY ORDER_ODATE desc");
 		dto.getPageModel().setQueryHql(hqlBuffer.toString());
 		dto.getPageModel().setHqlParamMap(hqlParamMap);

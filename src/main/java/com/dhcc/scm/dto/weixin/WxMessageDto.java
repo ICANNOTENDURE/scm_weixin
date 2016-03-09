@@ -59,8 +59,20 @@ public class WxMessageDto extends BaseDto {
 	
 	private Long accpectFlag;
 	
+	private Long locid;
 	
 	
+	
+	public Long getLocid() {
+		return locid;
+	}
+
+
+	public void setLocid(Long locid) {
+		this.locid = locid;
+	}
+
+
 	public Long getAccpectFlag() {
 		return accpectFlag;
 	}

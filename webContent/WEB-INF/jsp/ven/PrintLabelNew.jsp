@@ -152,10 +152,10 @@
     });
  
 function enCode(value,row,index){
-	return "<img id=qrCode"+row.deliverid+"  src="+$WEB_ROOT_PATH+'/sys/qrCodeCtrl!encoderQrAndroid.htm?dto.content='+row.hisno+" style='height: 80;width: 80px'> </img>";
+	return "<img id=qrCode"+row.deliverid+"  src="+$WEB_ROOT_PATH+'/sys/qrCodeCtrl!qrAndroid.htm?dto.codeType=ByOrder&dto.content='+row.hisno+" style='height: 80;width: 80px'> </img>";
 }
 function enCodeItm(value,row,index){
-	return "<img id=qrCodeItm"+row.deliveritmid+"  src="+$WEB_ROOT_PATH+'/sys/qrCodeCtrl!qrAndroid.htm?dto.content='+row.deliveritmid+" style='height: 50;width: 50px'> </img>";
+	return "<img id=qrCodeItm"+row.deliveritmid+"  src="+$WEB_ROOT_PATH+'/sys/qrCodeCtrl!qrAndroid.htm?dto.codeType=ByInc&dto.content='+row.deliveritmid+" style='height: 50;width: 50px'> </img>";
 }
 </script>	
 </head>
