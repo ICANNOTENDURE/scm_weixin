@@ -17,6 +17,7 @@ import me.chanjar.weixin.mp.bean.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.WxMpTemplateMessage;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.dhcc.framework.app.blh.AbstractBaseBlh;
@@ -56,6 +57,7 @@ public class MpMessageBlh extends AbstractBaseBlh {
 	public void sendMessByOrd(OrderDetail orderDetail) {
 		try {
 			String host = PropertiesBean.getInstance().getProperty("config.sci.dns");
+			String templateid = PropertiesBean.getInstance().getProperty("config.weixin.mp.template.neworder");
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 			Long vendorId = orderDetail.getOrderVenId();
@@ -65,15 +67,23 @@ public class MpMessageBlh extends AbstractBaseBlh {
 			}
 			Hospital hospital = commonService.get(Hospital.class, orderDetail.getOrderHopId());
 			WxMpTemplateMessage templateMessage = new WxMpTemplateMessage();
-			templateMessage.setTemplateId("");
+			templateMessage.setTemplateId(templateid);
 			templateMessage.setUrl(host + "weixin/mpMessageCtrl!mpListOrderDetail.htm?dto.orderDetail.orderNo=" + orderDetail.getOrderNo());
 			templateMessage.getDatas().add(new WxMpTemplateData("first", hospital.getHospitalName()+"给您的新订单", "#173177"));
-			templateMessage.getDatas().add(new WxMpTemplateData("订单时间", sdf.format(orderDetail.getOrderDate()) , "#173177"));
+			templateMessage.getDatas().add(new WxMpTemplateData("tradeDateTime", sdf.format(orderDetail.getOrderDate()) , "#173177"));
 			if (orderDetail.getOrderRecDestination() != null) {
 				HopCtlocDestination ctlocDestination = commonService.get(HopCtlocDestination.class, orderDetail.getOrderRecDestination());
-				templateMessage.getDatas().add(new WxMpTemplateData("收货地址", ctlocDestination.getDestination(), "#173177"));
+				templateMessage.getDatas().add(new WxMpTemplateData("customerInfo", ctlocDestination.getDestination(), "#173177"));
 			}
-			templateMessage.getDatas().add(new WxMpTemplateData("订单号", orderDetail.getOrderNo(), "#173177"));
+			templateMessage.getDatas().add(new WxMpTemplateData("订单编号", orderDetail.getOrderNo(), "#173177"));
+			if(StringUtils.isNotBlank(orderDetail.getOrderEmFlag())){
+				templateMessage.getDatas().add(new WxMpTemplateData("orderType", "加急", "#173177"));
+			}else{
+				templateMessage.getDatas().add(new WxMpTemplateData("orderType", "普通订单", "#173177"));
+			}
+			
+			templateMessage.getDatas().add(new WxMpTemplateData("orderItemName", "订单编号"));
+			templateMessage.getDatas().add(new WxMpTemplateData("orderItemData", orderDetail.getOrderNo(), "#173177"));
 			templateMessage.getDatas().add(new WxMpTemplateData("remark", "请您及时处理订单，谢谢", "#173177"));
 			for(NormalUser normalUser:normalUsers){
 				String[] propertyNames={"wxMpSciPointer","wxMpSend"};
