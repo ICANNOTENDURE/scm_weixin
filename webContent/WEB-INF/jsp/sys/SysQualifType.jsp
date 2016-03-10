@@ -7,8 +7,6 @@
 <title>Dic</title>
 <%@include file="/WEB-INF/jsp/common/scriptInc.jsp"%>
 <script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/dhcc/pms/appLog/appLog.js"></script>
-<script type="text/javascript"
 	src="<%=request.getContextPath()%>/js/dhcc/pms/sys/sysQualifType.js"></script>
 </head>
 <body>
@@ -62,7 +60,7 @@
 					<td class='textLabel' style='text-align: right; width: 20%'>商品类组:</td>
 					<td class='textParent' style='text-align: left; width: 30%'><input id="catgroupid"
 						style='width: 250px;' class='validatebox' type='text'
-						name='dto.sysQualifType.catgroupid' data-options="required:true"> </input></td>
+						name='dto.sysQualifType.catgroupid' > </input></td>
 				</tr>
 				<tr>
 					<td class='textLabel' style='text-align: right; width: 20%'>排序:</td>

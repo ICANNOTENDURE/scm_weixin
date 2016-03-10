@@ -121,6 +121,16 @@
 												class="validatebox" data-options="required:true"
 												name="dto.vendorDto.vendor.contact" style="width: 70%;"></td>
 										</tr>
+										<tr>
+											<td class="textLabel" style="width: 10%;"><span
+											    style='color: red'>*</span>所服务医院:</td>
+											<td class="textParent">
+											    <select id="reghopid" multiple data-am-selected name="dto.hopVendorDto.hopVendor.hopHopId">
+ 												<s:iterator value="dto.hospital" status="all" id="hospital">
+												<option value="${hospital.hospitalId}">${hospital.hospitalName}</option>
+												</s:iterator>
+												</select></td>
+										</tr>
 									</table>
 								</div>
 

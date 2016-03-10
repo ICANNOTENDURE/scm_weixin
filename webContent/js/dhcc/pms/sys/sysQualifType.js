@@ -1,6 +1,12 @@
 $(function (){
-
-	
+	//获取下拉分类的下拉框 add  hxy
+	var CatCombox=$CommonUI.getComboBox('#catgroupid');
+	CatCombox.combobox({
+		method:'post',
+		url:$WEB_ROOT_PATH+'/sys/sysQualifTypeCtrl!getCatInfo.htm',
+		valueField:'groupID',							
+		textField:'groupName'
+	});
 
 	$CommonUI.getDataGrid('#datagrid').datagrid({  
 	    url:$WEB_ROOT_PATH+'/sys/sysQualifTypeCtrl!list.htm',

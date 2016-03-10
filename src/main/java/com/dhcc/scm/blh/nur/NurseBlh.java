@@ -52,10 +52,11 @@ import com.dhcc.scm.service.nur.NurseService;
 import com.dhcc.scm.service.sys.SysAppParamService;
 import com.dhcc.scm.tool.datetime.OperTime;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.dhcc.scm.entity.ven.VenReghop;
 
 @Component
 public class NurseBlh extends AbstractBaseBlh {
-
+    
 	private static Log logger = LogFactory.getLog(NurseBlh.class);
 
 	@Resource
@@ -776,6 +777,14 @@ public class NurseBlh extends AbstractBaseBlh {
 		NurseIncDto dto = super.getDto(NurseIncDto.class, res);
 		HopVendorLog log = new HopVendorLog();
 		StringBuilder logContent = new StringBuilder();
+		//hxy by zxx 将串串拆分
+		String[] hops=dto.getHopStr().split(",");
+		for(int i=0;i<hops.length;i++){
+			//循环中保存到对应表
+			VenReghop venReghop=new VenReghop();
+			venReghop.setReghophopid(hops[i]);
+			commonService.saveOrUpdate(venReghop);
+		}
 		try {
 			List<VenQualification> venQualificationList = JsonUtils.toObject(dto.getVendorDto().getVenQualificationList(), new TypeReference<List<VenQualification>>() {
 			});
@@ -849,7 +858,8 @@ public class NurseBlh extends AbstractBaseBlh {
 
 			dto.getVendorDto().getVendor().setVenQualificationList(venQualificationList);
 			nurseService.saveOrUpdate(dto.getVendorDto());
-
+			
+			
 			/* 下面代码增加用户帐号 */
 			// 默认未激活
 			dto.setNormalAccountDto(new NormalAccountDto());
