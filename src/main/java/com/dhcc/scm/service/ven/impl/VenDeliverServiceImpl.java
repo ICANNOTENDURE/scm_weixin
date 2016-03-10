@@ -24,7 +24,6 @@ import com.dhcc.scm.entity.ven.VenDeliveritm;
 import com.dhcc.scm.entity.vo.ven.DeliverVo;
 import com.dhcc.scm.entity.vo.ws.HisInvInfoItmWeb;
 import com.dhcc.scm.service.ven.VenDeliverService;
-import com.dhcc.scm.tool.security.AESCoder;
 
 @Service("venDeliverService")
 public class VenDeliverServiceImpl implements VenDeliverService {
@@ -185,7 +184,7 @@ public class VenDeliverServiceImpl implements VenDeliverService {
 					deliverVo.setDestination(hopCtlocDestination.getDestination());
 				}
 				List<State> states=venDeliverDao.findByProperty(State.class, "stateSeq",Long.valueOf(orderDetail.getOrderState()));
-				deliverVo.setSerialno(AESCoder.aesCbcEncrypt(orderDetail.getOrderId().toString(), servicePassword));
+				deliverVo.setSerialno(orderDetail.getOrderId().toString()); //AESCoder.aesCbcEncrypt(orderDetail.getOrderId().toString(), servicePassword));
 				deliverVo.setHopname(hospital.getHospitalName());
 				deliverVo.setRecloc(ctloc.getName());
 				if(states.size()>0){

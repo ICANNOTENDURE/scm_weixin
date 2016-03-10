@@ -72,7 +72,8 @@
 				sourceType : [ 'album', 'camera' ], // 可以指定来源是相册还是相机，默认二者都有
 				success : function(res) {
 					var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-
+					//alert(localIds)
+					$("#imglist").append("<img width='140' height='140' class='am-radius' src="+localIds+" class='am-img-responsive' />")
 				}
 			});
 		});
@@ -107,12 +108,16 @@
 				<label for="doc-ta-bak">备注</label>
 				<textarea class="" rows="1" id="doc-ta-bak"></textarea>
 			</div>
+			<div id="imglist" class="am-form-group">
+				<label for="doc-ta-bak">图片</label>	
+			</div>
 			<button type="button" class="am-btn am-btn-primary"
 				id="scanpic">扫描条码</button>
 			<button type="button" class="am-btn am-btn-secondary"
 				id="uppic">上传图片</button>
 			<button type="button" class="am-btn am-btn-success"
 				id="save">确认收货</button>
+			
 		</fieldset>
 	</form>
 
@@ -135,6 +140,7 @@
 
 		</tbody>
 	</table>
+	
 	</div>
 
 	<%@include file="/WEB-INF/jsp/common/WXfooter.jsp"%>
