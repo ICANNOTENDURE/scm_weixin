@@ -333,6 +333,9 @@ public class NurseMainAction extends BaseAction {
 		if ("vendorRegist".equals(super.getBusinessFlow())) {
 			dto.setVendorDto(new VendorDto());
 			dto.getVendorDto().setVenQualifTypeList(commonService.getAll(VenQualifType.class, "seq", true));
+			//获取到hospitalName
+			List<Hospital> hospital = commonService.getAll(Hospital.class, "hospitalName", true);
+			dto.setHospital(hospital);
 			return "vendorRegist";
 		}
 		if ("registSucess".equals(super.getBusinessFlow())) {
@@ -388,6 +391,7 @@ public class NurseMainAction extends BaseAction {
 
 		}
 		if ("queryAudit".equals(super.getBusinessFlow())) {
+			//获取 hospitalName
 			List<Hospital> hospital = commonService.getAll(Hospital.class, "hospitalName", true);
 			dto.setHospital(hospital);
 			return "queryAudit";

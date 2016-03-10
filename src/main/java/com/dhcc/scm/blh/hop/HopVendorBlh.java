@@ -554,4 +554,5 @@ public class HopVendorBlh extends AbstractBaseBlh {
 		HopVendorDto dto = super.getDto(HopVendorDto.class, res);
 		hopVendorService.listVenDetail(dto);
 	}
+	
 }

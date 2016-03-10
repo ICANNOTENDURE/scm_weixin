@@ -7,12 +7,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 /**
  * 
  * @author huaxiaoying
- * data    20160302
+ * date    20160302
  *
  */
 @Entity

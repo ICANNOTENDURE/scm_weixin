@@ -16,7 +16,7 @@ $(function(){
 	    },
 	    telphone:{
 	    	validator: function(value, param){ 
-		    	if (/^[1]([3][0-9]{1}|59|58|88|89|55)[0-9]{8}$/.test(value)){
+		    	if (/^[1]([3][0-9]{1}|59|58|88|89|55|57)[0-9]{8}$/.test(value)){
 		    		return true;
 		    	} else {
 		    		return false;
@@ -50,6 +50,7 @@ $(function(){
 	//下一步
 	$("#nextPage").on('click',
 		    function() {
+				
 				step=1;
 				if($("#step1").css("display")=='block'){
 					var isValid = $CommonUI.getForm('#step1').form('validate');
@@ -170,6 +171,7 @@ $(function(){
             "dto.vendorDto.vendor.contact": $("#subDetails input[name='dto.vendorDto.vendor.contact']").val(),
             "dto.vendorDto.vendor.taxation": $("#subDetails input[name='dto.vendorDto.vendor.taxation']").val(),
             "dto.vendorDto.vendor.email": $("#subDetails input[name='dto.vendorDto.vendor.email']").val(),
+            "dto.hopStr":$("#reghopid").val(),//在多选下拉显示医院string
             "dto.vendorDto.venQualificationList": jQuery.toJSON(venQualifTypeList)
         },
         function(data) {

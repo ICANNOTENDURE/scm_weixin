@@ -132,6 +132,7 @@ public class NurseIncDto extends BaseDto {
 	private String type;
 	
 	
+	private String hopStr;
 	
 	
 	
@@ -139,6 +140,15 @@ public class NurseIncDto extends BaseDto {
 	
 	
 	
+	
+	public String getHopStr() {
+		return hopStr;
+	}
+
+	public void setHopStr(String hopStr) {
+		this.hopStr = hopStr;
+	}
+
 	public String getType() {
 		return type;
 	}

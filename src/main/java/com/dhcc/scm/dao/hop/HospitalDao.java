@@ -125,6 +125,7 @@ public class HospitalDao extends HibernatePersistentObjectDAO<Hospital> {
 		if(hospitals.size()==0){
 			return null;
 		}
+//		System.out.println(hospitals.get(0).toString());
 		return hospitals.get(0);
 	}
 

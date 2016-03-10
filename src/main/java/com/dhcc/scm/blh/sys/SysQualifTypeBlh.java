@@ -11,6 +11,7 @@ import com.dhcc.framework.app.blh.AbstractBaseBlh;
 import com.dhcc.framework.transmission.event.BusinessRequest;
 import com.dhcc.scm.dto.sys.SysQualifTypeDto;
 import com.dhcc.scm.entity.sys.SysQualifType;
+import com.dhcc.scm.service.cat.CatGroupService;
 import com.dhcc.scm.service.sys.SysQualifTypeService;
 
 @Component
@@ -22,6 +23,9 @@ public class SysQualifTypeBlh extends AbstractBaseBlh {
 	
 	@Resource
 	private CommonService commonService;
+	// add hxy
+	@Resource
+	private CatGroupService catGroupService;
 	
 	public SysQualifTypeBlh() {
 		
@@ -91,4 +95,17 @@ public class SysQualifTypeBlh extends AbstractBaseBlh {
 		
 	}
 	
+	/**
+	 * 
+	* @Title: getCatInfo 
+	* @Description: TODO(查询所有商品类组) 
+	* @param @param res    设定文件 
+	* @return void    返回类型 
+	* @author hxy  
+	* @date 2016/3/4 14:37
+	 */
+	public void getCatInfo(BusinessRequest res) {
+		SysQualifTypeDto dto = super.getDto(SysQualifTypeDto.class, res);
+		super.writeJSON(sysQualifTypeService.getCatInfo(dto));
+	}
 }
