@@ -83,7 +83,7 @@
 										<tr>
 
 											<td class="textLabel" style="width: 10%;"><span
-												style='color: red'>*</span>税务登记号:</td>
+												style='color: red'>*</span>工商执照号:</td>
 											<td class="textParent"><input type="text"
 												class="validatebox" data-options="required:true"
 												name="dto.vendorDto.vendor.taxation" id="taxation"
