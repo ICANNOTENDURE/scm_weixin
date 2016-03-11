@@ -777,14 +777,8 @@ public class NurseBlh extends AbstractBaseBlh {
 		NurseIncDto dto = super.getDto(NurseIncDto.class, res);
 		HopVendorLog log = new HopVendorLog();
 		StringBuilder logContent = new StringBuilder();
-		//hxy by zxx 将串串拆分
-		String[] hops=dto.getHopStr().split(",");
-		for(int i=0;i<hops.length;i++){
-			//循环中保存到对应表
-			VenReghop venReghop=new VenReghop();
-			venReghop.setReghophopid(hops[i]);
-			commonService.saveOrUpdate(venReghop);
-		}
+		//hxy by zxx 将串串拆分 哈哈哈，被本宝宝移到下边去喽~
+
 		try {
 			List<VenQualification> venQualificationList = JsonUtils.toObject(dto.getVendorDto().getVenQualificationList(), new TypeReference<List<VenQualification>>() {
 			});
@@ -858,6 +852,16 @@ public class NurseBlh extends AbstractBaseBlh {
 
 			dto.getVendorDto().getVendor().setVenQualificationList(venQualificationList);
 			nurseService.saveOrUpdate(dto.getVendorDto());
+			
+			//hxy by zxx 将串串拆分
+			String[] hops=dto.getHopStr().split(",");
+			for(int i=0;i<hops.length;i++){
+				//循环中保存到对应表 hxy
+				VenReghop venReghop=new VenReghop();
+				venReghop.setReghophopid(Long.valueOf(hops[i].trim()));
+				venReghop.setVenid(dto.getVendorDto().getVendor().getVendorId());
+	            commonService.saveOrUpdate(venReghop);
+			}
 			
 			
 			/* 下面代码增加用户帐号 */

@@ -333,7 +333,7 @@ public class NurseMainAction extends BaseAction {
 		if ("vendorRegist".equals(super.getBusinessFlow())) {
 			dto.setVendorDto(new VendorDto());
 			dto.getVendorDto().setVenQualifTypeList(commonService.getAll(VenQualifType.class, "seq", true));
-			//获取到hospitalName
+			//获取到hospitalName hxy by zx
 			List<Hospital> hospital = commonService.getAll(Hospital.class, "hospitalName", true);
 			dto.setHospital(hospital);
 			return "vendorRegist";
