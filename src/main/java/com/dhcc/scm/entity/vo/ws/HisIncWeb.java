@@ -23,7 +23,6 @@ public class HisIncWeb implements Serializable{
 	
 	private String passWord;
 
-	
 
 	/**
 	 * @return the incItmWebs

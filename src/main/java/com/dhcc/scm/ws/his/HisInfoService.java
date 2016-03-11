@@ -7,11 +7,11 @@ import javax.jws.WebService;
 
 import com.dhcc.framework.app.service.CommonService;
 import com.dhcc.framework.util.JsonUtils;
+import com.dhcc.scm.blh.hop.HopIncBlh;
 import com.dhcc.scm.blh.hop.HopIncLocBlh;
 import com.dhcc.scm.blh.ord.OrderBlh;
 import com.dhcc.scm.entity.sys.SysLog;
 import com.dhcc.scm.entity.vo.ws.HisCmpRecWeb;
-import com.dhcc.scm.entity.vo.ws.HisIncItmWeb;
 import com.dhcc.scm.entity.vo.ws.HisIncLocQtyWeb;
 import com.dhcc.scm.entity.vo.ws.HisIncWeb;
 import com.dhcc.scm.entity.vo.ws.HisInvInfoWeb;
@@ -34,6 +34,9 @@ public class HisInfoService implements HisInfoServiceInterface{
 	 private HopIncLocBlh hopIncLocBlh;
 	 
 	 @Resource
+	 private HopIncBlh hopIncBlh;
+	 
+	 @Resource
 	 private CommonService commonService;
 	 
 	/* (non-Javadoc)
@@ -41,8 +44,15 @@ public class HisInfoService implements HisInfoServiceInterface{
 	 */
 	@Override
 	public OperateResult getHopInc(HisIncWeb hisIncWeb) {
-		// TODO Auto-generated method stub
-		return null;
+		OperateResult operateResult=new OperateResult();
+		try {
+			hopIncBlh.syncHisInc(operateResult,hisIncWeb);
+		} catch (Exception e) {
+			operateResult.setResultCode("1");
+			operateResult.setResultContent("程序异常->Exception:"+e.getMessage());
+			return operateResult;
+		}
+		return operateResult;
 	}
 
 	/**
@@ -89,23 +99,6 @@ public class HisInfoService implements HisInfoServiceInterface{
 			commonService.saveOrUpdate(log);
 		}
 		return hisInvInfoWeb;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.dhcc.scm.ws.his.HisInfoServiceInterface#saveHisInc(com.dhcc.scm.entity.hop.HopInc)
-	 */
-	@Override
-	public OperateResult saveHisInc(HisIncItmWeb hisIncItmWeb,String hopName) {
-		// TODO Auto-generated method stub
-		OperateResult operateResult=new OperateResult();
-		try {
-			blh.saveHisIncWS(hisIncItmWeb,operateResult,hopName);
-		} catch (Exception e) {
-			operateResult.setResultCode("1");
-			operateResult.setResultContent("程序异常1:"+e.getMessage());
-			return operateResult;
-		}
-		return operateResult;
 	}
 
 	/* (non-Javadoc)

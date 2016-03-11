@@ -39,7 +39,8 @@
 							scanType : [ "qrCode", "barCode" ], // 可以指定扫二维码还是一维码，默认二者都有
 							success : function(res) {
 								var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
-								$("#doc-ta-bak").html(result);
+								//$("#doc-ta-bak").html(result);
+								$('#common-modal-loading') .modal();
 								$ .post(
 											$WEB_ROOT_PATH + "/weixin/mpInGdRecCtrl!getBarCodeInfo.htm",
 											{
@@ -57,7 +58,8 @@
 																trhtml=trhtml+"<td>"+itm.expDate+"</td>";
 																trhtml=trhtml+"<td>"+itm.invno+"</td>";
 																trhtml=trhtml+"<td>"+itm.manf+"</td>";
-																trhtml=trhtml+"<td>"+itm.vendor+"</td></tr>";
+																trhtml=trhtml+"<td>"+itm.vendor+"</td>";
+																trhtml=trhtml+"<td hidden>"+itm.scmid+"</td></tr>";
 													});
 													$("#dataList").html(trhtml);
 											}, 'json');
@@ -71,22 +73,56 @@
 				sizeType : [ 'original', 'compressed' ], // 可以指定是原图还是压缩图，默认二者都有
 				sourceType : [ 'album', 'camera' ], // 可以指定来源是相册还是相机，默认二者都有
 				success : function(res) {
-					var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-					//alert(localIds)
-					$("#imglist").append("<img width='140' height='140' class='am-radius' src="+localIds+" class='am-img-responsive' />")
+					imghtml="<div><img width='200' height='200' class='am-radius' src="+res.localIds+" class='am-img-responsive' />";
+					imghtml=imghtml+"<button type='button' class='am-btn am-btn-default am-radius am-btn-success am-btn-xs' onclick='viewPic(this)'>预览<i class='am-icon-picture-o'></i></button>";
+					imghtml=imghtml+"<button type='button' class='am-btn am-btn-default am-radius am-btn-danger am-btn-xs' onclick='deletePic(this)'>删除<i class='am-icon-remove'></i></button></div>";
+					$("#imglist").append(imghtml);
+					$("#imgMsg").html("您已经选择了"+$("#imglist").find("img").size()+"张照片");
 				}
 			});
 		});
 		$("#save").on('click', function() {
 			
+			if($("#dataList").find("tr").size()==0){
+				$('#common-alert-bd').html("没有要保存的数据");
+				$('#common-alert').modal();
+				return;
+			}
+			if($("#imglist").find("img").size()==0){
+				$('#common-alert-bd').html("请先上传照片");
+				$('#common-alert').modal();
+				//return;
+			}
+			var subIdStr="";
+			$('#dataList tr').each(function(){
+				subIdStr=subIdStr+"^"+$.trim($(this).children().eq(9).html());
+			});
+			$("#subIdStr").val(subIdStr);
 		});
 	});
+	function viewPic(obj){
+		wx.previewImage({
+		    current: '', // 当前显示图片的http链接
+		    urls: [$(obj).parent().find("img").attr("src")] // 需要预览的图片http链接列表
+		});
+	}
+	function deletePic(objPic){
+	   $('#common-confirm-bd').html("确认删除照片吗!");
+	   $('#common-confirm').modal({
+		   	relatedTarget: $(objPic).parent(),
+	        onConfirm: function(options) {
+	        	$(this.relatedTarget).remove();
+	        	$("#imgMsg").html("您已经选择了"+$("#imglist").find("img").size()+"张照片");
+	        }
+	    });
+	}	
 </script>
 </head>
 <body>
 	<%@include file="/WEB-INF/jsp/common/mpWXheader.jsp"%>
-	<form class="am-form am-form-horizontal">
+	<form class="am-form am-form-horizontal" action="">
 		<fieldset>
+			<input type="hidden" id="subIdStr" />
 			<div class="am-form-group ">
 				<label for="doc-ds-ipt-user">建单人:</label> <input type="text"
 					id="doc-ds-ipt-user" class="am-form-field am-input-sm"
@@ -108,21 +144,23 @@
 				<label for="doc-ta-bak">备注</label>
 				<textarea class="" rows="1" id="doc-ta-bak"></textarea>
 			</div>
-			<div id="imglist" class="am-form-group">
-				<label for="doc-ta-bak">图片</label>	
+			<div class="am-form-group">
+				<button type="button" class="am-btn am-btn-primary"
+					id="scanpic">扫码<i class="am-icon-camera"></i></button>
+				<button type="button" class="am-btn am-btn-primary"
+					id="uppic">上传照片<i class="am-icon-cloud-upload"></i></button>
+				<button type="button" class="am-btn am-btn-primary"
+					id="save">确认<i class="am-icon-save"></i></button>
 			</div>
-			<button type="button" class="am-btn am-btn-primary"
-				id="scanpic">扫描条码</button>
-			<button type="button" class="am-btn am-btn-secondary"
-				id="uppic">上传图片</button>
-			<button type="button" class="am-btn am-btn-success"
-				id="save">确认收货</button>
-			
+			<div id="imgMsg" class="am-form-group">
+			</div>
+			<div id="imglist" class="am-form-group">
+			</div>
 		</fieldset>
 	</form>
 
 	<div class="am-scrollable-horizontal">
-	<table class="am-table am-table-bordered am-table-striped am-text-nowrap">
+	<table class="am-table am-table-bordered am-table-striped am-text-nowrap am-table-hover">
 		<thead>
 			<tr>
 				<th>名称</th>
@@ -134,6 +172,7 @@
 				<th>发票号</th>
 				<th>厂商</th>
 				<th>供应商</th>
+				<th hidden>scmid</th>
 			</tr>
 		</thead>
 		<tbody id="dataList">

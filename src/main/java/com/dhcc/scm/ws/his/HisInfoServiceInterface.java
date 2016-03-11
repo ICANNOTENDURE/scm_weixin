@@ -7,7 +7,6 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
 import com.dhcc.scm.entity.vo.ws.HisCmpRecWeb;
-import com.dhcc.scm.entity.vo.ws.HisIncItmWeb;
 import com.dhcc.scm.entity.vo.ws.HisIncLocQtyWeb;
 import com.dhcc.scm.entity.vo.ws.HisIncWeb;
 import com.dhcc.scm.entity.vo.ws.HisInvInfoWeb;
@@ -71,24 +70,6 @@ public interface HisInfoServiceInterface {
 	    @WebMethod
 	    @WebResult(name="hisInvInfoWeb")
 	    public HisInvInfoWeb getRecItmByInv(@WebParam(name="invNo")String invNo,@WebParam(name="hopName")String hopName,@WebParam(name="venName")String venName);
-	    
-	    
-	    
-	    /**
-	     * 
-	    * @Title: HisInfoServiceInterface.java
-	    * @Description: TODO(和his同步药品信息)
-	    * @param hopInc
-	    * @param hopname
-	    * @return
-	    * @return:OperateResult 
-	    * @author zhouxin  
-	    * @date 2014年7月31日 上午9:23:36
-	    * @version V1.0
-	     */
-	    @WebMethod
-	    @WebResult(name="operateResult")
-	    public OperateResult saveHisInc(@WebParam(name="hisIncItmWeb")HisIncItmWeb hisIncItmWeb,@WebParam(name="hopname")String hopname);
 	    
 	    
 	    /**

@@ -76,6 +76,9 @@ public class HopInc implements Serializable {
 	@Column(name="INC_AUDITFLAG")
 	private Float incAuditFlag;
 	
+	@Column(name="INC_BARCODE")
+	private String incBarCode;
+	
 	@Transient
 	private String incAliaS;
 	
@@ -83,6 +86,16 @@ public class HopInc implements Serializable {
 	
 	
 	
+	public String getIncBarCode() {
+		return incBarCode;
+	}
+
+
+	public void setIncBarCode(String incBarCode) {
+		this.incBarCode = incBarCode;
+	}
+
+
 	public Float getIncAuditFlag() {
 		return incAuditFlag;
 	}
