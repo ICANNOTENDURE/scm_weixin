@@ -137,10 +137,6 @@ public class NurseIncDto extends BaseDto {
 	
 	
 	
-	
-	
-	
-	
 	public String getHopStr() {
 		return hopStr;
 	}

@@ -16,15 +16,24 @@ public class VenReghop implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="REGHOP_ID")
+	private Long reghopid;
+	
 	@Column(name="REGHOP_HOPID")
 	private Long reghophopid;
 	@Column(name="REGHOP_VENID")
-	private Long  venid;
+	private Long venid;
 	@Column(name="REGHOP_ADUIT_FLAG")
 	private String aduitflag;
 	@Column(name="REGHOP_ADUIT_REM")
 	private String auditremark;
 	
+	public Long getReghopid() {
+		return reghopid;
+	}
+	public void setReghopid(Long reghopid) {
+		this.reghopid = reghopid;
+	}
 	public Long getReghophopid() {
 		return reghophopid;
 	}
@@ -49,8 +58,5 @@ public class VenReghop implements Serializable{
 	public void setAuditremark(String auditremark) {
 		this.auditremark = auditremark;
 	}
-	public void setReghophopid(String string) {
-		// TODO Auto-generated method stub
-		
-	}
+
 }

@@ -75,7 +75,7 @@ $(function() {
 	        	</tr>
 	        	<tr>
 					 <td class="textLabel" style="width: 10%;">
-						  <span style='color:red'>*</span>税务登记号:	
+						  <span style='color:red'>*</span>工商执照号:	
 				      </td>
 				      <td class="textParent">
 				      	  <input type="text" class="validatebox" data-options="required:true" name="dto.vendorDto.vendor.taxation" style="width: 70%;" value="<s:property value='dto.vendorDto.vendor.taxation'/>">
