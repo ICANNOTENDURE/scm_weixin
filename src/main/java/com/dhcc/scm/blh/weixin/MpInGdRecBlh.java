@@ -4,6 +4,7 @@
  */
 package com.dhcc.scm.blh.weixin;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -18,8 +19,10 @@ import org.springframework.stereotype.Component;
 
 import com.dhcc.framework.app.blh.AbstractBaseBlh;
 import com.dhcc.framework.app.service.CommonService;
+import com.dhcc.framework.common.BaseConstants;
 import com.dhcc.framework.transmission.event.BusinessRequest;
 import com.dhcc.framework.util.JsonUtils;
+import com.dhcc.scm.blh.sys.LockAppUtil;
 import com.dhcc.scm.dto.weixin.MpInGdRecDto;
 import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.HopInc;
@@ -27,6 +30,7 @@ import com.dhcc.scm.entity.manf.HopManf;
 import com.dhcc.scm.entity.ord.OrdLabel;
 import com.dhcc.scm.entity.ord.OrderDetail;
 import com.dhcc.scm.entity.ord.OrderDetailSub;
+import com.dhcc.scm.entity.st.StInGdRec;
 import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.ven.Vendor;
 import com.dhcc.scm.entity.vo.mobile.InGdRec;
@@ -47,6 +51,9 @@ public class MpInGdRecBlh extends AbstractBaseBlh {
 
 	@Resource
 	private WxMpConfigStorage wxMpConfigStorage;
+	
+	@Resource
+	private LockAppUtil lockAppUtil;
 
 	public MpInGdRecBlh() {
 
@@ -220,6 +227,33 @@ public class MpInGdRecBlh extends AbstractBaseBlh {
 			gdRec.setResultComtent(e.getMessage());
 		} finally {
 			super.writeJSON(gdRec);
+		}
+	}
+	
+
+	public void saveIngdRec(BusinessRequest res) {
+		MpInGdRecDto dto = super.getDto(MpInGdRecDto.class, res);
+		OperateResult operateResult=new OperateResult();
+		dto.setOperateResult(operateResult);
+		if(org.apache.commons.lang3.StringUtils.isBlank(dto.getOrdSubIdStr())){
+			operateResult.setResultContent("入参为空");
+			writeJSON(operateResult);
+			return;
+		}
+		String ingdrecno=lockAppUtil.GetAppNo("INGDREC");
+		StInGdRec stInGdRec=new StInGdRec();
+		stInGdRec.setIngdrecNo(ingdrecno);
+		stInGdRec.setIngdrecRemark(dto.getRemark());
+		stInGdRec.setIndrecDate(new Date());
+		stInGdRec.setIngdrecLocId(getMpUserId().getNormalUser().getLocId());
+		dto.setStInGdRec(stInGdRec);
+		
+		String[] OrdSubIds=dto.getOrdSubIdStr().split(BaseConstants.COMMA);
+		for(String ordSubId:OrdSubIds){
+			if(org.apache.commons.lang3.StringUtils.isNotBlank(ordSubId)){
+				OrderDetailSub orderDetailSub=commonService.get(OrderDetailSub.class, ordSubId.trim());
+					
+			}
 		}
 	}
 

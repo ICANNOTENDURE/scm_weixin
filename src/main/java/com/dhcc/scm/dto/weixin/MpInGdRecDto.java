@@ -4,7 +4,11 @@
  */
 package com.dhcc.scm.dto.weixin;
 
+import java.util.List;
+
 import com.dhcc.framework.transmission.dto.BaseDto;
+import com.dhcc.scm.entity.st.StInGdRec;
+import com.dhcc.scm.entity.st.StInGdRecItm;
 
 public class MpInGdRecDto extends BaseDto {
 
@@ -21,8 +25,61 @@ public class MpInGdRecDto extends BaseDto {
 	
 	private String barcode;
 	
+	private String ordSubIdStr;
+	
+	private String imgIdStr;
+	
+	private String remark;
+	
+	private List<StInGdRecItm> stInGdRecItms;
+	
+	private StInGdRec stInGdRec;
 	
 	
+	
+	
+	
+
+	public List<StInGdRecItm> getStInGdRecItms() {
+		return stInGdRecItms;
+	}
+
+	public void setStInGdRecItms(List<StInGdRecItm> stInGdRecItms) {
+		this.stInGdRecItms = stInGdRecItms;
+	}
+
+	public StInGdRec getStInGdRec() {
+		return stInGdRec;
+	}
+
+	public void setStInGdRec(StInGdRec stInGdRec) {
+		this.stInGdRec = stInGdRec;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public String getOrdSubIdStr() {
+		return ordSubIdStr;
+	}
+
+	public void setOrdSubIdStr(String ordSubIdStr) {
+		this.ordSubIdStr = ordSubIdStr;
+	}
+
+	public String getImgIdStr() {
+		return imgIdStr;
+	}
+
+	public void setImgIdStr(String imgIdStr) {
+		this.imgIdStr = imgIdStr;
+	}
+
 	public String getBarcode() {
 		return barcode;
 	}

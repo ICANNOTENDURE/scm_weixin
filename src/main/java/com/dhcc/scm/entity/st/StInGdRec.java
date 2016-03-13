@@ -15,7 +15,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="t_st_ingdrec")
-public class InGdRec implements Serializable {
+public class StInGdRec implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -31,13 +31,16 @@ public class InGdRec implements Serializable {
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="ingdrec_date")
-	private Date wxMpUnionid;
+	private Date indrecDate;
 	
 	@Column(name="ingdrec_status")
 	private String ingdrecStatus;
 	
 	@Column(name="ingdrec_remark")
 	private String ingdrecRemark;
+	
+	@Column(name="ingdrec_no")
+	private String ingdrecNo;
 
 	public Long getIngdrecId() {
 		return ingdrecId;
@@ -63,12 +66,12 @@ public class InGdRec implements Serializable {
 		this.ingdrecVenId = ingdrecVenId;
 	}
 
-	public Date getWxMpUnionid() {
-		return wxMpUnionid;
+	public Date getIndrecDate() {
+		return indrecDate;
 	}
 
-	public void setWxMpUnionid(Date wxMpUnionid) {
-		this.wxMpUnionid = wxMpUnionid;
+	public void setIndrecDate(Date indrecDate) {
+		this.indrecDate = indrecDate;
 	}
 
 	public String getIngdrecStatus() {
@@ -86,6 +89,15 @@ public class InGdRec implements Serializable {
 	public void setIngdrecRemark(String ingdrecRemark) {
 		this.ingdrecRemark = ingdrecRemark;
 	}
+
+	public String getIngdrecNo() {
+		return ingdrecNo;
+	}
+
+	public void setIngdrecNo(String ingdrecNo) {
+		this.ingdrecNo = ingdrecNo;
+	}
+
 	
 	
 	

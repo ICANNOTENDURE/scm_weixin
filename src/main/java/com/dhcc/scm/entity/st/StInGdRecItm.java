@@ -15,7 +15,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="t_st_ingdrecitm")
-public class InGdRecItm implements Serializable {
+public class StInGdRecItm implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
