@@ -45,7 +45,6 @@ import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.HopCtlocDestination;
 import com.dhcc.scm.entity.hop.HopInc;
 import com.dhcc.scm.entity.hop.HopVendor;
-import com.dhcc.scm.entity.ord.ExeState;
 import com.dhcc.scm.entity.ord.Ord;
 import com.dhcc.scm.entity.ord.OrderDetail;
 import com.dhcc.scm.entity.ord.OrderItm;
@@ -433,7 +432,7 @@ public class OrdBlh extends AbstractBaseBlh {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	public void upload(BusinessRequest res) throws IOException {
 		OrdDto dto = super.getDto(OrdDto.class, res);
 
@@ -786,80 +785,115 @@ public class OrdBlh extends AbstractBaseBlh {
 			super.writeJSON(dto.getOperateResult());
 		}
 	}
-
-	public void syncHisOrder(OperateResult operateResult, HisOrderWeb hisOrderWeb) {
-
-		if (hisOrderWeb.getHisOrderWebItms().size() > 1000) {
+	
+	
+	//检查webservice用户名密码和参数
+	public NormalAccount checkWsParam(OperateResult operateResult,String username,String password,List<?> dadaList){
+		
+		if (dadaList.size() > 1000) {
 			operateResult.setResultCode("-1");
 			operateResult.setResultContent("每次上传数据不能大于1000条");
-			return;
+			return null;
 		}
-		if (org.apache.commons.lang3.StringUtils.isBlank(hisOrderWeb.getUserName())) {
+		if (org.apache.commons.lang3.StringUtils.isBlank(username)) {
 			operateResult.setResultCode("-2");
 			operateResult.setResultContent("用户名不能为空");
-			return;
+			return null;
 		}
-		if (org.apache.commons.lang3.StringUtils.isBlank(hisOrderWeb.getPassWord())) {
+		if (org.apache.commons.lang3.StringUtils.isBlank(password)) {
 			operateResult.setResultCode("-2");
 			operateResult.setResultContent("密码不能为空");
-			return;
+			return null;
 		}
-		if (hisOrderWeb.getHisOrderWebItms().size() == 0) {
+		if (dadaList.size() == 0) {
 			operateResult.setResultCode("-6");
 			operateResult.setResultContent("入参为空");
-			return;
+			return null;
 		}
-		String[] propertyNames = { "accountAlias", "password" };
-		Object[] values = { hisOrderWeb.getUserName(), hisOrderWeb.getPassWord() };
-		List<NormalAccount> accounts = commonService.findByProperties(NormalAccount.class, propertyNames, values);
-
-		if (accounts.size() == 0) {
-			operateResult.setResultCode("-3");
-			operateResult.setResultContent("帐号或者密码错误");
-			return;
+		
+		NormalAccount normalAccount=commonService.checkUser(operateResult, username, password);
+		if(normalAccount==null){
+			return null;
 		}
-		if (!accounts.get(0).getNormalUser().getType().toString().equals("1")) {
+		if (!normalAccount.getNormalUser().getType().toString().equals("1")) {
 			operateResult.setResultCode("-5");
 			operateResult.setResultContent("用户类型不对");
+			return null;
+		}
+		return normalAccount;
+	}
+	
+	public void syncHisOrder(OperateResult operateResult, HisOrderWeb hisOrderWeb) {
+
+	
+		
+		NormalAccount normalAccount=checkWsParam(operateResult,hisOrderWeb.getUserName(),hisOrderWeb.getPassWord(),hisOrderWeb.getHisOrderWebItms());
+		if(normalAccount==null){
 			return;
 		}
-		HopCtloc hopCtloc = commonService.get(HopCtloc.class, accounts.get(0).getNormalUser().getLocId());
+		HopCtloc hopCtloc = commonService.get(HopCtloc.class, normalAccount.getNormalUser().getLocId());
 		operateResult.setResultContent("success");
 		// -11 订单主键为空
-
+		StringBuffer msg = new StringBuffer();
 		Map<String, List<OrderDetail>> map = new HashMap<String, List<OrderDetail>>();
 		for (HisOrderWebItm hisOrderWebItm : hisOrderWeb.getHisOrderWebItms()) {
-			if (StringUtils.isNullOrEmpty(hisOrderWebItm.getHisId())) {
+			if (org.apache.commons.lang3.StringUtils.isBlank(hisOrderWebItm.getHisId())) {
+				msg.append(hisOrderWebItm.getHopBarCode()+"订单标示为空。");
 				continue;
 			}
 			if (org.apache.commons.lang3.StringUtils.isBlank(hisOrderWebItm.getVendorBarCode())) {
+				msg.append(hisOrderWebItm.getHopBarCode()+"供应商工商注册号为空。");
 				continue;
 			}
 			HopVendor hopVendor = hopVendorService.getHopVendoByBarCode(hisOrderWebItm.getVendorBarCode(), hopCtloc.getHospid());
 			if (hopVendor == null) {
+				msg.append(hisOrderWebItm.getHopBarCode()+"医院商品码错误。");
+				continue;
+			}
+			if(hopVendor.getHopVenId()==null){
+				msg.append(hisOrderWebItm.getHopBarCode()+"医院供应商未与平台供应商对照。");
 				continue;
 			}
 			if (org.apache.commons.lang3.StringUtils.isBlank(hisOrderWebItm.getHopBarCode())) {
+				msg.append(hisOrderWebItm.getHopBarCode()+"医院商品吗为空。");
 				continue;
 			}
 			HopInc hopInc = hopIncService.getHopIncByBarCode(hisOrderWebItm.getHopBarCode(), hopCtloc.getHospid());
 			//商品码错误
 			if (hopInc == null) {
+				msg.append(hisOrderWebItm.getHopBarCode()+"医院商品码错误。");
 				continue;
 			}
+			//供应商商品
+			VenInc venInc=commonService.getVenIncByBarCode(hopVendor.getHopVenId(), hisOrderWebItm.getHopBarCode());
+			if(venInc==null){
+				msg.append(hisOrderWebItm.getHopBarCode()+"供应商未上传该商品码。");
+				continue;
+			}
+			float fac=commonService.getIncFac(venInc.getVenIncId(), hopInc.getIncId());
 			//订单已经上传
 			if(ordService.checkHisNo(hisOrderWebItm.getHisId(), hopCtloc.getHospid())){
+				msg.append(hisOrderWebItm.getHisId()+"订单重复提交。");
 				continue;
 			}
-
 			OrderDetail orderDetail = new OrderDetail();
 			orderDetail.setIncName(hopInc.getIncName());
 			orderDetail.setOrderDate(new Date());
 			orderDetail.setOrderHisNo(hisOrderWebItm.getHisId());
 			orderDetail.setOrderRp(hisOrderWebItm.getRp());
-			orderDetail.setOrderHopQty(hisOrderWebItm.getQty());
 			orderDetail.setOrderState(1l);
-			orderDetail.setOrderUserId(accounts.get(0).getAccountId());
+			orderDetail.setOrderUserId(normalAccount.getAccountId());
+			orderDetail.setOrderHopUom(hopInc.getIncUomname());
+			orderDetail.setOrderEmFlag(hisOrderWebItm.getEmflag());
+			orderDetail.setOrderHopId(hopCtloc.getHospid());
+			orderDetail.setOrderHopIncId(hopInc.getIncId());
+			orderDetail.setOrderHopQty(hisOrderWebItm.getQty());
+			orderDetail.setOrderVenId(venInc.getVenIncVenid());
+			orderDetail.setOrderVenIncId(venInc.getVenIncId());
+			orderDetail.setOrderFac(fac);
+			orderDetail.setAmt(hisOrderWebItm.getRp().floatValue()*hisOrderWebItm.getQty().floatValue());
+			orderDetail.setOrderVenQty(hisOrderWebItm.getQty().floatValue()/fac);
+			orderDetail.setOrderRecLoc(hopCtloc.getHopCtlocId());
 			
 			if (map.containsKey(String.valueOf(hopVendor.getHopVendorId()))) {
 				map.get(String.valueOf(hopVendor.getHopVendorId())).add(orderDetail);
@@ -870,41 +904,7 @@ public class OrdBlh extends AbstractBaseBlh {
 			}
 
 		}
-		if (map.size() > 0) {
-			Ord ord = new Ord();
-			ord.setOrdDate(new Date());
-			ord.setOrdHopId(hopCtloc.getHospid());
-			ord.setOrdLocId(hopCtloc.getHopCtlocId());
-			ord.setOrdCmpFlag("1");
-			ord.setOrdNo(lockAppUtil.GetAppNo("WSIMPORDER"));
-			commonService.saveOrUpdate(ord);
-
-			for (String o : map.keySet()) {
-				String orderNo = lockAppUtil.GetAppNo("ORD");
-				for (OrderDetail orderDetail : map.get(o)) {
-					orderDetail.setOrderImpId(ord.getOrdId());
-					orderDetail.setOrderNo(orderNo);
-					commonService.saveOrUpdate(orderDetail);
-					//更新供应商商品的销量
-					VenInc inc=commonService.get(VenInc.class, orderDetail.getOrderVenIncId());
-					if(inc.getVenIncOrderQty()==null){
-						inc.setVenIncOrderQty(0f);
-					}
-					inc.setVenIncOrderQty(inc.getVenIncOrderQty().floatValue()+orderDetail.getOrderVenQty().floatValue());
-					commonService.saveOrUpdate(inc);
-					//插入订单执行记录表
-					ExeState exeState = new ExeState();
-					exeState.setStateId(orderDetail.getOrderState());
-					exeState.setUserid(orderDetail.getOrderUserId());
-					exeState.setOrdId(orderDetail.getOrderId());
-					exeState.setExedate(new java.sql.Timestamp(new Date().getTime()));
-					exeState.setRemark("webservice 导入");
-					commonService.saveOrUpdate(exeState);
-				}
-				mpMessageBlh.sendMessByOrd(map.get(o).get(0));
-			}
-		} else {
-
-		}
+		operateResult.setResultContent(msg.toString());
+		ordService.impHisOrder(operateResult, map,hopCtloc.getHospid(),hopCtloc.getHopCtlocId());
 	}
 }

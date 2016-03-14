@@ -41,6 +41,7 @@ import com.dhcc.framework.util.PingYinUtil;
 import com.dhcc.framework.util.StringUtils;
 import com.dhcc.framework.web.context.WebContext;
 import com.dhcc.framework.web.context.WebContextHolder;
+import com.dhcc.scm.blh.ord.OrdBlh;
 import com.dhcc.scm.dto.hop.HopIncDto;
 import com.dhcc.scm.dto.sys.SysImpModelDto;
 import com.dhcc.scm.entity.hop.HopCtloc;
@@ -75,7 +76,10 @@ public class HopIncBlh extends AbstractBaseBlh {
 
 	@Resource
 	private CommonService commonService;
-
+	
+	@Resource
+	private OrdBlh ordBlh;
+	
 	public HopIncBlh() {
 
 	}
@@ -420,41 +424,16 @@ public class HopIncBlh extends AbstractBaseBlh {
 
 	public void syncHisIncSub(OperateResult operateResult, HisIncWeb hisIncWeb) {
 
-		if (hisIncWeb.getIncItmWebs().size() > 1000) {
-			operateResult.setResultCode("-1");
-			operateResult.setResultContent("每次上传数据不能大于1000条");
+		NormalAccount normalAccount=ordBlh.checkWsParam(operateResult, hisIncWeb.getUserName(), hisIncWeb.getPassWord(), hisIncWeb.getIncItmWebs());
+		if(normalAccount==null){
 			return;
 		}
-		if (org.apache.commons.lang3.StringUtils.isBlank(hisIncWeb.getUserName())) {
-			operateResult.setResultCode("-2");
-			operateResult.setResultContent("用户名不能为空");
-			return;
-		}
-		if (org.apache.commons.lang3.StringUtils.isBlank(hisIncWeb.getPassWord())) {
-			operateResult.setResultCode("-2");
-			operateResult.setResultContent("密码不能为空");
-			return;
-		}
-		if (hisIncWeb.getIncItmWebs().size() == 0) {
-			operateResult.setResultCode("-6");
-			operateResult.setResultContent("入参为空");
-			return;
-		}
-		String[] propertyNames = { "accountAlias", "password" };
-		Object[] values = { hisIncWeb.getUserName(), hisIncWeb.getPassWord() };
-		List<NormalAccount> accounts = commonService.findByProperties(NormalAccount.class, propertyNames, values);
-
-		if (accounts.size() == 0) {
-			operateResult.setResultCode("-3");
-			operateResult.setResultContent("帐号或者密码错误");
-			return;
-		}
-		if (!accounts.get(0).getNormalUser().getType().toString().equals("1")) {
+		if (!normalAccount.getNormalUser().getType().toString().equals("1")) {
 			operateResult.setResultCode("-5");
 			operateResult.setResultContent("用户类型不对");
 			return;
 		}
-		HopCtloc hopCtloc = commonService.get(HopCtloc.class, accounts.get(0).getNormalUser().getLocId());
+		HopCtloc hopCtloc = commonService.get(HopCtloc.class, normalAccount.getNormalUser().getLocId());
 		operateResult.setResultContent("success");
 		for (HisIncItmWeb hisIncItmWeb : hisIncWeb.getIncItmWebs()) {
 			

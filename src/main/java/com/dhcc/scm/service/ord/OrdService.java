@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.dhcc.scm.dto.ord.OrdDto;
 import com.dhcc.scm.entity.ord.OrderDetail;
+import com.dhcc.scm.entity.vo.ws.OperateResult;
 
 public interface OrdService {
 
@@ -71,4 +72,16 @@ public interface OrdService {
 	* @date 2016年3月14日 下午5:52:54
 	 */
 	public boolean checkHisNo(String hisno,Long hospId);
+	
+	/**
+	 * 
+	* @Description: TODO(webservice上传医院订单) 
+	* @param @param operateResult
+	* @param @param map
+	*  @param @param hospId
+	*   @param @param ctlocId
+	* @author zhouxin   
+	* @date 2016年3月14日 下午5:52:54
+	 */
+	public void impHisOrder(OperateResult operateResult,Map<String,List<OrderDetail>> map,Long hospId,Long ctlocId);
 }

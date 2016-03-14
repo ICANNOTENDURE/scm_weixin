@@ -39,6 +39,10 @@ import com.dhcc.framework.exception.DataBaseException;
 import com.dhcc.framework.hibernate.dao.CommonDao;
 import com.dhcc.framework.jdbc.JdbcTemplateWrapper;
 import com.dhcc.framework.util.DhccBeanUtils;
+import com.dhcc.scm.entity.userManage.NormalAccount;
+import com.dhcc.scm.entity.ven.VenHopInc;
+import com.dhcc.scm.entity.ven.VenInc;
+import com.dhcc.scm.entity.vo.ws.OperateResult;
 
 @Service("commonService")
 public class CommonServiceImpl implements CommonService {
@@ -1217,5 +1221,45 @@ public class CommonServiceImpl implements CommonService {
 	public void fillSqlPagerModelData(PagerModel pagerModel, Class className,
 			String columnNameForCount) {
 		jdbcTemplateWrapper.fillPagerModelData(pagerModel, className, columnNameForCount);
+	}
+
+	@Override
+	public NormalAccount checkUser(OperateResult operateResult,String username, String password) {
+		String[] propertyNames = { "accountAlias", "password" };
+		Object[] values = { username, password};
+		List<NormalAccount> accounts = commonDao.findByProperties(NormalAccount.class, propertyNames, values);
+
+		if (accounts.size() == 0) {
+			operateResult.setResultCode("-3");
+			operateResult.setResultContent("帐号或者密码错误");
+			return null;
+		}
+		return accounts.get(0);
+	}
+
+	@Override
+	public VenInc getVenIncByBarCode(Long vendorId, String barcode) {
+		
+		String[] propertyNames = { "venIncVenid", "venIncBarCode" };
+		Object[] values = { vendorId, barcode};
+		List<VenInc> venIncs = commonDao.findByProperties(VenInc.class, propertyNames, values);
+
+		if (venIncs.size() == 0) {
+			return null;
+		}
+		return venIncs.get(0);
+	}
+
+	@Override
+	public float getIncFac(Long venIncId, Long hopIncId) {
+		
+		String[] propertyNames = { "hopIncId", "venIncId" ,"venHopAuditflag"};
+		Object[] values = { hopIncId, venIncId,"Y"};
+		List<VenHopInc> venHopIncs = commonDao.findByProperties(VenHopInc.class, propertyNames, values);
+
+		if (venHopIncs.size() == 0) {
+			return 0;
+		}
+		return venHopIncs.get(0).getVenFac().floatValue()/venHopIncs.get(0).getHopFac().floatValue();
 	}
 }

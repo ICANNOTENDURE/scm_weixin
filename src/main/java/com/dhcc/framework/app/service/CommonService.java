@@ -16,6 +16,9 @@ import com.dhcc.framework.common.HtmlListQueryObj;
 import com.dhcc.framework.common.ListObject;
 import com.dhcc.framework.common.PagerModel;
 import com.dhcc.framework.hibernate.dao.CommonDao;
+import com.dhcc.scm.entity.userManage.NormalAccount;
+import com.dhcc.scm.entity.ven.VenInc;
+import com.dhcc.scm.entity.vo.ws.OperateResult;
 
 public interface CommonService {
 
@@ -157,5 +160,27 @@ public interface CommonService {
 	 * @param columnNameForCount:用于分页查询时，count(columnNameForCount) 函数于用统计记录数的列事，一般用数据库中主键列
 	 */
 	public void fillSqlPagerModelData(PagerModel pagerModel,Class className,String columnNameForCount);
+	
+	/**
+	 * 
+	 * @param operateResult :检查用户名和密码
+	 * @param username  : 用户名
+	 * @param password:密码
+	 */
+	public NormalAccount checkUser(OperateResult operateResult,String username,String password);
+	
+	/**
+	 * @see  :获取供应商商品
+	 * @param vendorId  : 供应商id
+	 * @param barcode:商品码
+	 */
+	public VenInc getVenIncByBarCode(Long vendorId,String barcode);
+	
+	/**
+	 * @see  :获取供应商商品到医院单位转换系数
+	 * @param venIncId  : 供应商商品id t_ven_inc 
+	 * @param hopIncId ：医院商品id t_hop_inc
+	 */
+	public float getIncFac(Long venIncId,Long hopIncId);
 	
 }

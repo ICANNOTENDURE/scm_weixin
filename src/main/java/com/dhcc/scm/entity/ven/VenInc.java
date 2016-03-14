@@ -112,6 +112,10 @@ public class VenInc implements Serializable {
 	@Column(name="VEN_INC_ADDDATE")
 	private Date venIncAddDate;
 	
+	
+	@Column(name="VEN_INC_BARCODE")
+	private String venIncBarCode;
+	
 	@Transient
 	private Long groupId;
 	
@@ -400,6 +404,14 @@ public class VenInc implements Serializable {
 
 	public void setVenIncCatId(Long venIncCatId) {
 		this.venIncCatId = venIncCatId;
+	}
+
+	public String getVenIncBarCode() {
+		return venIncBarCode;
+	}
+
+	public void setVenIncBarCode(String venIncBarCode) {
+		this.venIncBarCode = venIncBarCode;
 	}
 
 	
