@@ -843,18 +843,24 @@ public class OrdBlh extends AbstractBaseBlh {
 				continue;
 			}
 			HopInc hopInc = hopIncService.getHopIncByBarCode(hisOrderWebItm.getHopBarCode(), hopCtloc.getHospid());
+			//商品码错误
 			if (hopInc == null) {
 				continue;
 			}
-			String[] incPropertyNames = { "hopHopId", "orderHisNo" };
-			Object[] incValues = { hopCtloc.getHospid(), hisOrderWebItm.getHisId() };
-			List<OrderDetail> details = commonService.findByProperties(OrderDetail.class, incPropertyNames, incValues);
-			if (details.size() > 0) {
+			//订单已经上传
+			if(ordService.checkHisNo(hisOrderWebItm.getHisId(), hopCtloc.getHospid())){
 				continue;
 			}
 
 			OrderDetail orderDetail = new OrderDetail();
-			//orderDetail.se
+			orderDetail.setIncName(hopInc.getIncName());
+			orderDetail.setOrderDate(new Date());
+			orderDetail.setOrderHisNo(hisOrderWebItm.getHisId());
+			orderDetail.setOrderRp(hisOrderWebItm.getRp());
+			orderDetail.setOrderHopQty(hisOrderWebItm.getQty());
+			orderDetail.setOrderState(1l);
+			orderDetail.setOrderUserId(accounts.get(0).getAccountId());
+			
 			if (map.containsKey(String.valueOf(hopVendor.getHopVendorId()))) {
 				map.get(String.valueOf(hopVendor.getHopVendorId())).add(orderDetail);
 			} else {

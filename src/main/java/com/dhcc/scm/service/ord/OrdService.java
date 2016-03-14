@@ -57,4 +57,18 @@ public interface OrdService {
 
 	
 	public void impOrd( Map<String, List<OrderDetail>> venMap);
+	
+	/**
+	 * 
+	* @Title: checkHisNo 
+	* @Description: TODO(检查医院上传明细是否已经上传过) 
+	* @param @param hisno
+	* @param @param hospId
+	* @param @return    设定文件 
+	* @return boolean    返回类型 
+	* @throws 
+	* @author zhouxin   
+	* @date 2016年3月14日 下午5:52:54
+	 */
+	public boolean checkHisNo(String hisno,Long hospId);
 }

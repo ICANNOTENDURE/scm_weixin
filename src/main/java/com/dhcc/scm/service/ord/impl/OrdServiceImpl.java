@@ -87,6 +87,17 @@ public class OrdServiceImpl implements OrdService {
 		// TODO Auto-generated method stub
 		ordDao.impOrd(venMap);
 	}
+
+	@Override
+	public boolean checkHisNo(String hisno, Long hospId) {
+		String[] incPropertyNames = { "hopHopId", "orderHisNo" };
+		Object[] incValues = {hospId, hisno};
+		List<OrderDetail> details = commonService.findByProperties(OrderDetail.class, incPropertyNames, incValues);
+		if(details.size()>0){
+			return true;
+		}
+		return false;
+	}
 	
 	
 }
