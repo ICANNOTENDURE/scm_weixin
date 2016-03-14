@@ -73,6 +73,10 @@ public class HopVendor implements Serializable {
 	@Column(name="H_SEND")
 	private String hopSend;
 	
+	//工商执照注册号/统一社会信用代码
+	@Column(name="H_BusinessRegNo")
+	private String hBusinessRegNo;
+	
 	/**
 	 * 医院审核供应商资质标志，Y通过，其他未通过
 	 */
@@ -315,6 +319,14 @@ public class HopVendor implements Serializable {
 	 */
 	public void setHopHopId(Long hopHopId) {
 		this.hopHopId = hopHopId;
+	}
+
+	public String gethBusinessRegNo() {
+		return hBusinessRegNo;
+	}
+
+	public void sethBusinessRegNo(String hBusinessRegNo) {
+		this.hBusinessRegNo = hBusinessRegNo;
 	}
 	
 	

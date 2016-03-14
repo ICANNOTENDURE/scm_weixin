@@ -6,11 +6,16 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
+import org.apache.cxf.annotations.WSDLDocumentation;
+
 import com.dhcc.scm.entity.vo.ws.HisCmpRecWeb;
 import com.dhcc.scm.entity.vo.ws.HisIncLocQtyWeb;
 import com.dhcc.scm.entity.vo.ws.HisIncWeb;
 import com.dhcc.scm.entity.vo.ws.HisInvInfoWeb;
+import com.dhcc.scm.entity.vo.ws.HisLocWeb;
+import com.dhcc.scm.entity.vo.ws.HisOrderWeb;
 import com.dhcc.scm.entity.vo.ws.HisOrderWebVo;
+import com.dhcc.scm.entity.vo.ws.HisVendorWeb;
 import com.dhcc.scm.entity.vo.ws.OperateResult;
 
 
@@ -105,4 +110,21 @@ public interface HisInfoServiceInterface {
 	    public OperateResult getHopLocIncQty(@WebParam(name="hisIncLocQtyWeb")HisIncLocQtyWeb hisIncLocQtyWeb);
 		
 	    
+	    
+	    @WebMethod
+	    @WebResult(name="operateResult")
+	    public OperateResult getHopLoc(@WebParam(name="hisLocWeb")HisLocWeb hisLocWeb);
+	    
+	    
+	    @WebMethod
+	    @WebResult(name="operateResult")
+	    @WSDLDocumentation("同步医院供应商")
+	    public OperateResult getHopVendor(@WebParam(name="hisVendorWeb")HisVendorWeb hisVendorWeb);
+	    
+	    
+	    @WebMethod
+	    @WebResult(name="operateResult")
+	    @WSDLDocumentation("同步医院订单")
+	    public OperateResult getHopOrder(@WebParam(name="hisOrderWeb")HisOrderWeb hisOrderWeb);
+		
 }

@@ -85,4 +85,7 @@ public interface HopIncService {
 	 */
 	public List<ComboxVo> findHopIncComboxVos(HopIncDto dto);
 	
+	
+	public HopInc getHopIncByBarCode(String code,Long hospid);
+	
 }

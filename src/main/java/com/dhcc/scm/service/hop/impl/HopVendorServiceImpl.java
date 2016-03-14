@@ -116,4 +116,16 @@ public class HopVendorServiceImpl implements HopVendorService {
 		return hopVendorDao.getHopVenComboxVos(input);
 	}
 
+	@Override
+	public HopVendor getHopVendoByBarCode(String barcode, Long hopid) {
+		
+		String[] propertyNames={"hopHopId","hBusinessRegNo"};
+		Object[] values={hopid,barcode};
+		List<HopVendor> hopVendors=hopVendorDao.findByProperties(HopVendor.class, propertyNames, values);
+		if(hopVendors.size()==0){
+			return null;
+		}
+		return hopVendors.get(0);
+	}
+
 }

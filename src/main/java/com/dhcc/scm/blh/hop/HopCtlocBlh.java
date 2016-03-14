@@ -37,13 +37,18 @@ import com.dhcc.framework.common.BaseConstants;
 import com.dhcc.framework.common.PagerModel;
 import com.dhcc.framework.transmission.event.BusinessRequest;
 import com.dhcc.framework.util.JsonUtils;
+import com.dhcc.framework.util.StringUtils;
 import com.dhcc.framework.web.context.WebContext;
 import com.dhcc.framework.web.context.WebContextHolder;
 import com.dhcc.scm.dto.hop.HopCtlocDto;
 import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.Hospital;
 import com.dhcc.scm.entity.sys.SysLog;
+import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.vo.hop.HopCtlocVo;
+import com.dhcc.scm.entity.vo.ws.HisLocItmWeb;
+import com.dhcc.scm.entity.vo.ws.HisLocWeb;
+import com.dhcc.scm.entity.vo.ws.OperateResult;
 import com.dhcc.scm.service.hop.HopCtlocService;
 import com.dhcc.scm.ws.his.client.HisCtlocList;
 import com.dhcc.scm.ws.his.client.HisLocItm;
@@ -338,4 +343,81 @@ public class HopCtlocBlh extends AbstractBaseBlh {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	
+	
+	public void syncHisLoc(OperateResult operateResult, HisLocWeb hisLocWeb) {
+		
+		this.syncHisLocSub(operateResult, hisLocWeb);
+		SysLog log = new SysLog();
+		log.setOpArg(JsonUtils.toJson(hisLocWeb));
+		log.setOpName("webservice同步医院科室信息");
+		log.setOpDate(new Date());
+		log.setOpResult(JsonUtils.toJson(operateResult));
+		log.setOpType("webservice");
+		log.setOpUser(hisLocWeb.getUserName());
+		commonService.saveOrUpdate(log);
+
+	}
+	
+	public void syncHisLocSub(OperateResult operateResult, HisLocWeb hisIncWeb) {
+
+		if (hisIncWeb.getHisLocItmWebs().size() > 1000) {
+			operateResult.setResultCode("-1");
+			operateResult.setResultContent("每次上传数据不能大于1000条");
+			return;
+		}
+		if (org.apache.commons.lang3.StringUtils.isBlank(hisIncWeb.getUserName())) {
+			operateResult.setResultCode("-2");
+			operateResult.setResultContent("用户名不能为空");
+			return;
+		}
+		if (org.apache.commons.lang3.StringUtils.isBlank(hisIncWeb.getPassWord())) {
+			operateResult.setResultCode("-2");
+			operateResult.setResultContent("密码不能为空");
+			return;
+		}
+		if (hisIncWeb.getHisLocItmWebs().size() == 0) {
+			operateResult.setResultCode("-6");
+			operateResult.setResultContent("入参为空");
+			return;
+		}
+		String[] propertyNames = { "accountAlias", "password" };
+		Object[] values = { hisIncWeb.getUserName(), hisIncWeb.getPassWord() };
+		List<NormalAccount> accounts = commonService.findByProperties(NormalAccount.class, propertyNames, values);
+
+		if (accounts.size() == 0) {
+			operateResult.setResultCode("-3");
+			operateResult.setResultContent("帐号或者密码错误");
+			return;
+		}
+		if (!accounts.get(0).getNormalUser().getType().toString().equals("1")) {
+			operateResult.setResultCode("-5");
+			operateResult.setResultContent("用户类型不对");
+			return;
+		}
+		HopCtloc hopCtloc = commonService.get(HopCtloc.class, accounts.get(0).getNormalUser().getLocId());
+		operateResult.setResultContent("success");
+		for (HisLocItmWeb hisLocItmWeb : hisIncWeb.getHisLocItmWebs()) {
+			
+			if(StringUtils.isNullOrEmpty(hisLocItmWeb.getId())){
+				operateResult.setResultCode("-11");
+				operateResult.setResultContent("有商品条码为空,");
+				continue;
+			}
+			String[] incPropertyNames = { "hospid", "hisid" };
+			Object[] incValues = { hopCtloc.getHospid(), hisLocItmWeb.getId()};
+			List<HopCtloc> hopCtlocs = commonService.findByProperties(HopCtloc.class, incPropertyNames, incValues);
+			HopCtloc ctloc = new HopCtloc();
+			if (hopCtlocs.size() > 0) {
+				ctloc.setHopCtlocId(hopCtlocs.get(0).getHopCtlocId());
+			}
+			ctloc.setCode(hisLocItmWeb.getCode());
+			ctloc.setName(hisLocItmWeb.getName());
+			ctloc.setHospid(hopCtloc.getHospid());
+			commonService.saveOrUpdate(ctloc);
+		}
+	}
+	
 }	

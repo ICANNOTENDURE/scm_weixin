@@ -40,12 +40,15 @@ import com.dhcc.framework.util.StringUtils;
 import com.dhcc.framework.web.context.WebContextHolder;
 import com.dhcc.scm.dto.hop.HopVendorDto;
 import com.dhcc.scm.dto.sys.SysImpModelDto;
+import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.HopVendor;
 import com.dhcc.scm.entity.hop.Hospital;
 import com.dhcc.scm.entity.sys.ImpModel;
 import com.dhcc.scm.entity.sys.SysLog;
 import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.ven.Vendor;
+import com.dhcc.scm.entity.vo.ws.HisVendorItmWeb;
+import com.dhcc.scm.entity.vo.ws.HisVendorWeb;
 import com.dhcc.scm.entity.vo.ws.OperateResult;
 import com.dhcc.scm.service.hop.HopVendorService;
 import com.dhcc.scm.service.sys.SysImpModelService;
@@ -553,6 +556,75 @@ public class HopVendorBlh extends AbstractBaseBlh {
 	public void listVendorDetail(BusinessRequest res) {
 		HopVendorDto dto = super.getDto(HopVendorDto.class, res);
 		hopVendorService.listVenDetail(dto);
+	}
+	
+	
+	
+	public void syncHisVendor(OperateResult operateResult, HisVendorWeb hisVendorWeb) {
+
+		if (hisVendorWeb.getHisVendorItmWebs().size() > 1000) {
+			operateResult.setResultCode("-1");
+			operateResult.setResultContent("每次上传数据不能大于1000条");
+			return;
+		}
+		if (org.apache.commons.lang3.StringUtils.isBlank(hisVendorWeb.getUserName())) {
+			operateResult.setResultCode("-2");
+			operateResult.setResultContent("用户名不能为空");
+			return;
+		}
+		if (org.apache.commons.lang3.StringUtils.isBlank(hisVendorWeb.getPassWord())) {
+			operateResult.setResultCode("-2");
+			operateResult.setResultContent("密码不能为空");
+			return;
+		}
+		if (hisVendorWeb.getHisVendorItmWebs().size() == 0) {
+			operateResult.setResultCode("-6");
+			operateResult.setResultContent("入参为空");
+			return;
+		}
+		String[] propertyNames = { "accountAlias", "password" };
+		Object[] values = { hisVendorWeb.getUserName(), hisVendorWeb.getPassWord() };
+		List<NormalAccount> accounts = commonService.findByProperties(NormalAccount.class, propertyNames, values);
+
+		if (accounts.size() == 0) {
+			operateResult.setResultCode("-3");
+			operateResult.setResultContent("帐号或者密码错误");
+			return;
+		}
+		if (!accounts.get(0).getNormalUser().getType().toString().equals("1")) {
+			operateResult.setResultCode("-5");
+			operateResult.setResultContent("用户类型不对");
+			return;
+		}
+		HopCtloc hopCtloc = commonService.get(HopCtloc.class, accounts.get(0).getNormalUser().getLocId());
+		operateResult.setResultContent("success");
+		for (HisVendorItmWeb hisVendorItmWeb : hisVendorWeb.getHisVendorItmWebs()) {
+			
+			if(StringUtils.isNullOrEmpty(hisVendorItmWeb.getBusinessRegNo())){
+				operateResult.setResultCode("-11");
+				operateResult.setResultContent("工商执照注册号/统一社会信用代码为空,");
+				continue;
+			}
+			String[] incPropertyNames = { "hopHopId", "hBusinessRegNo" };
+			Object[] incValues = { hopCtloc.getHospid(), hisVendorItmWeb.getBusinessRegNo()};
+			List<HopVendor> hopVendors = commonService.findByProperties(HopVendor.class, incPropertyNames, incValues);
+		
+			if (hopVendors.size() > 0) {
+				
+				hopVendors.get(0).sethBusinessRegNo(hisVendorItmWeb.getBusinessRegNo());
+				hopVendors.get(0).setHopName(hisVendorItmWeb.getName());
+				hopVendors.get(0).setHopCode(hisVendorItmWeb.getCode());
+				commonService.saveOrUpdate(hopVendors.get(0));
+			}else{
+				HopVendor hopVendor = new HopVendor();
+				hopVendor.setHopHopId(hopCtloc.getHospid());
+				hopVendor.sethBusinessRegNo(hisVendorItmWeb.getBusinessRegNo());
+				hopVendor.setHopName(hisVendorItmWeb.getName());
+				hopVendor.setHopCode(hisVendorItmWeb.getCode());
+				commonService.saveOrUpdate(hopVendor);
+			}
+			
+		}
 	}
 	
 }

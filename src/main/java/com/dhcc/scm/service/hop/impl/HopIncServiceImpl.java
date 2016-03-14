@@ -107,4 +107,16 @@ public class HopIncServiceImpl implements HopIncService {
 		return hopIncDao.findHopIncComboxVos(dto);
 	}
 
+	@Override
+	public HopInc getHopIncByBarCode(String code, Long hospid) {
+		// TODO Auto-generated method stub
+		String[] propertyNames={"incHospid","incBarCode"};
+		Object[] values={hospid,code};
+		List<HopInc> hopIncs=hopIncDao.findByProperties(HopInc.class, propertyNames, values);
+		if(hopIncs.size()==0){
+			return null;
+		}
+		return hopIncs.get(0);
+	}
+
 }

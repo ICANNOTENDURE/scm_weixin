@@ -7,15 +7,21 @@ import javax.jws.WebService;
 
 import com.dhcc.framework.app.service.CommonService;
 import com.dhcc.framework.util.JsonUtils;
+import com.dhcc.scm.blh.hop.HopCtlocBlh;
 import com.dhcc.scm.blh.hop.HopIncBlh;
 import com.dhcc.scm.blh.hop.HopIncLocBlh;
+import com.dhcc.scm.blh.hop.HopVendorBlh;
+import com.dhcc.scm.blh.ord.OrdBlh;
 import com.dhcc.scm.blh.ord.OrderBlh;
 import com.dhcc.scm.entity.sys.SysLog;
 import com.dhcc.scm.entity.vo.ws.HisCmpRecWeb;
 import com.dhcc.scm.entity.vo.ws.HisIncLocQtyWeb;
 import com.dhcc.scm.entity.vo.ws.HisIncWeb;
 import com.dhcc.scm.entity.vo.ws.HisInvInfoWeb;
+import com.dhcc.scm.entity.vo.ws.HisLocWeb;
+import com.dhcc.scm.entity.vo.ws.HisOrderWeb;
 import com.dhcc.scm.entity.vo.ws.HisOrderWebVo;
+import com.dhcc.scm.entity.vo.ws.HisVendorWeb;
 import com.dhcc.scm.entity.vo.ws.OperateResult;
 
 /**
@@ -35,6 +41,15 @@ public class HisInfoService implements HisInfoServiceInterface{
 	 
 	 @Resource
 	 private HopIncBlh hopIncBlh;
+	 
+	 @Resource
+	 private HopCtlocBlh hopCtlocBlh;
+	 
+	 @Resource
+	 private HopVendorBlh hopVendorBlh;
+	 
+	 @Resource
+	 private  OrdBlh ordBlh;
 	 
 	 @Resource
 	 private CommonService commonService;
@@ -132,6 +147,64 @@ public class HisInfoService implements HisInfoServiceInterface{
 			operateResult.setResultCode("1");
 			operateResult.setResultContent("程序异常1:"+e.getMessage());
 			return operateResult;
+		}
+		return operateResult;
+	}
+
+	@Override
+	public OperateResult getHopLoc(HisLocWeb hisLocWeb) {
+		OperateResult operateResult=new OperateResult();
+		try {
+			hopCtlocBlh.syncHisLoc(operateResult, hisLocWeb);
+		} catch (Exception e) {
+			operateResult.setResultCode("1");
+			operateResult.setResultContent("程序异常->Exception:"+e.getMessage());
+			return operateResult;
+		}
+		return operateResult;
+	}
+
+	@Override
+	public OperateResult getHopVendor(HisVendorWeb hisVendorWeb) {
+		OperateResult operateResult=new OperateResult();
+		SysLog log = new SysLog();
+		log.setOpArg(JsonUtils.toJson(hisVendorWeb));
+		log.setOpName("webservice同步医院供应商信息");
+		log.setOpDate(new Date());
+		log.setOpType("webservice");
+		log.setOpUser(hisVendorWeb.getUserName());
+		try {
+			
+			hopVendorBlh.syncHisVendor(operateResult, hisVendorWeb);
+		} catch (Exception e) {
+			operateResult.setResultCode("1");
+			operateResult.setResultContent("程序异常->Exception:"+e.getMessage());
+			return operateResult;
+		}finally{
+			log.setOpResult(JsonUtils.toJson(operateResult));
+			commonService.saveOrUpdate(log);
+		}
+		return operateResult;
+	}
+
+	@Override
+	public OperateResult getHopOrder(HisOrderWeb hisOrderWeb) {
+		OperateResult operateResult=new OperateResult();
+		SysLog log = new SysLog();
+		log.setOpArg(JsonUtils.toJson(hisOrderWeb));
+		log.setOpName("webservice同步医院订单信息");
+		log.setOpDate(new Date());
+		log.setOpType("webservice");
+		log.setOpUser(hisOrderWeb.getUserName());
+		try {
+			ordBlh.syncHisOrder(operateResult, hisOrderWeb);
+		} catch (Exception e) {
+			operateResult.setResultCode("1");
+			operateResult.setResultContent("程序异常->Exception:"+e.getMessage());
+			return operateResult;
+		}finally{
+			log.setOpResult(JsonUtils.toJson(operateResult));
+			commonService.saveOrUpdate(log);
 		}
 		return operateResult;
 	}

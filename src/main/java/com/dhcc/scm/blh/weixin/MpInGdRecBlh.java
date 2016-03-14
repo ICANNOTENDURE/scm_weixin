@@ -31,6 +31,7 @@ import com.dhcc.scm.entity.ord.OrdLabel;
 import com.dhcc.scm.entity.ord.OrderDetail;
 import com.dhcc.scm.entity.ord.OrderDetailSub;
 import com.dhcc.scm.entity.st.StInGdRec;
+import com.dhcc.scm.entity.st.StInGdRecItm;
 import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.ven.Vendor;
 import com.dhcc.scm.entity.vo.mobile.InGdRec;
@@ -252,7 +253,8 @@ public class MpInGdRecBlh extends AbstractBaseBlh {
 		for(String ordSubId:OrdSubIds){
 			if(org.apache.commons.lang3.StringUtils.isNotBlank(ordSubId)){
 				OrderDetailSub orderDetailSub=commonService.get(OrderDetailSub.class, ordSubId.trim());
-					
+				StInGdRecItm stInGdRecItm=new StInGdRecItm();
+				stInGdRecItm.setIngdrecitmBatNo(orderDetailSub.getOrdSubBatNo());
 			}
 		}
 	}

@@ -51,6 +51,38 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="hisVendorWeb">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="hisVendorItmWebs" nillable="true" type="tns:hisVendorItmWeb"/>
+      <xs:element minOccurs="0" name="passWord" type="xs:string"/>
+      <xs:element minOccurs="0" name="userName" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="hisVendorItmWeb">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="businessRegNo" type="xs:string"/>
+      <xs:element minOccurs="0" name="code" type="xs:string"/>
+      <xs:element minOccurs="0" name="name" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="hisLocWeb">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="hisLocItmWebs" nillable="true" type="tns:hisLocItmWeb"/>
+      <xs:element minOccurs="0" name="passWord" type="xs:string"/>
+      <xs:element minOccurs="0" name="userName" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="hisLocItmWeb">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="code" type="xs:string"/>
+      <xs:element minOccurs="0" name="id" type="xs:string"/>
+      <xs:element minOccurs="0" name="name" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="hisOrderWebVo">
     <xs:sequence>
       <xs:element minOccurs="0" name="deliverdate" type="xs:dateTime"/>
@@ -111,20 +143,12 @@
     <wsdl:part name="operateResult" type="tns:operateResult">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="getHopOrder">
+    <wsdl:part name="hisVendorWeb" type="tns:hisVendorWeb">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="getHisOrder">
     <wsdl:part name="hisOrderWebVo" type="tns:hisOrderWebVo">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="getRecItmByInvResponse">
-    <wsdl:part name="hisInvInfoWeb" type="tns:hisInvInfoWeb">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="getHopInc">
-    <wsdl:part name="hisIncWeb" type="tns:hisIncWeb">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="cmpRec">
-    <wsdl:part name="hisCmpRecWeb" type="tns:hisCmpRecWeb">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="getHopLocIncQtyResponse">
@@ -133,6 +157,30 @@
   </wsdl:message>
   <wsdl:message name="cmpRecResponse">
     <wsdl:part name="operateResult" type="tns:operateResult">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getHopLocResponse">
+    <wsdl:part name="operateResult" type="tns:operateResult">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getRecItmByInvResponse">
+    <wsdl:part name="hisInvInfoWeb" type="tns:hisInvInfoWeb">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getHopLoc">
+    <wsdl:part name="hisLocWeb" type="tns:hisLocWeb">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getHopVendor">
+    <wsdl:part name="hisVendorWeb" type="tns:hisVendorWeb">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getHopInc">
+    <wsdl:part name="hisIncWeb" type="tns:hisIncWeb">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cmpRec">
+    <wsdl:part name="hisCmpRecWeb" type="tns:hisCmpRecWeb">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="getRecItmByInv">
@@ -151,6 +199,14 @@
     <wsdl:part name="hisIncLocQtyWeb" type="tns:hisIncLocQtyWeb">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="getHopVendorResponse">
+    <wsdl:part name="operateResult" type="tns:operateResult">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getHopOrderResponse">
+    <wsdl:part name="operateResult" type="tns:operateResult">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:portType name="HisInfoServiceInterface">
     <wsdl:operation name="getRecItmByInv">
       <wsdl:input name="getRecItmByInv" message="tns:getRecItmByInv">
@@ -164,6 +220,19 @@
       <wsdl:output name="getHopLocIncQtyResponse" message="tns:getHopLocIncQtyResponse">
     </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="getHopOrder">
+<wsdl:documentation>同步医院订单</wsdl:documentation>
+      <wsdl:input name="getHopOrder" message="tns:getHopOrder">
+    </wsdl:input>
+      <wsdl:output name="getHopOrderResponse" message="tns:getHopOrderResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHopLoc">
+      <wsdl:input name="getHopLoc" message="tns:getHopLoc">
+    </wsdl:input>
+      <wsdl:output name="getHopLocResponse" message="tns:getHopLocResponse">
+    </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="getHisOrder">
       <wsdl:input name="getHisOrder" message="tns:getHisOrder">
     </wsdl:input>
@@ -174,6 +243,13 @@
       <wsdl:input name="cmpRec" message="tns:cmpRec">
     </wsdl:input>
       <wsdl:output name="cmpRecResponse" message="tns:cmpRecResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHopVendor">
+<wsdl:documentation>同步医院供应商</wsdl:documentation>
+      <wsdl:input name="getHopVendor" message="tns:getHopVendor">
+    </wsdl:input>
+      <wsdl:output name="getHopVendorResponse" message="tns:getHopVendorResponse">
     </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="getHopInc">
@@ -194,15 +270,6 @@
         <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="getHisOrder">
-      <soap:operation soapAction="" style="rpc"/>
-      <wsdl:input name="getHisOrder">
-        <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
-      </wsdl:input>
-      <wsdl:output name="getHisOrderResponse">
-        <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="getHopLocIncQty">
       <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="getHopLocIncQty">
@@ -212,12 +279,48 @@
         <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="getHisOrder">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="getHisOrder">
+        <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
+      </wsdl:input>
+      <wsdl:output name="getHisOrderResponse">
+        <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHopLoc">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="getHopLoc">
+        <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
+      </wsdl:input>
+      <wsdl:output name="getHopLocResponse">
+        <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHopOrder">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="getHopOrder">
+        <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
+      </wsdl:input>
+      <wsdl:output name="getHopOrderResponse">
+        <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="cmpRec">
       <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="cmpRec">
         <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
       </wsdl:input>
       <wsdl:output name="cmpRecResponse">
+        <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHopVendor">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="getHopVendor">
+        <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
+      </wsdl:input>
+      <wsdl:output name="getHopVendorResponse">
         <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
       </wsdl:output>
     </wsdl:operation>

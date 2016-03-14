@@ -101,4 +101,6 @@ public interface HopVendorService {
 	
 	public List<ComboxVo> getHopVenComboxVos(String input);
 	
+	public HopVendor getHopVendoByBarCode(String barcode,Long hopid);
+	
 }
