@@ -33,7 +33,7 @@ public class StInGdRecItm implements Serializable {
 	private Float ingdrecitmRp;
 	
 	@Column(name="ingdrecitm_qty")
-	private Long ingdrecitmQty;
+	private Float ingdrecitmQty;
 	
 	@Column(name="ingdrecitm_manfid")
 	private Long ingdrecitmManfId;
@@ -86,11 +86,11 @@ public class StInGdRecItm implements Serializable {
 		this.ingdrecitmRp = ingdrecitmRp;
 	}
 
-	public Long getIngdrecitmQty() {
+	public Float getIngdrecitmQty() {
 		return ingdrecitmQty;
 	}
 
-	public void setIngdrecitmQty(Long ingdrecitmQty) {
+	public void setIngdrecitmQty(Float ingdrecitmQty) {
 		this.ingdrecitmQty = ingdrecitmQty;
 	}
 

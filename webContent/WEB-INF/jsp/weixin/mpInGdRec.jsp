@@ -24,12 +24,12 @@
 				}, function(data) {
 					$('#common-modal-loading').modal('close');
 					wx.config({
-						debug : false,
+						debug : true,
 						appId : data.appId,
 						timestamp : data.timestamp,
 						nonceStr : data.noncestr,
 						signature : data.signature,
-						jsApiList : [ 'scanQRCode', 'chooseImage' ]
+						jsApiList : [ 'scanQRCode', 'chooseImage','uploadImage']
 					});
 				}, 'json');
 

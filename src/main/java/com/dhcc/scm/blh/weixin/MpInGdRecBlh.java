@@ -4,7 +4,6 @@
  */
 package com.dhcc.scm.blh.weixin;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -22,7 +21,7 @@ import com.dhcc.framework.app.service.CommonService;
 import com.dhcc.framework.common.BaseConstants;
 import com.dhcc.framework.transmission.event.BusinessRequest;
 import com.dhcc.framework.util.JsonUtils;
-import com.dhcc.scm.blh.sys.LockAppUtil;
+import com.dhcc.scm.dto.st.StInGdRecDto;
 import com.dhcc.scm.dto.weixin.MpInGdRecDto;
 import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.HopInc;
@@ -31,7 +30,6 @@ import com.dhcc.scm.entity.ord.OrdLabel;
 import com.dhcc.scm.entity.ord.OrderDetail;
 import com.dhcc.scm.entity.ord.OrderDetailSub;
 import com.dhcc.scm.entity.st.StInGdRec;
-import com.dhcc.scm.entity.st.StInGdRecItm;
 import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.ven.Vendor;
 import com.dhcc.scm.entity.vo.mobile.InGdRec;
@@ -39,6 +37,7 @@ import com.dhcc.scm.entity.vo.mobile.InGdRecItm;
 import com.dhcc.scm.entity.vo.mobile.QrCode;
 import com.dhcc.scm.entity.vo.weixin.WxJsapiSign;
 import com.dhcc.scm.entity.vo.ws.OperateResult;
+import com.dhcc.scm.service.st.StInGdRecService;
 import com.dhcc.scm.tool.datetime.OperTime;
 
 @Component
@@ -54,7 +53,7 @@ public class MpInGdRecBlh extends AbstractBaseBlh {
 	private WxMpConfigStorage wxMpConfigStorage;
 	
 	@Resource
-	private LockAppUtil lockAppUtil;
+	private StInGdRecService stInGdRecService;
 
 	public MpInGdRecBlh() {
 
@@ -232,6 +231,8 @@ public class MpInGdRecBlh extends AbstractBaseBlh {
 	}
 	
 
+	
+	//保存入库单
 	public void saveIngdRec(BusinessRequest res) {
 		MpInGdRecDto dto = super.getDto(MpInGdRecDto.class, res);
 		OperateResult operateResult=new OperateResult();
@@ -241,22 +242,23 @@ public class MpInGdRecBlh extends AbstractBaseBlh {
 			writeJSON(operateResult);
 			return;
 		}
-		String ingdrecno=lockAppUtil.GetAppNo("INGDREC");
-		StInGdRec stInGdRec=new StInGdRec();
-		stInGdRec.setIngdrecNo(ingdrecno);
-		stInGdRec.setIngdrecRemark(dto.getRemark());
-		stInGdRec.setIndrecDate(new Date());
-		stInGdRec.setIngdrecLocId(getMpUserId().getNormalUser().getLocId());
-		dto.setStInGdRec(stInGdRec);
-		
-		String[] OrdSubIds=dto.getOrdSubIdStr().split(BaseConstants.COMMA);
-		for(String ordSubId:OrdSubIds){
-			if(org.apache.commons.lang3.StringUtils.isNotBlank(ordSubId)){
-				OrderDetailSub orderDetailSub=commonService.get(OrderDetailSub.class, ordSubId.trim());
-				StInGdRecItm stInGdRecItm=new StInGdRecItm();
-				stInGdRecItm.setIngdrecitmBatNo(orderDetailSub.getOrdSubBatNo());
+		String[] mediaIds=dto.getImgIdStr().split(BaseConstants.COMMA);
+		for(String mediaId:mediaIds){
+			try {
+				wxMpService.mediaDownload(mediaId);
+			} catch (WxErrorException e) {
+				e.printStackTrace();
 			}
 		}
+		
+		StInGdRec stInGdRec=new StInGdRec();
+		stInGdRec.setIngdrecRemark(dto.getRemark());
+		stInGdRec.setIngdrecLocId(getMpUserId().getNormalUser().getLocId());
+		stInGdRec.setIngdrecUserId(getMpUserId().getAccountId());
+		StInGdRecDto stDto=new StInGdRecDto();
+		stDto.setStInGdRec(stInGdRec);
+		stDto.setOrdSubId(dto.getOrdSubIdStr());
+		stInGdRecService.mpInGdRec(stDto);
 	}
 
 }

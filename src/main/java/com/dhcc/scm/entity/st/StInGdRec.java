@@ -41,6 +41,19 @@ public class StInGdRec implements Serializable {
 	
 	@Column(name="ingdrec_no")
 	private String ingdrecNo;
+	
+	@Column(name="ingdrec_userid")
+	private Long ingdrecUserId;
+	
+	
+	
+	public Long getIngdrecUserId() {
+		return ingdrecUserId;
+	}
+
+	public void setIngdrecUserId(Long ingdrecUserId) {
+		this.ingdrecUserId = ingdrecUserId;
+	}
 
 	public Long getIngdrecId() {
 		return ingdrecId;
