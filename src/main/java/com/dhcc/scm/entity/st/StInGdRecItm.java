@@ -41,9 +41,6 @@ public class StInGdRecItm implements Serializable {
 	@Column(name="ingdrecitm_batno")
 	private String ingdrecitmBatNo;
 	
-	@Column(name="ingdrecitm_expdate")
-	private Long ingdrecitmVenId;
-	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="ingdrecitm_expdate")
 	private Date ingdrecitmExpDate;
@@ -113,13 +110,7 @@ public class StInGdRecItm implements Serializable {
 		this.ingdrecitmBatNo = ingdrecitmBatNo;
 	}
 
-	public Long getIngdrecitmVenId() {
-		return ingdrecitmVenId;
-	}
 
-	public void setIngdrecitmVenId(Long ingdrecitmVenId) {
-		this.ingdrecitmVenId = ingdrecitmVenId;
-	}
 
 	public Date getIngdrecitmExpDate() {
 		return ingdrecitmExpDate;
