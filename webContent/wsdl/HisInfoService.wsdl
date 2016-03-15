@@ -51,19 +51,28 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="hisVendorWeb">
+  <xs:complexType name="hisOrderWeb">
     <xs:sequence>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="hisVendorItmWebs" nillable="true" type="tns:hisVendorItmWeb"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="hisOrderWebItms" nillable="true" type="tns:hisOrderWebItm"/>
       <xs:element minOccurs="0" name="passWord" type="xs:string"/>
       <xs:element minOccurs="0" name="userName" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="hisVendorItmWeb">
+  <xs:complexType name="hisOrderWebItm">
     <xs:sequence>
-      <xs:element minOccurs="0" name="businessRegNo" type="xs:string"/>
-      <xs:element minOccurs="0" name="code" type="xs:string"/>
-      <xs:element minOccurs="0" name="name" type="xs:string"/>
+      <xs:element minOccurs="0" name="desction" type="xs:string"/>
+      <xs:element minOccurs="0" name="emflag" type="xs:string"/>
+      <xs:element minOccurs="0" name="hisId" type="xs:string"/>
+      <xs:element minOccurs="0" name="hisno" type="xs:string"/>
+      <xs:element minOccurs="0" name="hopBarCode" type="xs:string"/>
+      <xs:element minOccurs="0" name="planDate" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="purloc" type="xs:string"/>
+      <xs:element minOccurs="0" name="qty" type="xs:float"/>
+      <xs:element minOccurs="0" name="recloc" type="xs:string"/>
+      <xs:element minOccurs="0" name="remark" type="xs:string"/>
+      <xs:element minOccurs="0" name="rp" type="xs:float"/>
+      <xs:element minOccurs="0" name="vendorBarCode" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -115,6 +124,22 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="hisVendorWeb">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="hisVendorItmWebs" nillable="true" type="tns:hisVendorItmWeb"/>
+      <xs:element minOccurs="0" name="passWord" type="xs:string"/>
+      <xs:element minOccurs="0" name="userName" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="hisVendorItmWeb">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="businessRegNo" type="xs:string"/>
+      <xs:element minOccurs="0" name="code" type="xs:string"/>
+      <xs:element minOccurs="0" name="name" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="hisIncWeb">
     <xs:sequence>
       <xs:element maxOccurs="unbounded" minOccurs="0" name="incItmWebs" nillable="true" type="tns:hisIncItmWeb"/>
@@ -144,7 +169,7 @@
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="getHopOrder">
-    <wsdl:part name="hisVendorWeb" type="tns:hisVendorWeb">
+    <wsdl:part name="hisOrderWeb" type="tns:hisOrderWeb">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="getHisOrder">
