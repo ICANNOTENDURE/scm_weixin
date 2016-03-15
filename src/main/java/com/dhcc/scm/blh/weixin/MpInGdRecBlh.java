@@ -4,7 +4,9 @@
  */
 package com.dhcc.scm.blh.weixin;
 
+import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -14,6 +16,7 @@ import me.chanjar.weixin.mp.api.WxMpConfigStorage;
 import me.chanjar.weixin.mp.api.WxMpService;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.struts2.ServletActionContext;
 import org.springframework.stereotype.Component;
 
 import com.dhcc.framework.app.blh.AbstractBaseBlh;
@@ -242,10 +245,20 @@ public class MpInGdRecBlh extends AbstractBaseBlh {
 			writeJSON(operateResult);
 			return;
 		}
+		// 获取文件存储路径
+		String storageFileName = ServletActionContext.getServletContext().getRealPath("/uploads/weixin");
+		// 判断文件存储路径是否存在，若不存在则自动新建
+		File document = new File(storageFileName);
+		if (!document.exists()) {
+			document.mkdir();
+		}
 		String[] mediaIds=dto.getImgIdStr().split(BaseConstants.COMMA);
+		
 		for(String mediaId:mediaIds){
 			try {
-				wxMpService.mediaDownload(mediaId);
+				String newFileName = UUID.randomUUID().toString();
+				File dstFile = new File(storageFileName, newFileName);
+				com.dhcc.framework.util.FileUtils.copyFile(wxMpService.mediaDownload(mediaId), dstFile, BaseConstants.BUFFER_SIZE);
 			} catch (WxErrorException e) {
 				e.printStackTrace();
 			}
