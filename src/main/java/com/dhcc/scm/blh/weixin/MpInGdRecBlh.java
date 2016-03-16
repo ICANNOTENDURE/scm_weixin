@@ -257,10 +257,14 @@ public class MpInGdRecBlh extends AbstractBaseBlh {
 		String[] mediaIds=dto.getImgIdStr().split(BaseConstants.COMMA);
 		List<StInGdRecPic> stInGdRecPics=new ArrayList<StInGdRecPic>();
 		for(String mediaId:mediaIds){
+			if(org.apache.commons.lang3.StringUtils.isBlank(mediaId)){
+				continue;
+			}
 			try {
-				String newFileName = "INGDREC_"+UUID.randomUUID().toString();
+				File wxFile=wxMpService.mediaDownload(mediaId);
+				String newFileName = "INGDREC"+OperTime.getCurrentDate()+"_"+UUID.randomUUID().toString()+ com.dhcc.framework.util.FileUtils.getFileExp(wxFile.getName());
 				File dstFile = new File(storageFileName, newFileName);
-				com.dhcc.framework.util.FileUtils.copyFile(wxMpService.mediaDownload(mediaId), dstFile, BaseConstants.BUFFER_SIZE);
+				com.dhcc.framework.util.FileUtils.copyFile(wxFile, dstFile, BaseConstants.BUFFER_SIZE);
 				StInGdRecPic inGdRecPic=new StInGdRecPic();
 				inGdRecPic.setIngdrecpicPath(newFileName);
 				stInGdRecPics.add(inGdRecPic);

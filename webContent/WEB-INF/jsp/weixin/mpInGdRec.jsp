@@ -24,7 +24,7 @@
 				}, function(data) {
 					$('#common-modal-loading').modal('close');
 					wx.config({
-						debug : true,
+						debug : false,
 						appId : data.appId,
 						timestamp : data.timestamp,
 						nonceStr : data.noncestr,
@@ -73,11 +73,12 @@
 				sizeType : [ 'original', 'compressed' ], // 可以指定是原图还是压缩图，默认二者都有
 				sourceType : [ 'album', 'camera' ], // 可以指定来源是相册还是相机，默认二者都有
 				success : function(res) {
+					var imgIds=res.localIds.toString();
 					wx.uploadImage({
-					    localId: res.localIds, // 需要上传的图片的本地ID，由chooseImage接口获得
+					    localId: imgIds, // 需要上传的图片的本地ID，由chooseImage接口获得
 					    isShowProgressTips: 1, // 默认为1，显示进度提示
-					    success: function (res) {
-					        imghtml="<div id="+res.serverId;+"><img width='200' height='200' class='am-radius' src="+res.localIds+" class='am-img-responsive' />";
+					    success: function (res2) {
+					        imghtml="<div id="+res2.serverId+"><img width='200' height='200' class='am-radius' src="+imgIds+" class='am-img-responsive' />";
 							imghtml=imghtml+"<button type='button' class='am-btn am-btn-default am-radius am-btn-success am-btn-xs' onclick='viewPic(this)'>预览<i class='am-icon-picture-o'></i></button>";
 							imghtml=imghtml+"<button type='button' class='am-btn am-btn-default am-radius am-btn-danger am-btn-xs' onclick='deletePic(this)'>删除<i class='am-icon-remove'></i></button></div>";
 							$("#imglist").append(imghtml);
@@ -108,7 +109,6 @@
 			$("#imglist div").each(function(){
 				imgIdStr=imgIdStr+","+$(this).attr("id")
 			})
-			
 			$('#common-modal-loading') .modal();
 			$ .post(
 						$WEB_ROOT_PATH + "/weixin/mpInGdRecCtrl!saveIngdRec.htm",
@@ -118,14 +118,15 @@
 						},
 						function(data) {
 								$('#common-modal-loading') .modal('close');
-								if(data.resultCode=="0"){
+								if(data.resultCode==0){
 									$("#common-alert-bd").html("操作成功!入库单号:"+data.resultContent);
-									$('#common-alert').modal();
+									$('#common-alert').modal('open');
 									$("#dataList").html("");
 									$("#imglist").html("");
+									$("#imgMsg").html("");
 								}else{
 									$("#common-alert-bd").html("操作失败:"+data.resultContent);
-									$('#common-alert').modal();
+									$('#common-alert').modal('open');
 								}
 				}, 'json');
 		});
