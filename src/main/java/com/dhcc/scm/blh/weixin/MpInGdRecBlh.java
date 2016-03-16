@@ -5,6 +5,7 @@
 package com.dhcc.scm.blh.weixin;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,6 +34,7 @@ import com.dhcc.scm.entity.ord.OrdLabel;
 import com.dhcc.scm.entity.ord.OrderDetail;
 import com.dhcc.scm.entity.ord.OrderDetailSub;
 import com.dhcc.scm.entity.st.StInGdRec;
+import com.dhcc.scm.entity.st.StInGdRecPic;
 import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.ven.Vendor;
 import com.dhcc.scm.entity.vo.mobile.InGdRec;
@@ -253,14 +255,20 @@ public class MpInGdRecBlh extends AbstractBaseBlh {
 			document.mkdir();
 		}
 		String[] mediaIds=dto.getImgIdStr().split(BaseConstants.COMMA);
-		
+		List<StInGdRecPic> stInGdRecPics=new ArrayList<StInGdRecPic>();
 		for(String mediaId:mediaIds){
 			try {
-				String newFileName = UUID.randomUUID().toString();
+				String newFileName = "INGDREC_"+UUID.randomUUID().toString();
 				File dstFile = new File(storageFileName, newFileName);
 				com.dhcc.framework.util.FileUtils.copyFile(wxMpService.mediaDownload(mediaId), dstFile, BaseConstants.BUFFER_SIZE);
+				StInGdRecPic inGdRecPic=new StInGdRecPic();
+				inGdRecPic.setIngdrecpicPath(newFileName);
+				stInGdRecPics.add(inGdRecPic);
 			} catch (WxErrorException e) {
 				e.printStackTrace();
+				operateResult.setResultContent(e.getMessage());
+				writeJSON(operateResult);
+				return;
 			}
 		}
 		
@@ -271,7 +279,11 @@ public class MpInGdRecBlh extends AbstractBaseBlh {
 		StInGdRecDto stDto=new StInGdRecDto();
 		stDto.setStInGdRec(stInGdRec);
 		stDto.setOrdSubId(dto.getOrdSubIdStr());
+		stDto.setInGdRecPics(stInGdRecPics);
 		stInGdRecService.mpInGdRec(stDto);
+		operateResult.setResultContent(stDto.getStInGdRec().getIngdrecNo());
+		operateResult.setResultCode("0");
+		writeJSON(operateResult);
 	}
 
 }
