@@ -396,6 +396,7 @@ public class HopCtlocBlh extends AbstractBaseBlh {
 			ctloc.setCode(hisLocItmWeb.getCode());
 			ctloc.setName(hisLocItmWeb.getName());
 			ctloc.setHospid(hopCtloc.getHospid());
+			ctloc.setHisid(Long.valueOf(hisLocItmWeb.getId()));
 			commonService.saveOrUpdate(ctloc);
 		}
 	}

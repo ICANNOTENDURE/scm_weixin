@@ -104,7 +104,7 @@ public class OrdServiceImpl implements OrdService {
 
 	@Override
 	public boolean checkHisNo(String hisno, Long hospId) {
-		String[] incPropertyNames = { "hopHopId", "orderHisNo" };
+		String[] incPropertyNames = { "orderHopId", "orderHisNo" };
 		Object[] incValues = {hospId, hisno};
 		List<OrderDetail> details = commonService.findByProperties(OrderDetail.class, incPropertyNames, incValues);
 		if(details.size()>0){

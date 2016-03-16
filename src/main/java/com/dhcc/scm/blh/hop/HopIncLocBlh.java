@@ -186,7 +186,7 @@ public class HopIncLocBlh extends AbstractBaseBlh {
 		StringBuffer errMessage=new StringBuffer();
 		for(HisIncLocQtyItmWeb hisIncLocQtyItmWeb:hisIncLocQtyWeb.getHisIncLocQtyItmWebs()){
 			String[] ctlocPropertyNames={"hospid","hisid"};
-			Object[] ctlocValues={hopCtloc.getHospid(),hisIncLocQtyItmWeb.getLocCode()};
+			Object[] ctlocValues={hopCtloc.getHospid(),Long.valueOf(hisIncLocQtyItmWeb.getLocCode())};
 			List<HopCtloc> ctlocs=commonService.findByProperties(HopCtloc.class,ctlocPropertyNames,ctlocValues);
 			if(ctlocs.size()==0){
 				errMessage.append(hisIncLocQtyItmWeb.getLocCode()+"科室代码不匹配");
