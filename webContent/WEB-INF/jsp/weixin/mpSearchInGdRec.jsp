@@ -19,12 +19,9 @@
 				'click',
 				function() {
 					window.location.href = $WEB_ROOT_PATH
-							+ "/weixin/mpMessageCtrl!mpToDoTask.htm"
-							+ "?dto.state="
-							+ $("input[name='state']:checked").val()
-							+ "&dto.startDate=" + $("#start").val();
+							+ "/weixin/mpInGdRecCtrl!mpListInGdRec.htm"
+							+ "?dto.startDate=" + $("#start").val()
 					+"&dto.endDate=" + $("#end").val();
-					+"&dto.url=searchOrder";
 				});
 	});
 </script>
@@ -55,17 +52,6 @@
 		</span>
 	</div>
 	<hr data-am-widget="divider" style="" class="am-divider am-divider-dotted" />
-	<div class="am-g">
-		<div class="am-u-sm-4 am-u-sm-offset-4 am-u-end">
-			
-			<select id="doc-select-1" required>
-				<option value="">请选择订单状态</option>
-				<option value=1>新建</option>
-				<option value=2>接收</option>
-				<option value=3>发货</option>
-			</select>
-		</div>
-	</div>
 	<hr data-am-widget="divider" style="" class="am-divider am-divider-dotted" />
 	<button type="button" class="am-btn am-btn-primary am-btn-block"
 		data-am-loading="{spinner: 'circle-o-notch', loadingText: '加载中...', resetText: '加载过了'}"

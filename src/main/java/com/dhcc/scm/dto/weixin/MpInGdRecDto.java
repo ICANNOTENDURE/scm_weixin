@@ -4,11 +4,13 @@
  */
 package com.dhcc.scm.dto.weixin;
 
+import java.util.Date;
 import java.util.List;
 
 import com.dhcc.framework.transmission.dto.BaseDto;
 import com.dhcc.scm.entity.st.StInGdRec;
 import com.dhcc.scm.entity.st.StInGdRecItm;
+import com.dhcc.scm.entity.vo.st.InGdRecVO;
 
 public class MpInGdRecDto extends BaseDto {
 
@@ -36,9 +38,50 @@ public class MpInGdRecDto extends BaseDto {
 	private StInGdRec stInGdRec;
 	
 	
+	private Date startDate;
+	
+	private Date endDate;
+	
+	
+	private Long locId;
+	
+	private List<InGdRecVO> gdRecVOs;
 	
 	
 	
+	
+
+	public List<InGdRecVO> getGdRecVOs() {
+		return gdRecVOs;
+	}
+
+	public void setGdRecVOs(List<InGdRecVO> gdRecVOs) {
+		this.gdRecVOs = gdRecVOs;
+	}
+
+	public Long getLocId() {
+		return locId;
+	}
+
+	public void setLocId(Long locId) {
+		this.locId = locId;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
 
 	public List<StInGdRecItm> getStInGdRecItms() {
 		return stInGdRecItms;

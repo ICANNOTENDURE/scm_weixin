@@ -295,7 +295,7 @@ public class MpInGdRecBlh extends AbstractBaseBlh {
 	public String mpSearchIngdRec(BusinessRequest res) {
 		
 		MpInGdRecDto dto = super.getDto(MpInGdRecDto.class, res);
-		dto.setTitle("入库");
+		dto.setTitle("入库单查询");
 		NormalAccount normalAccount = super.getMpUserId();
 		if (normalAccount == null) {
 			dto.setOperateResult(new OperateResult());
@@ -306,5 +306,22 @@ public class MpInGdRecBlh extends AbstractBaseBlh {
 		}
 		return "mpSearchIngdRec";
 	}
-
+	
+	//查询入库单
+	public String mpListInGdRec(BusinessRequest res) {
+		
+		MpInGdRecDto dto = super.getDto(MpInGdRecDto.class, res);
+		dto.setTitle("入库单列表");
+		NormalAccount normalAccount = super.getMpUserId();
+		if (normalAccount == null) {
+			dto.setOperateResult(new OperateResult());
+			return "mpSubscribe";
+		}
+		if (normalAccount.getNormalUser().getType().longValue() != 1) {
+			return "noPermission";
+		}
+		dto.setLocId(normalAccount.getNormalUser().getLocId());
+		stInGdRecService.listInGdRec(dto);
+		return "mpListInGdRec";
+	}
 }
