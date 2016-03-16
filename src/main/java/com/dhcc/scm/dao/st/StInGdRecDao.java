@@ -120,6 +120,10 @@ public class StInGdRecDao extends HibernatePersistentObjectDAO<StInGdRec> {
 				exeState.setExedate(new java.sql.Timestamp(new Date().getTime()));
 				exeState.setRemark("微信扫码入库");
 				super.saveOrUpdate(exeState);
+				
+				orderDetailSub.setOrdSubStatus("T");
+				orderDetailSub.setOrdIngdrecDate(new Date());
+				super.saveOrUpdate(orderDetailSub);
 			}
 		}
 		
