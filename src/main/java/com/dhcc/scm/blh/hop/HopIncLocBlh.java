@@ -17,14 +17,13 @@ import org.springframework.stereotype.Component;
 import com.dhcc.framework.app.blh.AbstractBaseBlh;
 import com.dhcc.framework.app.service.CommonService;
 import com.dhcc.framework.transmission.event.BusinessRequest;
-import com.dhcc.framework.util.JsonUtils;
 import com.dhcc.scm.blh.nur.NurseBlh;
+import com.dhcc.scm.blh.ord.OrdBlh;
 import com.dhcc.scm.dto.hop.HopIncLocDto;
 import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.HopInc;
 import com.dhcc.scm.entity.hop.HopIncLoc;
 import com.dhcc.scm.entity.ord.OrderPlan;
-import com.dhcc.scm.entity.sys.SysLog;
 import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.vo.ws.HisIncLocQtyItmWeb;
 import com.dhcc.scm.entity.vo.ws.HisIncLocQtyWeb;
@@ -48,6 +47,9 @@ public class HopIncLocBlh extends AbstractBaseBlh {
 	
 	@Resource
 	private NurseBlh nurseBlh;
+	
+	@Resource
+	private OrdBlh ordBlh;
 	
 	public HopIncLocBlh() {
 		
@@ -164,62 +166,33 @@ public class HopIncLocBlh extends AbstractBaseBlh {
 	* @date 2015年4月15日 下午3:57:05
 	 */
 	public void saveHisLocQty(OperateResult operateResult,HisIncLocQtyWeb hisIncLocQtyWeb){
-		
 		this.saveHisLocQtySub(operateResult, hisIncLocQtyWeb);
-		SysLog log=new SysLog();
-		log.setOpArg(JsonUtils.toJson(hisIncLocQtyWeb));
-		log.setOpName("webservice同步医院科室库存");
-		log.setOpDate(new Date());
-		log.setOpResult(JsonUtils.toJson(operateResult));
-		log.setOpType("webservice");
-		log.setOpUser(hisIncLocQtyWeb.getUserName());
-		commonService.saveOrUpdate(log);
+
 	}
 	public void saveHisLocQtySub(OperateResult operateResult,HisIncLocQtyWeb hisIncLocQtyWeb){
 		
 		
-		if(org.apache.commons.lang.StringUtils.isBlank(hisIncLocQtyWeb.getPassWord())){
-			operateResult.setResultCode("-2");
-			operateResult.setResultContent("密码不能为空");
-			return;
-		}
-		if(org.apache.commons.lang.StringUtils.isBlank(hisIncLocQtyWeb.getUserName())){
-			operateResult.setResultCode("-2");
-			operateResult.setResultContent("用户名不能为空");
-			return;
-		}
-		NormalAccount normalAccount=normalAccountService.getNormalAccountByAccount(hisIncLocQtyWeb.getUserName());
+		NormalAccount normalAccount=ordBlh.checkWsParam(operateResult, hisIncLocQtyWeb.getUserName(), hisIncLocQtyWeb.getPassWord(), hisIncLocQtyWeb.getHisIncLocQtyItmWebs());
 		if(normalAccount==null){
-			operateResult.setResultCode("-3");
-			operateResult.setResultContent("没有该用户");
 			return;
 		}
-		if(!normalAccount.getPassword().equals(hisIncLocQtyWeb.getPassWord())){
-			operateResult.setResultCode("-4");
-			operateResult.setResultContent("密码不对");
-			return;
-		}
-		if(!normalAccount.getNormalUser().getType().toString().equals("3")){
+		if (!normalAccount.getNormalUser().getType().toString().equals("1")) {
 			operateResult.setResultCode("-5");
 			operateResult.setResultContent("用户类型不对");
 			return;
 		}
-		if(hisIncLocQtyWeb.getHisIncLocQtyItmWebs().size()==0){
-			operateResult.setResultCode("-6");
-			operateResult.setResultContent("入参为空");
-			return;
-		}
+		
 		HopCtloc hopCtloc=commonService.get(HopCtloc.class, normalAccount.getNormalUser().getLocId());
 		StringBuffer errMessage=new StringBuffer();
 		for(HisIncLocQtyItmWeb hisIncLocQtyItmWeb:hisIncLocQtyWeb.getHisIncLocQtyItmWebs()){
-			String[] ctlocPropertyNames={"hospid","code"};
+			String[] ctlocPropertyNames={"hospid","hisid"};
 			Object[] ctlocValues={hopCtloc.getHospid(),hisIncLocQtyItmWeb.getLocCode()};
 			List<HopCtloc> ctlocs=commonService.findByProperties(HopCtloc.class,ctlocPropertyNames,ctlocValues);
 			if(ctlocs.size()==0){
 				errMessage.append(hisIncLocQtyItmWeb.getLocCode()+"科室代码不匹配");
 				continue;
 			}
-			String[] incPropertyNames={"incHospid","incCode"};
+			String[] incPropertyNames={"incHospid","incBarCode"};
 			Object[] incValues={hopCtloc.getHospid(),hisIncLocQtyItmWeb.getLocIncCode()};
 			List<HopInc> hopIncs=commonService.findByProperties(HopInc.class,incPropertyNames,incValues);
 			if(hopIncs.size()==0){

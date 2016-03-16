@@ -139,14 +139,24 @@ public class HisInfoService implements HisInfoServiceInterface{
 	public OperateResult getHopLocIncQty(HisIncLocQtyWeb hisIncLocQtyWeb) {
 		// TODO Auto-generated method stub
 		OperateResult operateResult=new OperateResult();
+		SysLog log=new SysLog();
+		log.setOpArg(JsonUtils.toJson(hisIncLocQtyWeb));
+		log.setOpName("webservice同步医院科室库存");
+		log.setOpDate(new Date());
+		log.setOpType("webservice");
+		log.setOpUser(hisIncLocQtyWeb.getUserName());
 		try {
 			operateResult.setResultCode("0");
 			operateResult.setResultContent("success");
 			hopIncLocBlh.saveHisLocQty(operateResult, hisIncLocQtyWeb);
+			log.setOpResult(JsonUtils.toJson(operateResult));
 		} catch (Exception e) {
 			operateResult.setResultCode("1");
 			operateResult.setResultContent("程序异常1:"+e.getMessage());
+			log.setOpResult(JsonUtils.toJson(operateResult));
 			return operateResult;
+		}finally{
+			commonService.saveOrUpdate(log);
 		}
 		return operateResult;
 	}
