@@ -18,7 +18,7 @@
 						function() {
 							window.location.href = $WEB_ROOT_PATH
 									+ "/weixin/mpInGdRecCtrl!mpListInGdRecDetail.htm?dto.stInGdRec.ingdrecId="
-									+ $(this).children().first().text();
+									+ $(this).children().first().val();
 						});
 	});
 	function goUrl(pageNo){
@@ -54,7 +54,9 @@
 			<div data-tab-panel-0 class="am-tab-panel am-active">
 				<ul class="deliver-history-list">
 					<s:iterator value="dto.gdRecVOs" status="status" id="pageData">
-						<li ng-repeat="item in jobList"><header class="ellipsis">
+						<li ng-repeat="item in jobList">
+							<input type="hidden" value="${pageData.id}">
+							<header class="ellipsis">
 								<h1 class="title ng-binding">${pageData.no}</h1>
 							</header>
 							<div class="status ng-binding">${pageData.user}</div>

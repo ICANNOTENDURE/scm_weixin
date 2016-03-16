@@ -90,10 +90,6 @@
 				<a href="javascript:void(0)" data-dismiss="modal"
 					class="am-close am-close-spin " data-am-modal-close>&times;</a>
 			</div>
-			<div class="am-modal-bd">
-				您正在浏览的是 <span class="am-switch-mode-owner"> 云适配 </span> <span
-					class="am-switch-mode-slogan"> 为您当前手机订制的移动网站。 </span>
-			</div>
 		</div>
 	</div>
 </body>
