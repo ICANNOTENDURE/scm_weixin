@@ -10,6 +10,7 @@ import java.util.List;
 import com.dhcc.framework.transmission.dto.BaseDto;
 import com.dhcc.scm.entity.st.StInGdRec;
 import com.dhcc.scm.entity.st.StInGdRecItm;
+import com.dhcc.scm.entity.st.StInGdRecPic;
 import com.dhcc.scm.entity.vo.st.InGdRecVO;
 
 public class MpInGdRecDto extends BaseDto {
@@ -48,8 +49,18 @@ public class MpInGdRecDto extends BaseDto {
 	private List<InGdRecVO> gdRecVOs;
 	
 	
+	private List<StInGdRecPic> inGdRecPics;
 	
 	
+	
+
+	public List<StInGdRecPic> getInGdRecPics() {
+		return inGdRecPics;
+	}
+
+	public void setInGdRecPics(List<StInGdRecPic> inGdRecPics) {
+		this.inGdRecPics = inGdRecPics;
+	}
 
 	public List<InGdRecVO> getGdRecVOs() {
 		return gdRecVOs;

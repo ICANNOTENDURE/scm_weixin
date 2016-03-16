@@ -21,6 +21,7 @@ import com.dhcc.scm.dto.weixin.MpInGdRecDto;
 @Namespace(value = "/weixin")
 @Scope("prototype")
 @Action(value = "mpInGdRecCtrl", results = {
+		@Result(name = "mpListInGdRecDetail", location = "/WEB-INF/jsp/weixin/mpListInGdRecDetail.jsp"),
 		@Result(name = "mpListInGdRec", location = "/WEB-INF/jsp/weixin/mpListInGdRec.jsp"),
 		@Result(name = "mpSearchIngdRec", location = "/WEB-INF/jsp/weixin/mpSearchInGdRec.jsp"),
 		@Result(name = "noPermission", location = "/WEB-INF/jsp/weixin/noPermission.jsp"),

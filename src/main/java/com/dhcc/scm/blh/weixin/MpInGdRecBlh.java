@@ -34,6 +34,7 @@ import com.dhcc.scm.entity.ord.OrdLabel;
 import com.dhcc.scm.entity.ord.OrderDetail;
 import com.dhcc.scm.entity.ord.OrderDetailSub;
 import com.dhcc.scm.entity.st.StInGdRec;
+import com.dhcc.scm.entity.st.StInGdRecItm;
 import com.dhcc.scm.entity.st.StInGdRecPic;
 import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.ven.Vendor;
@@ -323,5 +324,31 @@ public class MpInGdRecBlh extends AbstractBaseBlh {
 		dto.setLocId(normalAccount.getNormalUser().getLocId());
 		stInGdRecService.listInGdRec(dto);
 		return "mpListInGdRec";
+	}
+	
+	
+	
+	public String mpListInGdRecDetail(BusinessRequest res){
+		MpInGdRecDto dto = super.getDto(MpInGdRecDto.class, res);
+		dto.setTitle("入库单明细");
+		NormalAccount normalAccount = super.getMpUserId();
+		if (normalAccount == null) {
+			dto.setOperateResult(new OperateResult());
+			return "mpSubscribe";
+		}
+		if (normalAccount.getNormalUser().getType().longValue() != 1) {
+			return "noPermission";
+		}
+		if(dto.getStInGdRec().getIngdrecId()!=null){
+			List<StInGdRecPic> inGdRecPics=commonService.findByProperty(StInGdRecPic.class, "ingdrecpicParrefId", dto.getStInGdRec().getIngdrecId());
+			dto.setInGdRecPics(inGdRecPics);
+			List<StInGdRecItm> inGdRecItms=commonService.findByProperty(StInGdRecItm.class, "ingdrecitmParrefId", dto.getStInGdRec().getIngdrecId());
+			for(StInGdRecItm inGdRecItm:inGdRecItms){
+				HopInc hopInc=commonService.get(HopInc.class, inGdRecItm.getIngdrecitmIncId());
+				inGdRecItm.setIngdrecitmIncName(hopInc.getIncName());
+			}
+			dto.setStInGdRecItms(inGdRecItms);
+		}
+		return "mpListInGdRecDetail";
 	}
 }

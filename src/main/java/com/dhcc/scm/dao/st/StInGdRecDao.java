@@ -55,6 +55,7 @@ public class StInGdRecDao extends HibernatePersistentObjectDAO<StInGdRec> {
 		}
 		
 		String[] OrdSubIds=dto.getOrdSubId().split(BaseConstants.COMMA);
+		Long venId=null;
 		for(String ordSubId:OrdSubIds){
 			if(org.apache.commons.lang3.StringUtils.isNotBlank(ordSubId)){
 				OrderDetailSub orderDetailSub=super.get(OrderDetailSub.class, ordSubId.trim());
@@ -62,7 +63,9 @@ public class StInGdRecDao extends HibernatePersistentObjectDAO<StInGdRec> {
 					continue;
 				}
 				OrderDetail orderDetail=super.get(OrderDetail.class,orderDetailSub.getOrdSubDetailId());
-				
+				if(venId==null){
+					venId=orderDetail.getOrderVenId();
+				}
 				StInGdRecItm stInGdRecItm=new StInGdRecItm();
 				stInGdRecItm.setIngdrecitmBatNo(orderDetailSub.getOrdSubBatNo());
 				stInGdRecItm.setIngdrecitmExpDate(orderDetailSub.getOrdSubExpDate());
@@ -87,7 +90,8 @@ public class StInGdRecDao extends HibernatePersistentObjectDAO<StInGdRec> {
 				super.saveOrUpdate(orderDetailSub);
 			}
 		}
-		
+		dto.getStInGdRec().setIngdrecVenId(venId);
+		super.saveOrUpdate(dto.getStInGdRec());
 	}
 	
 	

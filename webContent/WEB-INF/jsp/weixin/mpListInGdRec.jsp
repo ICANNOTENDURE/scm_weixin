@@ -17,7 +17,7 @@
 		$(".deliver-history-list li").on('click',
 						function() {
 							window.location.href = $WEB_ROOT_PATH
-									+ "/weixin/mpMessageCtrl!mpListOrderDetail.htm?dto.orderDetail.orderNo="
+									+ "/weixin/mpInGdRecCtrl!mpListInGdRecDetail.htm?dto.stInGdRec.ingdrecId="
 									+ $(this).children().first().text();
 						});
 	});
