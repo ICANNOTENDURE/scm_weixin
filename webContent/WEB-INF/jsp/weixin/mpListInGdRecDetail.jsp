@@ -13,61 +13,38 @@
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/js/weixin/jssdk.js"></script>
 <title>东华医疗供应链(SCI)</title>
-<script type="text/javascript">
-	$(function() {
-		$(".am-icon-chevron-left").on('click', function() {
-			window.history.back();
-		});
-		$('#common-modal-loading').modal({
-			closeViaDimmer : false
-		});
-		$.post(
-				$WEB_ROOT_PATH
-						+ "/weixin/mpInGdRecCtrl!getWxJsapiSignature.htm", {
-					'dto.url' : window.document.location.href
-				}, function(data) {
-					$('#common-modal-loading').modal('close');
-					wx.config({
-						debug : false,
-						appId : data.appId,
-						timestamp : data.timestamp,
-						nonceStr : data.noncestr,
-						signature : data.signature,
-						jsApiList : [ 'previewImage' ]
-					});
-		}, 'json');
-		
-		$('.am-btn-success').on('click',function(){
-			 alert($(this).parent().find("img").attr("src"))
-			 wx.previewImage({
-					current : '', // 当前显示图片的http链接
-					urls : [ $(this).parent().find("img").attr("src") ]
-				// 需要预览的图片http链接列表
-				});
-		})
-	});
-</script>
 
 </head>
 <body>
 
 	<!--页头-->
 	<%@include file="/WEB-INF/jsp/common/mpWXheader.jsp"%>
-
-	<s:iterator value="dto.inGdRecPics" status="status" id="inGdRecPicss">
-		<div>
-			<img  class='am-radius'
-				src="<%=request.getContextPath()%>/uploads/weixin/${inGdRecPicss.ingdrecpicPath}"
-				class='am-img-responsive' />
-			<!-- 
+	<ul data-am-widget="gallery"
+		class="am-gallery am-avg-sm-2 am-gallery-imgbordered"
+		data-am-gallery="{pureview:{weChatImagePreview: false}}">
+		<s:iterator value="dto.inGdRecPics" status="status" id="inGdRecPicss">
+			<li>
+				<div class="am-gallery-item">
+					<a
+						href="<%=request.getContextPath()%>/uploads/weixin/${inGdRecPicss.ingdrecpicPath}"><img
+						src="<%=request.getContextPath()%>/uploads/weixin/${inGdRecPicss.ingdrecpicPath}" /></a>
+				</div>
+			</li>
+		</s:iterator>
+	</ul>
+	<!-- 
+	<div>
+		<img class='am-radius'
+			src="<%=request.getContextPath()%>/uploads/weixin/${inGdRecPicss.ingdrecpicPath}"
+			class='am-img-responsive' />
+		
 			<button type='button'
 				class='am-btn am-btn-default am-radius am-btn-success am-btn-xs'>
 				预览<i class='am-icon-picture-o'></i>
 			</button>
-			 -->
-		</div>
-
-	</s:iterator>
+			 
+	</div>
+	-->
 	<table
 		class="am-table am-table-bordered am-table-striped am-table-compact">
 		<thead class="title">
