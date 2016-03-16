@@ -289,5 +289,22 @@ public class MpInGdRecBlh extends AbstractBaseBlh {
 		operateResult.setResultCode("0");
 		writeJSON(operateResult);
 	}
+	
+	
+	//查询入库单
+	public String mpSearchIngdRec(BusinessRequest res) {
+		
+		MpInGdRecDto dto = super.getDto(MpInGdRecDto.class, res);
+		dto.setTitle("入库");
+		NormalAccount normalAccount = super.getMpUserId();
+		if (normalAccount == null) {
+			dto.setOperateResult(new OperateResult());
+			return "mpSubscribe";
+		}
+		if (normalAccount.getNormalUser().getType().longValue() != 1) {
+			return "noPermission";
+		}
+		return "mpSearchIngdRec";
+	}
 
 }

@@ -21,11 +21,12 @@ import com.dhcc.scm.dto.weixin.MpInGdRecDto;
 @Namespace(value = "/weixin")
 @Scope("prototype")
 @Action(value = "mpInGdRecCtrl", results = {
+		@Result(name = "mpSearchIngdRec", location = "/WEB-INF/jsp/weixin/mpSearchInGdRec.jsp"),
 		@Result(name = "noPermission", location = "/WEB-INF/jsp/weixin/noPermission.jsp"),
 		@Result(name = "mpSubscribe", location = "/WEB-INF/jsp/weixin/mpSubscribe.jsp"),
 		@Result(name = "mpInGdRec", location = "/WEB-INF/jsp/weixin/mpInGdRec.jsp")})
 @Blh("mpInGdRecBlh")
-@MpOAuthRequireds({@MpOAuthRequired(BlhMethod="mpInGdRec")})
+@MpOAuthRequireds({@MpOAuthRequired(BlhMethod="mpInGdRec"),@MpOAuthRequired(BlhMethod="mpSearchIngdRec")})
 public class MpInGdRecAction extends BaseAction {
 	
 	private static final long serialVersionUID = 1L;

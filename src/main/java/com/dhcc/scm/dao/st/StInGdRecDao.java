@@ -128,4 +128,5 @@ public class StInGdRecDao extends HibernatePersistentObjectDAO<StInGdRec> {
 		}
 		
 	}
+
 }
