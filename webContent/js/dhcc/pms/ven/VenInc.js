@@ -241,7 +241,7 @@ $(function (){
 
 //增加
 function addClick() {
-	$CommonUI.getDialog("#drugInfoWin").dialog("setTitle","增加商品信息");
+	//$CommonUI.getDialog("#drugInfoWin").dialog("setTitle","增加商品信息");
 	$CommonUI.getDialog("#drugInfoWin").dialog("center");
 	$CommonUI.getDialog("#drugInfoWin").dialog("open");
 	$CommonUI.getForm('#incdetail').form('clear');
@@ -293,6 +293,7 @@ function editRow() {
   					listPic(Id);
   					listPro(Id,row.venincsubcatid);
   					listGroup(row.venincsubcatid);
+  					listQualify(Id);
   				 }else{
   					$CommonUI.alert('没有权限!');
   				 }
@@ -371,7 +372,31 @@ function listPic(Id){
 			 'json'
 	 );
 }
-
+//显示资质信息
+function listQualify(Id){
+	$.post(
+			 $WEB_ROOT_PATH+'/sys/sysQualifTypeCtrl!getVenIncQualify.htm',
+			 {
+				 "dto.vendorIncId":Id,
+			 },
+			 function(data){
+				 $.each(data,function(i,dd){
+					 	imgUrl=$WEB_ROOT_PATH +"/uploadPic/"+dd.venIncPicPath;
+					 	imgId="item"+dd.venIncPicId;
+					 	html="<tr id='tr"+dd.venIncPicId+"' name='trPic'><td class='textLabel'>图片:</td><td ><img src='"+imgUrl+"' width=105px></img>";
+					 	html=html+"<div><a class='dhc-linkbutton l-btn l-btn-plain'  onclick='javascript:viewPic("+imgId+")' ><span class='l-btn-left'><span class='l-btn-text icon-search l-btn-icon-left'>预览</span></span></a>";
+					 	html=html+"<a class='dhc-linkbutton l-btn l-btn-plain'  onclick='javascript:delPic("+dd.venIncPicId+")' ><span class='l-btn-left'><span class='l-btn-text icon-cancel l-btn-icon-left'>删除</span></span></a></div>";
+					 	html=html+"<div id='"+imgId+"' src='"+imgUrl+"' style='float:left'></div></td>";
+					 	html=html+"<td class='textLabel'>顺序:</td><td class='textParent'><input style='width: 250px;' type='text'  onblur='saveSeq("+dd.venIncPicId+")' name='pic"+dd.venIncPicId+"' value='"+dd.venIncPicSeq+"'/></td></tr>";
+					 	
+					 	//alert(html);
+					 	$('#qualifyDetail').append(html);
+						
+				 });
+	         },
+			 'json'
+	 );
+}
 function viewPic(imgId){
 	$CommonUI.imageTransfer(imgId,$WEB_ROOT_PATH+"/js",450,300,{
 		'Close':true,

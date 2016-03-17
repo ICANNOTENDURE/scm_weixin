@@ -4,9 +4,8 @@
  */
 package com.dhcc.scm.dto.sys;
 
-import java.util.List;
-import com.dhcc.scm.entity.sys.SysQualifType;
 import com.dhcc.framework.transmission.dto.BaseDto;
+import com.dhcc.scm.entity.sys.SysQualifType;
 
 public class SysQualifTypeDto extends BaseDto {
 
@@ -14,7 +13,32 @@ public class SysQualifTypeDto extends BaseDto {
 	
 	private SysQualifType sysQualifType;
 
+	private Long vendorId;
 	
+	private Long catGroupId;
+	
+	
+	
+	public Long getVendorId() {
+		return vendorId;
+	}
+
+
+	public void setVendorId(Long vendorId) {
+		this.vendorId = vendorId;
+	}
+
+
+	public Long getCatGroupId() {
+		return catGroupId;
+	}
+
+
+	public void setCatGroupId(Long catGroupId) {
+		this.catGroupId = catGroupId;
+	}
+
+
 	public SysQualifType getSysQualifType() {
 		return sysQualifType;
 	}
@@ -24,21 +48,5 @@ public class SysQualifTypeDto extends BaseDto {
 		this.sysQualifType = sysQualifType;
 	}
 	
-//	//add hxy  以下都是
-//	private List<SysQualifType> sysQualifTypes;
-//
-//
-//	public List<SysQualifType> getSysQualifTypes() {
-//		return sysQualifTypes;
-//	}
-//
-//
-//	public void setSysQualifTypes(List<SysQualifType> sysQualifTypes) {
-//		this.sysQualifTypes = sysQualifTypes;
-//	}
-//
-//
-//	public static long getSerialversionuid() {
-//		return serialVersionUID;
-//	}
+
 }

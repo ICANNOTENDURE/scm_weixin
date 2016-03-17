@@ -37,98 +37,99 @@
 			onclick="javascript:importClick()">导入</a>
 	</div>
 
-	
+
 	<table id="datagrid" title="供应商商品信息维护"
 		data-options="toolbar:'#toolbar',fitColumns:true,singleSelect:true,pagination:true">
 	</table>
 
-	<div id="drugInfoWin" class="dialog" title="商品信息维护"
+	<div id="drugInfoWin" class="dialog"
 		data-options="modal:true,width:900,height:600,closed:true,buttons:'#btnDiv0'"
-		style="vertical-align: middle;">
+		style="vertical-align: top;">
 		<form id="incdetail" method="post">
-			<table style="width: 100%;" id="tableDetail">
-				<tr style="display: none">
-					<input type="hidden" name="dto.venInc.venIncId" />
-					<input type="hidden" name="dto.venInc.venIncVenid" />
-					<input type="hidden" name="dto.venInc.venIncOrderQty" />
-					<input type="hidden" name="dto.venInc.venIncCommentNum" />
-					<input type="hidden" name="dto.venInc.venIncResQty" />
-					<input type="hidden" name="dto.venInc.venIncAvailQty" />
-				</tr>
-				<tr>
-					<td class="textLabel">商品代码:</td>
-					<td class="textParent"><input style="width: 250px;"
-						class="validatebox" type="text" name="dto.venInc.venIncCode"
-						data-options="required:true" id="venIncCode" /></td>
-					<td class="textLabel">商品名称:</td>
-					<td class="textParent"><input style="width: 250px;"
-						class="validatebox" type="text" name="dto.venInc.venIncName"
-						data-options="required:true" id="venIncName" /></td>
-				</tr>
-				<tr>
-					<td class="textLabel">单位代码:</td>
-					<td class="textParent"><input style="width: 250px;"
-						class="validatebox" type="text" name="dto.venInc.venIncUomcode"
-						data-options="required:true" id="venIncUomcode" /></td>
-					<td class="textLabel">单位名称:</td>
-					<td class="textParent"><input style="width: 250px;"
-						class="validatebox" type="text" name="dto.venInc.venIncUomname"
-						data-options="required:true" id="venIncUomname" /></td>
-				</tr>
-				<tr>
-					<td class="textLabel">价格:</td>
-					<td class="textParent"><input style="width: 250px;"
-						class="validatebox" type="text" name="dto.venInc.venIncPrice"
-						id="venIncPrice" /></td>
-					<td class="textLabel">别名:</td>
-					<td class="textParent"><input style="width: 250px;"
-						type="text" name="dto.venInc.venIncAlias" id="venIncAlias" /></td>
-				</tr>
-				<tr>
-					<td class="textLabel">库存:</td>
-					<td class="textParent"><input type="text"
-						name="dto.venInc.venIncQty" style="width: 250px;" /></td>
-					<td class="textLabel">厂商:</td>
-					<td class="textParent"><input style="width: 250px;"
-						class="combobox" type="text" name="dto.venInc.venIncManfid"
-						data-options="required:true" id="venIncManfid" /></td>
-				</tr>
-				<tr>
-					<td class="textLabel">大类:</td>
-					<td class="textParent"><input id="group" class="combobox"
-						type="text" style="width: 250px;" /></td>
-					<td class="textLabel">类组:</td>
-					<td class="textParent"><input style="width: 250px;"
-						class="combobox" id="catgroup" /></td>
-				</tr>
-				<tr id="incCat">
-					<td class="textLabel">小类:</td>
-					<td class="textParent"><input id="subcatgroup"
-						class="combobox" type="text" name="dto.venInc.venIncCatId"
-						data-options="required:true" id="venIncCat" style="width: 250px;" /></td>
+			<div id="tt" class="tabs" style="width: 900; height: 600;">
+				<div title="基本信息">
+					<table style="width: 900;" id="tableDetail">
+						<tr style="display: none">
+							<input type="hidden" name="dto.venInc.venIncId" />
+							<input type="hidden" name="dto.venInc.venIncVenid" />
+							<input type="hidden" name="dto.venInc.venIncOrderQty" />
+							<input type="hidden" name="dto.venInc.venIncCommentNum" />
+							<input type="hidden" name="dto.venInc.venIncResQty" />
+							<input type="hidden" name="dto.venInc.venIncAvailQty" />
+						</tr>
+						<tr>
+							<td class="textLabel">商品代码:</td>
+							<td class="textParent"><input style="width: 250px;"
+								class="validatebox" type="text" name="dto.venInc.venIncCode"
+								data-options="required:true" id="venIncCode" /></td>
+							<td class="textLabel">商品名称:</td>
+							<td class="textParent"><input style="width: 250px;"
+								class="validatebox" type="text" name="dto.venInc.venIncName"
+								data-options="required:true" id="venIncName" /></td>
+						</tr>
+						<tr>
+							<td class="textLabel">单位代码:</td>
+							<td class="textParent"><input style="width: 250px;"
+								class="validatebox" type="text" name="dto.venInc.venIncUomcode"
+								data-options="required:true" id="venIncUomcode" /></td>
+							<td class="textLabel">单位名称:</td>
+							<td class="textParent"><input style="width: 250px;"
+								class="validatebox" type="text" name="dto.venInc.venIncUomname"
+								data-options="required:true" id="venIncUomname" /></td>
+						</tr>
+						<tr>
+							<td class="textLabel">价格:</td>
+							<td class="textParent"><input style="width: 250px;"
+								class="validatebox" type="text" name="dto.venInc.venIncPrice"
+								id="venIncPrice" /></td>
+							<td class="textLabel">别名:</td>
+							<td class="textParent"><input style="width: 250px;"
+								type="text" name="dto.venInc.venIncAlias" id="venIncAlias" /></td>
+						</tr>
+						<tr>
+							<td class="textLabel">库存:</td>
+							<td class="textParent"><input type="text"
+								name="dto.venInc.venIncQty" style="width: 250px;" /></td>
+							<td class="textLabel">厂商:</td>
+							<td class="textParent"><input style="width: 250px;"
+								class="combobox" type="text" name="dto.venInc.venIncManfid"
+								data-options="required:true" id="venIncManfid" /></td>
+						</tr>
+						<tr>
+							<td class="textLabel">大类:</td>
+							<td class="textParent"><input id="group" class="combobox"
+								type="text" style="width: 250px;" /></td>
+							<td class="textLabel">类组:</td>
+							<td class="textParent"><input style="width: 250px;"
+								class="combobox" id="catgroup" /></td>
+						</tr>
+						<tr id="incCat">
+							<td class="textLabel">小类:</td>
+							<td class="textParent"><input id="subcatgroup"
+								class="combobox" type="text" name="dto.venInc.venIncCatId"
+								data-options="required:true" id="venIncCat"
+								style="width: 250px;" /></td>
+						</tr>
+						<tr>
+							<td class="textLabel">上传图片:</td>
+							<td class="textParent" style="text-align: left; width: 30%"><input
+								id="upload" name="upload" type="file" multiple="true"
+								style="width: 100%"></td>
 
-					<!-- 	
-					<td class="textLabel">规格:</td>
-					<td class="textParent"><input style="width: 250px;"
-						type="text" name="dto.venInc.venIncSpec" id="venIncSpec" /></td>
-					 -->
-				</tr>
-				<!-- 
-				<tr >
-					
-				</tr>
-				 -->
-				<tr>
-					<td class="textLabel">上传图片:</td>
-					<td class="textParent" style="text-align: left; width: 30%"><input
-						id="upload" name="upload" type="file" multiple="true"
-						style="width: 100%"></td>
+							<td class="textLabel">顺序:</td>
+							<td class="textParent" style="text-align: left; width: 30%"><input
+								style="width: 250px;" type="text" id="venIncSeq" value="1" /></td>
+						</tr>
+					</table>
 
-					<td class="textLabel">顺序:</td>
-					<td class="textParent" style="text-align: left; width: 30%"><input
-						style="width: 250px;" type="text" id="venIncSeq" value="1" /></td>
-				</tr>
-			</table>
+				</div>
+				<div title="资质信息" data-options="" style="overflow: auto;">
+					<table style="width: 900;" id="qualifyDetail">
+					</table>
+				</div>
+			</div>
+
+
 
 			<div id="btnDiv0" align="center">
 				<table cellpadding="0" cellspacing="0" style="width: 100%">

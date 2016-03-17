@@ -23,9 +23,6 @@ public class SysQualifType implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-//	@GenericGenerator(name="idGenerator",strategy="sequence",
-//	parameters={@Parameter(name="sequence",value="T_SYS_QUALIF_TYPE")})
-//	@GeneratedValue(generator="idGenerator")	
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="QUALIF_TYPE_ID")
 	private Long qualifTypeId;

@@ -4,10 +4,18 @@
  */
 package com.dhcc.scm.blh.sys;
 
+import java.util.List;
+
 import javax.annotation.Resource;
-import com.dhcc.framework.app.service.CommonService;
+
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
+
 import com.dhcc.framework.app.blh.AbstractBaseBlh;
+import com.dhcc.framework.app.service.CommonService;
 import com.dhcc.framework.transmission.event.BusinessRequest;
 import com.dhcc.scm.dto.sys.SysQualifTypeDto;
 import com.dhcc.scm.entity.sys.SysQualifType;
@@ -107,5 +115,36 @@ public class SysQualifTypeBlh extends AbstractBaseBlh {
 	public void getCatInfo(BusinessRequest res) {
 		SysQualifTypeDto dto = super.getDto(SysQualifTypeDto.class, res);
 		super.writeJSON(sysQualifTypeService.getCatInfo(dto));
+	}
+	
+	
+	
+	/**
+	 * 
+	* @Title: getVenIncQualify 
+	* @Description: TODO(查询商品类祖对应的商品资质) 
+	* @param @param res    设定文件 
+	* @return void    返回类型 
+	* @throws 
+	* @author zhouxin   
+	* @date 2016年3月17日 上午10:46:57
+	 */
+	@SuppressWarnings("unchecked")
+	public void getVenIncQualify(BusinessRequest res){
+		SysQualifTypeDto dto = super.getDto(SysQualifTypeDto.class, res);
+		
+		DetachedCriteria criteria = DetachedCriteria.forClass(SysQualifType.class,"t1");
+		criteria.createAlias("VenIncqQualif", "t2").setFetchMode("t2", FetchMode.JOIN);
+		criteria.addOrder(Order.asc("t1.seq"));
+		if(dto.getCatGroupId()!=null){
+			criteria.add(Restrictions.eq("catgroupid", dto.getCatGroupId()));
+		}
+		if(dto.getVendorId()!=null){
+			
+		}
+		List<SysQualifType> sysQualifTypes= commonService.findByDetachedCriteria(criteria);
+		
+		super.writeJSON(sysQualifTypes);
+		
 	}
 }
