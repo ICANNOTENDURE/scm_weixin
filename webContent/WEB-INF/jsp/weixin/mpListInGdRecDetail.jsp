@@ -19,7 +19,7 @@
 	<%@include file="/WEB-INF/jsp/common/mpWXheader.jsp"%>
 	<ul data-am-widget="gallery"
 		class="am-gallery am-avg-sm-2 am-gallery-imgbordered"
-		data-am-gallery="{pureview:{weChatImagePreview: false}}">
+		data-am-gallery="{ pureview: true }">
 		<s:iterator value="dto.inGdRecPics" status="status" id="inGdRecPicss">
 			<li>
 				<div class="am-gallery-item">
