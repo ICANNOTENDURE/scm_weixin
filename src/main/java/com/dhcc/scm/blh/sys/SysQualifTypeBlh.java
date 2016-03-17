@@ -8,7 +8,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -132,15 +131,18 @@ public class SysQualifTypeBlh extends AbstractBaseBlh {
 	@SuppressWarnings("unchecked")
 	public void getVenIncQualify(BusinessRequest res){
 		SysQualifTypeDto dto = super.getDto(SysQualifTypeDto.class, res);
-		
-		DetachedCriteria criteria = DetachedCriteria.forClass(SysQualifType.class,"t1");
-		criteria.createAlias("VenIncqQualif", "t2").setFetchMode("t2", FetchMode.JOIN);
-		criteria.addOrder(Order.asc("t1.seq"));
+		dto.setVenIncId(1l);
+		DetachedCriteria criteria = DetachedCriteria.forClass(SysQualifType.class);
+		//criteria.setFetchMode("venIncqQualifs", FetchMode.JOIN);
+		//criteria.createCriteria("venIncqQualifs", "venIncqQualifs");
+		//criteria.createAlias("venIncqQualifs","venIncqQualifs",criteria.LEFT_JOIN);
+		//criteria.createAlias("venIncqQualifs","venIncqQualifs");
+		criteria.addOrder(Order.asc("seq"));
 		if(dto.getCatGroupId()!=null){
 			criteria.add(Restrictions.eq("catgroupid", dto.getCatGroupId()));
 		}
-		if(dto.getVendorId()!=null){
-			
+		if(dto.getVenIncId()!=null){
+			//criteria.add(Restrictions.eq("venIncqQualifs.qualifyIncId", dto.getVenIncId()));
 		}
 		List<SysQualifType> sysQualifTypes= commonService.findByDetachedCriteria(criteria);
 		

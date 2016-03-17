@@ -13,19 +13,22 @@ public class SysQualifTypeDto extends BaseDto {
 	
 	private SysQualifType sysQualifType;
 
-	private Long vendorId;
+	private Long venIncId;
 	
 	private Long catGroupId;
 	
 	
 	
-	public Long getVendorId() {
-		return vendorId;
+
+
+
+	public Long getVenIncId() {
+		return venIncId;
 	}
 
 
-	public void setVendorId(Long vendorId) {
-		this.vendorId = vendorId;
+	public void setVenIncId(Long venIncId) {
+		this.venIncId = venIncId;
 	}
 
 

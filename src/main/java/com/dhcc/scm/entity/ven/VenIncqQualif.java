@@ -2,7 +2,6 @@ package com.dhcc.scm.entity.ven;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -12,10 +11,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.dhcc.scm.entity.sys.SysQualifType;
 
 
 
@@ -35,9 +37,8 @@ public class VenIncqQualif implements Serializable {
 
 	@Column(name="qualif_description")
 	private String qualifDescription;
+	
 
-	@Column(name="qualif_typeid")
-	private Long qualifyTypeId;
 
 	@Column(name="qualif_incid")
 	private  Long qualifyIncId;
@@ -48,7 +49,13 @@ public class VenIncqQualif implements Serializable {
 	
 	
 	
+	@ManyToOne
+	@JoinColumn(name="qualif_typeid") //注意,在这里指定外键名后,不要在 写 private int one_id; 和它的get / set 方法了.这个改由hibernate维护.写上是要报错的.
+	private SysQualifType sysQualifType;
+
 	
+	
+
 
 	public Set<VenIncqQualifPic> getIncqQualifPics() {
 		return incqQualifPics;
@@ -76,13 +83,6 @@ public class VenIncqQualif implements Serializable {
 		this.qualifDescription = qualifDescription;
 	}
 
-	public Long getQualifyTypeId() {
-		return qualifyTypeId;
-	}
-
-	public void setQualifyTypeId(Long qualifyTypeId) {
-		this.qualifyTypeId = qualifyTypeId;
-	}
 
 	public Long getQualifyIncId() {
 		return qualifyIncId;
