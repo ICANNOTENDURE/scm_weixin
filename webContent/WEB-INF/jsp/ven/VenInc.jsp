@@ -104,7 +104,7 @@
 								class="combobox" id="catgroup" /></td>
 						</tr>
 						<tr id="incCat">
-							<td class="textLabel">小类:</td>
+							<td class="textLabel" >小类:</td>
 							<td class="textParent"><input id="subcatgroup"
 								class="combobox" type="text" name="dto.venInc.venIncCatId"
 								data-options="required:true" id="venIncCat"
@@ -124,7 +124,7 @@
 
 				</div>
 				<div title="资质信息" data-options="" style="overflow: auto;">
-					<table style="width: 900;" id="qualifyDetail">
+					<table style="width: 100%;" id="qualifyDetail">
 					</table>
 				</div>
 			</div>

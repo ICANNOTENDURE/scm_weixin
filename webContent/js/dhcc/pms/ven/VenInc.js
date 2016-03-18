@@ -377,22 +377,35 @@ function listQualify(Id){
 	$.post(
 			 $WEB_ROOT_PATH+'/sys/sysQualifTypeCtrl!getVenIncQualify.htm',
 			 {
-				 "dto.vendorIncId":Id,
+				 "dto.venIncId":Id,
 			 },
 			 function(data){
 				 $.each(data,function(i,dd){
+					 	
 					 	imgUrl=$WEB_ROOT_PATH +"/uploadPic/"+dd.venIncPicPath;
 					 	imgId="item"+dd.venIncPicId;
-					 	html="<tr id='tr"+dd.venIncPicId+"' name='trPic'><td class='textLabel'>图片:</td><td ><img src='"+imgUrl+"' width=105px></img>";
-					 	html=html+"<div><a class='dhc-linkbutton l-btn l-btn-plain'  onclick='javascript:viewPic("+imgId+")' ><span class='l-btn-left'><span class='l-btn-text icon-search l-btn-icon-left'>预览</span></span></a>";
-					 	html=html+"<a class='dhc-linkbutton l-btn l-btn-plain'  onclick='javascript:delPic("+dd.venIncPicId+")' ><span class='l-btn-left'><span class='l-btn-text icon-cancel l-btn-icon-left'>删除</span></span></a></div>";
-					 	html=html+"<div id='"+imgId+"' src='"+imgUrl+"' style='float:left'></div></td>";
-					 	html=html+"<td class='textLabel'>顺序:</td><td class='textParent'><input style='width: 250px;' type='text'  onblur='saveSeq("+dd.venIncPicId+")' name='pic"+dd.venIncPicId+"' value='"+dd.venIncPicSeq+"'/></td></tr>";
-					 	
-					 	//alert(html);
+					 	html="<tr>";
+					 	html=html+"<td class='textLabel' >"+dd.name+":</td>";
+					 	html=html+"<td>";
+					 	if(dd.fieldtype=="文本"){
+					 		html=html+"<input type='text' />";
+					 	}
+					 	if(dd.fieldtype=="日期"){
+					 		html=html+"<input  class='datebox' type='text' id='dddddd'/>";
+					 	}
+					 	if(dd.fieldtype=="图片"){
+					 		 
+					 		 $.each(dd.incqQualifPics,function(j,ddd){
+					 			html=html+"<img src='"+imgUrl+"' width=105px></img>";
+						 		html=html+"<a class='linkbutton' data-options='plain:true'>预览</a>";
+						 		html=html+"<a class='linkbutton' data-options='plain:true'>删除</a>";
+					 		 });
+					 	}
+					 	html=html+"</td>";
+					 	html=html+"</tr>";
 					 	$('#qualifyDetail').append(html);
-						
 				 });
+				 $.parser.parse($('#qualifyDetail'));
 	         },
 			 'json'
 	 );

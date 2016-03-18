@@ -4,13 +4,8 @@
  */
 package com.dhcc.scm.blh.sys;
 
-import java.util.List;
-
 import javax.annotation.Resource;
 
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
 
 import com.dhcc.framework.app.blh.AbstractBaseBlh;
@@ -128,25 +123,11 @@ public class SysQualifTypeBlh extends AbstractBaseBlh {
 	* @author zhouxin   
 	* @date 2016年3月17日 上午10:46:57
 	 */
-	@SuppressWarnings("unchecked")
 	public void getVenIncQualify(BusinessRequest res){
 		SysQualifTypeDto dto = super.getDto(SysQualifTypeDto.class, res);
-		dto.setVenIncId(1l);
-		DetachedCriteria criteria = DetachedCriteria.forClass(SysQualifType.class);
-		//criteria.setFetchMode("venIncqQualifs", FetchMode.JOIN);
-		//criteria.createCriteria("venIncqQualifs", "venIncqQualifs");
-		//criteria.createAlias("venIncqQualifs","venIncqQualifs",criteria.LEFT_JOIN);
-		//criteria.createAlias("venIncqQualifs","venIncqQualifs");
-		criteria.addOrder(Order.asc("seq"));
-		if(dto.getCatGroupId()!=null){
-			criteria.add(Restrictions.eq("catgroupid", dto.getCatGroupId()));
-		}
-		if(dto.getVenIncId()!=null){
-			//criteria.add(Restrictions.eq("venIncqQualifs.qualifyIncId", dto.getVenIncId()));
-		}
-		List<SysQualifType> sysQualifTypes= commonService.findByDetachedCriteria(criteria);
-		
-		super.writeJSON(sysQualifTypes);
+//		DetachedCriteria criteria = DetachedCriteria.forClass(VenIncqQualif.class,"venIncqQualif");
+//		criteria.createAlias("sysQualifType", "sysQualifType", org.hibernate.sql.JoinType.RIGHT_OUTER_JOIN);
+		super.writeJSON(sysQualifTypeService.queryQualifyType(dto));
 		
 	}
 }

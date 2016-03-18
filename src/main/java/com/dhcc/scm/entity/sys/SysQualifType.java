@@ -40,6 +40,9 @@ public class SysQualifType implements Serializable{
 	private Integer seq;
 	
 
+
+	 
+	
 	
 
 

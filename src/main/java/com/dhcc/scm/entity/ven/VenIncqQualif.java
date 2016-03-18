@@ -43,6 +43,8 @@ public class VenIncqQualif implements Serializable {
 	@Column(name="qualif_incid")
 	private  Long qualifyIncId;
 	
+	
+	//资质图片集合
 	@OneToMany(cascade=CascadeType.ALL)  
 	@JoinColumn(name="picParrefId") //对应儿子类的哪个字段  
 	private Set<VenIncqQualifPic> incqQualifPics;
@@ -52,10 +54,16 @@ public class VenIncqQualif implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="qualif_typeid") //注意,在这里指定外键名后,不要在 写 private int one_id; 和它的get / set 方法了.这个改由hibernate维护.写上是要报错的.
 	private SysQualifType sysQualifType;
-
 	
 	
 
+	public SysQualifType getSysQualifType() {
+		return sysQualifType;
+	}
+
+	public void setSysQualifType(SysQualifType sysQualifType) {
+		this.sysQualifType = sysQualifType;
+	}
 
 	public Set<VenIncqQualifPic> getIncqQualifPics() {
 		return incqQualifPics;
