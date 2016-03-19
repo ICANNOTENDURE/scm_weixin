@@ -17,9 +17,17 @@ public class SysQualifTypeDto extends BaseDto {
 	
 	private Long catGroupId;
 	
-	
-	
+	private Long qualifyTypeId;
 
+
+	public Long getQualifyTypeId() {
+		return qualifyTypeId;
+	}
+
+
+	public void setQualifyTypeId(Long qualifyTypeId) {
+		this.qualifyTypeId = qualifyTypeId;
+	}
 
 
 	public Long getVenIncId() {

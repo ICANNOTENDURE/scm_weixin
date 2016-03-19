@@ -26,6 +26,9 @@ public class VenIncqQualifPic implements Serializable {
 
 	@Column(name="pic_parrefid")
 	private Long picParrefId;
+	
+	@Column(name="pic_filename")
+	private String fileName;
 
 	public Long getPicId() {
 		return picId;
@@ -50,13 +53,29 @@ public class VenIncqQualifPic implements Serializable {
 	public void setPicParrefId(Long picParrefId) {
 		this.picParrefId = picParrefId;
 	}
+	
+	
+	
+	public String getFileName() {
+		return fileName;
+	}
 
-	public VenIncqQualifPic(String picPath, Long picParrefId) {
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public VenIncqQualifPic(String picPath, Long picParrefId, String fileName) {
 		super();
 		this.picPath = picPath;
 		this.picParrefId = picParrefId;
+		this.fileName = fileName;
 	}
-	
 
+	public VenIncqQualifPic() {
+	}
+
+	
+	
+	
 	
 }

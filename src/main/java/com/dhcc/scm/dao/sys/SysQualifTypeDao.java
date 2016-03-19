@@ -51,7 +51,7 @@ public class SysQualifTypeDao extends HibernatePersistentObjectDAO<SysQualifType
 	 * @param hql
 	 * @return
 	 */
-	private void buildQuery(Map hqlParamMap, SysQualifType sysQualifType, StringBuilder hqlStr) {
+	private void buildQuery(Map<String,Object> hqlParamMap, SysQualifType sysQualifType, StringBuilder hqlStr) {
 		// 拼接查询条件
 		hqlStr.append(" from SysQualifType where 1=1 ");
 		// 接下来拼接其他查询条件 如下示例代码所示
@@ -110,7 +110,7 @@ public class SysQualifTypeDao extends HibernatePersistentObjectDAO<SysQualifType
 		hqlBuffer.append("  t1.QUALIF_TYPE_ID as type, ");
 		hqlBuffer.append("  t1.QUALIF_TYPE_NAME as name , ");
 		hqlBuffer.append("	t2.qualif_date as expdate , ");
-		hqlBuffer.append("  t2.qualif_id as   qualif, ");
+		hqlBuffer.append("  t2.qualif_id as qualif, ");
 		hqlBuffer.append("  t1.QUALIF_TYPE_TYPE as fieldtype, ");
 		hqlBuffer.append("  t2.qualif_description as description  ");																														// ");
 		hqlBuffer.append(" from ");
