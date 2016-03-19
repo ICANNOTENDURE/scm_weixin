@@ -137,15 +137,50 @@ $(function (){
 		if(data.resultCode!=1){
 			$CommonUI.alert(data.resultContent);
 			return;
-		}
-		var Id=$('#incdetail input[name="dto.venInc.venIncId"]').val();	
-		if(Id){
-			$CommonUI.alert("更新成功");
 		}else{
-			$CommonUI.alert("增加成功");
+			$('#incdetail input[name="dto.venInc.venIncId"]').val(data.resultContent);
 		}
-		 $("#datagrid").datagrid('reload');
-		 $("#drugInfoWin").dialog('close');
+		var Id=$('#incdetail input[name="dto.venInc.venIncId"]').val();
+		var venQualifTypeList = [];
+        if ($("#qualifyDetail tr").length >= 1) {
+            $("#qualifyDetail tr").each((function() {
+            	qualifDate = $(this).find("input[name='qualifDate']").val();
+                qualifDescription = $(this).find("input[name='qualifDescription']").val();
+               
+                qualifyId=$(this).attr("data-qualifyId");
+                textTypeId=$(this).attr("data-typeId");
+                textType=$(this).attr("data-type");
+                jsonObj = new Object();
+                if(qualifyId!='null'){
+                	jsonObj.qualifyId = qualifyId;
+                }
+                if(textType=="日期"){
+	                if((jQuery.trim(qualifDate)!="")){
+	                	jsonObj.qualifDate = qualifDate+" 00:00:00";
+	                }
+                }else{
+                	jsonObj.qualifDescription=qualifDescription;
+                }
+                typeObj=new Object();
+                typeObj.qualifTypeId=textTypeId;
+                jsonObj.sysQualifType=typeObj;
+                jsonObj.qualifyIncId = Id;
+                if ((qualifDate != "") || (qualifyId != "null")) {
+                    venQualifTypeList.push(jsonObj);
+                }
+            }));
+        }
+		$.post($WEB_ROOT_PATH + "/ven/venIncQualifyPicCtrl!saveQualify.htm", {
+            "dto.incQualifStr": jQuery.toJSON(venQualifTypeList)
+        },
+        function(data) {
+            //$CommonUI.alert(data.dto.message, "", "", "", null);
+            $("#saveOrUpdateIncBtn").show();
+        },
+        "json");
+		//$CommonUI.alert("操作成功");
+		//$("#datagrid").datagrid('reload');
+		//$("#drugInfoWin").dialog('close');
 	}
 	
 	//新增或更新失败的回调函数
@@ -385,14 +420,14 @@ function listQualify(Id){
 					 	
 					 	//imgUrl=$WEB_ROOT_PATH +"/uploadPic/"+dd.venIncPicPath;
 					 	//imgId="item"+dd.venIncPicId;
-					 	html="<tr>";
+					 	html="<tr data-typeId='"+dd.type+"' data-type='"+dd.fieldtype+"' data-qualifyId='"+dd.qualif+"'>";
 					 	html=html+"<td class='textLabel' >"+dd.name+":</td>";
 					 	html=html+"<td>";
 					 	if(dd.fieldtype=="文本"){
-					 		html=html+"<input type='text' />";
+					 		html=html+"<input type='text' name='qualifDescription'/>";
 					 	}
 					 	if(dd.fieldtype=="日期"){
-					 		html=html+"<input  class='datebox' type='text' />";
+					 		html=html+"<input  class='datebox' type='text' name='qualifDate'/>";
 					 	}
 					 	if(dd.fieldtype=="图片"){
 					 		 html=html+"<input  type='file' name='upload' id='qualifyUploadInput"+dd.type+"' data-id="+dd.type+"></input>";

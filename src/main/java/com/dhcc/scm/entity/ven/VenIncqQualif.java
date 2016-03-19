@@ -45,7 +45,7 @@ public class VenIncqQualif implements Serializable {
 	
 	
 	//资质图片集合
-	@OneToMany(cascade=CascadeType.ALL)  
+	@OneToMany(cascade=CascadeType.REMOVE)  
 	@JoinColumn(name="picParrefId") //对应儿子类的哪个字段  
 	private Set<VenIncqQualifPic> incqQualifPics;
 	

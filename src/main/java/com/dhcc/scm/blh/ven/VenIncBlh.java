@@ -187,6 +187,7 @@ public class VenIncBlh extends AbstractBaseBlh {
 		commonService.saveOrUpdate(venIncProperty);
 		
 		dto.getOperateResult().setResultCode("1");
+		dto.getOperateResult().setResultContent(dto.getVenInc().getVenIncId().toString());
 		super.writeJSON(dto.getOperateResult());
 		
 	}
