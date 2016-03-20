@@ -75,14 +75,10 @@ public class HopVendorDao extends HibernatePersistentObjectDAO<HopVendor> {
 				hqlParamMap.put("code", "%"+hopVendor.getHopCode()+"%");
 			}
 		}
-		
-		//接下来拼接其他查询条件 如下示例代码所示
-		//hqlStr.append("WHERE YEAR=:year ");
-		//hqlParamMap.put("year", year);
-		//hqlStr.append("AND MONTH=:month ");
-		//hqlParamMap.put("month", month);
-		//hqlStr.append("AND DAY=:day ");
-		//hqlParamMap.put("day", day);
+		if(WebContextHolder.getContext().getUserInfo().getUserType().longValue()==1){
+			hqlStr.append("and hopHopId = :hopid ");
+			hqlParamMap.put("hopid", WebContextHolder.getContext().getUserInfo().getUserType());
+		}
 	}
 		
 	public void save(HopVendor hopVendor){
