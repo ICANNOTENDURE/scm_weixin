@@ -19,6 +19,7 @@ import javax.annotation.Resource;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -269,21 +270,25 @@ public class HopIncBlh extends AbstractBaseBlh {
 					switch (colNameString) {
 					case "HOSPINC_CODE":
 						if (cell != null) {
+							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
 							hopInc.setIncCode(cell.toString());
 						}
 						break;
 					case "HOSPINC_NAME":
 						if (cell != null) {
+							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
 							hopInc.setIncName(cell.toString());
 						}
 						break;
 					case "HOSPINC_SPEC":
 						if (cell != null) {
+							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
 							hopInc.setIncSpec(cell.toString());
 						}
 						break;
 					case "HOSPINC_PUOM":
 						if (cell != null) {
+							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
 							hopInc.setIncUomname(cell.toString());
 						}
 						break;
