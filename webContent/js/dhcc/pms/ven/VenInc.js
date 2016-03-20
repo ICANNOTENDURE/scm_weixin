@@ -150,6 +150,11 @@ $(function (){
                 qualifyId=$(this).attr("data-qualifyId");
                 textTypeId=$(this).attr("data-typeId");
                 textType=$(this).attr("data-type");
+                if(textType=="图片"){
+                	return true;
+                }
+               
+             
                 jsonObj = new Object();
                 if(qualifyId!='null'){
                 	jsonObj.qualifyId = qualifyId;
@@ -157,8 +162,13 @@ $(function (){
                 if(textType=="日期"){
 	                if((jQuery.trim(qualifDate)!="")){
 	                	jsonObj.qualifDate = qualifDate+" 00:00:00";
+	                }else{
+	                	return true;
 	                }
                 }else{
+                	   if(jQuery.trim(qualifDescription)==""){
+                       	return true;
+                       }
                 	jsonObj.qualifDescription=qualifDescription;
                 }
                 typeObj=new Object();
@@ -176,6 +186,11 @@ $(function (){
         function(data) {
             //$CommonUI.alert(data.dto.message, "", "", "", null);
             $("#saveOrUpdateIncBtn").show();
+            if(data.resultCode=="0"){
+            	$CommonUI.alert("操作成功");
+            }else{
+            	$CommonUI.alert(data.resultContent);
+            }
         },
         "json");
 		//$CommonUI.alert("操作成功");
@@ -276,14 +291,15 @@ $(function (){
 
 //增加
 function addClick() {
-	//$CommonUI.getDialog("#drugInfoWin").dialog("setTitle","增加商品信息");
+	$CommonUI.getDialog("#drugInfoWin").dialog("setTitle","商品信息");
 	$CommonUI.getDialog("#drugInfoWin").dialog("center");
 	$CommonUI.getDialog("#drugInfoWin").dialog("open");
 	$CommonUI.getForm('#incdetail').form('clear');
 	$("#saveOrUpdateIncBtn").show();
 	$("tr[name='trPic']").remove();
 	$("tr[name='trPro']").remove();
-	
+	 $('#qualifyDetail').html("");
+	 listQualify();
 }
 
 function saveSeq(venIncPicId){
@@ -424,10 +440,18 @@ function listQualify(Id){
 					 	html=html+"<td class='textLabel' >"+dd.name+":</td>";
 					 	html=html+"<td>";
 					 	if(dd.fieldtype=="文本"){
-					 		html=html+"<input type='text' name='qualifDescription'/>";
+					 		html=html+"<input type='text' name='qualifDescription'  ";
+					 		if(dd.description!=null){
+					 			html=html+"value='"+dd.description;
+					 		}
+					 		html=html+"' />";
 					 	}
 					 	if(dd.fieldtype=="日期"){
-					 		html=html+"<input  class='datebox' type='text' name='qualifDate'/>";
+					 		html=html+"<input  class='datebox' type='text' name='qualifDate' ";
+					 		if(dd.expdate!=null){
+					 			html=html+"value='"+dd.expdate;
+					 		}
+					 		html=html+"' />";
 					 	}
 					 	if(dd.fieldtype=="图片"){
 					 		 html=html+"<input  type='file' name='upload' id='qualifyUploadInput"+dd.type+"' data-id="+dd.type+"></input>";

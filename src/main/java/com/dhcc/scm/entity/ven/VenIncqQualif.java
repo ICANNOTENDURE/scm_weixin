@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -45,8 +46,8 @@ public class VenIncqQualif implements Serializable {
 	
 	
 	//资质图片集合
-	@OneToMany(cascade=CascadeType.REMOVE)  
-	@JoinColumn(name="picParrefId") //对应儿子类的哪个字段  
+	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)  
+	@JoinColumn(name="pic_parrefid") //对应儿子类的哪个字段  
 	private Set<VenIncqQualifPic> incqQualifPics;
 	
 	

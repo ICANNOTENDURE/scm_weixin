@@ -103,10 +103,26 @@ public class VenIncQualifPicBlh extends AbstractBaseBlh {
 	
 	public void saveQualify(BusinessRequest res){
 		VenIncQualifyPicDto dto = super.getDto(VenIncQualifyPicDto.class, res);
-		if(StringUtils.isNotBlank(dto.getIncQualifStr())){
-			List<VenIncqQualif> incqQualifs=JsonUtils.toObject(dto.getIncQualifStr(), new TypeReference<List<VenIncqQualif>>() { });
-			commonService.saveOrUpdate(incqQualifs.get(0));
-			//commonService.getCommonDao().batchSaveOrUpdate(incqQualifs);
+		try {
+			if(StringUtils.isNotBlank(dto.getIncQualifStr())){
+				List<VenIncqQualif> incqQualifs=JsonUtils.toObject(dto.getIncQualifStr(), new TypeReference<List<VenIncqQualif>>() { });
+				for(VenIncqQualif incqQualif:incqQualifs){
+					String[] propertyNames={"qualifyIncId","sysQualifType.qualifTypeId"};
+					Object[] values={incqQualif.getQualifyIncId(),incqQualif.getSysQualifType().getQualifTypeId()};
+					List<VenIncqQualif> incqQualifs2=commonService.findByProperties(VenIncqQualif.class, propertyNames, values);
+					if(incqQualifs2.size()>0){
+						incqQualif.setQualifyId(incqQualifs2.get(0).getQualifyId());
+					}
+						commonService.saveOrUpdate(incqQualif);
+					
+				}
+				dto.getOperateResult().setResultCode("0");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			dto.getOperateResult().setResultContent(e.getMessage());
+		}finally{
+			super.writeJSON(dto.getOperateResult());
 		}
 	}
 }
