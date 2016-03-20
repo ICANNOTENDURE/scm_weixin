@@ -4,8 +4,11 @@
  */
 package com.dhcc.scm.dto.sys;
 
+import java.util.List;
+
 import com.dhcc.framework.transmission.dto.BaseDto;
 import com.dhcc.scm.entity.sys.SysQualifType;
+import com.dhcc.scm.entity.vo.ven.VenQualifTypeVO;
 
 public class SysQualifTypeDto extends BaseDto {
 
@@ -18,6 +21,19 @@ public class SysQualifTypeDto extends BaseDto {
 	private Long catGroupId;
 	
 	private Long qualifyTypeId;
+	
+	private List<VenQualifTypeVO> qualifTypeVOs;
+	
+	
+
+	public List<VenQualifTypeVO> getQualifTypeVOs() {
+		return qualifTypeVOs;
+	}
+
+
+	public void setQualifTypeVOs(List<VenQualifTypeVO> qualifTypeVOs) {
+		this.qualifTypeVOs = qualifTypeVOs;
+	}
 
 
 	public Long getQualifyTypeId() {

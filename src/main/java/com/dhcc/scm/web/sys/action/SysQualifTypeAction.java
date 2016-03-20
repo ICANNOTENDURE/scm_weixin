@@ -21,6 +21,7 @@ import com.dhcc.scm.dto.sys.SysQualifTypeDto;
 @Namespace(value = "/sys")
 @Scope("prototype")
 @Action(value = "sysQualifTypeCtrl", results = {
+		@Result(name = "venIncQualify", location = "/WEB-INF/jsp/ven/venIncQualify.jsp"),
 		@Result(name = "list", location = "/WEB-INF/jsp/sys/SysQualifType.jsp"),
 		@Result(name = "listMain", location = "/WEB-INF/jsp/sys/SysQualifType.jsp")})
 @Blh("sysQualifTypeBlh")

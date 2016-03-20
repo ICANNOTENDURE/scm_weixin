@@ -4,6 +4,8 @@
  */
 package com.dhcc.scm.blh.sys;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
@@ -13,6 +15,7 @@ import com.dhcc.framework.app.service.CommonService;
 import com.dhcc.framework.transmission.event.BusinessRequest;
 import com.dhcc.scm.dto.sys.SysQualifTypeDto;
 import com.dhcc.scm.entity.sys.SysQualifType;
+import com.dhcc.scm.entity.vo.ven.VenQualifTypeVO;
 import com.dhcc.scm.service.cat.CatGroupService;
 import com.dhcc.scm.service.sys.SysQualifTypeService;
 
@@ -127,7 +130,14 @@ public class SysQualifTypeBlh extends AbstractBaseBlh {
 		SysQualifTypeDto dto = super.getDto(SysQualifTypeDto.class, res);
 //		DetachedCriteria criteria = DetachedCriteria.forClass(VenIncqQualif.class,"venIncqQualif");
 //		criteria.createAlias("sysQualifType", "sysQualifType", org.hibernate.sql.JoinType.RIGHT_OUTER_JOIN);
-		super.writeJSON(sysQualifTypeService.queryQualifyType(dto));
+		List<VenQualifTypeVO> qualifTypeVOs=sysQualifTypeService.queryQualifyType(dto);
+		super.writeJSON(qualifTypeVOs);
 		
+	}
+	public String venIncQualify(BusinessRequest res){
+		SysQualifTypeDto dto = super.getDto(SysQualifTypeDto.class, res);
+		List<VenQualifTypeVO> qualifTypeVOs=sysQualifTypeService.queryQualifyType(dto);
+		dto.setQualifTypeVOs(qualifTypeVOs);
+		return "venIncQualify";
 	}
 }

@@ -51,7 +51,14 @@
 
    		 	});
    		});
-    	
+    	$("#venIncQualify").on('click',function(){
+    		if ($CommonUI.getDataGrid("#datagrid2").datagrid('getSelections').length != 1) {
+    			$CommonUI.alert('请选一个商品');
+    			return;
+    		}
+    		var row =$("#datagrid2").datagrid('getSelected');
+    		window.open($WEB_ROOT_PATH+'/sys/sysQualifTypeCtrl!venIncQualify.htm?dto.venIncId='+row.venincid);	
+    	});
     	$("#searchVenInc").on('click', function() {
     		$CommonUI.getDataGrid('#datagrid2').datagrid({  
     		    url:$WEB_ROOT_PATH+'/ven/venIncCtrl!listVenContranst.htm',
@@ -373,6 +380,7 @@
 						class="combobox" type="text" 
 						 id="ven" />
 			<a href="#" class="linkbutton" iconCls="icon-search" id="searchVenInc" >查询</a>
+			<a href="#" class="linkbutton" iconCls="icon-search" id="venIncQualify" >商品资质</a>
 			<a href="#" class="linkbutton" iconCls="icon-save" id="importBTN" >导入对照关系</a>
 		     <span style="color: red;font-size: 20px">注意(比如供应商单位盒(7),医院单位支,那分子就是7，分母是1)</span>
 		 </div>
