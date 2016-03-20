@@ -22,6 +22,7 @@ import com.dhcc.scm.dto.hop.HopIncDto;
 @Namespace(value = "/hop")
 @Scope("prototype")
 @Action(value = "hopIncCtrl", results = {
+		@Result(name = "auditHopInc" ,location="/WEB-INF/jsp/hop/auditHopInc.jsp"),
 		@Result(name = "listMain" ,location="/WEB-INF/jsp/hop/hopInc.jsp"),
 		@Result(name = "list", location = "/WEB-INF/jsp/hop/hopInc.jsp"),
 		@Result(name = "listInfo", location = "/WEB-INF/jsp/hop/hopInc.jsp"),
@@ -43,6 +44,9 @@ public class HopIncAction extends BaseAction {
 		//直接返回jsp
 		if("listMain".equals(super.getBusinessFlow())){
 			return "listMain";
+		}
+		if("auditHopInc".equals(super.getBusinessFlow())){
+			return "auditHopInc";
 		}
 		return null;
 	}

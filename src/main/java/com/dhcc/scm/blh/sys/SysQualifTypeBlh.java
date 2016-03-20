@@ -15,6 +15,8 @@ import com.dhcc.framework.app.service.CommonService;
 import com.dhcc.framework.transmission.event.BusinessRequest;
 import com.dhcc.scm.dto.sys.SysQualifTypeDto;
 import com.dhcc.scm.entity.sys.SysQualifType;
+import com.dhcc.scm.entity.ven.VenInc;
+import com.dhcc.scm.entity.ven.VenIncPic;
 import com.dhcc.scm.entity.vo.ven.VenQualifTypeVO;
 import com.dhcc.scm.service.cat.CatGroupService;
 import com.dhcc.scm.service.sys.SysQualifTypeService;
@@ -136,7 +138,12 @@ public class SysQualifTypeBlh extends AbstractBaseBlh {
 	}
 	public String venIncQualify(BusinessRequest res){
 		SysQualifTypeDto dto = super.getDto(SysQualifTypeDto.class, res);
+		
+		VenInc venInc=commonService.get(VenInc.class, dto.getVenIncId());
+		List<VenIncPic> incPics=commonService.findByProperty(VenIncPic.class, "venIncPicVenincid", dto.getVenIncId());
 		List<VenQualifTypeVO> qualifTypeVOs=sysQualifTypeService.queryQualifyType(dto);
+		dto.setVenInc(venInc);
+		dto.setIncPics(incPics);
 		dto.setQualifTypeVOs(qualifTypeVOs);
 		return "venIncQualify";
 	}

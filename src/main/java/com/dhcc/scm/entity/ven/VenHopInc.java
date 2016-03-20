@@ -46,9 +46,31 @@ public class VenHopInc implements Serializable {
 	@Column(name="VEN_HOP_AUDITFLAG")
 	private String venHopAuditflag;
 	
+	@Column(name="HOP_RP")
+	private Float hopRp;
+	
+	@Column(name="VEN_RP")
+	private Float venRp;
 	
 	
 	
+	
+	public Float getHopRp() {
+		return hopRp;
+	}
+
+	public void setHopRp(Float hopRp) {
+		this.hopRp = hopRp;
+	}
+
+	public Float getVenRp() {
+		return venRp;
+	}
+
+	public void setVenRp(Float venRp) {
+		this.venRp = venRp;
+	}
+
 	public String getVenHopAuditflag() {
 
 		return venHopAuditflag;

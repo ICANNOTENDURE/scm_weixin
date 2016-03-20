@@ -15,6 +15,54 @@
 	<div class="am-g am-container">
 		<section class="am-panel dhcc-panel-mt"> <header
 			class="am-panel-hd">
+		<h3 class="am-panel-title">供应商注册基本信息</h3>
+		</header>
+
+		<form class="am-form am-form-horizontal">
+			<div class="am-panel-bd">
+				<table id="subDetails"
+					class="am-table am-table-bordered am-table-hover">
+					<tr>
+						<td class="textLabel" style="width: 10%;"><span
+							style='color: red'>*</span>商品代码:</td>
+						<td class="textParent"><input type="text" style="width: 80%;"
+							value="<s:property value='dto.venInc.venIncCode'/>"></td>
+					</tr>
+					<tr>
+						<td class="textLabel" style="width: 10%;"><span
+							style='color: red'>*</span>商品名称:</td>
+						<td class="textParent"><input type="text" style="width: 80%;"
+							value="<s:property value='dto.venInc.venIncName' />"></td>
+					</tr>
+					<tr>
+						<td class="textLabel" style="width: 10%;"><span
+							style='color: red'>*</span>照片:</td>
+						<td class="textParent">
+							<ul data-am-widget="gallery"
+								class="am-gallery am-avg-sm-4 am-gallery-imgbordered"
+								data-am-gallery="{pureview:{target: 'a'}}">
+								<s:iterator value="dto.incPics" status="all" id="incPic">
+									<li>
+										<div class="am-gallery-item">
+											<a
+												href="<%=request.getContextPath()%>/uploadPic/<s:property value="#incPic.venIncPicPath"/>">
+												<img
+												src="<%=request.getContextPath()%>/uploadPic/<s:property value="#incPic.venIncPicPath"/>" />
+											</a>
+										</div>
+									</li>
+								</s:iterator>
+							</ul>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</form>
+		</section>
+	</div>
+	<div class="am-g am-container">
+		<section class="am-panel dhcc-panel-mt"> <header
+			class="am-panel-hd">
 		<h3 class="am-panel-title">商品资质信息</h3>
 		</header>
 		<form class="am-form am-form-horizontal">
@@ -45,19 +93,25 @@
 							</s:if>
 							<s:if test="#qualifTypeVO.fieldtype=='图片'">
 								<td class="textParent" style="text-align: left;">
-										<ul data-am-widget="gallery"
-											class="am-gallery am-avg-sm-4 am-gallery-imgbordered"
-											data-am-gallery="{pureview:{target: 'a'}}">
-											 <s:iterator value="incqQualifPics" status="all" id="incqQualifPics">
+									<ul data-am-widget="gallery"
+										class="am-gallery am-avg-sm-4 am-gallery-imgbordered"
+										data-am-gallery="{pureview:{target: 'a'}}">
+										<s:iterator value="incqQualifPics" status="all"
+											id="incqQualifPics">
 											<li>
 												<div class="am-gallery-item">
-													<a href="<%=request.getContextPath()%>/uploadPic/venIncQualify/<s:property value="#incqQualifPics.picPath"/>" >
-													<img src="<%=request.getContextPath()%>/uploadPic/venIncQualify/<s:property value="#incqQualifPics.picPath"/>" /> 
-													<h3 class="am-gallery-title"><s:property value="#incqQualifPics.fileName"/></h3></a>
-											</div>
-										</li>
+													<a
+														href="<%=request.getContextPath()%>/uploadPic/venIncQualify/<s:property value="#incqQualifPics.picPath"/>">
+														<img
+														src="<%=request.getContextPath()%>/uploadPic/venIncQualify/<s:property value="#incqQualifPics.picPath"/>" />
+														<h3 class="am-gallery-title">
+															<s:property value="#incqQualifPics.fileName" />
+														</h3>
+													</a>
+												</div>
+											</li>
 										</s:iterator>
-									</ul> 
+									</ul>
 								</td>
 							</s:if>
 						</tr>

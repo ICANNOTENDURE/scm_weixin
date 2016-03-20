@@ -8,6 +8,8 @@ import java.util.List;
 
 import com.dhcc.framework.transmission.dto.BaseDto;
 import com.dhcc.scm.entity.sys.SysQualifType;
+import com.dhcc.scm.entity.ven.VenInc;
+import com.dhcc.scm.entity.ven.VenIncPic;
 import com.dhcc.scm.entity.vo.ven.VenQualifTypeVO;
 
 public class SysQualifTypeDto extends BaseDto {
@@ -24,7 +26,31 @@ public class SysQualifTypeDto extends BaseDto {
 	
 	private List<VenQualifTypeVO> qualifTypeVOs;
 	
+	private VenInc venInc;
 	
+	private List<VenIncPic> incPics;
+	
+	
+
+	public VenInc getVenInc() {
+		return venInc;
+	}
+
+
+	public void setVenInc(VenInc venInc) {
+		this.venInc = venInc;
+	}
+
+
+	public List<VenIncPic> getIncPics() {
+		return incPics;
+	}
+
+
+	public void setIncPics(List<VenIncPic> incPics) {
+		this.incPics = incPics;
+	}
+
 
 	public List<VenQualifTypeVO> getQualifTypeVOs() {
 		return qualifTypeVOs;
