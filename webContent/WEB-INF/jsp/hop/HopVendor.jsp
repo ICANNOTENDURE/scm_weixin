@@ -148,6 +148,7 @@
 	    			<td class="time">模版 </td>
 	    		</tr>
 	    	</table>
+	    	<div id="err"></div>
 	</div>
 	<div id="gg" class="dialog" title="请等待"
 		style="width: 1000px; height: 400px; padding: 10px;"
@@ -162,6 +163,6 @@
 
 		<p1>正在处理上传数据，请等待</p1>
 	</div>
-	<div id="err"></div>
+	
 </body>
 </html>

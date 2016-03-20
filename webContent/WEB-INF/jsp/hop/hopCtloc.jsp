@@ -88,7 +88,7 @@
 	<div id="searchCtlocWin" class="dialog" title="条件查询"
 		data-options="modal:true,width:400,height:250,closed:true,buttons:'#searchBtnDiv'"
 		style="vertical-align: middle;">
-		<table style="width: 100%;" cellspacing="10">				
+		<table style="width: 100%;" >				
 			<tr>
 				<td class="textLabel">科室代码:</td>
 				<td class="textParent"><input style="width: 250px;"
@@ -149,6 +149,20 @@
 	    			<td class="time">模版 </td>
 	    		</tr>
 	    	</table>
+	</div>
+	
+		<div id="gg" class="dialog" title="请等待"
+		style="width: 1020px; height: 450px; padding: 10px;"
+		data-options="
+				modal:true,
+				draggable:false,
+				closable:false,
+				closed:true,
+				collapsible:false,
+				minimizable:false,
+				maximizable:false">
+
+		<p1>正在处理上传数据，请等待</p1>
 	</div>
 </body>
 </html>

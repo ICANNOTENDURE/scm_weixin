@@ -4,5 +4,7 @@
 	{"type":"HOPVENDOR","name":"导入医院供应商excel维护"},
 	{"type":"VENINV","name":"导入发票excel维护"},
 	{"type":"VENINC","name":"导入供应商药品excel维护"},
-	{"type":"VENINVBYORDER","name":"导入发票,按着订单"}
+	{"type":"VENINVBYORDER","name":"导入发票,按着订单"},
+	{"type":"HOPCTLOC","name":"导入医院科室"},
+	{"type":"HOPCTLOCDESC","name":"导入医院科室地址"}
 ]}

@@ -32,7 +32,7 @@ public class HopCtloc implements Serializable {
 	private String code;
 
 	@Column(name="CTLOC_HISID")
-	private Long hisid;
+	private String hisid;
 
 	@Column(name="CTLOC_HOSPID")
 	private Long hospid;
@@ -101,13 +101,13 @@ public class HopCtloc implements Serializable {
 
 
 
-	public Long getHisid() {
+	public String getHisid() {
 		return hisid;
 	}
 
 
 
-	public void setHisid(Long hisid) {
+	public void setHisid(String hisid) {
 		this.hisid = hisid;
 	}
 

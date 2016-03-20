@@ -54,8 +54,6 @@ import com.dhcc.framework.web.context.WebContext;
 import com.dhcc.framework.web.context.WebContextHolder;
 import com.dhcc.scm.blh.ord.OrdBlh;
 import com.dhcc.scm.dto.hop.HopCtlocDto;
-import com.dhcc.scm.dto.hop.HopVendorDto;
-import com.dhcc.scm.dto.sys.SysImpModelDto;
 import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.HopVendor;
 import com.dhcc.scm.entity.hop.Hospital;
@@ -412,7 +410,7 @@ public class HopCtlocBlh extends AbstractBaseBlh {
 			ctloc.setCode(hisLocItmWeb.getCode());
 			ctloc.setName(hisLocItmWeb.getName());
 			ctloc.setHospid(hopCtloc.getHospid());
-			ctloc.setHisid(Long.valueOf(hisLocItmWeb.getId()));
+			ctloc.setHisid(hisLocItmWeb.getId());
 			commonService.saveOrUpdate(ctloc);
 		}
 	}
@@ -440,7 +438,6 @@ public class HopCtlocBlh extends AbstractBaseBlh {
 		}
 		// 读取excel
 		try {
-			List<HopVendor> hopVendors = new ArrayList<HopVendor>();
         	//读取Excel文件
         	Workbook workbook = null;
 			Sheet sheet = null;
@@ -465,8 +462,7 @@ public class HopCtlocBlh extends AbstractBaseBlh {
 			for (int numRows = 1; numRows <= sheet.getLastRowNum(); numRows++) {
 
 				row = sheet.getRow(numRows);
-
-				HopVendor hopVendor = new HopVendor();
+				HopCtloc hopCtloc = new HopCtloc();
 				for (int numCells = 0; numCells <= row.getLastCellNum(); numCells++) {
 					cell = row.getCell(numCells);
 					String colNameString = modelMap.get(numCells);
@@ -474,91 +470,50 @@ public class HopCtlocBlh extends AbstractBaseBlh {
 						colNameString = " ";
 					}
 					switch (colNameString) {
-					case "HOPEVENDOR_CODE":
+					case "HOPCTLOC_CODE":
 						if (cell != null) {
 							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
-							hopVendor.setHopCode(cell.toString());
+							hopCtloc.setCode(cell.toString());
 						}
 						break;
-					case "HOPEVENDOR_NAME":
+					case "HOPCTLOC_NAME":
 						if (cell != null) {
 							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
-							hopVendor.setHopName(cell.toString());
+							hopCtloc.setName(cell.toString());
 						}
 						break;
-					case "HOPEVENDOR_CAT":
+					case "HOPCTLOC_TYPE":
 						if (cell != null) {
 							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
-							hopVendor.setHopType(cell.toString());
+							hopCtloc.setType(cell.toString());
 						}
 						break;
-					case "HOPEVENDOR_ALIAS":
+					case "HOPCTLOC_HISID":
 						if (cell != null) {
 							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
-							hopVendor.setHopAlias(cell.toString());
+							hopCtloc.setHisid(cell.toString());
 						}
 						break;
-					case "HOPEVENDOR_ADDRESS":
-						if (cell != null) {
-							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
-							hopVendor.setHopAddress(cell.toString());
-						}
-						break;
-					case "HOPEVENDOR_TELPHONE":
-						if (cell != null) {
-							hopVendor.setHopTel(cell.toString());
-						}
-						break;
-					case "HOPEVENDOR_EMALI":
-						if (cell != null) {
-							hopVendor.setHopEmail(cell.toString());
-						}
-						break;
-					case "HOPEVENDOR_USERNAME":
-						if (cell != null) {
-							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
-							hopVendor.setHopContact(cell.toString());
-						}
-						break;
-					case "HOPEVENDOR_SYNFLAG":
-						if (cell != null) {
-							hopVendor.setSynFlag(cell.toString());
-						}
-						break;
-					case "HOPEVENDOR_BUSINESSREGNO":
-						if (cell != null) {
-							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
-							hopVendor.sethBusinessRegNo(cell.toString());
-						}
-						break;	
 					}
 				 }
 				
 				//验证数据的完整性
-				if(org.apache.commons.lang3.StringUtils.isBlank(hopVendor.gethBusinessRegNo())){
+				if(org.apache.commons.lang3.StringUtils.isBlank(hopCtloc.getHisid())){
 					dto.setOpFlg("-1");
-					dto.setMsg("<br>"+"第"+numRows+"行工商执照注册号/统一社会信用代码不能为空！");
+					dto.setMsg(dto.getMsg()+"<br>"+"第"+numRows+"行his标识不能为空！");
 					continue;
 				}else{
-						DetachedCriteria criteria = DetachedCriteria.forClass(HopVendor.class);
-						criteria.add(Restrictions.eq("hBusinessRegNo", hopVendor.gethBusinessRegNo()));
-						criteria.add(Restrictions.eq("hopHopId", Long.valueOf(super.getLoginInfo().get("HOSPID").toString())));
-						List<HopVendor> hopVendorIds = commonService.findByDetachedCriteria(criteria);
-						if(hopVendorIds.size()>0){
-							hopVendor.setHopVendorId(hopVendorIds.get(0).getHopVendorId());
-							hopVendor.setHopVenId(hopVendorIds.get(0).getHopVenId());
+						DetachedCriteria criteria = DetachedCriteria.forClass(HopCtloc.class);
+						criteria.add(Restrictions.eq("hisid", hopCtloc.getHisid()));
+						criteria.add(Restrictions.eq("hospid", Long.valueOf(super.getLoginInfo().get("HOSPID").toString())));
+						@SuppressWarnings("unchecked")
+						List<HopCtloc>  hopCtlocs= commonService.findByDetachedCriteria(criteria);
+						if(hopCtlocs.size()>0){
+							hopCtloc.setHopCtlocId(hopCtlocs.get(0).getHopCtlocId());
 						}
 				}
-				
-				if(!org.apache.commons.lang.StringUtils.isBlank(hopVendor.getSynFlag())){
-					if((hopVendor.getSynFlag().equals("Y"))&&(org.apache.commons.lang.StringUtils.isBlank(hopVendor.getHopContact()))){
-						dto.setOpFlg("-1");
-						dto.setMsg("<br>"+"第"+numRows+"行登录帐号不能为空！");
-					}
-				}
-				
-				hopVendor.setHopHopId(WebContextHolder.getContext().getVisit().getUserInfo().getHopId());
-				hopVendors.add(hopVendor);
+				hopCtloc.setHospid(Long.valueOf(super.getLoginInfo().get("HOSPID").toString()));
+				commonService.saveOrUpdate(hopCtloc);
 			}
 			dto.setOpFlg("1");
 			workbook = null;

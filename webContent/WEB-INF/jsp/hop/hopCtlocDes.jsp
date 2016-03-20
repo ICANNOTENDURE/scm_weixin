@@ -4,8 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Dic</title>
+<title></title>
 <%@include file="/WEB-INF/jsp/common/scriptInc.jsp"%>
+<%@include file="/WEB-INF/jsp/common/scriptUploadify.jsp"%>
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/js/dhcc/pms/hop/hopCtlocDes.js"></script>
 </head>
@@ -19,6 +20,9 @@
 			onclick="javascript:delRow()">删除</a> <a class="linkbutton"
 			data-options="iconCls:'icon-search',plain:true"
 			onclick="javascript:selectClick()">查询</a>
+			<a class="linkbutton"
+			data-options="iconCls:'icon-save',plain:true"
+			onclick="javascript:importOrder()">导入</a>
 	</div>
 
 
@@ -117,6 +121,45 @@
 				</tr>
 			</table>
 		</div>
+	</div>
+	
+	
+	<div id="importDialog" class="dialog" title="导入科室地址"
+		style="width: 1020px; height: 450px; background-color: #F5FAFD;"
+		data-options="
+				modal:true,
+		        closed:true,
+				collapsible:false,
+				minimizable:false,
+				maximizable:false">
+			<table id="addFuncsTable" style="width: 100%;">
+				<tr>
+					<td class="textLabel" style="text-align: right; width: 40%">导入Excel文件:</td>
+					<td class="textParent" style="text-align: left; width: 60%"><input
+						style="width: 250px;" class="validatebox" type="file"
+						name="upload" id="orderUpload"></input></td>
+				</tr>
+			</table>
+			
+			<table>
+	    		<tr id="impModel">
+	    			<td class="time">模版 </td>
+	    		</tr>
+	    	</table>
+	</div>
+	
+		<div id="gg" class="dialog" title="请等待"
+		style="width: 1020px; height: 450px; padding: 10px;"
+		data-options="
+				modal:true,
+				draggable:false,
+				closable:false,
+				closed:true,
+				collapsible:false,
+				minimizable:false,
+				maximizable:false">
+
+		<p1>正在处理上传数据，请等待</p1>
 	</div>
 </body>
 </html>

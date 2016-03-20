@@ -1,7 +1,7 @@
 $(function (){
 	$("#orderUpload").uploadify({
         'swf': $WEB_ROOT_PATH + '/images/uploadify.swf',
-        'uploader': $WEB_ROOT_PATH + '/hop/hopVendorCtrl!upload.htm',
+        'uploader': $WEB_ROOT_PATH + '/hop/hopCtlocCtrl!upload.htm',
         //在浏览窗口底部的文件类型下拉菜单中显示的文本
         'buttonText':'上传',
         'fileTypeDesc': '支持的格式：',
@@ -25,9 +25,11 @@ $(function (){
         	$("#gg").dialog("close");
         	var obj=eval('('+data+')');
         	if(obj.opFlg=="1"){
-        		$("#importDialog").dialog('close');
+        		$("#err").html(obj.msg);
+        		//$("#importDialog").dialog('close');
+        		//alert(obj.msg)
         		$CommonUI.alert("导入成功");
-        		$("#search").click();
+        		//$("#search").click();
         	}else{
         		$CommonUI.alert("失败");
         		$("#err").html(obj.msg);
