@@ -249,7 +249,7 @@ public class HopIncBlh extends AbstractBaseBlh {
 			} else {
 				dto.setOpFlg("-1");
 				dto.setMsg("<br>文件类型错误:");
-				WebContextHolder.getContext().getResponse().getWriter().write(JsonUtils.toJson(dto));
+				writeJSON(dto);
 				return;
 			}
 			sheet = workbook.getSheetAt(0);
@@ -265,8 +265,7 @@ public class HopIncBlh extends AbstractBaseBlh {
 					String colNameString = modelMap.get(numCells);
 					if (StringUtils.isNullOrEmpty(colNameString)) {
 						colNameString = " ";
-					}
-					;
+					};
 					switch (colNameString) {
 					case "HOSPINC_CODE":
 						if (cell != null) {
@@ -328,6 +327,11 @@ public class HopIncBlh extends AbstractBaseBlh {
 							hopInc.setIncSp((float) (cell.getNumericCellValue()));
 						}
 						break;
+					case "HOSPINC_BARCODE":
+						if (cell != null) {
+							hopInc.setIncBarCode(cell.toString());
+						}
+						break;	
 					}
 				}
 				// 验证数据的完整性
@@ -339,7 +343,7 @@ public class HopIncBlh extends AbstractBaseBlh {
 					if (dto.getOpFlg().equals("1")) {
 						DetachedCriteria criteria = DetachedCriteria.forClass(HopInc.class);
 						criteria.add(Restrictions.eq("incCode", hopInc.getIncCode()));
-						criteria.add(Restrictions.eq("hopHopId", Long.valueOf(super.getLoginInfo().get("HOSPID").toString())));
+						criteria.add(Restrictions.eq("incHospid", Long.valueOf(super.getLoginInfo().get("HOSPID").toString())));
 						List<HopInc> hopIncsIds = commonService.findByDetachedCriteria(criteria);
 						if (hopIncsIds.size() > 0) {
 							hopInc.setIncHospid(hopIncsIds.get(0).getIncHospid());
@@ -355,8 +359,6 @@ public class HopIncBlh extends AbstractBaseBlh {
 				hopIncService.saveInc(dto);
 			}
 			workbook = null;
-			FileUtils.forceDelete(dstFile);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			dto.setOpFlg("-1");
