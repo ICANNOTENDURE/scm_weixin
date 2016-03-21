@@ -7,6 +7,8 @@ package com.dhcc.scm.blh.hop;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -41,18 +43,22 @@ import com.dhcc.framework.web.context.WebContextHolder;
 import com.dhcc.scm.blh.ord.OrdBlh;
 import com.dhcc.scm.dto.hop.HopVendorDto;
 import com.dhcc.scm.dto.sys.SysImpModelDto;
+import com.dhcc.scm.dto.ven.VendorDto;
 import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.HopVendor;
 import com.dhcc.scm.entity.hop.Hospital;
 import com.dhcc.scm.entity.sys.ImpModel;
 import com.dhcc.scm.entity.sys.SysLog;
 import com.dhcc.scm.entity.userManage.NormalAccount;
+import com.dhcc.scm.entity.ven.VenAuditLog;
+import com.dhcc.scm.entity.ven.VenReghop;
 import com.dhcc.scm.entity.ven.Vendor;
 import com.dhcc.scm.entity.vo.ws.HisVendorItmWeb;
 import com.dhcc.scm.entity.vo.ws.HisVendorWeb;
 import com.dhcc.scm.entity.vo.ws.OperateResult;
 import com.dhcc.scm.service.hop.HopVendorService;
 import com.dhcc.scm.service.sys.SysImpModelService;
+import com.dhcc.scm.service.ven.VendorService;
 import com.dhcc.scm.ws.his.client.HisVendor;
 import com.dhcc.scm.ws.his.client.HisVendorItm;
 import com.dhcc.scm.ws.his.client.SCM;
@@ -62,6 +68,9 @@ public class HopVendorBlh extends AbstractBaseBlh {
 
 	@Resource
 	private HopVendorService hopVendorService;
+	
+	@Resource
+	private VendorService vendorService;
 
 	@Resource
 	private CommonService commonService;
@@ -175,6 +184,42 @@ public class HopVendorBlh extends AbstractBaseBlh {
 			e.printStackTrace();
 			dto.setOpFlg("-1");
 		}
+		finally{
+			//save T_VEN_AUDIT_LOG  hxy
+			InetAddress addr = null;
+			try {
+				addr = InetAddress.getLocalHost();
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			}       
+			String ip=addr.getHostAddress();//获得本机IP
+			List<HopVendor> hopVendors=commonService.findByProperty(HopVendor.class, "hopVendorId", dto.getHopVendor().getHopVendorId());
+			List<Vendor> vendors=commonService.findByProperty(Vendor.class, "taxation",hopVendors.get(0).gethBusinessRegNo());//由hopVendors工商执照号得到vendor，已得到主键venid
+			
+			VenAuditLog VALog=new VenAuditLog();
+			VALog.setLogvenid(vendors.get(0).getVendorId());
+			VALog.setLoguserid(Long.valueOf((String) getLoginInfo().get("USERID")));
+			VALog.setLogdate(new Date());
+			VALog.setLogresult("Y");//未做判断 欠妥！
+			VALog.setLogcontent(null);
+			VALog.setLogip(ip);
+			VALog.setLogtype("I");
+			commonService.saveOrUpdate(VALog);
+			
+			//update t_ven_vendor
+			List<Vendor> Vendors=commonService.findByProperty(Vendor.class, "vendorId", vendors.get(0).getVendorId());
+			if(Vendors.size()>0){
+				Vendors.get(0).setAudit_flag("I");// I 平台通过/ IN
+    			commonService.saveOrUpdate(Vendors.get(0));
+    		   }
+			//update T_VEN_REGHOP  
+			List<VenReghop> venReghops=commonService.findByProperty(VenReghop.class, "venid", vendors.get(0).getVendorId());
+			if(venReghops.size()>0){
+				venReghops.get(0).setAduitflag("I");// I 平台通过/ IN
+    			commonService.saveOrUpdate(venReghops.get(0));
+    		   }
+			
+		}
 
 	}
 
@@ -221,6 +266,7 @@ public class HopVendorBlh extends AbstractBaseBlh {
 		hopVendorService.findById(dto);
 
 	}
+	
 
 	/**
 	 * 
@@ -239,6 +285,7 @@ public class HopVendorBlh extends AbstractBaseBlh {
 		// 调用对应的service方法
 		hopVendorService.listHopCon(dto);
 	}
+	
 
 	/**
 	 * 

@@ -64,6 +64,15 @@ public class Vendor implements java.io.Serializable {
 	@Column(name="TAXATION")
 	private String taxation;
 	
+	@Column(name="AUDIT_FLAG")
+	private String audit_flag;
+	
+	public String getAudit_flag() {
+		return audit_flag;
+	}
+	public void setAudit_flag(String audit_flag) {
+		this.audit_flag = audit_flag;
+	}
 	/**
 	 * @return the taxation
 	 */

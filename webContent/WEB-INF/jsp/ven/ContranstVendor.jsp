@@ -169,11 +169,11 @@
 				<option value="3">未审核</option>
 			</select>
 			<br>
-			邮箱/注册名/税务登记号: <input id="venInputStr" style="width: 200px;"
+			邮箱/注册名/工商执照号: <input id="venInputStr" style="width: 200px;"
 			type="text" />
 			<a href="#" class="linkbutton" iconCls="icon-search" id="searchVen">查询</a>
 			<br>
-			<a href="#" class="linkbutton" iconCls="icon-save" id="queryZiZhi">查看供应商资质</a>
+			<a href="#" class="linkbutton" iconCls="icon-save" id="queryZiZhi">查看供应商资质1</a>
 			<a href="#" class="linkbutton" iconCls="icon-save" id="queryTimeLine">查看供应商时间轴</a>
 		 </div>
 	</div>	
@@ -257,7 +257,7 @@
 							<th data-options="field:'vendorid',hidden:true">IncId ID</th>
 							<th data-options="field:'code',sortable:true">代码</th>
 							<th data-options="field:'name',sortable:true">供应商</th>
-							<th data-options="field:'taxation',sortable:true">税务登记号</th>
+							<th data-options="field:'taxation',sortable:true">工商执照号</th>
 							<th data-options="field:'email',sortable:true">邮箱</th>
 							<th data-options="field:'contact',sortable:true">联系人</th>
 							<th data-options="field:'account',sortable:true">注册帐号</th>
