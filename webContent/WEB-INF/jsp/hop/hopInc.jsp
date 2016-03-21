@@ -109,6 +109,12 @@
 						 /></td>
 				</tr>
 				<tr>
+					<td class="textLabel">商品条码:</td>
+					<td class="textParent" colspan="3"><input style="width: 400px;"
+						class="validatebox" type="text" name="dto.hopInc.incBarCode"
+						id="incAliaS"/></td>
+				</tr>	
+				<tr>
 					<td class="textLabel">别名:</td>
 					<td class="textParent" colspan="3"><input style="width: 400px;"
 						class="validatebox" type="text" name="dto.hopInc.incAliaS"

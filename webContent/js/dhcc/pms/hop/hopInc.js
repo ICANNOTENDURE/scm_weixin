@@ -17,7 +17,8 @@ $(function (){
 	    pageList:[20,40,60],
 	    columns:[[ 
             {field:'incid',title:'表ID',hidden:true},
-	        {field:'inccode',title:'商品代码',width:100},  
+	        {field:'inccode',title:'商品代码',width:100},
+	        {field:'incBarCode',title:'商品条码',width:100},
 	        {field:'incname',title:'商品描述',width:100},
 	        {field:'incuomcode',title:'单位代码',width:80,hidden:true}, 
 	        {field:'incuomname',title:'单位描述',width:80}, 
@@ -107,7 +108,7 @@ $(function (){
         'debug' : false,
         'fileObjName':'dto.upload',
         'auto': true,
-        'removeCompleted':false,
+        'removeCompleted':true,
         'onUploadStart': function(file) {
         	$("#orderUpload").uploadify("settings", 'formData', {'dto.uploadFileName': file.name});
         },
