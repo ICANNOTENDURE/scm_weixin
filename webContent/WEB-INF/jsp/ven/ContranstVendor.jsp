@@ -173,7 +173,7 @@
 			type="text" />
 			<a href="#" class="linkbutton" iconCls="icon-search" id="searchVen">查询</a>
 			<br>
-			<a href="#" class="linkbutton" iconCls="icon-save" id="queryZiZhi">查看供应商资质1</a>
+			<a href="#" class="linkbutton" iconCls="icon-save" id="queryZiZhi">查看供应商资质</a>
 			<a href="#" class="linkbutton" iconCls="icon-save" id="queryTimeLine">查看供应商时间轴</a>
 		 </div>
 	</div>	
