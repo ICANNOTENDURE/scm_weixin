@@ -66,7 +66,7 @@
 		 
 		 <!-- 评价界面 -->
 		<div id="commentWin" class="dialog" 
-			data-options="modal:true,width:790,height:370,closed:true,maximizable:true,resizable:true"
+			data-options="modal:true,width:650,height:650,closed:true,maximizable:true,resizable:true"
 			style="vertical-align: top;">
 			<iframe id="commentFrame"  style="width:100%;height:100%;"  frameborder="0" ></iframe>
 		</div>			

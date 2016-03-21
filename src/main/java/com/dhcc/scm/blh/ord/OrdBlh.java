@@ -45,6 +45,7 @@ import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.HopCtlocDestination;
 import com.dhcc.scm.entity.hop.HopInc;
 import com.dhcc.scm.entity.hop.HopVendor;
+import com.dhcc.scm.entity.ord.ExeState;
 import com.dhcc.scm.entity.ord.Ord;
 import com.dhcc.scm.entity.ord.OrderDetail;
 import com.dhcc.scm.entity.ord.OrderItm;
@@ -332,8 +333,14 @@ public class OrdBlh extends AbstractBaseBlh {
 				} else {
 					orderDetail.setOrderVenQty(0f);
 				}
-
+				orderDetail.setOrderState(1l);
 				commonService.saveOrUpdate(orderDetail);
+				 ExeState exeState=new ExeState();
+				 exeState.setStateId(1l);
+				 exeState.setUserid(orderDetail.getOrderUserId());
+				 exeState.setOrdId(orderDetail.getOrderId());
+				 exeState.setExedate(new java.sql.Timestamp(new Date().getTime()));
+				 commonService.saveOrUpdate(exeState);
 				dto.setOpFlg("1");
 				dto.setMsg(orderDetail.getOrderId().toString());
 			} else {

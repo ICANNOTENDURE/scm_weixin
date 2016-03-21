@@ -30,7 +30,8 @@ $(function (){
 	    	    pagination:true,
 	    	    fitColumns:true,
 	    	    rownumbers:true,
-	    	    columns:[[  
+	    	    columns:[[ 
+	    	            {field:'comment',title:'评价',width:60,sortable:true,formatter:commentRow},  	
 	    	  	        {field:'hopinccode',title:'代码',width:100,},
 	    	  	        {field:'hopincname',title:'名称',width:100,},
 	    	  	        {field:'hopqty',title:'数量',width:100,},
@@ -38,7 +39,6 @@ $(function (){
 	    	  	        {field:'rp',title:'进价',width:150,},
 	    	  	        {field:'manf',title:'产地',width:200,}
 	    	  	]],
-	    	    
 	    	    view: detailview,
 	    	    detailFormatter:function(index,row){
 	    	    	return '<div style="padding:2px"><table class="ddv"></table></div>';
@@ -77,7 +77,7 @@ $(function (){
 	
 		},
 		 columns:[[
-		        {field:'comment',title:'评价',width:60,sortable:true,formatter:commentRow},   
+		          
 				{field:'orderno',title:'单号',width:100},
 				{field:'date',title:'日期',width:100,sortable:true},
 				{field:'emflag',title:'加急',width:50,sortable:true},
@@ -89,8 +89,7 @@ $(function (){
 	    
 	    
 	}); 
-	
-	
+
 	
 	
 	$("#search").on('click', function() {
@@ -142,8 +141,7 @@ function commentRow(value,row,index){
 	return '<a id="addBt" class="dhc-linkbutton l-btn l-btn-plain" onclick="javascript:comment('+index+')" data-options="iconCls:"icon-save"><span class="l-btn-left"><span class="l-btn-text icon-save l-btn-icon-left">评价</span></span></a>';
 }
 function comment(index){
-	orderid=$('#datagrid').datagrid('getRows')[index]['orderid'];
-	
+	orderid=$('#detailgrid').datagrid('getRows')[index]['orderid'];
 	$("#commentFrame")[0].src= getContextPath() + '/comment/CommentCtrl!listMain.htm?dto.evalute.orderId='+orderid;
     $("#commentWin").dialog("setTitle", "评价");
     $("#commentWin").dialog("center");
