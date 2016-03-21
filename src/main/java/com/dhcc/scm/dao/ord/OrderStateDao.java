@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +27,7 @@ import com.dhcc.framework.jdbc.JdbcTemplateWrapper;
 import com.dhcc.framework.transmission.dto.BaseDto;
 import com.dhcc.framework.util.StringUtils;
 import com.dhcc.framework.web.context.WebContextHolder;
+import com.dhcc.scm.blh.weixin.MpMessageBlh;
 import com.dhcc.scm.dto.ord.OrderStateDto;
 import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.HopInc;
@@ -58,7 +60,10 @@ public class OrderStateDao extends HibernatePersistentObjectDAO<Order> {
 	
 	@Resource
 	private JdbcTemplateWrapper jdbcTemplateWrapper;
-
+	
+	@Resource
+	private MpMessageBlh messageBlh;
+	
 	public void buildPagerModelQuery(PagerModel pagerModel, BaseDto dto) {
 
 
@@ -66,6 +71,7 @@ public class OrderStateDao extends HibernatePersistentObjectDAO<Order> {
 	
 	public void accpOrder(OrderStateDto dto){
 		if(org.apache.commons.lang.StringUtils.isNotEmpty(dto.getOrderIdStr())){
+			HashSet<String> hashSet=new HashSet<>();
 			String[] idArr=dto.getOrderIdStr().split("\\^");
 			for(String id:idArr){
 				OrderDetail orderDetail=super.get(OrderDetail.class, Long.valueOf(id));
@@ -78,6 +84,11 @@ public class OrderStateDao extends HibernatePersistentObjectDAO<Order> {
 				exeState.setOrdId(orderDetail.getOrderId());
 				exeState.setExedate(new java.sql.Timestamp(new Date().getTime()));
 				super.save(exeState);
+				hashSet.add(orderDetail.getOrderNo());
+			}
+			for(String ordno:hashSet){
+				List<OrderDetail> details=super.findByProperty(OrderDetail.class, "orderNo", ordno);
+				messageBlh.accporderMessage(details.get(0));
 			}
 		}
 	}

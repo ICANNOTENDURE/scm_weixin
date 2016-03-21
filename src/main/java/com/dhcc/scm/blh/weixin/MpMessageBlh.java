@@ -34,6 +34,7 @@ import com.dhcc.scm.entity.ord.OrderDetail;
 import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.userManage.NormalUser;
 import com.dhcc.scm.entity.ven.VenInc;
+import com.dhcc.scm.entity.ven.Vendor;
 import com.dhcc.scm.entity.vo.ws.OperateResult;
 import com.dhcc.scm.entity.weixin.MpUser;
 import com.dhcc.scm.service.weixin.WxMessageService;
@@ -225,6 +226,7 @@ public class MpMessageBlh extends AbstractBaseBlh {
 					exeState.setExedate(new java.sql.Timestamp(new Date().getTime()));
 					commonService.saveOrUpdate(exeState);
 				}
+				accporderMessage(orderDetails.get(0));
 				operateResult.setResultCode("0");
 			} else {
 				operateResult.setResultContent("入参为空");
@@ -287,5 +289,41 @@ public class MpMessageBlh extends AbstractBaseBlh {
 		dto.setOrderInfos(messageDto.getOrderInfos());
 		dto.setPageModel(messageDto.getPageModel());
 		return "mpToDoTask";
+	}
+	
+	public void accporderMessage(OrderDetail orderDetail){
+
+		try {
+			String host = PropertiesBean.getInstance().getProperty("config.sci.dns");
+			String templateid = PropertiesBean.getInstance().getProperty("config.weixin.mp.template.accporder");
+
+			List<NormalUser> normalUsers=commonService.findByProperty(NormalUser.class, "locId", orderDetail.getOrderRecLoc());
+			if(normalUsers.size()==0){
+				return;
+			}
+			
+			Vendor vendor=commonService.get(Vendor.class, orderDetail.getOrderVenId());
+			WxMpTemplateMessage templateMessage = new WxMpTemplateMessage();
+			templateMessage.setTemplateId(templateid);
+			templateMessage.setUrl(host + "weixin/mpMessageCtrl!mpListOrderDetail.htm?dto.orderDetail.orderNo=" + orderDetail.getOrderNo());
+			templateMessage.getDatas().add(new WxMpTemplateData("first", vendor.getName()+"已经接收到您的订单", "#173177"));
+			templateMessage.getDatas().add(new WxMpTemplateData("OrderSn", orderDetail.getOrderNo() , "#173177"));
+			templateMessage.getDatas().add(new WxMpTemplateData("OrderStatus", "确认订单/下载订单" , "#173177"));
+	
+			templateMessage.getDatas().add(new WxMpTemplateData("remark", "请您及时留意订单状态，谢谢", "#173177"));
+			for(NormalUser normalUser:normalUsers){
+				String[] propertyNames={"wxMpSciPointer","wxMpSend"};
+				Object[] values={normalUser.getNormalAccount().getAccountId(),"1"};
+				List<MpUser> mpUsers=commonService.findByProperties(MpUser.class, propertyNames, values);
+				for(MpUser mpUser:mpUsers){
+					templateMessage.setToUser(mpUser.getWxMpOpenId());
+					wxMpService.templateSend(templateMessage);
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
+	
 	}
 }
