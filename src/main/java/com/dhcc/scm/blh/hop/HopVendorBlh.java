@@ -384,7 +384,6 @@ public class HopVendorBlh extends AbstractBaseBlh {
 					if (StringUtils.isNullOrEmpty(colNameString)) {
 						colNameString = " ";
 					}
-					;
 					switch (colNameString) {
 					case "HOPEVENDOR_CODE":
 						if (cell != null) {
@@ -437,25 +436,29 @@ public class HopVendorBlh extends AbstractBaseBlh {
 							hopVendor.setSynFlag(cell.toString());
 						}
 						break;
+					case "HOPEVENDOR_BUSINESSREGNO":
+						if (cell != null) {
+							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+							hopVendor.sethBusinessRegNo(cell.toString());
+						}
+						break;	
 					}
-				}
+				 }
+				
 				//验证数据的完整性
-				if(org.apache.commons.lang.StringUtils.isBlank(hopVendor.getHopCode())){
+				if(org.apache.commons.lang3.StringUtils.isBlank(hopVendor.gethBusinessRegNo())){
 					dto.setOpFlg("-1");
-					dto.setMsg("<br>"+"第"+numRows+"行供应商代码不能为空！");
+					dto.setMsg("<br>"+"第"+numRows+"行工商执照注册号/统一社会信用代码不能为空！");
 					continue;
 				}else{
-					if(dto.getOpFlg().equals("1")){
 						DetachedCriteria criteria = DetachedCriteria.forClass(HopVendor.class);
-						criteria.add(Restrictions.eq("hopCode", hopVendor.getHopCode()));
+						criteria.add(Restrictions.eq("hBusinessRegNo", hopVendor.gethBusinessRegNo()));
 						criteria.add(Restrictions.eq("hopHopId", Long.valueOf(super.getLoginInfo().get("HOSPID").toString())));
 						List<HopVendor> hopVendorIds = commonService.findByDetachedCriteria(criteria);
 						if(hopVendorIds.size()>0){
 							hopVendor.setHopVendorId(hopVendorIds.get(0).getHopVendorId());
 							hopVendor.setHopVenId(hopVendorIds.get(0).getHopVenId());
 						}
-					}
-					
 				}
 				
 				if(!org.apache.commons.lang.StringUtils.isBlank(hopVendor.getSynFlag())){
@@ -468,10 +471,9 @@ public class HopVendorBlh extends AbstractBaseBlh {
 				hopVendor.setHopHopId(WebContextHolder.getContext().getVisit().getUserInfo().getHopId());
 				hopVendors.add(hopVendor);
 			}
-			if(dto.getOpFlg().equals("1")){
-				dto.setHopVendors(hopVendors);
-				hopVendorService.exportVendor(dto);
-			}
+			dto.setHopVendors(hopVendors);
+			hopVendorService.exportVendor(dto);
+			dto.setOpFlg("1");
 			workbook = null;
 			FileUtils.forceDelete(dstFile);
 		} catch (Exception e) {

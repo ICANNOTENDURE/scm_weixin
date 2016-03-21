@@ -23,9 +23,39 @@ public class VenIncContranstDto extends BaseDto {
 	
 	private String auditflag;
 	
+	private String hopIncName;
+	
+	private String hopIncCode;
+	
+	private String hopIncAlias;
 	
 	
 	
+	
+	public String getHopIncAlias() {
+		return hopIncAlias;
+	}
+
+	public void setHopIncAlias(String hopIncAlias) {
+		this.hopIncAlias = hopIncAlias;
+	}
+
+	public String getHopIncName() {
+		return hopIncName;
+	}
+
+	public void setHopIncName(String hopIncName) {
+		this.hopIncName = hopIncName;
+	}
+
+	public String getHopIncCode() {
+		return hopIncCode;
+	}
+
+	public void setHopIncCode(String hopIncCode) {
+		this.hopIncCode = hopIncCode;
+	}
+
 	public String getAuditflag() {
 		return auditflag;
 	}

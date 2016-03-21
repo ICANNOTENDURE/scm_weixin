@@ -244,13 +244,13 @@ public class HopIncDao extends HibernatePersistentObjectDAO<HopInc> {
 							 super.save(incAlias);
 						 }	 
 					 }
+				 }else{
+					 String aliasString=PingYinUtil.getFirstSpell(hopIncs.get(i).getIncName());
+					 HopIncAlias incAlias=new HopIncAlias();
+					 incAlias.setIncAliasText(aliasString);
+					 incAlias.setIncAliaIncId(hopincIdLong);
+					 super.save(incAlias);	
 				 }
-				 String aliasString=PingYinUtil.getFirstSpell(hopIncs.get(i).getIncName());
-				 HopIncAlias incAlias=new HopIncAlias();
-				 incAlias.setIncAliasText(aliasString);
-				 incAlias.setIncAliaIncId(hopincIdLong);
-				 super.save(incAlias);	
-				 
 			 }	 
 		}
 	}

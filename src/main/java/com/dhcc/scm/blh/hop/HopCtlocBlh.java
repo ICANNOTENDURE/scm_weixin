@@ -6,6 +6,7 @@ package com.dhcc.scm.blh.hop;
 
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -15,15 +16,26 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.struts2.ServletActionContext;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
@@ -43,7 +55,9 @@ import com.dhcc.framework.web.context.WebContextHolder;
 import com.dhcc.scm.blh.ord.OrdBlh;
 import com.dhcc.scm.dto.hop.HopCtlocDto;
 import com.dhcc.scm.entity.hop.HopCtloc;
+import com.dhcc.scm.entity.hop.HopVendor;
 import com.dhcc.scm.entity.hop.Hospital;
+import com.dhcc.scm.entity.sys.ImpModel;
 import com.dhcc.scm.entity.sys.SysLog;
 import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.vo.hop.HopCtlocVo;
@@ -396,9 +410,120 @@ public class HopCtlocBlh extends AbstractBaseBlh {
 			ctloc.setCode(hisLocItmWeb.getCode());
 			ctloc.setName(hisLocItmWeb.getName());
 			ctloc.setHospid(hopCtloc.getHospid());
-			ctloc.setHisid(Long.valueOf(hisLocItmWeb.getId()));
+			ctloc.setHisid(hisLocItmWeb.getId());
 			commonService.saveOrUpdate(ctloc);
 		}
 	}
 	
+	public void upload(BusinessRequest res){
+		HopCtlocDto dto = super.getDto(HopCtlocDto.class, res);
+		dto.setOpFlg("1");
+		// 生成随机文件名
+		String newFileName = UUID.randomUUID().toString();
+		// 获取文件存储路径
+		String storageFileName = ServletActionContext.getServletContext().getRealPath("/uploadtmps");
+		// 判断文件存储路径是否存在，若不存在则自动新建
+		File document = new File(storageFileName);
+		if (!document.exists()) {
+			document.mkdir();
+		}
+
+		File dstFile = new File(storageFileName, newFileName);
+		com.dhcc.framework.util.FileUtils.copyFile(dto.getUpload(), dstFile, BaseConstants.BUFFER_SIZE);
+
+		List<ImpModel> listImpModels =commonService.findByProperty(ImpModel.class, "type", "HOPCTLOC");
+		Map<Integer, String> modelMap = new HashMap<Integer, String>();
+		for (int i = 0; i < listImpModels.size(); i++) {
+			modelMap.put(Integer.valueOf(listImpModels.get(i).getSeq().toString()), listImpModels.get(i).getCode());
+		}
+		// 读取excel
+		try {
+        	//读取Excel文件
+        	Workbook workbook = null;
+			Sheet sheet = null;
+			Row row = null;
+			Cell cell = null;
+			
+			String prefix=dto.getUploadFileName().substring(dto.getUploadFileName().lastIndexOf(".")+1);
+			if(prefix.equals("xls")){
+				workbook = new HSSFWorkbook(new FileInputStream(storageFileName + File.separator + newFileName));
+			}else if(prefix.equals("xlsx"))  {
+				workbook = new XSSFWorkbook(new FileInputStream(storageFileName + File.separator + newFileName));
+			}else{
+				dto.setOpFlg("-11");
+				dto.setMsg("<br>文件类型错误:");
+				WebContextHolder.getContext().getResponse().getWriter().write(JsonUtils.toJson(dto));
+				return;
+			}
+
+			sheet = workbook.getSheetAt(0);
+
+			// 明细
+			for (int numRows = 1; numRows <= sheet.getLastRowNum(); numRows++) {
+
+				row = sheet.getRow(numRows);
+				HopCtloc hopCtloc = new HopCtloc();
+				for (int numCells = 0; numCells <= row.getLastCellNum(); numCells++) {
+					cell = row.getCell(numCells);
+					String colNameString = modelMap.get(numCells);
+					if (StringUtils.isNullOrEmpty(colNameString)) {
+						colNameString = " ";
+					}
+					switch (colNameString) {
+					case "HOPCTLOC_CODE":
+						if (cell != null) {
+							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+							hopCtloc.setCode(cell.toString());
+						}
+						break;
+					case "HOPCTLOC_NAME":
+						if (cell != null) {
+							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+							hopCtloc.setName(cell.toString());
+						}
+						break;
+					case "HOPCTLOC_TYPE":
+						if (cell != null) {
+							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+							hopCtloc.setType(cell.toString());
+						}
+						break;
+					case "HOPCTLOC_HISID":
+						if (cell != null) {
+							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+							hopCtloc.setHisid(cell.toString());
+						}
+						break;
+					}
+				 }
+				
+				//验证数据的完整性
+				if(org.apache.commons.lang3.StringUtils.isBlank(hopCtloc.getHisid())){
+					dto.setOpFlg("-1");
+					dto.setMsg(dto.getMsg()+"<br>"+"第"+numRows+"行his标识不能为空！");
+					continue;
+				}else{
+						DetachedCriteria criteria = DetachedCriteria.forClass(HopCtloc.class);
+						criteria.add(Restrictions.eq("hisid", hopCtloc.getHisid()));
+						criteria.add(Restrictions.eq("hospid", Long.valueOf(super.getLoginInfo().get("HOSPID").toString())));
+						@SuppressWarnings("unchecked")
+						List<HopCtloc>  hopCtlocs= commonService.findByDetachedCriteria(criteria);
+						if(hopCtlocs.size()>0){
+							hopCtloc.setHopCtlocId(hopCtlocs.get(0).getHopCtlocId());
+						}
+				}
+				hopCtloc.setHospid(Long.valueOf(super.getLoginInfo().get("HOSPID").toString()));
+				commonService.saveOrUpdate(hopCtloc);
+			}
+			dto.setOpFlg("1");
+			workbook = null;
+			FileUtils.forceDelete(dstFile);
+		} catch (Exception e) {
+			e.printStackTrace();
+			dto.setOpFlg("-1");
+			dto.setMsg("<br>"+dto.getMsg()+"<br>"+e.getMessage());
+		}finally{
+			super.writeJSON(dto);
+		}
+	}
 }	

@@ -56,7 +56,7 @@ public class BaseDto implements Serializable {
 	private String sort;
 	
 	
-	private OperateResult operateResult;
+	private OperateResult operateResult=new OperateResult();
 	
 	/**
 	 * 下拉列表公共参数

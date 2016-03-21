@@ -211,6 +211,6 @@ public class VenIncPicBlh extends AbstractBaseBlh {
 		venIncPic.setVenIncPicSeq(dto.getVendorIncPicSeq());
 		commonService.saveOrUpdate(venIncPic);
 	}
-
+	
 	
 }

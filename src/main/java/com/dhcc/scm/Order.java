@@ -26,19 +26,30 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Pattern;
+
+import javax.annotation.Resource;
 
 import org.junit.Test;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 
+import com.dhcc.framework.app.service.CommonService;
 import com.dhcc.framework.common.BaseConstants;
+import com.dhcc.scm.entity.hop.HopVendor;
+import com.dhcc.scm.entity.ven.VenReghop;
+import com.dhcc.scm.entity.ven.Vendor;
 
 
 
 
 @ContextConfiguration(locations = {"classpath*:/applicationContext.xml"})
 public class Order extends AbstractTransactionalJUnit4SpringContextTests{
+	
+	
+	@Resource
+	public CommonService commonService;
 	
 	/**
 	 * 
@@ -216,13 +227,27 @@ public class Order extends AbstractTransactionalJUnit4SpringContextTests{
     @Test
     public void hibernate(){
     	System.out.println("start");
+	//t_ven_vendor de rowid
+    
+    	Vendor vendor=commonService.get(Vendor.class, 1l);
+    	List<VenReghop>  venReghops=commonService.findByProperty(VenReghop.class, "venid", vendor.getVendorId());
+    	for(VenReghop venReghop:venReghops){
+    		String[] propertyNames={"hBusinessRegNo","hopHopId"};
+    		Object[] values={vendor.getTaxation(),venReghop.getReghophopid()};
+    		List<HopVendor> hopVendors=commonService.findByProperties(HopVendor.class, propertyNames, values);
+    		if(hopVendors.size()>0){
+    			hopVendors.get(0).setHopVenId(vendor.getVendorId());
+    			commonService.saveOrUpdate(hopVendors.get(0));
+    		}
+    		
+    	}
 	}
     
     public static Pattern WXpt=Pattern.compile("^((?!weixin/wxMessageCtrl!).)*$");
     
     public static void main(String[] args){
-    	String url="/scm/weixin/wxMessageCtrl!searchOrder.htm";
-    	System.out.println(url.indexOf("weixin/wxMessageCtrl!")>-1);
+    	
+    
 	}
     
 }

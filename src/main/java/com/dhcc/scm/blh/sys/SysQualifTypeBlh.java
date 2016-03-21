@@ -4,13 +4,20 @@
  */
 package com.dhcc.scm.blh.sys;
 
+import java.util.List;
+
 import javax.annotation.Resource;
-import com.dhcc.framework.app.service.CommonService;
+
 import org.springframework.stereotype.Component;
+
 import com.dhcc.framework.app.blh.AbstractBaseBlh;
+import com.dhcc.framework.app.service.CommonService;
 import com.dhcc.framework.transmission.event.BusinessRequest;
 import com.dhcc.scm.dto.sys.SysQualifTypeDto;
 import com.dhcc.scm.entity.sys.SysQualifType;
+import com.dhcc.scm.entity.ven.VenInc;
+import com.dhcc.scm.entity.ven.VenIncPic;
+import com.dhcc.scm.entity.vo.ven.VenQualifTypeVO;
 import com.dhcc.scm.service.cat.CatGroupService;
 import com.dhcc.scm.service.sys.SysQualifTypeService;
 
@@ -107,5 +114,37 @@ public class SysQualifTypeBlh extends AbstractBaseBlh {
 	public void getCatInfo(BusinessRequest res) {
 		SysQualifTypeDto dto = super.getDto(SysQualifTypeDto.class, res);
 		super.writeJSON(sysQualifTypeService.getCatInfo(dto));
+	}
+	
+	
+	
+	/**
+	 * 
+	* @Title: getVenIncQualify 
+	* @Description: TODO(查询商品类祖对应的商品资质) 
+	* @param @param res    设定文件 
+	* @return void    返回类型 
+	* @throws 
+	* @author zhouxin   
+	* @date 2016年3月17日 上午10:46:57
+	 */
+	public void getVenIncQualify(BusinessRequest res){
+		SysQualifTypeDto dto = super.getDto(SysQualifTypeDto.class, res);
+//		DetachedCriteria criteria = DetachedCriteria.forClass(VenIncqQualif.class,"venIncqQualif");
+//		criteria.createAlias("sysQualifType", "sysQualifType", org.hibernate.sql.JoinType.RIGHT_OUTER_JOIN);
+		List<VenQualifTypeVO> qualifTypeVOs=sysQualifTypeService.queryQualifyType(dto);
+		super.writeJSON(qualifTypeVOs);
+		
+	}
+	public String venIncQualify(BusinessRequest res){
+		SysQualifTypeDto dto = super.getDto(SysQualifTypeDto.class, res);
+		
+		VenInc venInc=commonService.get(VenInc.class, dto.getVenIncId());
+		List<VenIncPic> incPics=commonService.findByProperty(VenIncPic.class, "venIncPicVenincid", dto.getVenIncId());
+		List<VenQualifTypeVO> qualifTypeVOs=sysQualifTypeService.queryQualifyType(dto);
+		dto.setVenInc(venInc);
+		dto.setIncPics(incPics);
+		dto.setQualifTypeVOs(qualifTypeVOs);
+		return "venIncQualify";
 	}
 }

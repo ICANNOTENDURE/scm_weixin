@@ -77,7 +77,7 @@ public class NormalUser implements Serializable {
 	@Column(name = "useState")
 	private String useState;
 	
-	//人员类型(0,工作，1医院,2,供应商)
+	//人员类型(0,工作，1医院,2,供应商,3护士)
 	@Column(name = "TYPE")
 	private Long type;
 	

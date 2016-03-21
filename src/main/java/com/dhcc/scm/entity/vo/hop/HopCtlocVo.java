@@ -18,7 +18,7 @@ public class HopCtlocVo {
 	//科室表中对应的医院ID所对应的医院描述
 	private String hospitalName;
 	//His科室id
-	private Long hisid;
+	private String hisid;
 	
 	private String type;
 	
@@ -26,7 +26,7 @@ public class HopCtlocVo {
 
 	
 	public HopCtlocVo(Long hopCtlocId, String code, String name,
-			Long hospid, String hospitalName, Long hisid,String type) {
+			Long hospid, String hospitalName, String hisid,String type) {
 		super();
 		this.hopCtlocId = hopCtlocId;
 		this.code = code;
@@ -88,12 +88,12 @@ public class HopCtlocVo {
 	}
 
 
-	public Long getHisid() {
+	public String getHisid() {
 		return hisid;
 	}
 
 
-	public void setHisid(Long hisid) {
+	public void setHisid(String hisid) {
 		this.hisid = hisid;
 	}
 

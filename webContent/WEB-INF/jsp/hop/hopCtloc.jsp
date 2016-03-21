@@ -6,6 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Dic</title>
 <%@include file="/WEB-INF/jsp/common/scriptInc.jsp"%>
+<%@include file="/WEB-INF/jsp/common/scriptUploadify.jsp"%>
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/js/dhcc/pms/hop/hopCtloc.js"></script>
 </head>
@@ -19,6 +20,9 @@
 			onclick="javascript:delRow()">删除</a> <a class="linkbutton"
 			data-options="iconCls:'icon-search',plain:true"
 			onclick="javascript:selectClick()">查询</a>
+			<a class="linkbutton"
+			data-options="iconCls:'icon-save',plain:true"
+			onclick="javascript:importOrder()">导入</a>
 	</div>
 
 	<table id="datagrid" title='医院科室信息管理'
@@ -84,7 +88,7 @@
 	<div id="searchCtlocWin" class="dialog" title="条件查询"
 		data-options="modal:true,width:400,height:250,closed:true,buttons:'#searchBtnDiv'"
 		style="vertical-align: middle;">
-		<table style="width: 100%;" cellspacing="10">				
+		<table style="width: 100%;" >				
 			<tr>
 				<td class="textLabel">科室代码:</td>
 				<td class="textParent"><input style="width: 250px;"
@@ -123,5 +127,43 @@
 	</div>
 	
 	
+	<div id="importDialog" class="dialog" title="导入科室"
+		style="width: 1020px; height: 450px; background-color: #F5FAFD;"
+		data-options="
+				modal:true,
+		        closed:true,
+				collapsible:false,
+				minimizable:false,
+				maximizable:false">
+			<table id="addFuncsTable" style="width: 100%;">
+				<tr>
+					<td class="textLabel" style="text-align: right; width: 40%">导入Excel文件:</td>
+					<td class="textParent" style="text-align: left; width: 60%"><input
+						style="width: 250px;" class="validatebox" type="file"
+						name="upload" id="orderUpload"></input></td>
+				</tr>
+			</table>
+			
+			<table>
+	    		<tr id="impModel">
+	    			<td class="time">模版 </td>
+	    		</tr>
+	    	</table>
+	    	<div id="err"></div>
+	</div>
+	
+		<div id="gg" class="dialog" title="请等待"
+		style="width: 1020px; height: 450px; padding: 10px;"
+		data-options="
+				modal:true,
+				draggable:false,
+				closable:false,
+				closed:true,
+				collapsible:false,
+				minimizable:false,
+				maximizable:false">
+
+		<p1>正在处理上传数据，请等待</p1>
+	</div>
 </body>
 </html>

@@ -4,11 +4,12 @@
  */
 package com.dhcc.scm.dto.hop;
 
+import java.io.File;
 import java.util.List;
 
+import com.dhcc.framework.transmission.dto.BaseDto;
 import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.vo.hop.HopCtlocVo;
-import com.dhcc.framework.transmission.dto.BaseDto;
 
 public class HopCtlocDto extends BaseDto {
 
@@ -24,8 +25,32 @@ public class HopCtlocDto extends BaseDto {
 	private Long userId;
 	
 	
+	private File upload;
+	
+	private String uploadFileName;
 	
 	
+	
+	public String getUploadFileName() {
+		return uploadFileName;
+	}
+
+
+	public void setUploadFileName(String uploadFileName) {
+		this.uploadFileName = uploadFileName;
+	}
+
+
+	public File getUpload() {
+		return upload;
+	}
+
+
+	public void setUpload(File upload) {
+		this.upload = upload;
+	}
+
+
 	/**
 	 * @return the destionId
 	 */

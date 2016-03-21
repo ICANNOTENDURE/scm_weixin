@@ -13,7 +13,7 @@ $(function (){
         'debug' : false,
         'fileObjName':'dto.upload',
         'auto': true,
-        'removeCompleted':false,
+        'removeCompleted':true,
         'onUploadStart': function(file) {
         	$("#orderUpload").uploadify("settings", 'formData', {'dto.uploadFileName': file.name});
         },
@@ -63,6 +63,7 @@ $(function (){
 	    columns:[[ 
 	        {field:'hopCode',title:'代码',width:100},  
 	        {field:'hopName',title:'名称',width:100},
+	        {field:'hBusinessRegNo',title:'工商执照注册号/统一社会信用代码',width:100},
 	        {field:'hopType',title:'分类',width:100} 
 	    ]],
 	    pageSize:20,

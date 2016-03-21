@@ -1,6 +1,7 @@
 package com.dhcc.scm.entity.sys;
 
 import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,9 +24,6 @@ public class SysQualifType implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-//	@GenericGenerator(name="idGenerator",strategy="sequence",
-//	parameters={@Parameter(name="sequence",value="T_SYS_QUALIF_TYPE")})
-//	@GeneratedValue(generator="idGenerator")	
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="QUALIF_TYPE_ID")
 	private Long qualifTypeId;
@@ -40,6 +38,14 @@ public class SysQualifType implements Serializable{
 	private Long catgroupid;
 	@Column(name="QUALIF_TYPE_SEQ")
 	private Integer seq;
+	
+
+
+	 
+	
+	
+
+
 	public Long getQualifTypeId() {
 		return this.qualifTypeId;
 	}
@@ -77,17 +83,5 @@ public class SysQualifType implements Serializable{
 		this.seq = seq;
 	}
 	
-//	@Transient
-//	private SysQualifType sysQualification;
-//	public SysQualifType getSysQualification() {
-//		return sysQualification;
-//	}
-//	public void setSysQualification(SysQualifType sysQualification) {
-//		this.sysQualification = sysQualification;
-//	}
-//	public static long getSerialversionuid() {
-//		return serialVersionUID;
-//	}
-	
-	
+
 }

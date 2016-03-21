@@ -7,7 +7,6 @@
 
 </title>
 <%@include file="/WEB-INF/jsp/common/scriptInc.jsp"%>
-<%@include file="/WEB-INF/jsp/common/scriptUploadify.jsp"%>
  <script>
     $(function(){
     	 $.extend($.fn.datagrid.methods, {
@@ -39,18 +38,7 @@
 	        textField:'name',
 	        mode: 'remote',
 	    }); 
-    	$("#searchHopInc").on('click', function() {
-    		$CommonUI.getDataGrid('#datagrid').datagrid({  
-    		    url:$WEB_ROOT_PATH+'/ven/venIncCtrl!listContrantInc.htm',
-    		    queryParams: {
-    		    	'dto.venIncContranstDto.incName': $("#incHopName").val(),
-    		    	'dto.venIncContranstDto.incCode': $("#incHopCode").val(),
-    		    	'dto.venIncContranstDto.flag': $("#hopFlag").combobox('getValue'),
-    		    	'dto.venInc.venIncAlias': $("#incHopAlias").val(),
-    			}
 
-   		 	});
-   		});
     	$("#venIncQualify").on('click',function(){
     		if ($CommonUI.getDataGrid("#datagrid2").datagrid('getSelections').length != 1) {
     			$CommonUI.alert('请选一个商品');
@@ -59,123 +47,40 @@
     		var row =$("#datagrid2").datagrid('getSelected');
     		window.open($WEB_ROOT_PATH+'/sys/sysQualifTypeCtrl!venIncQualify.htm?dto.venIncId='+row.venincid);	
     	});
-    	$("#searchVenInc").on('click', function() {
+    	$("#searchInc").on('click', function() {
     		$CommonUI.getDataGrid('#datagrid2').datagrid({  
     		    url:$WEB_ROOT_PATH+'/ven/venIncCtrl!listVenContranst.htm',
     		    queryParams: {
-    		    	'dto.venIncContranstDto.incName': $("#incVenName").val(),
-    		    	'dto.venIncContranstDto.incCode': $("#incVenCode").val(),
-    		    	'dto.venInc.venIncAlias': $("#incVenAlias").val(),
+    		    	'dto.venIncContranstDto.hopIncName': $("#incHopName").val(),
+    		    	'dto.venIncContranstDto.hopIncCode': $("#incHopCode").val(),
+    		    	'dto.venInc.comgridparam': $("#incHopAlias").val(),
     		    	'dto.venInc.venIncVenid': $("#ven").combobox('getValue'),
-    		    	'dto.venIncContranstDto.flag': $("#venFlag").combobox('getValue'),
+    		    	'dto.venIncContranstDto.flag': 1,
     		    	'dto.venIncContranstDto.auditflag': $("#auditFlag").combobox('getValue')
     			}
 
    		 	});
    		});
-    	
-    	$CommonUI.getDataGrid('#datagrid').datagrid({
-    		onDblClickRow: function(rowIndex, rowData){
-    			$CommonUI.getDataGrid('#datagrid2').datagrid({
-    				url:$WEB_ROOT_PATH+'/ven/venIncCtrl!listVenContranst.htm',
-        		    queryParams: {
-        		    	'dto.venHopInc.hopIncId': rowData.hopincid,
-        			}
-    			});
-    			$("#venFlag").combobox('setValue',1);
-    		}
 
-    	});
-    	
-    	$('#incVenName').keydown(function(e){ 
-    		if(e.keyCode==13){ 
-    			$("#searchVenInc").click();
-    		} 
-    	});
-    	$('#incVenCode').keydown(function(e){ 
-    		if(e.keyCode==13){ 
-    			$("#searchVenInc").click();
-    		} 
-    	}); 
-    	$('#incVenAlias').keydown(function(e){ 
-    		if(e.keyCode==13){ 
-    			$("#searchVenInc").click();
-    		} 
-    	});
     	
     	$('#incHopName').keydown(function(e){ 
     		if(e.keyCode==13){ 
-    			$("#searchHopInc").click();
+    			$("#searchInc").click();
     		} 
     	});
-    	
     	$('#incHopCode').keydown(function(e){ 
     		if(e.keyCode==13){ 
-    			$("#searchHopInc").click();
+    			$("#searchInc").click();
     		} 
-    	});
-    	
+    	}); 
     	$('#incHopAlias').keydown(function(e){ 
     		if(e.keyCode==13){ 
-    			$("#searchHopInc").click();
+    			$("#searchInc").click();
     		} 
     	});
     	
-    	
-    	
-    	$("#importBTN").on('click', function() {
-    		$('#importDialog').dialog('open');
-    		$("#import").uploadify({
-    	        'swf': $WEB_ROOT_PATH + '/images/uploadify.swf',
-    	        'uploader': $WEB_ROOT_PATH + '/ven/venIncCtrl!uploadConAndroid.htm',
-    	        //在浏览窗口底部的文件类型下拉菜单中显示的文本
-    	        'buttonText':'Upload',
-    	        'fileTypeDesc': '支持的格式：',
-    	        'fileTypeExts': '*.xls',
-    	        'fileSizeLimit': '300MB',
-    	        'width': '60',
-    	        'height': '20',
-    	        'debug' : false,
-    	        'fileObjName':'dto.upload',
-    	        'auto': true,
-    	        'removeCompleted':true,
-    	        //上传成功
-    	        'onSelect': function(){  
-    	        	$("#gg").dialog("open");
-    	        	$("#err").html("");
-    	        }, 
-    	        'onUploadSuccess':function(file, data, response){
-    	        	$("#gg").dialog("close");
-    	        	var obj=eval('('+data+')');
-    	        	if(obj.opFlg=="0"){
-    	        		$CommonUI.alert("导入成功");
-    	        		$("#err").html(obj.msg);
-    	        	}else{
-    	        		$CommonUI.alert("导入失败");
-    	        		$("#err").html(obj.msg);
-    	        	};
-    	        },
-    	        //检测FLASH失败调用
-    	        'onFallback': function() {
-    	        	$("#gg").dialog("close");
-    	            alert("您未安装FLASH控件，无法上传图片！请安装FLASH控件后再试。");
-    	        },
-    	        //返回一个错误，选择文件的时候触发
-    	        'onSelectError': function(file, errorCode, errorMsg) {
-    	        	$("#gg").dialog("close");
-    	            switch (errorCode) {
-    	            case - 100 : alert("上传的文件数量已经超出系统限制的" + $('#file_upload').uploadify('settings', 'queueSizeLimit') + "个文件！");
-    	                break;
-    	            case - 110 : alert("文件 [" + file.name + "] 大小超出系统限制的" + $('#file_upload').uploadify('settings', 'fileSizeLimit') + "大小！");
-    	                break;
-    	            case - 120 : alert("文件 [" + file.name + "] 大小异常！");
-    	                break;
-    	            case - 130 : alert("文件 [" + file.name + "] 类型不正确！");
-    	                break;
-    	            }
-    	        }
-    	    });
-   		});
+    
+
     });
     function ConT(value,row,index){
 		if(row.facid==null){
@@ -334,31 +239,14 @@
 
 </head>
 <body >
-	<div id="toolbar" style="height: auto">
-		  <div  style="margin-bottom:5px;margin-top:5px">
-			商品名称: <input id="incHopName" style="width: 150px;"
-			type="text" />
-			商品代码: <input id="incHopCode" style="width: 150px;"
-			type="text" />
-			拼音码: <input id="incHopAlias" style="width: 150px;"
-			type="text" />
-			对照状态:
-			<select class="combobox" panelHeight="auto" style="width:100px" id="hopFlag">
-				<option value="0">空</option>
-				<option value="1">已对照</option>
-				<option value="2">未对照</option>
-			</select>
 
-			<a href="#" class="linkbutton" iconCls="icon-search" id="searchHopInc" >查询</a>
-		 </div>
-	</div>	
     <div id="toolbar2" style="height: auto">
 		  <div  style="margin-bottom:5px;margin-top:5px">
-			商品名称: <input id="incVenName" style="width: 100px;"
+			商品名称: <input id="incHopName" style="width: 100px;"
 			type="text" />
-			商品代码: <input id="incVenCode" style="width: 100px;"
+			商品代码: <input id="incHopCode" style="width: 100px;"
 			type="text" />
-			拼音码: <input id="incVenAlias" style="width: 100px;"
+			别名: <input id="incHopAlias" style="width: 100px;"
 			type="text" />
 			审批状态:
 			<select class="combobox" panelHeight="auto" style="width:100px" id="auditFlag">
@@ -367,27 +255,19 @@
 				<option value="2">审批通过</option>
 				<option value="3">审批拒绝</option>
 			</select>
-			对照状态:
-			<select class="combobox" panelHeight="auto" style="width:100px" id="venFlag">
-				<option value="0">空</option>
-				<option value="1">已对照</option>
-				<option value="2">未对照</option>
-			</select>
 			</div>
 			<div style="margin-bottom:5px;margin-top:5px">
 
 			供应商:<input style="width: 200px;"
 						class="combobox" type="text" 
 						 id="ven" />
-			<a href="#" class="linkbutton" iconCls="icon-search" id="searchVenInc" >查询</a>
+			<a href="#" class="linkbutton" iconCls="icon-search" id="searchInc" >查询</a>
 			<a href="#" class="linkbutton" iconCls="icon-search" id="venIncQualify" >商品资质</a>
-			<a href="#" class="linkbutton" iconCls="icon-save" id="importBTN" >导入对照关系</a>
 		     <span style="color: red;font-size: 20px">注意(比如供应商单位盒(7),医院单位支,那分子就是7，分母是1)</span>
 		 </div>
 		
 	</div>
-  <div class="layout" data-options="fit:'true',border:true">
-        <div data-options="region:'north',title:'供应商商品',iconCls:'icon-ok'" style="height:300px">
+
         	<table id="datagrid2" style="height: 250px"  class="datagrid"
 					data-options="toolbar:'#toolbar2',
 					 			 fit:true,
@@ -433,98 +313,7 @@
 						</tr>
 					</thead>
 				</table>
-        
-        </div>
-        <div data-options="region:'center',title:'医院商品(双击查看已经对照药品)',iconCls:'icon-ok'" >
-            <table id="datagrid" style="height: 250px"  class="datagrid"
-					data-options="toolbar:'#toolbar',
-					 			 fit:true,
-								 fitColumns:true,
-								 singleSelect:true,
-								 pagination:true,
-				    			 method:'post',
-				    			 rownumbers:true,
-				    			 striped:true,
-				    			 singleselect:true,
-								 ">
-								 
-					<thead>
-						<tr>
-							<th data-options="field:'hopincid',hidden:true">IncId ID</th>
-							<th data-options="field:'hopinccode',width:50,sortable:true">商品代码(医院)</th>
-							<th data-options="field:'hopincname',width:100,sortable:true">商品名称(医院)</th>
-							<th data-options="field:'manf',width:100,sortable:true">产地(医院)</th>
-							<th data-options="field:'spec',width:70,sortable:true">规格(医院)</th>
-							<th data-options="field:'uom',width:40,sortable:true">入库单位(医院)</th>
-						</tr>
-					</thead>
-				</table>
-        </div>
-    </div>
-    
-    
-    
-    
-    
-    
-    <!-- 导入对照关系 -->
-    <div id="importDialog" class="dialog" title="导入对照关系"
-		style="width: 600px; height: 400px; background-color: #F5FAFD;"
-		data-options="
-				modal:true,
-		        closed:true,
-				collapsible:false,
-				minimizable:false,
-				maximizable:false">
-			<table  style="width: 100%;">
-				<tr>
-					<td class="textLabel" style="text-align: right; width: 40%">导入Excel文件:</td>
-					<td class="textParent" style="text-align: left; width: 60%"><input
-						style="width: 250px;"  type="file"
-						id="import" ></input></td>
-				</tr>
-				<tr>
-					<td class="textLabel" style="text-align: right; width: 40%">下载模版:</td>
-					<td class="textParent" ><a href="../tmpl/impContrans.xls">下载</a></td>
-				</tr>
-			</table>
-			<table>
-	    		<tr id="impModel">
-	    			<td class="time">模版 </td>
-	    			<td class='drop'><div class='item'>医院药品代码</div></td>
-	    			<td class='drop'><div class='item'>供应商药品代码</div></td>
-	    			<td class='drop'><div class='item'>供应商名称</div></td>
-	    			<td class='drop'><div class='item'>分子(供应商)</div></td>
-	    			<td class='drop'><div class='item'>分母(医院)</div></td>
-	    		</tr>
-	    	</table>
-	    	<div id="err">
-	    	</div>
-	</div>
-	
-	
-	
-	<div id="gg" class="dialog" title="请等待"  style="width:600px;height:400px;padding:10px;"
-				data-options="
-				modal:true,
-				draggable:false,
-				closable:false,
-				closed:true,
-				collapsible:false,
-				minimizable:false,
-				maximizable:false">
-				
-        		<p1>正在处理上传数据，请等待</p1>
-    </div>
-    <style type="text/css">
 
-    .item{
-	    text-align:center;
-	    border:1px solid #499B33;
-	    background:#fafafa;
-	    color:#444;
-	    width:90px;
-    }
-    </style>	
+
 </body>
 </html>

@@ -35,7 +35,7 @@
     <td class="time">字段名</td>
     <s:iterator value="dto.impModelList" status="all"  id="impModelList">
   
-    	<td class="drop"><div class="item" seq="${impModelList.name}">${impModelList.name}</div></td>
+    	<td class="drop"><div class="item" seq="${impModelList.name}" code="${impModelList.code}" >${impModelList.name}</div></td>
     </s:iterator>
     </tr>
 
@@ -118,6 +118,7 @@
 					jsonObj = new Object();
 	                jsonObj.type = $("#type").val();
 	                jsonObj.name = $(this).attr("seq");
+	                jsonObj.code=$(this).attr("code");
 	                jsonObj.seq = i;
 	                impModelStr.push(jsonObj);
 					i=i+1;		

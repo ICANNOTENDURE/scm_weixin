@@ -365,10 +365,10 @@ public class VenIncDao extends HibernatePersistentObjectDAO<VenInc> {
 		hqlBuffer.append(" from t_ven_inc t1 ");
 		hqlBuffer.append("left join t_ven_hop_inc t2 on t2.ven_inc_id=t1.VEN_INC_ROWID ");
 		hqlBuffer.append("left join t_hop_inc t3 on t3.inc_id=t2.hop_inc_id  ");
-		if (WebContextHolder.getContext().getVisit().getUserInfo().getUserType() == 1) {
-			hqlBuffer.append(" and t3.inc_hospid =:incihopid ");
-			hqlParamMap.put("incihopid", WebContextHolder.getContext().getVisit().getUserInfo().getHopId());
-		}
+//		if (WebContextHolder.getContext().getVisit().getUserInfo().getUserType() == 1) {
+//			hqlBuffer.append(" and t3.inc_hospid =:incihopid ");
+//			hqlParamMap.put("incihopid", WebContextHolder.getContext().getVisit().getUserInfo().getHopId());
+//		}
 		hqlBuffer.append("left join t_hop_manf t4 on t1.VEN_INC_MANFID=t4.id ");
 		hqlBuffer.append("left join t_ven_vendor t5 on t1.VEN_INC_VENID=t5.ven_id ");
 		hqlBuffer.append("left join T_SYS_HOSPITAL t6 on t3.INC_HOSPID=t6.HOSPITAL_ID ");
@@ -378,6 +378,10 @@ public class VenIncDao extends HibernatePersistentObjectDAO<VenInc> {
 		}
 		hqlBuffer.append(" where 1=1 ");
 		
+		if (WebContextHolder.getContext().getVisit().getUserInfo().getUserType() == 1) {
+			hqlBuffer.append(" and t3.inc_hospid =:incihopid ");
+			hqlParamMap.put("incihopid", WebContextHolder.getContext().getVisit().getUserInfo().getHopId());
+		}
 		if(org.apache.commons.lang.StringUtils.isNotBlank(dto.getComgridparam())){
 			//hqlBuffer.append(" AND (t3.inc_name  like :inputstr )");
 			//hqlParamMap.put("inputstr", "%" + dto.getComgridparam().trim() + "%");
@@ -386,7 +390,18 @@ public class VenIncDao extends HibernatePersistentObjectDAO<VenInc> {
 		}
 		
 		if (dto.getVenIncContranstDto() != null) {
+			
+			if(org.apache.commons.lang3.StringUtils.isNotBlank(dto.getVenIncContranstDto().getHopIncCode())){
+				hqlBuffer.append(" AND t3.INC_CODE  like :hopincode ");
+				hqlParamMap.put("hopincode", "%" + dto.getVenIncContranstDto().getHopIncCode() + "%");
+			}
+			
+			if(org.apache.commons.lang3.StringUtils.isNotBlank(dto.getVenIncContranstDto().getHopIncName())){
+				hqlBuffer.append(" AND t3.INC_NAME  like :hopincname ");
+				hqlParamMap.put("hopincname", "%" + dto.getVenIncContranstDto().getHopIncName() + "%");
+			}
 
+			
 			if (!StringUtils.isNullOrEmpty(dto.getVenIncContranstDto().getIncName())) {
 				hqlBuffer.append(" AND t1.VEN_INC_NAME  like :venincname ");
 				hqlParamMap.put("venincname", "%" + dto.getVenIncContranstDto().getIncName() + "%");

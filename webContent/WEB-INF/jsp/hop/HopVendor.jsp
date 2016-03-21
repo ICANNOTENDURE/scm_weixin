@@ -6,23 +6,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Dic</title>
 <%@include file="/WEB-INF/jsp/common/scriptInc.jsp"%>
-<script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/uploadify/jquery.uploadify.min.js"></script>
-<link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/css/uploadify.css">
+<%@include file="/WEB-INF/jsp/common/scriptUploadify.jsp"%>
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/js/dhcc/pms/hop/HopVendor.js"></script>
-	
-<style type="text/css">
 
-.item{
- text-align:center;
- border:1px solid #499B33;
- background:#fafafa;
- color:#444;
- width:160px;
-}
-</style>
 </head>
 <body>
 	<div id="toolbar" class="toolbar">
@@ -75,6 +62,13 @@
 					<td class="textParent" style="text-align: left; width: 30%"><input
 						style="width: 250px;" class="validatebox" type="text"
 						name="dto.hopVendor.hopType" data-options="required:true"></input>
+					</td>
+				</tr>
+				<tr>
+					<td class="textLabel" style="text-align: right; width: 20%" colspan="2">工商执照注册号/统一社会信用代码:</td>
+					<td class="textParent" style="text-align: left; width: 30%" colspan="2"><input
+						style="width: 250px;" class="validatebox" type="text"
+						name="dto.hopVendor.hBusinessRegNo" data-options="required:true"></input>
 					</td>
 				</tr>
 			</table>
@@ -133,7 +127,7 @@
 	
 	
 	<div id="importDialog" class="dialog" title="导入供应商"
-		style="width: 800px; height: 400px; background-color: #F5FAFD;"
+		style="width: 1000px; height: 400px; background-color: #F5FAFD;"
 		data-options="
 				modal:true,
 		        closed:true,
@@ -154,9 +148,10 @@
 	    			<td class="time">模版 </td>
 	    		</tr>
 	    	</table>
+	    	<div id="err"></div>
 	</div>
 	<div id="gg" class="dialog" title="请等待"
-		style="width: 1000px; height: 400px; padding: 10px;"
+		style="width: 1000px; height: 400px; 
 		data-options="
 				modal:true,
 				draggable:false,
@@ -168,6 +163,6 @@
 
 		<p1>正在处理上传数据，请等待</p1>
 	</div>
-	<div id="err"></div>
+	
 </body>
 </html>

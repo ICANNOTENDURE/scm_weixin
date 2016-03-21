@@ -1,4 +1,57 @@
-$(function (){	
+$(function (){
+	$("#orderUpload").uploadify({
+        'swf': $WEB_ROOT_PATH + '/images/uploadify.swf',
+        'uploader': $WEB_ROOT_PATH + '/hop/hopCtlocDestinationCtrl!upload.htm',
+        //在浏览窗口底部的文件类型下拉菜单中显示的文本
+        'buttonText':'上传',
+        'fileTypeDesc': '支持的格式：',
+        'fileTypeExts': '*.xls;*.xlsx',
+        'fileSizeLimit': '30MB',
+        'width': '60',
+        'height': '20',
+        'debug' : false,
+        'fileObjName':'dto.upload',
+        'auto': true,
+        'removeCompleted':true,
+        'onUploadStart': function(file) {
+        	$("#orderUpload").uploadify("settings", 'formData', {'dto.uploadFileName': file.name});
+        },
+        'onSelect': function(){  
+        	$("#gg").dialog("open");
+        	$("#err").html("");	
+        },
+        //上传成功
+        'onUploadSuccess':function(file, data, response){
+        	$("#gg").dialog("close");
+        	var obj=eval('('+data+')');
+        	if(obj.opFlg=="1"){
+        		//$("#importDialog").dialog('close');
+        		$("#err").html(obj.msg);
+        		$CommonUI.alert("导入成功");
+        	}else{
+        		$CommonUI.alert("失败");
+        		$("#err").html(obj.msg);
+        	};
+        },
+        //检测FLASH失败调用
+        'onFallback': function() {
+            alert("您未安装FLASH控件，无法上传图片！请安装FLASH控件后再试。");
+        },
+        //返回一个错误，选择文件的时候触发
+        'onSelectError': function(file, errorCode, errorMsg) {
+            switch (errorCode) {
+            case - 100 : alert("上传的文件数量已经超出系统限制的" + $('#file_upload').uploadify('settings', 'queueSizeLimit') + "个文件！");
+                break;
+            case - 110 : alert("文件 [" + file.name + "] 大小超出系统限制的" + $('#file_upload').uploadify('settings', 'fileSizeLimit') + "大小！");
+                break;
+            case - 120 : alert("文件 [" + file.name + "] 大小异常！");
+                break;
+            case - 130 : alert("文件 [" + file.name + "] 类型不正确！");
+                break;
+            }
+        }
+    });
+	
 	//获取下拉科室的所有下拉框
 	var ctlocCombox=[$CommonUI.getComboBox('#comboCtloc'),$CommonUI.getComboBox('#ctlocDesDr')];
 	for(var i=0;i<ctlocCombox.length;i++){
@@ -8,15 +61,7 @@ $(function (){
 			textField:'name'	
 		});
 	}
-//	$CommonUI.getComboBox('#comboCtloc').combobox({
-//		onSelect:function(rec){
-//			$("#contact").combobox({
-//				url:$WEB_ROOT_PATH+'/normalAccount/normalAccountCtrl!getUserByLoc.htm?locId='+rec.hopCtlocId,
-//				valueField:'id',							
-//				textField:'name',
-//			});
-//		}
-//	});
+
 	$CommonUI.getDataGrid('#datagrid').datagrid({  
 	    url:$WEB_ROOT_PATH+'/hop/hopCtlocDestinationCtrl!listInfo.htm',	   
 	    method:'post',
@@ -149,4 +194,22 @@ function clear(){
 //取消按钮
 function cancelClick() {
 	$CommonUI.getWindow("#detailWin").dialog("close");
+}
+
+function importOrder(){
+	$('#importDialog').dialog('open');
+	$('#impModel').html("");
+		$('#impModel').append("<td class='time'>模版 </td>");
+		$.post(
+			$WEB_ROOT_PATH+"/sys/sysImpModelCtrl!listImpModel.htm",
+			{
+				'dto.impModel.type':'HOPCTLOCDESC'
+			},
+			function(data){
+				$.each(data,function(i,dd){
+						$('#impModel').append("<td class='drop'><div class='item'>"+dd.name+"</div></td>");
+				});
+			},
+			"json"
+		);
 }

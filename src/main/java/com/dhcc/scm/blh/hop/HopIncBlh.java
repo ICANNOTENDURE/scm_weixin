@@ -19,6 +19,7 @@ import javax.annotation.Resource;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -249,7 +250,7 @@ public class HopIncBlh extends AbstractBaseBlh {
 			} else {
 				dto.setOpFlg("-1");
 				dto.setMsg("<br>文件类型错误:");
-				WebContextHolder.getContext().getResponse().getWriter().write(JsonUtils.toJson(dto));
+				writeJSON(dto);
 				return;
 			}
 			sheet = workbook.getSheetAt(0);
@@ -265,26 +266,29 @@ public class HopIncBlh extends AbstractBaseBlh {
 					String colNameString = modelMap.get(numCells);
 					if (StringUtils.isNullOrEmpty(colNameString)) {
 						colNameString = " ";
-					}
-					;
+					};
 					switch (colNameString) {
 					case "HOSPINC_CODE":
 						if (cell != null) {
+							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
 							hopInc.setIncCode(cell.toString());
 						}
 						break;
 					case "HOSPINC_NAME":
 						if (cell != null) {
+							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
 							hopInc.setIncName(cell.toString());
 						}
 						break;
 					case "HOSPINC_SPEC":
 						if (cell != null) {
+							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
 							hopInc.setIncSpec(cell.toString());
 						}
 						break;
 					case "HOSPINC_PUOM":
 						if (cell != null) {
+							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
 							hopInc.setIncUomname(cell.toString());
 						}
 						break;
@@ -328,6 +332,11 @@ public class HopIncBlh extends AbstractBaseBlh {
 							hopInc.setIncSp((float) (cell.getNumericCellValue()));
 						}
 						break;
+					case "HOSPINC_BARCODE":
+						if (cell != null) {
+							hopInc.setIncBarCode(cell.toString());
+						}
+						break;	
 					}
 				}
 				// 验证数据的完整性
@@ -339,7 +348,7 @@ public class HopIncBlh extends AbstractBaseBlh {
 					if (dto.getOpFlg().equals("1")) {
 						DetachedCriteria criteria = DetachedCriteria.forClass(HopInc.class);
 						criteria.add(Restrictions.eq("incCode", hopInc.getIncCode()));
-						criteria.add(Restrictions.eq("hopHopId", Long.valueOf(super.getLoginInfo().get("HOSPID").toString())));
+						criteria.add(Restrictions.eq("incHospid", Long.valueOf(super.getLoginInfo().get("HOSPID").toString())));
 						List<HopInc> hopIncsIds = commonService.findByDetachedCriteria(criteria);
 						if (hopIncsIds.size() > 0) {
 							hopInc.setIncHospid(hopIncsIds.get(0).getIncHospid());
@@ -355,8 +364,6 @@ public class HopIncBlh extends AbstractBaseBlh {
 				hopIncService.saveInc(dto);
 			}
 			workbook = null;
-			FileUtils.forceDelete(dstFile);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			dto.setOpFlg("-1");

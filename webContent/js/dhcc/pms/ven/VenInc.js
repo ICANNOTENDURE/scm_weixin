@@ -137,15 +137,65 @@ $(function (){
 		if(data.resultCode!=1){
 			$CommonUI.alert(data.resultContent);
 			return;
-		}
-		var Id=$('#incdetail input[name="dto.venInc.venIncId"]').val();	
-		if(Id){
-			$CommonUI.alert("更新成功");
 		}else{
-			$CommonUI.alert("增加成功");
+			$('#incdetail input[name="dto.venInc.venIncId"]').val(data.resultContent);
 		}
-		 $("#datagrid").datagrid('reload');
-		 $("#drugInfoWin").dialog('close');
+		var Id=$('#incdetail input[name="dto.venInc.venIncId"]').val();
+		var venQualifTypeList = [];
+        if ($("#qualifyDetail tr").length >= 1) {
+            $("#qualifyDetail tr").each((function() {
+            	qualifDate = $(this).find("input[name='qualifDate']").val();
+                qualifDescription = $(this).find("input[name='qualifDescription']").val();
+               
+                qualifyId=$(this).attr("data-qualifyId");
+                textTypeId=$(this).attr("data-typeId");
+                textType=$(this).attr("data-type");
+                if(textType=="图片"){
+                	return true;
+                }
+               
+             
+                jsonObj = new Object();
+                if(qualifyId!='null'){
+                	jsonObj.qualifyId = qualifyId;
+                }
+                if(textType=="日期"){
+	                if((jQuery.trim(qualifDate)!="")){
+	                	jsonObj.qualifDate = qualifDate+" 00:00:00";
+	                }else{
+	                	return true;
+	                }
+                }else{
+                	   if(jQuery.trim(qualifDescription)==""){
+                       	return true;
+                       }
+                	jsonObj.qualifDescription=qualifDescription;
+                }
+                typeObj=new Object();
+                typeObj.qualifTypeId=textTypeId;
+                jsonObj.sysQualifType=typeObj;
+                jsonObj.qualifyIncId = Id;
+                if ((qualifDate != "") || (qualifyId != "null")) {
+                    venQualifTypeList.push(jsonObj);
+                }
+            }));
+        }
+		$.post($WEB_ROOT_PATH + "/ven/venIncQualifyPicCtrl!saveQualify.htm", {
+            "dto.incQualifStr": jQuery.toJSON(venQualifTypeList)
+        },
+        function(data) {
+            //$CommonUI.alert(data.dto.message, "", "", "", null);
+            $("#saveOrUpdateIncBtn").show();
+            if(data.resultCode=="0"){
+            	$CommonUI.alert("操作成功");
+            }else{
+            	$CommonUI.alert(data.resultContent);
+            }
+        },
+        "json");
+		//$CommonUI.alert("操作成功");
+		//$("#datagrid").datagrid('reload');
+		//$("#drugInfoWin").dialog('close');
 	}
 	
 	//新增或更新失败的回调函数
@@ -241,14 +291,15 @@ $(function (){
 
 //增加
 function addClick() {
-	$CommonUI.getDialog("#drugInfoWin").dialog("setTitle","增加商品信息");
+	$CommonUI.getDialog("#drugInfoWin").dialog("setTitle","商品信息");
 	$CommonUI.getDialog("#drugInfoWin").dialog("center");
 	$CommonUI.getDialog("#drugInfoWin").dialog("open");
 	$CommonUI.getForm('#incdetail').form('clear');
 	$("#saveOrUpdateIncBtn").show();
 	$("tr[name='trPic']").remove();
 	$("tr[name='trPro']").remove();
-	
+	 $('#qualifyDetail').html("");
+	 listQualify();
 }
 
 function saveSeq(venIncPicId){
@@ -293,6 +344,7 @@ function editRow() {
   					listPic(Id);
   					listPro(Id,row.venincsubcatid);
   					listGroup(row.venincsubcatid);
+  					listQualify(Id);
   				 }else{
   					$CommonUI.alert('没有权限!');
   				 }
@@ -371,11 +423,147 @@ function listPic(Id){
 			 'json'
 	 );
 }
-
+//显示资质信息
+function listQualify(Id){
+	$.post(
+			 $WEB_ROOT_PATH+'/sys/sysQualifTypeCtrl!getVenIncQualify.htm',
+			 {
+				 "dto.venIncId":Id,
+			 },
+			 function(data){
+				 $('#qualifyDetail').html("");
+				 $.each(data,function(i,dd){
+					 	
+					 	//imgUrl=$WEB_ROOT_PATH +"/uploadPic/"+dd.venIncPicPath;
+					 	//imgId="item"+dd.venIncPicId;
+					 	html="<tr data-typeId='"+dd.type+"' data-type='"+dd.fieldtype+"' data-qualifyId='"+dd.qualif+"'>";
+					 	html=html+"<td class='textLabel' >"+dd.name+":</td>";
+					 	html=html+"<td>";
+					 	if(dd.fieldtype=="文本"){
+					 		html=html+"<input type='text' name='qualifDescription'  ";
+					 		if(dd.description!=null){
+					 			html=html+"value='"+dd.description;
+					 		}
+					 		html=html+"' />";
+					 	}
+					 	if(dd.fieldtype=="日期"){
+					 		html=html+"<input  class='datebox' type='text' name='qualifDate' ";
+					 		if(dd.expdate!=null){
+					 			html=html+"value='"+dd.expdate;
+					 		}
+					 		html=html+"' />";
+					 	}
+					 	if(dd.fieldtype=="图片"){
+					 		 html=html+"<input  type='file' name='upload' id='qualifyUploadInput"+dd.type+"' data-id="+dd.type+"></input>";
+					 		if(dd.incqQualifPics!=null){
+					 			 if(dd.incqQualifPics.length>=1){
+					 				$.each(dd.incqQualifPics,function(j,ddd){
+					 					imgQualifyPreId="imgQualifyPre"+ddd.picId;
+					 					imgUrl=$WEB_ROOT_PATH +"/uploadPic/venIncQualify/"+ddd.picPath;
+							 			html=html+"<div id='imgQualify"+ddd.picId+"'><img src="+imgUrl+" width=105px height=105px></img>";
+								 		
+							 			html=html+"<a class='linkbutton' data-options='plain:true' onclick='javascript:viewPic("+imgQualifyPreId+")'>预览</a>";
+								 		html=html+"<a class='linkbutton' data-options='plain:true' onclick='javascript:delQualifyPic("+ddd.picId+")'>删除</a>";
+								 		html=html+"<div id='"+imgQualifyPreId+"' src='"+imgUrl+"' style='float:left'></div></div>";
+					 				});
+					 			 }
+					 		}
+					 	}
+					 	html=html+"</td>";
+					 	html=html+"</tr>";
+					 	$('#qualifyDetail').append(html);
+				 });
+				 //初始华ui
+				 $.parser.parse($('#qualifyDetail'));
+				//注册上传事件
+				 if( $("#qualifyDetail input[type=file]").length<1){
+					 return;
+				 }
+				 $("#qualifyDetail input[type=file]").each(function() {
+					var qualifyTypeId=$(this).attr("data-id");
+					var curObj=$(this);
+					$(this).uploadify({
+					        'swf': $WEB_ROOT_PATH + '/images/uploadify.swf',
+					        'uploader': $WEB_ROOT_PATH + '/ven/venIncQualifyPicCtrl!uploadPic.htm',
+					        'buttonText':'上传图片',
+					        'fileTypeDesc': '支持的格式：',
+					        'fileTypeExts': '*.jpg;*.jpeg;*.png',
+					        'fileSizeLimit': '30MB',
+					        'width': '60',
+					        'height': '20',
+					        'fileObjName':'dto.upload',
+					        'auto': true,
+					        'removeCompleted':true,
+					        'onUploadStart': function(file) {
+					        	if($("#tableDetail input[name='dto.venInc.venIncId']").val()==""){
+					        		$CommonUI.alert("请先保存药品信息,再上传图片");
+					        		$(curObj).uploadify('cancel');
+					        	}else{
+					        		$(curObj).uploadify("settings", 'formData', {'dto.venIncId':$("#tableDetail input[name='dto.venInc.venIncId']").val(),'dto.qualifyTypeId':qualifyTypeId,'dto.uploadFileName': file.name});
+					        	};
+					        },
+					        //上传成功
+					        'onUploadSuccess':function(file, data, response){
+					        	var obj=eval('('+data+')');
+					        	if(obj.operateResult.resultCode=="0"){
+					        		html="";
+					        		typeId=obj.qualifyTypeId;
+					        		imgQualifyPreId="imgQualifyPre"+obj.incqQualifPic.picId;
+								 	imgUrl=$WEB_ROOT_PATH +"/uploadPic/venIncQualify/"+obj.incqQualifPic.picPath;
+						 			html=html+"<div id='imgQualify"+obj.incqQualifPic.picId+"'><img src="+imgUrl+" width=105px height=105px></img>";
+								 	html=html+"<div><a class='dhc-linkbutton l-btn l-btn-plain'  onclick='javascript:viewPic("+imgQualifyPreId+")' ><span class='l-btn-left'><span class='l-btn-text'>预览</span></span></a>";
+								 	html=html+"<a class='dhc-linkbutton l-btn l-btn-plain'  onclick='javascript:delQualifyPic("+obj.incqQualifPic.picId+")' ><span class='l-btn-left'><span class='l-btn-text'>删除</span></span></a></div>";
+						 			//html=html+"<a class='linkbutton' data-options='plain:true' onclick='javascript:viewPic("+imgQualifyPreId+")'>预览</a>";
+							 		//html=html+"<a class='linkbutton' data-options='plain:true' onclick='javascript:delQualifyPic("+obj.incqQualifPic.picId+")'>删除</a>";
+							 		html=html+"<div id='"+imgQualifyPreId+"' src='"+imgUrl+"' style='float:left'></div>";
+							 		$("#qualifyUploadInput"+typeId).parent().parent().append(html);
+					        		
+					        	}else{
+					        		$CommonUI.alert(obj.operateResult.resultContent);
+					        	};
+					        },
+					        //检测FLASH失败调用
+					        'onFallback': function() {
+					            alert("您未安装FLASH控件，无法上传图片！请安装FLASH控件后再试。");
+					        },
+					        //返回一个错误，选择文件的时候触发
+					        'onSelectError': function(file, errorCode, errorMsg) {
+					            switch (errorCode) {
+					            case - 100 : alert("上传的文件数量已经超出系统限制的" + $('#file_upload').uploadify('settings', 'queueSizeLimit') + "个文件！");
+					                break;
+					            case - 110 : alert("文件 [" + file.name + "] 大小超出系统限制的" + $('#file_upload').uploadify('settings', 'fileSizeLimit') + "大小！");
+					                break;
+					            case - 120 : alert("文件 [" + file.name + "] 大小异常！");
+					                break;
+					            case - 130 : alert("文件 [" + file.name + "] 类型不正确！");
+					                break;
+					            }
+					        }
+					    });
+				  });
+				  //注册上传事件
+	         },
+			 'json'
+	 );
+}
 function viewPic(imgId){
-	$CommonUI.imageTransfer(imgId,$WEB_ROOT_PATH+"/js",450,300,{
+	$CommonUI.imageTransfer(imgId,$WEB_ROOT_PATH+"/js",600,450,{
 		'Close':true,
 		'Reset':true
+	});
+}
+function delQualifyPic(picId){
+	$CommonUI.confirm('确定删除吗？', 'question', 0, function(){
+		$.post(
+				 $WEB_ROOT_PATH+'/ven/venIncQualifyPicCtrl!delete.htm',
+				 {
+					 "dto.incqQualifPic.picId":picId,
+				 },
+				 function(data){
+					 $("#imgQualify"+picId).remove();
+		         },
+				 'json'
+		 );
 	});
 }
 function delPic(picId){

@@ -6,25 +6,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Dic</title>
 <%@include file="/WEB-INF/jsp/common/scriptInc.jsp"%>
-
+<%@include file="/WEB-INF/jsp/common/scriptUploadify.jsp"%>
 <script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/uploadify/jquery.uploadify.min.js"></script>
-<link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/css/uploadify.css">
-<script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/dhcc/pms/hop/hopInc.js"></script>
-	
-	<style type="text/css">
-
-.item{
- text-align:center;
- border:1px solid #499B33;
- background:#fafafa;
- color:#444;
- width:160px;
-}
-</style>
-	
+	src="<%=request.getContextPath()%>/js/dhcc/pms/hop/hopInc.js"></script>	
 </head>
 <body>
 	<div id="toolbar" class="toolbar">
@@ -47,7 +31,7 @@
 	</table>
 	
 	<div id="drugInfoWin" class="dialog" title="新增药品信息"
-		data-options="modal:true,width:750,height:220,closed:true,buttons:'#btnDiv0'"
+		data-options="modal:true,width:750,height:250,closed:true,buttons:'#btnDiv0'"
 		style="vertical-align: middle;">
 		<form id="incdetail" method="post">
 			<table style="width: 100%;" >
@@ -124,6 +108,12 @@
 						 type="text" name="dto.hopInc.incSp"
 						 /></td>
 				</tr>
+				<tr>
+					<td class="textLabel">商品条码:</td>
+					<td class="textParent" colspan="3"><input style="width: 400px;"
+						class="validatebox" type="text" name="dto.hopInc.incBarCode"
+						id="incAliaS"/></td>
+				</tr>	
 				<tr>
 					<td class="textLabel">别名:</td>
 					<td class="textParent" colspan="3"><input style="width: 400px;"
@@ -216,6 +206,21 @@
 	    			<td class="time">模版 </td>
 	    		</tr>
 	    	</table>
+	</div>
+	
+	
+	<div id="gg" class="dialog" title="请等待"
+		style="width: 1020px; height: 450px; padding: 10px;"
+		data-options="
+				modal:true,
+				draggable:false,
+				closable:false,
+				closed:true,
+				collapsible:false,
+				minimizable:false,
+				maximizable:false">
+
+		<p1>正在处理上传数据，请等待</p1>
 	</div>
 </body>
 </html>

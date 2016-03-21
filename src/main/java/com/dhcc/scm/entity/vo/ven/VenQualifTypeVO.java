@@ -3,6 +3,7 @@ package com.dhcc.scm.entity.vo.ven;
 import java.util.Date;
 import java.util.List;
 
+import com.dhcc.scm.entity.ven.VenIncqQualifPic;
 import com.dhcc.scm.entity.ven.VenQualifPic;
 
 
@@ -29,6 +30,20 @@ public class VenQualifTypeVO implements java.io.Serializable {
 	
 	private String description;
 	
+	private List<VenIncqQualifPic> incqQualifPics;
+	
+	
+	
+	public List<VenIncqQualifPic> getIncqQualifPics() {
+		return incqQualifPics;
+	}
+
+
+	public void setIncqQualifPics(List<VenIncqQualifPic> incqQualifPics) {
+		this.incqQualifPics = incqQualifPics;
+	}
+
+
 	/**
 	 * @return the description
 	 */

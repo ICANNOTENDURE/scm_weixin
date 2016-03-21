@@ -5,15 +5,19 @@
 package com.dhcc.scm.service.sys.impl;
 
 import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
+
 import com.dhcc.framework.app.service.CommonService;
 import com.dhcc.framework.common.PagerModel;
-import javax.annotation.Resource;
-import com.dhcc.scm.service.sys.SysQualifTypeService;
 import com.dhcc.scm.dao.sys.SysQualifTypeDao;
 import com.dhcc.scm.dto.sys.SysQualifTypeDto;
 import com.dhcc.scm.entity.cat.CatGroup;
 import com.dhcc.scm.entity.sys.SysQualifType;
+import com.dhcc.scm.entity.vo.ven.VenQualifTypeVO;
+import com.dhcc.scm.service.sys.SysQualifTypeService;
 
 @Service("sysQualifTypeService")
 public class SysQualifTypeServiceImpl implements SysQualifTypeService {
@@ -58,6 +62,12 @@ public class SysQualifTypeServiceImpl implements SysQualifTypeService {
 	public List<CatGroup> getCatInfo(SysQualifTypeDto dto) {
 		// TODO Auto-generated method stub
 		return sysQualifTypeDao.getCatInfo(dto);
+	}
+
+	@Override
+	public List<VenQualifTypeVO> queryQualifyType(SysQualifTypeDto dto) {
+		// TODO Auto-generated method stub
+		return sysQualifTypeDao.queryQualifyType(dto);
 	}
 
 }

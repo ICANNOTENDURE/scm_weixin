@@ -51,6 +51,8 @@ import com.dhcc.scm.entity.ven.VenHopInc;
 import com.dhcc.scm.entity.ven.VenInc;
 import com.dhcc.scm.entity.ven.VenIncPic;
 import com.dhcc.scm.entity.ven.VenIncProperty;
+import com.dhcc.scm.entity.ven.VenIncqQualif;
+import com.dhcc.scm.entity.ven.VenIncqQualifPic;
 import com.dhcc.scm.entity.vo.ws.OperateResult;
 import com.dhcc.scm.entity.vo.ws.VenIncItmWeb;
 import com.dhcc.scm.service.hop.HopIncService;
@@ -134,7 +136,7 @@ public class VenIncBlh extends AbstractBaseBlh {
 			dto.getVenInc().setVenIncCommentNum(0l);
 			dto.getVenInc().setVenIncOrderQty(0f);
 			dto.getVenInc().setVenIncAddDate(new Date());
-			dto.getVenInc().setVenIncVenid(Long.valueOf(super.getLoginInfo().get("VENDOR").toString()));
+			
 		}else{
 			if(this.checkBeforeEdit(dto.getVenInc().getVenIncId()).equals(0)){
 				dto.getOperateResult().setResultCode("-1");
@@ -142,6 +144,9 @@ public class VenIncBlh extends AbstractBaseBlh {
 				super.writeJSON(dto.getOperateResult());
 				return;
 			}
+		}
+		if(dto.getVenInc().getVenIncVenid()==null){
+			dto.getVenInc().setVenIncVenid(Long.valueOf(super.getLoginInfo().get("VENDOR").toString()));
 		}
 		//生成别名
 		if(StringUtils.isNullOrEmpty(dto.getVenInc().getVenIncAlias())){
@@ -187,6 +192,7 @@ public class VenIncBlh extends AbstractBaseBlh {
 		commonService.saveOrUpdate(venIncProperty);
 		
 		dto.getOperateResult().setResultCode("1");
+		dto.getOperateResult().setResultContent(dto.getVenInc().getVenIncId().toString());
 		super.writeJSON(dto.getOperateResult());
 		
 	}
@@ -210,6 +216,28 @@ public class VenIncBlh extends AbstractBaseBlh {
 			if(file.exists()){
 				FileUtils.forceDelete(file);
 			}
+		}
+		List<VenIncqQualif> incqQualifs=commonService.findByProperty(VenIncqQualif.class, "qualifyIncId", dto.getVenInc().getVenIncId());
+		try {
+			for(VenIncqQualif incqQualif:incqQualifs){
+				for(VenIncqQualifPic incqQualifPic:incqQualif.getIncqQualifPics()){
+					File file=new File(ServletActionContext.getServletContext().getRealPath("/uploadPic/venIncQualify"),incqQualifPic.getPicPath());
+					if(file.exists()){
+						FileUtils.forceDelete(file);
+					}
+				}
+				Map<String,Object> praAndValueMap=new HashMap<>();
+				praAndValueMap.put("picParrefId", incqQualif.getQualifyId());
+				commonService.comonDelete(VenIncqQualifPic.class, praAndValueMap);
+				
+				Map<String,Object> map=new HashMap<>();
+				map.put("qualifyId", incqQualif.getQualifyId());
+				commonService.comonDelete(VenIncqQualif.class, map);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			dto.getOperateResult().setResultContent(e.getMessage());
+			super.writeJSON(dto.getOperateResult());
 		}
 		commonService.delete(venInc);
 		dto.getOperateResult().setResultCode("1");
@@ -926,6 +954,5 @@ public class VenIncBlh extends AbstractBaseBlh {
 
 		
 	}
-	
-	
+
 }
