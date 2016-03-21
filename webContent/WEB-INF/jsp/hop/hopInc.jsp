@@ -31,7 +31,7 @@
 	</table>
 	
 	<div id="drugInfoWin" class="dialog" title="新增药品信息"
-		data-options="modal:true,width:750,height:220,closed:true,buttons:'#btnDiv0'"
+		data-options="modal:true,width:750,height:250,closed:true,buttons:'#btnDiv0'"
 		style="vertical-align: middle;">
 		<form id="incdetail" method="post">
 			<table style="width: 100%;" >
