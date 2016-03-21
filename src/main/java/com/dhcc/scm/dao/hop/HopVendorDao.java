@@ -77,7 +77,7 @@ public class HopVendorDao extends HibernatePersistentObjectDAO<HopVendor> {
 		}
 		if(WebContextHolder.getContext().getUserInfo().getUserType().longValue()==1){
 			hqlStr.append("and hopHopId = :hopid ");
-			hqlParamMap.put("hopid", WebContextHolder.getContext().getUserInfo().getUserType());
+			hqlParamMap.put("hopid", WebContextHolder.getContext().getUserInfo().getHopId());
 		}
 	}
 		

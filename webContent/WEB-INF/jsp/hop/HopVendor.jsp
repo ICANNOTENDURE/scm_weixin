@@ -151,7 +151,7 @@
 	    	<div id="err"></div>
 	</div>
 	<div id="gg" class="dialog" title="请等待"
-		style="width: 1000px; height: 400px; padding: 10px;"
+		style="width: 1000px; height: 400px; 
 		data-options="
 				modal:true,
 				draggable:false,

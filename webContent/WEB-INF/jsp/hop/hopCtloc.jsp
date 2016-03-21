@@ -149,6 +149,7 @@
 	    			<td class="time">模版 </td>
 	    		</tr>
 	    	</table>
+	    	<div id="err"></div>
 	</div>
 	
 		<div id="gg" class="dialog" title="请等待"
