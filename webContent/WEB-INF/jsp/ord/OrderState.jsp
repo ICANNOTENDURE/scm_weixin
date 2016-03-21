@@ -24,12 +24,9 @@
 <body>
 	
 	<table id="datagrid" ></table>
-   
 
-
-	
 	<div id="detail" class="dialog" title="订单明细"
-		data-options="modal:true,width:700,height:350,closed:true,maximizable:true"
+		data-options="modal:true,width:1000,height:500,closed:true,maximizable:true"
 		style="vertical-align: middle">
 		<table id="detailgrid" ></table>
 	</div>
@@ -41,9 +38,10 @@
 			结束日期: <input class="datebox" style="width:100px" id="eddate">
 			状态:
 			<input class="combobox" panelHeight="auto" style="width:150px" id="state"/>
-			供应商:
-			<input class="combobox" panelHeight="auto" style="width:250px" id="vendor"/>
 			
+			
+			入库科室:
+			<input class="combobox" panelHeight="auto" style="width:250px" id="purloc"/>
 			
 		 </div>
 		 <div style="margin-bottom:5px">
@@ -54,15 +52,15 @@
 				<option value="check"></option>
 				<option value="checked">加急</option>
 			</select>
-		
-		</div>
-		<div>	
-			入库科室:
-			<input class="combobox" panelHeight="auto" style="width:250px" id="purloc"/>
 			收货科室:
 			<input class="combobox" panelHeight="auto" style="width:250px" id="recloc"/>
-			<a href="#" class="linkbutton" iconCls="icon-search" id="search">查询</a>
-			</div>
+				
+		</div>
+		 <div style="margin-bottom:5px">
+		 	供应商:
+			<input class="combobox" panelHeight="auto" style="width:250px" id="vendor"/>
+		 	<a href="#" class="linkbutton" iconCls="icon-search" id="search">查询</a>
+		 </div>
 			
 		 </div>
 		 

@@ -341,11 +341,7 @@ public class OrderStateBlh extends AbstractBaseBlh {
 	 */
 	public void listExeState(BusinessRequest res) throws IOException{
 		OrderStateDto dto = super.getDto(OrderStateDto.class, res);
-		WebContextHolder
-		.getContext()
-		.getResponse()
-		.getWriter()
-		.write(JsonUtils.toJson(ordertateService.listOrderExeState(dto)));
+		writeJSON(ordertateService.listOrderExeState(dto));
 		dto.setOpFlg("1");
 	}
 	
@@ -773,5 +769,16 @@ public class OrderStateBlh extends AbstractBaseBlh {
 				+ JsonUtils.toJson(ordertateService.listOrderExeState(dto))
 				+ "}");
 		WebContextHolder.getContext().getResponse().getWriter().flush();
+	}
+	
+	
+	public void listOrdGrpNo(BusinessRequest res){
+		OrderStateDto dto = super.getDto(OrderStateDto.class, res);
+		ordertateService.listOrdGrpNo(dto);
+	}
+	
+	public void listOrdList(BusinessRequest res){
+		OrderStateDto dto = super.getDto(OrderStateDto.class, res);
+		ordertateService.listVenOrd(dto);
 	}
 }

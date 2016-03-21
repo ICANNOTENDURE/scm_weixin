@@ -21,6 +21,58 @@ public class OrderGrpByNo implements Serializable {
 	private String vendorName;
 	
 	private Date orderTime;
+	
+	private String purloc;
+	
+	private String recloc;
+	
+	private String venname;
+	
+	private Date date;
+	
+	private String emflag;
+	
+	
+
+	public String getEmflag() {
+		return emflag;
+	}
+
+	public void setEmflag(String emflag) {
+		this.emflag = emflag;
+	}
+
+	public String getVenname() {
+		return venname;
+	}
+
+	public void setVenname(String venname) {
+		this.venname = venname;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public String getPurloc() {
+		return purloc;
+	}
+
+	public void setPurloc(String purloc) {
+		this.purloc = purloc;
+	}
+
+	public String getRecloc() {
+		return recloc;
+	}
+
+	public void setRecloc(String recloc) {
+		this.recloc = recloc;
+	}
 
 	public List<OrderDetail> getOrderDetails() {
 		return orderDetails;

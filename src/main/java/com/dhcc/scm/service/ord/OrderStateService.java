@@ -129,4 +129,6 @@ public interface OrderStateService {
 	 * @return
 	 */
 	//public List<OrderStateAndroidVo> listOrderStateAndroid(OrderStateDto dto);
+	
+	public void listOrdGrpNo(OrderStateDto dto);
 }

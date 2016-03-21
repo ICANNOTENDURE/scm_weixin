@@ -6,9 +6,10 @@ $(function (){
 	$('#eddate').datebox('setValue',new Date().format("yyyy-MM-dd"));
 
 	$('#datagrid').datagrid({  
-	    url:getContextPath()+'/ord/orderStateCtrl!list.htm',
+	    url:getContextPath()+'/ord/orderStateCtrl!listOrdGrpNo.htm',
 	    method:'post',
 	    fit:true,
+	    fitColumns:true,
 	    loadMsg:'加载数据中.....',
 	    toolbar:'#toolbar',
 	    singleSelect:true,
@@ -22,7 +23,7 @@ $(function (){
 	    onDblClickRow: function(rowIndex, rowData){
 	    	$('#detail').dialog('open');
 	    	$('#detailgrid').datagrid({  
-	    	    url:'orderStateCtrl!listOrdItm.htm?dto.exeState.ordId='+rowData.orderid,
+	    	    url:'orderStateCtrl!listOrdList.htm?dto.orderNo='+rowData.orderno,
 	    	    method:'post',
 	    	    fit:true,
 	    	    loadMsg:'加载数据中.....',
@@ -30,63 +31,61 @@ $(function (){
 	    	    fitColumns:true,
 	    	    rownumbers:true,
 	    	    columns:[[  
-	    	  	        {field:'inccode',title:'代码',width:100,},
-	    	  	        {field:'incname',title:'名称',width:100,},
-	    	  	        {field:'qty',title:'数量',width:100,},
-	    	  	        {field:'uom',title:'单位',width:150,},  
+	    	  	        {field:'hopinccode',title:'代码',width:100,},
+	    	  	        {field:'hopincname',title:'名称',width:100,},
+	    	  	        {field:'hopqty',title:'数量',width:100,},
+	    	  	        {field:'hopuom',title:'单位',width:150,},  
 	    	  	        {field:'rp',title:'进价',width:150,},
 	    	  	        {field:'manf',title:'产地',width:200,}
 	    	  	]],
+	    	    
+	    	    view: detailview,
+	    	    detailFormatter:function(index,row){
+	    	    	return '<div style="padding:2px"><table class="ddv"></table></div>';
+	    	    },
+	    	    onExpandRow: function(index,row){
+
+	    	    	var ddv = $(this).datagrid('getRowDetail',index).find('table.ddv');
+	    	    	ddv.datagrid({
+	    	    		 url:'orderStateCtrl!listExeState.htm?dto.exeState.ordId='+row.orderid,
+	    	    		 fitColumns:true,
+	    	    		 singleSelect:true,
+	    	    		 rownumbers:true,
+	    	    		 loadMsg:'',
+	    	    		 height:'auto',
+	    	    		 //pagination:true,
+	    	    		 title:'采购单执行明细',
+	    	    		 columns:[[
+	    	    		           {field:'exeuser',title:'执行人',width:100},
+	    	    		           {field:'statedesc',title:'状态',width:100},
+	    	    		           {field:'exedate',title:'执行时间',width:100},
+	    	    		           {field:'remark',title:'备注',width:100}
+	    	    		 ]],
+	    	    		 onResize:function(){
+	    	    			 $('#datagrid').datagrid('fixDetailRowHeight',index);
+	    	    		 },
+	    	    		 onLoadSuccess:function(){
+	    	    			 setTimeout(function(){
+	    	    				 $('#datagrid').datagrid('fixDetailRowHeight',index);
+	    	    			 },0);
+	    	    		 }
+	    	    		 
+	    	    	});
+	    	    	$('#datagrid').datagrid('fixDetailRowHeight',index);
+	    	    }
 	    	});
 	
 		},
 		 columns:[[
 		        {field:'comment',title:'评价',width:60,sortable:true,formatter:commentRow},   
-				{field:'orderid',title:'单号',width:100},
-				{field:'statedesc',title:'状态',width:100,sortable:true},
+				{field:'orderno',title:'单号',width:100},
+				{field:'date',title:'日期',width:100,sortable:true},
 				{field:'emflag',title:'加急',width:50,sortable:true},
 				{field:'purloc',title:'入库科室',width:150,sortable:true},  
 				{field:'recloc',title:'收货科室',width:150,sortable:true},
-				{field:'destination',title:'收货地址',width:200,sortable:true},
-				{field:'vendor',title:'供应商',width:150,sortable:true},
-				{field:'deliverydate',title:'要求送达日期',width:100,sortable:true}
+				{field:'venname',title:'供应商',width:150,sortable:true}
 				
-		 ]],
-	    
-	    view: detailview,
-	    detailFormatter:function(index,row){
-	    	return '<div style="padding:2px"><table class="ddv"></table></div>';
-	    },
-	    onExpandRow: function(index,row){
-
-	    	var ddv = $(this).datagrid('getRowDetail',index).find('table.ddv');
-	    	ddv.datagrid({
-	    		 url:'orderStateCtrl!listExeState.htm?dto.exeState.ordId='+row.orderid,
-	    		 fitColumns:true,
-	    		 singleSelect:true,
-	    		 rownumbers:true,
-	    		 loadMsg:'',
-	    		 height:'auto',
-	    		 //pagination:true,
-	    		 title:'采购单执行明细',
-	    		 columns:[[
-	    		           {field:'exeuser',title:'执行人',width:100},
-	    		           {field:'statedesc',title:'状态',width:100},
-	    		           {field:'exedate',title:'执行时间',width:100},
-	    		           {field:'remark',title:'备注',width:100}
-	    		 ]],
-	    		 onResize:function(){
-	    			 $('#datagrid').datagrid('fixDetailRowHeight',index);
-	    		 },
-	    		 onLoadSuccess:function(){
-	    			 setTimeout(function(){
-	    				 $('#datagrid').datagrid('fixDetailRowHeight',index);
-	    			 },0);
-	    		 }
-	    		 
-	    	});
-	    	$('#datagrid').datagrid('fixDetailRowHeight',index);
-	    }
+		 ]]
 	    
 	    
 	}); 

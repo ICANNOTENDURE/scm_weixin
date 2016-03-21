@@ -147,7 +147,7 @@ public class JdbcTemplateWrapper {
         return pageCount;	
 	}
 	
-	private static int getStartOfPage(int pageNo, int pageSize) {
+	public static int getStartOfPage(int pageNo, int pageSize) {
 		return (pageNo - 1) * pageSize;
 	}
 	
@@ -174,6 +174,11 @@ public class JdbcTemplateWrapper {
 	public int getResultCountWithValuesMap( String sql,String columnNameForCount,  Map<String, Object> praValuesMap) {
 		String countQuerySql = " select count(" + columnNameForCount + ") " + removeSelect(removeOrders(sql));
 		return namedParameterJdbcTemplate.queryForInt(countQuerySql, praValuesMap);
+	}
+	
+	public int getResultCount( String sql, Map<String, Object> praValuesMap) {
+		String countQuerySql = " select count(*)  from ( " + sql+") b ";
+		return namedParameterJdbcTemplate.queryForObject(countQuerySql, praValuesMap, Integer.class);
 	}
 	
 	public static String getSqlFromQueryData(String sql, Map<String,Object> paramMap) {

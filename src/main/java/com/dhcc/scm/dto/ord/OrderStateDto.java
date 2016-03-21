@@ -22,7 +22,9 @@ public class OrderStateDto extends BaseDto {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
+	private String orderNo;
+	
 	private Order order;
 	
 	private OrderDetailSub orderDetailSub;
@@ -393,6 +395,14 @@ public class OrderStateDto extends BaseDto {
 	 */
 	public void setOrder(Order order) {
 		this.order = order;
+	}
+
+	public String getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
 	}
 	
 	

@@ -41,6 +41,7 @@ import com.dhcc.scm.entity.ord.OrderItm;
 import com.dhcc.scm.entity.ord.State;
 import com.dhcc.scm.entity.sys.SysAppParam;
 import com.dhcc.scm.entity.ven.VenInc;
+import com.dhcc.scm.entity.vo.nur.OrderGrpByNo;
 import com.dhcc.scm.entity.vo.ord.DevPropertyGridVo;
 import com.dhcc.scm.entity.vo.ord.OrderExeStateVo;
 import com.dhcc.scm.entity.vo.ord.OrderInfoVo;
@@ -242,7 +243,12 @@ public class OrderStateDao extends HibernatePersistentObjectDAO<Order> {
 		hqlBuffer.append("left join T_HOP_INC t12 on t1.ORDER_HOP_INC_ID=t12.INC_ID  ");
 		hqlBuffer.append("left join T_HOP_MANF t13 on t2.VEN_INC_MANFID=t13.ID  ");
 		hqlBuffer.append("where 1=1 ");
-	
+		
+		if(org.apache.commons.lang3.StringUtils.isNotBlank(dto.getOrderNo())){
+			hqlBuffer.append("and t1.ORDER_NO=:OrderNo ");
+			hqlParamMap.put("OrderNo", dto.getOrderNo());
+		}
+		
 		if(dto.getStdate()!=null){
 			hqlBuffer.append("and t1.ORDER_ODATE>=:Stdate ");
 			hqlParamMap.put("Stdate", dto.getStdate());
@@ -827,5 +833,54 @@ public class OrderStateDao extends HibernatePersistentObjectDAO<Order> {
     }
     
     
+    
+    
+    
+    @SuppressWarnings("unchecked")
+	public void listOrdGrpNo(OrderStateDto dto){
 
+		
+		Map<String, Object> hqlParamMap = new HashMap<String, Object>();
+		StringBuffer hqlBuffer = new StringBuffer();
+
+		hqlBuffer.append("select ");
+		hqlBuffer.append("ORDER_NO as orderno, ");
+		hqlBuffer.append("ORDER_EMFLAG as emflag, ");
+		hqlBuffer.append("t2.NAME as venname, ");
+		hqlBuffer.append("ORDER_ODATE as date, ");
+		hqlBuffer.append("t3.CTLOC_NAME as purloc, ");
+		hqlBuffer.append("t4.CTLOC_NAME as recloc ");
+		hqlBuffer.append("from T_ORD_ORDERDETAIL  t1 ");
+		hqlBuffer.append("LEFT JOIN t_ven_vendor t2 ON t1.ORDER_VEN_ID = t2.VEN_ID  ");
+		hqlBuffer.append("LEFT JOIN t_sys_ctloc t3 ON t1.ORDER_PUR_LOC=t3.CTLOC_ID  ");
+		hqlBuffer.append("LEFT JOIN t_sys_ctloc t4 ON t1.ORDER_RECLOC =t4.CTLOC_ID  ");
+		hqlBuffer.append("where 1=1 ");
+
+		if (dto.getState() != null) {
+			if (dto.getState().floatValue() != 0l) {
+				hqlBuffer.append(" and ORDER_STATE=:ordstate");
+				hqlParamMap.put("ordstate", dto.getState());
+			}
+		}
+		if (dto.getStdate() != null) {
+			hqlBuffer.append(" and ORDER_ODATE>=:startdate");
+			hqlParamMap.put("startdate", dto.getStdate());
+		}
+		if (dto.getEddate() != null) {
+			hqlBuffer.append(" and date_add(ORDER_ODATE,interval -1 day)<=:enddate");
+			hqlParamMap.put("enddate", dto.getEddate());
+		}
+		if (dto.getVendor()!= null) {
+			hqlBuffer.append(" and ORDER_VEN_ID=:venid");
+			hqlParamMap.put("venid", dto.getVendor());
+		}
+		
+		hqlBuffer.append(" and ORDER_USER_ID=:userid");
+		hqlParamMap.put("userid", Long.valueOf(WebContextHolder.getContext().getVisit().getUserInfo().getId()));
+		hqlBuffer.append(" group by ORDER_NO order by ORDER_NO desc ");
+		Integer total=jdbcTemplateWrapper.getResultCount(hqlBuffer.toString(), hqlParamMap);
+		dto.getPageModel().setTotals(total);
+		List<OrderGrpByNo> dataList=jdbcTemplateWrapper.queryAllMatchListWithParaMap(hqlBuffer.toString(), OrderGrpByNo.class, hqlParamMap, dto.getPageModel().getPageNo(), dto.getPageModel().getPageSize(), "ORDER_NO");
+		dto.getPageModel().setPageData(dataList);
+    }
 }

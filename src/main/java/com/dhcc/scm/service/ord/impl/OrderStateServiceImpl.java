@@ -127,4 +127,12 @@ public class OrderStateServiceImpl implements OrderStateService {
 	}
 
 
+
+	@Override
+	public void listOrdGrpNo(OrderStateDto dto) {
+		// TODO Auto-generated method stub
+		orderStateDao.listOrdGrpNo(dto);
+	}
+
+
 }
