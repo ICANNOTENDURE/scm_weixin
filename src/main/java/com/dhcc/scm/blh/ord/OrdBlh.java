@@ -38,6 +38,7 @@ import com.dhcc.framework.util.StringUtils;
 import com.dhcc.framework.web.context.WebContextHolder;
 import com.dhcc.scm.blh.nur.NurseBlh;
 import com.dhcc.scm.blh.sys.LockAppUtil;
+import com.dhcc.scm.blh.sys.SendMailBlh;
 import com.dhcc.scm.blh.weixin.MpMessageBlh;
 import com.dhcc.scm.dto.ord.OrdDto;
 import com.dhcc.scm.dto.sys.SysImpModelDto;
@@ -97,6 +98,9 @@ public class OrdBlh extends AbstractBaseBlh {
 	
 	@Resource
 	private MpMessageBlh mpMessageBlh;
+	
+	@Resource
+	private SendMailBlh sendMailBlh;
 	
 	public OrdBlh() {
 
@@ -267,8 +271,8 @@ public class OrdBlh extends AbstractBaseBlh {
 
 	/**
 	 * 
-	 * @Title: cmpImpOrd
-	 * @Description: TODO(确认完成导入订单)
+	 * @Title: saveImpOrd
+	 * @Description: TODO(保存订单明细)
 	 * @param @param res
 	 * @param @throws IOException 设定文件
 	 * @return void 返回类型
@@ -290,7 +294,7 @@ public class OrdBlh extends AbstractBaseBlh {
 				orderDetail.setOrderDate(new Date());
 				orderDetail.setOrderImpId(dto.getImpId());
 				VenInc venInc = commonService.get(VenInc.class, dto.getVenIncId());
-				;
+				
 
 				DetachedCriteria criteria = DetachedCriteria.forClass(OrderDetail.class);
 				criteria.setProjection(Property.forName("orderNo"));
@@ -325,7 +329,12 @@ public class OrdBlh extends AbstractBaseBlh {
 						fac = venHopIncs.get(0).getVenFac().floatValue() / venHopIncs.get(0).getHopFac().floatValue();
 						orderDetail.setOrderFac(fac);
 					}
-					orderDetail.setOrderRp(venInc.getVenIncPrice().floatValue() / fac);
+					if(venInc.getVenIncPrice()==null){
+						orderDetail.setOrderRp(0f);
+					}else{
+						orderDetail.setOrderRp(venInc.getVenIncPrice().floatValue() / fac);
+					}
+					
 				}
 				orderDetail.setOrderHopQty(dto.getQty());
 				if (dto.getQty() != null) {
@@ -333,14 +342,7 @@ public class OrdBlh extends AbstractBaseBlh {
 				} else {
 					orderDetail.setOrderVenQty(0f);
 				}
-				orderDetail.setOrderState(1l);
 				commonService.saveOrUpdate(orderDetail);
-				 ExeState exeState=new ExeState();
-				 exeState.setStateId(1l);
-				 exeState.setUserid(orderDetail.getOrderUserId());
-				 exeState.setOrdId(orderDetail.getOrderId());
-				 exeState.setExedate(new java.sql.Timestamp(new Date().getTime()));
-				 commonService.saveOrUpdate(exeState);
 				dto.setOpFlg("1");
 				dto.setMsg(orderDetail.getOrderId().toString());
 			} else {
@@ -357,8 +359,8 @@ public class OrdBlh extends AbstractBaseBlh {
 
 	/**
 	 * 
-	 * @Title: saveImpOrd
-	 * @Description: TODO(保存上传订单明细)
+	 * @Title: cmpImpOrd
+	 * @Description: TODO(确认完成订单)
 	 * @param @param res
 	 * @param @throws IOException 设定文件
 	 * @return void 返回类型
@@ -371,31 +373,40 @@ public class OrdBlh extends AbstractBaseBlh {
 		OrdDto dto = super.getDto(OrdDto.class, res);
 		dto.setOpFlg("1");
 		try {
-			DetachedCriteria criteriaOrd = DetachedCriteria.forClass(Ord.class);
-			criteriaOrd.add(Restrictions.eq("ordId", dto.getImpId()));
-			List<Ord> ords = commonService.findByDetachedCriteria(criteriaOrd);
-			if (ords.size() == 0) {
+			Ord ord=commonService.get(Ord.class, dto.getImpId());
+			if (ord==null) {
 				dto.setOpFlg("-1");
 				dto.setMsg("入参错误");
 				return;
 			}
-			if (org.apache.commons.lang.StringUtils.isNotBlank(ords.get(0).getOrdCmpFlag())) {
-				if (ords.get(0).getOrdCmpFlag().equals("1")) {
+			if (org.apache.commons.lang.StringUtils.isNotBlank(ord.getOrdCmpFlag())) {
+				if (ord.getOrdCmpFlag().equals("1")) {
 					dto.setOpFlg("-1");
 					dto.setMsg("订单已确认完成");
 					return;
 				}
 			}
-			Ord ord = ords.get(0);
 			ord.setOrdCmpFlag("1");
 			commonService.saveOrUpdate(ord);
 			DetachedCriteria criteriaOrderNo = DetachedCriteria.forClass(OrderDetail.class);
 			criteriaOrderNo.add(Restrictions.eq("orderImpId", dto.getImpId()));
 			List<OrderDetail> orders = commonService.findByDetachedCriteria(criteriaOrderNo);
+			HashMap<String, OrderDetail> hashMap=new HashMap<String, OrderDetail>();
 			for (OrderDetail orderDetail : orders) {
 				if (orderDetail.getOrderState() == null) {
 					orderDetail.setOrderState(1l);
 					commonService.saveOrUpdate(orderDetail);
+					ExeState exeState=new ExeState();
+					exeState.setStateId(1l);
+					exeState.setUserid(orderDetail.getOrderUserId());
+					exeState.setOrdId(orderDetail.getOrderId());
+					exeState.setExedate(new java.sql.Timestamp(new Date().getTime()));
+					commonService.saveOrUpdate(exeState);
+					if(!hashMap.containsKey(orderDetail.getOrderNo())){
+						hashMap.put(orderDetail.getOrderNo(), orderDetail);
+						mpMessageBlh.customMessage(orderDetail);
+						sendMailBlh.sendEMailByOrd(orderDetail);
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -403,7 +414,7 @@ public class OrdBlh extends AbstractBaseBlh {
 			e.printStackTrace();
 			dto.setMsg(e.getMessage());
 		} finally {
-			WebContextHolder.getContext().getResponse().getWriter().write(JsonUtils.toJson(dto));
+			writeJSON(dto);
 		}
 	}
 
@@ -793,6 +804,32 @@ public class OrdBlh extends AbstractBaseBlh {
 		}
 	}
 	
+	//删除订单明细
+	public void deleteOrd(BusinessRequest res){
+		OrdDto dto = super.getDto(OrdDto.class, res);
+		OperateResult operateResult=new OperateResult();
+		try {
+			if(org.apache.commons.lang3.StringUtils.isNotBlank(dto.getImpId())){
+				Ord ord = commonService.get(Ord.class, dto.getImpId());
+				if(org.apache.commons.lang3.StringUtils.isBlank(ord.getOrdCmpFlag())){
+					commonService.delete(ord);
+					Map<String,Object> praAndValueMap=new HashMap<String, Object>();
+					praAndValueMap.put("orderImpId", dto.getImpId());
+					commonService.comonDelete(OrderDetail.class, praAndValueMap);
+					operateResult.setResultCode("0");
+				}else{
+					operateResult.setResultContent("订单已提交,不能删除");
+				}
+			}else{
+				operateResult.setResultContent("参数错误");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			operateResult.setResultContent(e.getMessage());
+		}finally{
+			writeJSON(operateResult);
+		}
+	}
 	
 	//检查webservice用户名密码和参数
 	public NormalAccount checkWsParam(OperateResult operateResult,String username,String password,List<?> dadaList){

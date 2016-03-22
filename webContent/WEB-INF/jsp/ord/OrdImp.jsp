@@ -6,12 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Dic</title>
 <%@include file="/WEB-INF/jsp/common/scriptInc.jsp"%>
-
-<script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/uploadify/jquery.uploadify.min.js"></script>
-<link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/css/uploadify.css">
-
+<%@include file="/WEB-INF/jsp/common/scriptUploadify.jsp"%>
 <script type="text/javascript">
 $(function (){
 	date=new Date();
@@ -154,15 +149,46 @@ $(function (){
 			$WEB_ROOT_PATH+"/ord/ordCtrl!saveOrdImp.htm",
 			function(data){
 				if(data.resultCode==1){
-					$CommonUI.getDataGrid('#datagrid').datagrid('load', {    
-					    "dto.impId": data.resultContent,   
-					});  
+					$CommonUI.getDataGrid('#datagrid').datagrid({
+						url:$WEB_ROOT_PATH+'/ord/ordCtrl!list.htm',
+						queryParams: {
+							"dto.impId": data.resultContent
+						}
+					});
 				}else{
 					$CommonUI.alert("失败" + data.resultContent );
 				}
 			},
 			"json"
 		);
+	});
+	//删除订单
+	$("#remove").on('click', function() {
+		if ($("#datagrid").datagrid('getSelections').length != 1) {
+			$CommonUI.alert('请选一个修改');
+			return;
+		}
+		var selected = $("#datagrid").datagrid('getSelected');
+		$CommonUI.loadUIM('messager');
+		$.messager.confirm('确认对话框', '确认要删除吗？', function(r){
+			if (r){
+				$.post(
+					$WEB_ROOT_PATH+"/ord/ordCtrl!deleteOrd.htm",
+					{
+						'dto.impId':selected.ordId
+					},
+					function(data){
+						if(data.resultCode==0){
+							$CommonUI.getDataGrid('#datagrid').datagrid('reload');
+						}else{
+							$CommonUI.alert("失败" + data.resultContent );
+						}
+					},
+					"json"
+				);
+			}
+		});
+
 	});
 	//新增加一行
 	$("#addRow").on('click', function() {
@@ -384,7 +410,9 @@ function fillValue(rowIndex, rowData){
 			<a class="linkbutton" id="import"
 				data-options="iconCls:'icon-add',plain:true">导入订单</a>
 			<a class="linkbutton" id="add"
-				data-options="iconCls:'icon-add',plain:true">新增订单</a>	
+				data-options="iconCls:'icon-add',plain:true">新增订单</a>
+			<a class="linkbutton" id="remove"
+				data-options="iconCls:'icon-remove',plain:true">删除订单</a>		
 			<a class="linkbutton" id="save"
 				data-options="iconCls:'icon-save',plain:true">确认提交</a>	
 
