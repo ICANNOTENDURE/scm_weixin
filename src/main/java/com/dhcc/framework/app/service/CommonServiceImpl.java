@@ -39,6 +39,9 @@ import com.dhcc.framework.exception.DataBaseException;
 import com.dhcc.framework.hibernate.dao.CommonDao;
 import com.dhcc.framework.jdbc.JdbcTemplateWrapper;
 import com.dhcc.framework.util.DhccBeanUtils;
+import com.dhcc.scm.entity.hop.HopCtloc;
+import com.dhcc.scm.entity.hop.HopVendor;
+import com.dhcc.scm.entity.ord.OrderDetail;
 import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.ven.VenHopInc;
 import com.dhcc.scm.entity.ven.VenInc;
@@ -1261,5 +1264,39 @@ public class CommonServiceImpl implements CommonService {
 			return 0;
 		}
 		return venHopIncs.get(0).getVenFac().floatValue()/venHopIncs.get(0).getHopFac().floatValue();
+	}
+	
+	
+	public boolean checkHisNoIsUpload(String hisno,Long hopId){
+		
+		String[] propertyNames = {"orderHisNo", "orderHopId"};
+		Object[] values = {hisno, hopId};
+		List<OrderDetail> orders = commonDao.findByProperties(OrderDetail.class,propertyNames, values);
+		if(orders.size()>0){
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public HopVendor getVenByBusinessRegNo(String businessRegNo, Long hopId) {
+		String[] propertyNames = {"hBusinessRegNo", "hopHopId"};
+		Object[] values = {businessRegNo, hopId};
+		List<HopVendor>  hopVendors = commonDao.findByProperties(HopVendor.class,propertyNames, values);
+		if(hopVendors.size()>0){
+			return hopVendors.get(0);
+		}
+		return null;
+	}
+
+	@Override
+	public HopCtloc getCtlocByCode(String code, Long hopId) {
+		String[] propertyNames = {"hisid", "hospid"};
+		Object[] values = {code, hopId};
+		List<HopCtloc>  hopCtlocs = commonDao.findByProperties(HopCtloc.class,propertyNames, values);
+		if(hopCtlocs.size()>0){
+			return hopCtlocs.get(0);
+		}
+		return null;
 	}
 }

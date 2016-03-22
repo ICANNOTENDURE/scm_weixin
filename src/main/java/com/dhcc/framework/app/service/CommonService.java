@@ -16,6 +16,8 @@ import com.dhcc.framework.common.HtmlListQueryObj;
 import com.dhcc.framework.common.ListObject;
 import com.dhcc.framework.common.PagerModel;
 import com.dhcc.framework.hibernate.dao.CommonDao;
+import com.dhcc.scm.entity.hop.HopCtloc;
+import com.dhcc.scm.entity.hop.HopVendor;
 import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.ven.VenInc;
 import com.dhcc.scm.entity.vo.ws.OperateResult;
@@ -183,4 +185,25 @@ public interface CommonService {
 	 */
 	public float getIncFac(Long venIncId,Long hopIncId);
 	
+	
+	/**
+	 * @see  :检查改订单明细是否已经上传
+	 * @param hisno  : his订单标识  
+	 * @param hopId  ：医院id
+	 */
+	public boolean checkHisNoIsUpload(String hisno,Long hopId);
+	
+	/**
+	 * @see  :查找供应商
+	 * @param businessRegNo  : 供应商工商执照注册号/统一社会信用代码 
+	 * @param hopId  ：医院id
+	 */
+	public HopVendor getVenByBusinessRegNo(String businessRegNo,Long hopId);
+	
+	/**
+	 * @see  :查找医院科室
+	 * @param code  : 科室编码 
+	 * @param hopId  ：医院id
+	 */
+	public HopCtloc getCtlocByCode(String code,Long hopId);
 }
