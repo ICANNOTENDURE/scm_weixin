@@ -150,8 +150,8 @@
 	    	</table>
 	    	<div id="err"></div>
 	</div>
-	<div id="gg" class="dialog" title="请等待"
-		style="width: 1000px; height: 400px; 
+<div id="gg" class="dialog" title="请等待"
+		style="width: 1020px; height: 450px; padding: 10px;"
 		data-options="
 				modal:true,
 				draggable:false,
