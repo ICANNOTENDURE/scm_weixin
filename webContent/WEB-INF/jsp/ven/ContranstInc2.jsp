@@ -31,7 +31,29 @@
     		 }
     	 });
     	 
-    	 
+
+     	$("#hop").combobox({
+ 			url:$WEB_ROOT_PATH+'/hop/hospitalCtrl!getHospInfo.htm',
+ 			valueField:'hospitalId',							
+ 			textField:'hospitalName'
+ 		});
+     	$("#conIncByBarCode").on('click', function() {
+    		hopid=$("#hop").combobox('getValue');
+    		if(hopid==""){
+    			$CommonUI.alert("请选择医院!");
+    			return;
+    		}
+    		$.post(
+    				$WEB_ROOT_PATH+'/ven/venIncCtrl!autoConIncByBarCode.htm',
+    				{
+    					'dto.venIncContranstDto.hopId': hopid,
+    				},
+    				function(data){
+    					$CommonUI.alert("对照成功："+data.resultContent+"条数据。");
+    				},
+    				"json"
+    			);
+   		});
     	$('#ven').combobox({
 	    	url:$WEB_ROOT_PATH+"/ven/vendorCtrl!getVenCombox.htm",
 	    	panelHeight:"auto",
@@ -348,8 +370,10 @@
 				<option value="1">已对照</option>
 				<option value="2">未对照</option>
 			</select>
-
 			<a href="#" class="linkbutton" iconCls="icon-search" id="searchHopInc" >查询</a>
+			医&nbsp;&nbsp;院:
+			<input style="width: 105px;" class="combobox" type="text"  id="hop" />
+			<a href="#" class="linkbutton" iconCls="icon-search" id="conIncByBarCode" >按商品码匹配</a>
 		 </div>
 	</div>	
     <div id="toolbar2" style="height: auto">
@@ -456,6 +480,7 @@
 							<th data-options="field:'manf',width:100,sortable:true">产地(医院)</th>
 							<th data-options="field:'spec',width:70,sortable:true">规格(医院)</th>
 							<th data-options="field:'uom',width:40,sortable:true">入库单位(医院)</th>
+							<th data-options="field:'hopname',width:40,sortable:true">医院名称</th>
 						</tr>
 					</thead>
 				</table>

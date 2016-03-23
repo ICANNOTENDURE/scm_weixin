@@ -206,4 +206,6 @@ public interface CommonService {
 	 * @param hopId  ：医院id
 	 */
 	public HopCtloc getCtlocByCode(String code,Long hopId);
+	
+	public boolean checkIncIsCon(Long venIncId, Long hopIncId);
 }

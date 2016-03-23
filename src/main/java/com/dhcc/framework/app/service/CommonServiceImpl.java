@@ -1299,4 +1299,16 @@ public class CommonServiceImpl implements CommonService {
 		}
 		return null;
 	}
+
+	@Override
+	public boolean checkIncIsCon(Long venIncId, Long hopIncId) {
+		String[] propertyNames = { "hopIncId", "venIncId" };
+		Object[] values = { hopIncId, venIncId};
+		List<VenHopInc> venHopIncs = commonDao.findByProperties(VenHopInc.class, propertyNames, values);
+
+		if (venHopIncs.size() == 0) {
+			return false;
+		}
+		return true;
+	}
 }

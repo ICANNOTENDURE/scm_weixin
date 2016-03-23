@@ -27,6 +27,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
 
 import com.dhcc.framework.app.blh.AbstractBaseBlh;
@@ -954,5 +956,44 @@ public class VenIncBlh extends AbstractBaseBlh {
 
 		
 	}
-
+	
+	//根据商品码自动匹配供应商和医院商品
+	@SuppressWarnings("unchecked")
+	public void autoConIncByBarCode(BusinessRequest res){
+		
+		VenIncDto dto = super.getDto(VenIncDto.class, res);
+		OperateResult operateResult=new OperateResult();
+		int count=0;
+		if(dto.getVenIncContranstDto()!=null){
+			if(dto.getVenIncContranstDto().getHopId()!=null){
+				DetachedCriteria detachedCriteria=DetachedCriteria.forClass(HopInc.class);
+				detachedCriteria.add(Restrictions.eq("incHospid", dto.getVenIncContranstDto().getHopId()));
+				detachedCriteria.add(Restrictions.isNull("incAuditFlag"));
+				List<HopInc> hopIncs=commonService.findByDetachedCriteria(detachedCriteria);
+				for(HopInc hopInc:hopIncs){
+					if(org.apache.commons.lang3.StringUtils.isBlank(hopInc.getIncBarCode())){
+						continue;
+					}
+					List<VenInc> incs=commonService.findByProperty(VenInc.class, "venIncBarCode", hopInc.getIncBarCode());
+					for(VenInc venInc:incs){
+						if(!commonService.checkIncIsCon(venInc.getVenIncId(), hopInc.getIncId())){
+							VenHopInc venHopInc=new VenHopInc();
+							venHopInc.setHopIncId(hopInc.getIncId());
+							venHopInc.setVenFac(1f);
+							venHopInc.setVenFac(1f);
+							venHopInc.setVenIncId(venInc.getVenIncId());
+							commonService.saveOrUpdate(venHopInc);
+							count++;
+						}else{
+							hopInc.setIncAuditFlag("C");
+							commonService.saveOrUpdate(hopInc);
+						}
+					}
+				}
+				
+			}
+		}
+		operateResult.setResultContent(String.valueOf(count));
+		writeJSON(operateResult);
+	}
 }

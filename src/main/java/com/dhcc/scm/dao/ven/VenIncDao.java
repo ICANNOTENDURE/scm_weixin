@@ -270,9 +270,11 @@ public class VenIncDao extends HibernatePersistentObjectDAO<VenInc> {
 			}
 		}
 		hqlBuffer.append(" where 1=1 ");
-
-		hqlBuffer.append(" AND t1.inc_hospid =:hopid ");
-		hqlParamMap.put("hopid", WebContextHolder.getContext().getVisit().getUserInfo().getHopId());
+		if(WebContextHolder.getContext().getVisit().getUserInfo().getUserType().longValue()!=0){
+			hqlBuffer.append(" AND t1.inc_hospid =:hopid ");
+			hqlParamMap.put("hopid", WebContextHolder.getContext().getVisit().getUserInfo().getHopId());
+		}
+		
 		if (dto.getVenInc() != null) {
 			if (!StringUtils.isNullOrEmpty(dto.getVenInc().getVenIncAlias())) {
 				hqlBuffer.append("and t7.INCALIAS_TEXT like :incalias1 ");
