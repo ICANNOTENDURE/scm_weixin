@@ -343,10 +343,6 @@ public class MpInGdRecBlh extends AbstractBaseBlh {
 			List<StInGdRecPic> inGdRecPics=commonService.findByProperty(StInGdRecPic.class, "ingdrecpicParrefId", dto.getStInGdRec().getIngdrecId());
 			dto.setInGdRecPics(inGdRecPics);
 			List<StInGdRecItm> inGdRecItms=commonService.findByProperty(StInGdRecItm.class, "ingdrecitmParrefId", dto.getStInGdRec().getIngdrecId());
-			for(StInGdRecItm inGdRecItm:inGdRecItms){
-				HopInc hopInc=commonService.get(HopInc.class, inGdRecItm.getIngdrecitmIncId());
-				inGdRecItm.setIngdrecitmIncName(hopInc.getIncName());
-			}
 			dto.setStInGdRecItms(inGdRecItms);
 		}
 		return "mpListInGdRecDetail";

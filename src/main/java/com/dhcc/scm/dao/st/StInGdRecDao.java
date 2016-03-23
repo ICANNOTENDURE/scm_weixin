@@ -22,6 +22,7 @@ import com.dhcc.framework.transmission.dto.BaseDto;
 import com.dhcc.scm.blh.sys.LockAppUtil;
 import com.dhcc.scm.dto.st.StInGdRecDto;
 import com.dhcc.scm.dto.weixin.MpInGdRecDto;
+import com.dhcc.scm.entity.hop.HopInc;
 import com.dhcc.scm.entity.ord.ExeState;
 import com.dhcc.scm.entity.ord.OrderDetail;
 import com.dhcc.scm.entity.ord.OrderDetailSub;
@@ -66,6 +67,7 @@ public class StInGdRecDao extends HibernatePersistentObjectDAO<StInGdRec> {
 				if(venId==null){
 					venId=orderDetail.getOrderVenId();
 				}
+				HopInc hopInc=super.get(HopInc.class, orderDetail.getOrderHopIncId());
 				StInGdRecItm stInGdRecItm=new StInGdRecItm();
 				stInGdRecItm.setIngdrecitmBatNo(orderDetailSub.getOrdSubBatNo());
 				stInGdRecItm.setIngdrecitmExpDate(orderDetailSub.getOrdSubExpDate());
@@ -76,6 +78,8 @@ public class StInGdRecDao extends HibernatePersistentObjectDAO<StInGdRec> {
 				stInGdRecItm.setIngdrecitmRp(orderDetailSub.getOrderSubRp().floatValue()/orderDetail.getOrderFac().floatValue());
 				stInGdRecItm.setIngdrecitmUom(orderDetail.getOrderHopUom());
 				stInGdRecItm.setIngdrecitmParrefId(dto.getStInGdRec().getIngdrecId());
+				stInGdRecItm.setIngdrecitmIncBarCode(hopInc.getIncBarCode());
+				stInGdRecItm.setIngdrecitmIncName(hopInc.getIncName());
 				super.save(stInGdRecItm);
 				ExeState exeState = new ExeState();
 				exeState.setStateId(orderDetail.getOrderState());

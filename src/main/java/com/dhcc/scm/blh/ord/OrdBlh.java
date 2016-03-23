@@ -956,4 +956,6 @@ public class OrdBlh extends AbstractBaseBlh {
 		operateResult.setResultContent(msg.toString());
 		ordService.impHisOrder(operateResult, map,hopCtloc.getHospid(),hopCtloc.getHopCtlocId());
 	}
+	
+	
 }

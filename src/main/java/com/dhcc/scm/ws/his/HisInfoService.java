@@ -1,9 +1,13 @@
 package com.dhcc.scm.ws.his;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.jws.WebService;
+
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 
 import com.dhcc.framework.app.service.CommonService;
 import com.dhcc.framework.util.JsonUtils;
@@ -13,8 +17,11 @@ import com.dhcc.scm.blh.hop.HopIncLocBlh;
 import com.dhcc.scm.blh.hop.HopVendorBlh;
 import com.dhcc.scm.blh.ord.OrdBlh;
 import com.dhcc.scm.blh.ord.OrderBlh;
+import com.dhcc.scm.entity.st.StInGdRecItm;
 import com.dhcc.scm.entity.sys.SysLog;
 import com.dhcc.scm.entity.vo.ws.HisCmpRecWeb;
+import com.dhcc.scm.entity.vo.ws.HisInGdRec;
+import com.dhcc.scm.entity.vo.ws.HisInGdRecItm;
 import com.dhcc.scm.entity.vo.ws.HisIncLocQtyWeb;
 import com.dhcc.scm.entity.vo.ws.HisIncWeb;
 import com.dhcc.scm.entity.vo.ws.HisInvInfoWeb;
@@ -218,7 +225,70 @@ public class HisInfoService implements HisInfoServiceInterface{
 		}
 		return operateResult;
 	}
-    
+
+	@SuppressWarnings({ "unchecked"})
+	@Override
+	public HisInGdRec listInGdRec(String usename, String password) {
+		
+		HisInGdRec hisInGdRec=new HisInGdRec();
+		SysLog log = new SysLog();
+		log.setOpArg("usename:"+usename+",password:"+password);
+		log.setOpName("webservice同步医院发货信息");
+		log.setOpDate(new Date());
+		log.setOpType("webservice");
+		log.setOpUser(usename);
+		try {
+			DetachedCriteria detachedCriteria=DetachedCriteria.forClass(StInGdRecItm.class);
+			detachedCriteria.add(Restrictions.isNull("ingdrecitmWsflag"));
+			List<StInGdRecItm> stInGdRecItms=commonService.findByDetachedCriteria(detachedCriteria);
+			for(StInGdRecItm stInGdRecItm:stInGdRecItms){
+				HisInGdRecItm hisInGdRecItm=new HisInGdRecItm();
+				hisInGdRecItm.setBatNo(stInGdRecItm.getIngdrecitmBatNo());
+				hisInGdRecItm.setExpdate(stInGdRecItm.getIngdrecitmExpDate());
+				hisInGdRecItm.setIncBarCode(stInGdRecItm.getIngdrecitmIncBarCode());
+				hisInGdRecItm.setIngdrecId(stInGdRecItm.getIngdrecitmId());
+				hisInGdRecItm.setInvNo(stInGdRecItm.getIngdrecitmInvNo());
+				hisInGdRecItm.setQty(stInGdRecItm.getIngdrecitmQty());
+				hisInGdRecItm.setRp(stInGdRecItm.getIngdrecitmRp());
+				hisInGdRec.getInGdRecItms().add(hisInGdRecItm);
+			}
+			hisInGdRec.setResultCode("0");
+			
+		} catch (Exception e) {
+			hisInGdRec.setResultCode("1");
+			hisInGdRec.setResultContent("程序异常->Exception:"+e.getMessage());
+			return hisInGdRec;
+		}finally{
+			log.setOpResult(JsonUtils.toJson(hisInGdRec));
+			commonService.saveOrUpdate(log);
+		}
+		return hisInGdRec;
+	}
+
+	@Override
+	public OperateResult cmpInGdRec(String usename, String password, Long ingdrecId) {
+		
+		OperateResult operateResult=new OperateResult();
+		SysLog log = new SysLog();
+		log.setOpArg("usename:"+usename+",password:"+password);
+		log.setOpName("webservice同步医院入库信息：》cmpInGdRec");
+		log.setOpDate(new Date());
+		log.setOpType("webservice");
+		log.setOpUser(usename);
+		try {
+			
+		} catch (Exception e) {
+			operateResult.setResultCode("1");
+			operateResult.setResultContent("程序异常->Exception:"+e.getMessage());
+			return operateResult;
+		}finally{
+			log.setOpResult(JsonUtils.toJson(operateResult));
+			commonService.saveOrUpdate(log);
+		}
+		return operateResult;
+	}
+
+
     
     
 }

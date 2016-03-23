@@ -24,6 +24,14 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="operateResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="resultCode" type="xs:string"/>
+      <xs:element minOccurs="0" name="resultContent" type="xs:string"/>
+      <xs:element minOccurs="0" name="resultValue" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="hisIncLocQtyWeb">
     <xs:sequence>
       <xs:element maxOccurs="unbounded" minOccurs="0" name="hisIncLocQtyItmWebs" nillable="true" type="tns:hisIncLocQtyItmWeb"/>
@@ -43,11 +51,23 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="operateResult">
+  <xs:complexType name="hisInGdRec">
     <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="inGdRecItms" nillable="true" type="tns:hisInGdRecItm"/>
       <xs:element minOccurs="0" name="resultCode" type="xs:string"/>
       <xs:element minOccurs="0" name="resultContent" type="xs:string"/>
-      <xs:element minOccurs="0" name="resultValue" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="hisInGdRecItm">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="batNo" type="xs:string"/>
+      <xs:element minOccurs="0" name="expdate" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="incBarCode" type="xs:string"/>
+      <xs:element minOccurs="0" name="ingdrecId" type="xs:long"/>
+      <xs:element minOccurs="0" name="invNo" type="xs:string"/>
+      <xs:element minOccurs="0" name="qty" type="xs:float"/>
+      <xs:element minOccurs="0" name="rp" type="xs:float"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -188,6 +208,16 @@
     <wsdl:part name="operateResult" type="tns:operateResult">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="listInGdRec">
+    <wsdl:part name="usename" type="xsd:string">
+    </wsdl:part>
+    <wsdl:part name="password" type="xsd:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="listInGdRecResponse">
+    <wsdl:part name="hisInGdRec" type="tns:hisInGdRec">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="getRecItmByInvResponse">
     <wsdl:part name="hisInvInfoWeb" type="tns:hisInvInfoWeb">
     </wsdl:part>
@@ -220,11 +250,23 @@
     <wsdl:part name="operateResult" type="tns:operateResult">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="cmpInGdRec">
+    <wsdl:part name="usename" type="xsd:string">
+    </wsdl:part>
+    <wsdl:part name="password" type="xsd:string">
+    </wsdl:part>
+    <wsdl:part name="ingdrecId" type="xsd:long">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="getHopLocIncQty">
     <wsdl:part name="hisIncLocQtyWeb" type="tns:hisIncLocQtyWeb">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="getHopVendorResponse">
+    <wsdl:part name="operateResult" type="tns:operateResult">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cmpInGdRecResponse">
     <wsdl:part name="operateResult" type="tns:operateResult">
     </wsdl:part>
   </wsdl:message>
@@ -239,10 +281,24 @@
       <wsdl:output name="getRecItmByInvResponse" message="tns:getRecItmByInvResponse">
     </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="cmpInGdRec">
+<wsdl:documentation>确认入库成功</wsdl:documentation>
+      <wsdl:input name="cmpInGdRec" message="tns:cmpInGdRec">
+    </wsdl:input>
+      <wsdl:output name="cmpInGdRecResponse" message="tns:cmpInGdRecResponse">
+    </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="getHopLocIncQty">
       <wsdl:input name="getHopLocIncQty" message="tns:getHopLocIncQty">
     </wsdl:input>
       <wsdl:output name="getHopLocIncQtyResponse" message="tns:getHopLocIncQtyResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listInGdRec">
+<wsdl:documentation>查询入库单信息</wsdl:documentation>
+      <wsdl:input name="listInGdRec" message="tns:listInGdRec">
+    </wsdl:input>
+      <wsdl:output name="listInGdRecResponse" message="tns:listInGdRecResponse">
     </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="getHopOrder">
@@ -286,6 +342,15 @@
   </wsdl:portType>
   <wsdl:binding name="HisInfoServiceServiceSoapBinding" type="tns:HisInfoServiceInterface">
     <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="cmpInGdRec">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="cmpInGdRec">
+        <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
+      </wsdl:input>
+      <wsdl:output name="cmpInGdRecResponse">
+        <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="getRecItmByInv">
       <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="getRecItmByInv">
@@ -328,6 +393,15 @@
         <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
       </wsdl:input>
       <wsdl:output name="getHopOrderResponse">
+        <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listInGdRec">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="listInGdRec">
+        <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
+      </wsdl:input>
+      <wsdl:output name="listInGdRecResponse">
         <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
       </wsdl:output>
     </wsdl:operation>

@@ -9,6 +9,7 @@ import javax.jws.soap.SOAPBinding;
 import org.apache.cxf.annotations.WSDLDocumentation;
 
 import com.dhcc.scm.entity.vo.ws.HisCmpRecWeb;
+import com.dhcc.scm.entity.vo.ws.HisInGdRec;
 import com.dhcc.scm.entity.vo.ws.HisIncLocQtyWeb;
 import com.dhcc.scm.entity.vo.ws.HisIncWeb;
 import com.dhcc.scm.entity.vo.ws.HisInvInfoWeb;
@@ -126,5 +127,16 @@ public interface HisInfoServiceInterface {
 	    @WebResult(name="operateResult")
 	    @WSDLDocumentation("同步医院订单")
 	    public OperateResult getHopOrder(@WebParam(name="hisOrderWeb")HisOrderWeb hisOrderWeb);
+	    
+	    @WebMethod
+	    @WebResult(name="hisInGdRec")
+	    @WSDLDocumentation("查询入库单信息")
+	    public HisInGdRec listInGdRec(@WebParam(name="usename")String usename,@WebParam(name="password")String password);
+
+	    @WebMethod
+	    @WebResult(name="operateResult")
+	    @WSDLDocumentation("确认入库成功")
+	    public OperateResult cmpInGdRec(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="ingdrecId")Long ingdrecId);
+
 		
 }

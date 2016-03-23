@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 
 @Entity
@@ -55,9 +54,15 @@ public class StInGdRecItm implements Serializable {
 	@Column(name="ingdrecitm_ordsubid")
 	private String ingdrecitmOrdsubId;
 	
-	@Transient
-	private String ingdrecitmIncName;
 	
+	@Column(name="ingdrecitm_incbarcode")
+	private String ingdrecitmIncBarCode;
+	
+	@Column(name="ingdrecitm_wsflag")
+	private String ingdrecitmWsflag;
+	
+	@Column(name="ingdrecitm_incname")
+	private String ingdrecitmIncName;
 	
 	
 	public String getIngdrecitmIncName() {
@@ -156,6 +161,22 @@ public class StInGdRecItm implements Serializable {
 
 	public void setIngdrecitmOrdsubId(String ingdrecitmOrdsubId) {
 		this.ingdrecitmOrdsubId = ingdrecitmOrdsubId;
+	}
+
+	public String getIngdrecitmIncBarCode() {
+		return ingdrecitmIncBarCode;
+	}
+
+	public void setIngdrecitmIncBarCode(String ingdrecitmIncBarCode) {
+		this.ingdrecitmIncBarCode = ingdrecitmIncBarCode;
+	}
+
+	public String getIngdrecitmWsflag() {
+		return ingdrecitmWsflag;
+	}
+
+	public void setIngdrecitmWsflag(String ingdrecitmWsflag) {
+		this.ingdrecitmWsflag = ingdrecitmWsflag;
 	}
 	
 	

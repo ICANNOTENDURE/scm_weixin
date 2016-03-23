@@ -207,5 +207,12 @@ public interface CommonService {
 	 */
 	public HopCtloc getCtlocByCode(String code,Long hopId);
 	
+	/**
+	 * @see  :检查医院商品是否和供应商商品做过对照
+	 * @param venIncId  : 供应商商品id
+	 * @param hopIncId  ：医院商品id
+	 */
 	public boolean checkIncIsCon(Long venIncId, Long hopIncId);
+	
+
 }
