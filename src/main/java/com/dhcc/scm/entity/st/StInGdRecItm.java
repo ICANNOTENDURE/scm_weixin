@@ -64,7 +64,54 @@ public class StInGdRecItm implements Serializable {
 	@Column(name="ingdrecitm_incname")
 	private String ingdrecitmIncName;
 	
+	@Column(name="ingdrecitm_hisno")
+	private String ingdrecitmHisNo;
 	
+	@Column(name="ingdrecitm_vendorcode")
+	private String ingdrecitmVendorCode;
+	
+	@Column(name="ingdrecitm_purloccode")
+	private String ingdrecitmPurLocCode;
+	
+	@Column(name="ingdrecitm_recloccode")
+	private String ingdrecitmRecLocCode;
+	
+	
+	
+	
+	
+	public String getIngdrecitmHisNo() {
+		return ingdrecitmHisNo;
+	}
+
+	public void setIngdrecitmHisNo(String ingdrecitmHisNo) {
+		this.ingdrecitmHisNo = ingdrecitmHisNo;
+	}
+
+	public String getIngdrecitmVendorCode() {
+		return ingdrecitmVendorCode;
+	}
+
+	public void setIngdrecitmVendorCode(String ingdrecitmVendorCode) {
+		this.ingdrecitmVendorCode = ingdrecitmVendorCode;
+	}
+
+	public String getIngdrecitmPurLocCode() {
+		return ingdrecitmPurLocCode;
+	}
+
+	public void setIngdrecitmPurLocCode(String ingdrecitmPurLocCode) {
+		this.ingdrecitmPurLocCode = ingdrecitmPurLocCode;
+	}
+
+	public String getIngdrecitmRecLocCode() {
+		return ingdrecitmRecLocCode;
+	}
+
+	public void setIngdrecitmRecLocCode(String ingdrecitmRecLocCode) {
+		this.ingdrecitmRecLocCode = ingdrecitmRecLocCode;
+	}
+
 	public String getIngdrecitmIncName() {
 		return ingdrecitmIncName;
 	}

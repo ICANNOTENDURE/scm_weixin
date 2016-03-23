@@ -63,11 +63,15 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="batNo" type="xs:string"/>
       <xs:element minOccurs="0" name="expdate" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="hisNo" type="xs:string"/>
       <xs:element minOccurs="0" name="incBarCode" type="xs:string"/>
       <xs:element minOccurs="0" name="ingdrecId" type="xs:long"/>
       <xs:element minOccurs="0" name="invNo" type="xs:string"/>
+      <xs:element minOccurs="0" name="purLocCode" type="xs:string"/>
       <xs:element minOccurs="0" name="qty" type="xs:float"/>
+      <xs:element minOccurs="0" name="recLocCode" type="xs:string"/>
       <xs:element minOccurs="0" name="rp" type="xs:float"/>
+      <xs:element minOccurs="0" name="vendorCode" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
 

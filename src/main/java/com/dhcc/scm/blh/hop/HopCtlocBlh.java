@@ -401,7 +401,7 @@ public class HopCtlocBlh extends AbstractBaseBlh {
 				continue;
 			}
 			String[] incPropertyNames = { "hospid", "hisid" };
-			Object[] incValues = { hopCtloc.getHospid(), Long.valueOf(hisLocItmWeb.getId())};
+			Object[] incValues = { hopCtloc.getHospid(), hisLocItmWeb.getId()};
 			List<HopCtloc> hopCtlocs = commonService.findByProperties(HopCtloc.class, incPropertyNames, incValues);
 			HopCtloc ctloc = new HopCtloc();
 			if (hopCtlocs.size() > 0) {

@@ -22,7 +22,9 @@ import com.dhcc.framework.transmission.dto.BaseDto;
 import com.dhcc.scm.blh.sys.LockAppUtil;
 import com.dhcc.scm.dto.st.StInGdRecDto;
 import com.dhcc.scm.dto.weixin.MpInGdRecDto;
+import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.HopInc;
+import com.dhcc.scm.entity.hop.HopVendor;
 import com.dhcc.scm.entity.ord.ExeState;
 import com.dhcc.scm.entity.ord.OrderDetail;
 import com.dhcc.scm.entity.ord.OrderDetailSub;
@@ -68,6 +70,9 @@ public class StInGdRecDao extends HibernatePersistentObjectDAO<StInGdRec> {
 					venId=orderDetail.getOrderVenId();
 				}
 				HopInc hopInc=super.get(HopInc.class, orderDetail.getOrderHopIncId());
+				
+				
+				
 				StInGdRecItm stInGdRecItm=new StInGdRecItm();
 				stInGdRecItm.setIngdrecitmBatNo(orderDetailSub.getOrdSubBatNo());
 				stInGdRecItm.setIngdrecitmExpDate(orderDetailSub.getOrdSubExpDate());
@@ -80,6 +85,27 @@ public class StInGdRecDao extends HibernatePersistentObjectDAO<StInGdRec> {
 				stInGdRecItm.setIngdrecitmParrefId(dto.getStInGdRec().getIngdrecId());
 				stInGdRecItm.setIngdrecitmIncBarCode(hopInc.getIncBarCode());
 				stInGdRecItm.setIngdrecitmIncName(hopInc.getIncName());
+				stInGdRecItm.setIngdrecitmHisNo(orderDetail.getOrderHisNo());
+				
+				if(orderDetail.getOrderRecLoc()!=null){
+					HopCtloc recrloc=super.get(HopCtloc.class, orderDetail.getOrderRecLoc());
+					if(recrloc!=null){
+						stInGdRecItm.setIngdrecitmRecLocCode(recrloc.getHisid());
+						String[] propertyNames={"hopHopId","hopVenId"};
+						Object[] values={recrloc.getHospid(),orderDetail.getOrderVenId()};
+						List<HopVendor> hopVendors=super.findByProperties(HopVendor.class, propertyNames, values);
+						if(hopVendors.size()>0){
+							stInGdRecItm.setIngdrecitmVendorCode(hopVendors.get(0).getHopCode());
+						}
+					}
+				}
+				if(orderDetail.getOrderPurLoc()!=null){
+					HopCtloc purloc=super.get(HopCtloc.class, orderDetail.getOrderPurLoc());
+					if(purloc!=null){
+						stInGdRecItm.setIngdrecitmPurLocCode(purloc.getHisid());
+					}
+				}
+				
 				super.save(stInGdRecItm);
 				ExeState exeState = new ExeState();
 				exeState.setStateId(orderDetail.getOrderState());

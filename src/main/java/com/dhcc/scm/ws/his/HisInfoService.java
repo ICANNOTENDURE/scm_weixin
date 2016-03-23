@@ -250,6 +250,10 @@ public class HisInfoService implements HisInfoServiceInterface{
 				hisInGdRecItm.setInvNo(stInGdRecItm.getIngdrecitmInvNo());
 				hisInGdRecItm.setQty(stInGdRecItm.getIngdrecitmQty());
 				hisInGdRecItm.setRp(stInGdRecItm.getIngdrecitmRp());
+				hisInGdRecItm.setHisNo(stInGdRecItm.getIngdrecitmHisNo());
+				hisInGdRecItm.setPurLocCode(stInGdRecItm.getIngdrecitmPurLocCode());
+				hisInGdRecItm.setRecLocCode(stInGdRecItm.getIngdrecitmRecLocCode());
+				hisInGdRecItm.setVendorCode(stInGdRecItm.getIngdrecitmVendorCode());
 				hisInGdRec.getInGdRecItms().add(hisInGdRecItm);
 			}
 			hisInGdRec.setResultCode("0");
