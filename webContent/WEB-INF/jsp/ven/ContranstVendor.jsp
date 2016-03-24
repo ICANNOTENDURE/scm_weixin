@@ -96,7 +96,6 @@
     				window.open($WEB_ROOT_PATH+'/hop/hopVendorCtrl!HistoryDetail.htm?venodrId='+$('#datagrid').datagrid('getRows')[rowIndex]['vendorid'])
     			}
     		}
-
     	});
     	
     	$CommonUI.getComboBox("hop").combobox({
@@ -113,7 +112,6 @@
     		    	'dto.vendor.alias': $("#venAlias").val(),
     		    	'dto.auditFlag':$("#venAuditFlag").combobox('getValue'),
     			}
-
    		 	});
    		});
     	
@@ -128,9 +126,21 @@
     		    	'dto.auditFlag':$("#auditFlag").combobox('getValue'),
     		    	'dto.hopVendor.hopHopId': $("#hop").combobox('getValue'),
     			}
-
    		 	});
    		});
+    	
+    	$("#autoContrast").on('click', function() {
+
+     		$.post(
+     				$WEB_ROOT_PATH+'/hop/hopVendorCtrl!autoContrast.htm',
+     				function(data){
+     					if(data.dto.opFlg=="1"){
+     						$CommonUI.alert("操作成功!");
+     					}
+     				},
+     				"json"
+     			);
+     	});
     	
     	$("#queryZiZhi").on('click', function() {
     		if ($CommonUI.getDataGrid("#datagrid").datagrid('getSelections').length != 1) {
@@ -183,8 +193,7 @@
 			type="text" />
 			代&nbsp;&nbsp;码: <input id="HopCode" style="width: 100px;"
 			type="text" />
-			别&nbsp;&nbsp;名: <input id="HopAlias" style="width: 100px;"
-			type="text" />
+			<a href="#" class="linkbutton" iconCls="icon-search" id="autoContrast">自动对照</a> 
 		  </div>
 		  <div  style="margin-bottom:5px;margin-top:5px">	
 			状&nbsp;&nbsp;态:
@@ -225,13 +234,13 @@
 					<thead>
 						<tr>
 							<th data-options="field:'hopvenid',hidden:true">IncId ID</th>
-							<th data-options="field:'hopvenname',sortable:true">供应商</th>
-							<th data-options="field:'hopvencode',sortable:true">医院供应商代码</th>
-							<th data-options="field:'hopname',hidden:true">医院</th>
-							<th data-options="field:'venname',sortable:true">对照供应商</th>
+							<th data-options="field:'hopvenname',sortable:true" width="1/6">供应商</th>
+							<th data-options="field:'hopvencode',sortable:true" width="1/6">医院供应商代码</th>
+							<th data-options="field:'hopname',sortable:true" width="1/6">医院</th>
+							<th data-options="field:'venname',sortable:true" width="1/6">对照供应商</th>
 							<th data-options="field:'venid',hidden:true"></th>
-							<th data-options="field:'operate',formatter:ConT">对照</th>
-							<th data-options="field:'audit',formatter:AuditT">资质</th>
+							<th data-options="field:'operate',formatter:ConT" width="1/6">对照</th>
+							<th data-options="field:'audit',formatter:AuditT" width="1/6">资质</th>
 						</tr>
 					</thead>
 				</table>
