@@ -131,18 +131,23 @@
     	
     	$("#autoContrast").on('click', function() {
     		
-     		$.post(
+    		if($("#hop").combobox('getValue').length != 1){
+    			$CommonUI.alert("请选择医院!");
+    		}
+    		else{$.post(
+     				
      				$WEB_ROOT_PATH+'/hop/hopVendorCtrl!autoContrast.htm',
      				{
      					'dto.hopVendor.hopHopId': $("#hop").combobox('getValue'),
      				},
+     				
      				function(data){
      					if(data.dto.opFlg=="1"){
-     						$CommonUI.alert("操作成功!");
+     						$CommonUI.alert("操作成功!");//加提示多少条？
      					}
      				},
      				"json"
-     			);
+     			);}
      	});
     	
     	$("#queryZiZhi").on('click', function() {

@@ -192,7 +192,7 @@ public class HopVendorBlh extends AbstractBaseBlh {
 				e.printStackTrace();
 			}       
 			String ip=addr.getHostAddress();//获得本机IP
-//			HopVendor hopVendor=commonService.get(HopVendor.class, dto.getHopVendor().getHopVendorId());
+			HopVendor hopVendor=commonService.get(HopVendor.class, dto.getHopVendor().getHopVendorId());
 			List<HopVendor> hopVendors=commonService.findByProperty(HopVendor.class, "hopVendorId", dto.getHopVendor().getHopVendorId());
 			List<Vendor> vendors=commonService.findByProperty(Vendor.class, "taxation",hopVendors.get(0).gethBusinessRegNo());//由hopVendors工商执照号得到vendor，已得到主键venid
 			
