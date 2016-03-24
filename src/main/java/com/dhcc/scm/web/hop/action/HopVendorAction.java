@@ -38,6 +38,8 @@ import com.dhcc.scm.entity.ven.Vendor;
 @Blh("hopVendorBlh")
 @JsonResults({@JResult(BlhMethod="findById",ognlExpress="dto.hopVendor"),
 			  @JResult(BlhMethod="contranstVendor",ognlExpress="dto"),
+			  @JResult(BlhMethod="hopAuditFLag",ognlExpress="dto"),
+			  @JResult(BlhMethod="autoContrast",ognlExpress="dto"),
 			  @JResult(BlhMethod="auditFLag",ognlExpress="dto")})
 public class HopVendorAction extends BaseAction {
 	

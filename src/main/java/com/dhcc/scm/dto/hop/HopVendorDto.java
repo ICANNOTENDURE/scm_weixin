@@ -26,9 +26,7 @@ public class HopVendorDto extends BaseDto {
 	private String exportFlag;
 	
 	private List<HopVendor> hopVendors;
-//    //add hxy
-//	String hopVens=hopVendors.toString();
-//	
+
 
 
 

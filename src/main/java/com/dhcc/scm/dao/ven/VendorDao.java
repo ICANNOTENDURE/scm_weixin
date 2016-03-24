@@ -303,15 +303,14 @@ public class VendorDao extends HibernatePersistentObjectDAO<Vendor> {
 		hqlBuffer.append(" from ");
 		hqlBuffer.append(" T_VEN_VENDOR t1 left join T_HOP_VENDOR t2 on t1.VEN_ID=T2.H_VENDORID ");
 		hqlBuffer.append(" where 1=1 ");
-		
+		//
+		hqlBuffer.append(" and t2.H_HOPID="+hopId );
 		if(org.apache.commons.lang.StringUtils.isNotBlank(dto.getAuditFlag())){
 			if(dto.getAuditFlag().equals("1")){
 				hqlBuffer.append(" and t2.H_AUDITFLAG='Y' " );
-				hqlBuffer.append(" and t2.H_HOPID="+hopId );
 			}
 			if(dto.getAuditFlag().equals("2")){
 				hqlBuffer.append(" and (t2.H_AUDITFLAG is null or t2.H_AUDITFLAG='N')" );
-				hqlBuffer.append(" and t2.H_HOPID="+hopId );
 			}
 			if(dto.getAuditFlag().equals("3")){
 				hqlBuffer.append(" and (t2.H_AUDITFLAG is null )" );
