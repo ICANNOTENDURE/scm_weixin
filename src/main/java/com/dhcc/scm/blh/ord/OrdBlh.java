@@ -887,30 +887,30 @@ public class OrdBlh extends AbstractBaseBlh {
 		Map<String, List<OrderDetail>> map = new HashMap<String, List<OrderDetail>>();
 		for (HisOrderWebItm hisOrderWebItm : hisOrderWeb.getHisOrderWebItms()) {
 			if (org.apache.commons.lang3.StringUtils.isBlank(hisOrderWebItm.getHisId())) {
-				msg.append(hisOrderWebItm.getHopBarCode()+"订单标示为空。");
+				msg.append(hisOrderWebItm.getHisId()+"订单标示为空。");
 				continue;
 			}
 			if (org.apache.commons.lang3.StringUtils.isBlank(hisOrderWebItm.getVendorBarCode())) {
-				msg.append(hisOrderWebItm.getHopBarCode()+"供应商工商注册号为空。");
+				msg.append(hisOrderWebItm.getHisId()+"供应商工商注册号为空。");
 				continue;
 			}
 			HopVendor hopVendor = hopVendorService.getHopVendoByBarCode(hisOrderWebItm.getVendorBarCode(), hopCtloc.getHospid());
 			if (hopVendor == null) {
-				msg.append(hisOrderWebItm.getHopBarCode()+"供应商工商执照错误。");
+				msg.append(hisOrderWebItm.getHisId()+"供应商工商执照错误。");
 				continue;
 			}
 			if(hopVendor.getHopVenId()==null){
-				msg.append(hisOrderWebItm.getHopBarCode()+"医院供应商未与平台供应商对照。");
+				msg.append(hisOrderWebItm.getHisId()+"医院供应商未与平台供应商对照。");
 				continue;
 			}
 			if (org.apache.commons.lang3.StringUtils.isBlank(hisOrderWebItm.getHopBarCode())) {
-				msg.append(hisOrderWebItm.getHopBarCode()+"医院商品吗为空。");
+				msg.append(hisOrderWebItm.getHisId()+"医院商品吗为空。");
 				continue;
 			}
 			HopInc hopInc = hopIncService.getHopIncByBarCode(hisOrderWebItm.getHopBarCode(), hopCtloc.getHospid());
 			//商品码错误
 			if (hopInc == null) {
-				msg.append(hisOrderWebItm.getHopBarCode()+"医院商品码错误。");
+				msg.append(hisOrderWebItm.getHisId()+"医院商品码错误。");
 				continue;
 			}
 			//供应商商品
@@ -925,6 +925,7 @@ public class OrdBlh extends AbstractBaseBlh {
 				msg.append(hisOrderWebItm.getHisId()+"订单重复提交。");
 				continue;
 			}
+			
 			OrderDetail orderDetail = new OrderDetail();
 			orderDetail.setIncName(hopInc.getIncName());
 			orderDetail.setOrderDate(new Date());

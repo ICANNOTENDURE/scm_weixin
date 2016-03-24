@@ -257,7 +257,7 @@ public class HisInfoService implements HisInfoServiceInterface{
 				hisInGdRec.getInGdRecItms().add(hisInGdRecItm);
 			}
 			hisInGdRec.setResultCode("0");
-			
+			hisInGdRec.setResultContent("success");
 		} catch (Exception e) {
 			hisInGdRec.setResultCode("1");
 			hisInGdRec.setResultContent("程序异常->Exception:"+e.getMessage());
@@ -280,7 +280,17 @@ public class HisInfoService implements HisInfoServiceInterface{
 		log.setOpType("webservice");
 		log.setOpUser(usename);
 		try {
-			
+			if(ingdrecId==null){
+				operateResult.setResultContent("入参为空!");
+				return operateResult;
+			}
+			StInGdRecItm stInGdRecItm=commonService.get(StInGdRecItm.class, ingdrecId);
+			if(stInGdRecItm!=null){
+				stInGdRecItm.setIngdrecitmWsflag("1");
+				commonService.saveOrUpdate(stInGdRecItm);
+				operateResult.setResultCode("0");
+				operateResult.setResultContent("success");
+			}
 		} catch (Exception e) {
 			operateResult.setResultCode("1");
 			operateResult.setResultContent("程序异常->Exception:"+e.getMessage());
