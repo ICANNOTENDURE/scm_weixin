@@ -130,9 +130,12 @@
    		});
     	
     	$("#autoContrast").on('click', function() {
-
+    		
      		$.post(
      				$WEB_ROOT_PATH+'/hop/hopVendorCtrl!autoContrast.htm',
+     				{
+     					'dto.hopVendor.hopHopId': $("#hop").combobox('getValue'),
+     				},
      				function(data){
      					if(data.dto.opFlg=="1"){
      						$CommonUI.alert("操作成功!");

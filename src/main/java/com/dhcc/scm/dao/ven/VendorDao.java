@@ -288,6 +288,7 @@ public class VendorDao extends HibernatePersistentObjectDAO<Vendor> {
 		StringBuffer hqlBuffer = new StringBuffer();
 		Map<String, Object> hqlParamMap = new HashMap<String, Object>();
 		Long hopId=WebContextHolder.getContext().getVisit().getUserInfo().getHopId();
+		Long type=WebContextHolder.getContext().getVisit().getUserInfo().getUserType();
 		
 		hqlBuffer.append(" select ");
 		hqlBuffer.append(" t1.VEN_ID vendorid, ");
@@ -303,8 +304,11 @@ public class VendorDao extends HibernatePersistentObjectDAO<Vendor> {
 		hqlBuffer.append(" from ");
 		hqlBuffer.append(" T_VEN_VENDOR t1 left join T_HOP_VENDOR t2 on t1.VEN_ID=T2.H_VENDORID ");
 		hqlBuffer.append(" where 1=1 ");
-		//
-		hqlBuffer.append(" and t2.H_HOPID="+hopId );
+		//根据登录人员做判断
+		if(type==1){
+			hqlBuffer.append(" and t2.H_HOPID="+hopId );
+		}
+		
 		if(org.apache.commons.lang.StringUtils.isNotBlank(dto.getAuditFlag())){
 			if(dto.getAuditFlag().equals("1")){
 				hqlBuffer.append(" and t2.H_AUDITFLAG='Y' " );

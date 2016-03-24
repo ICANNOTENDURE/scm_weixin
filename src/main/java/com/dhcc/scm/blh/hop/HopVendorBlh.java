@@ -192,6 +192,7 @@ public class HopVendorBlh extends AbstractBaseBlh {
 				e.printStackTrace();
 			}       
 			String ip=addr.getHostAddress();//获得本机IP
+//			HopVendor hopVendor=commonService.get(HopVendor.class, dto.getHopVendor().getHopVendorId());
 			List<HopVendor> hopVendors=commonService.findByProperty(HopVendor.class, "hopVendorId", dto.getHopVendor().getHopVendorId());
 			List<Vendor> vendors=commonService.findByProperty(Vendor.class, "taxation",hopVendors.get(0).gethBusinessRegNo());//由hopVendors工商执照号得到vendor，已得到主键venid
 			
@@ -208,20 +209,68 @@ public class HopVendorBlh extends AbstractBaseBlh {
 			//update t_ven_vendor
 			List<Vendor> Vendors=commonService.findByProperty(Vendor.class, "vendorId", vendors.get(0).getVendorId());
 			if(Vendors.size()>0){
-				Vendors.get(0).setAudit_flag("I");// I 平台通过/ IN
+				Vendors.get(0).setAudit_flag("I");// I 平台通过/ IN 平台拒绝
     			commonService.saveOrUpdate(Vendors.get(0));
     		   }
 			//update T_VEN_REGHOP  
 			List<VenReghop> venReghops=commonService.findByProperty(VenReghop.class, "venid", vendors.get(0).getVendorId());
 			if(venReghops.size()>0){
-				venReghops.get(0).setAduitflag("I");// I 平台通过/ IN
+				venReghops.get(0).setAduitflag("I");// I 平台通过/ IN 平台拒绝
     			commonService.saveOrUpdate(venReghops.get(0));
     		   }
-			
 		}
-
 	}
-
+	
+	// ADD HXY 医院审核标志
+	public void hopAuditFLag(BusinessRequest res) {
+		InetAddress addr = null;
+		try {
+			addr = InetAddress.getLocalHost();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}       
+		String ip=addr.getHostAddress();//获得本机IP
+		 
+		HopVendorDto dto = super.getDto(HopVendorDto.class, res);
+		if (dto.getHopVendor().getHopVenId()!= null) {
+			VenAuditLog VALog=new VenAuditLog();
+			VALog.setLogvenid(dto.getHopVendor().getHopVenId());
+			VALog.setLoguserid(Long.valueOf((String) getLoginInfo().get("USERID")));
+			VALog.setLogdate(new Date());
+			VALog.setLogresult("Y");
+			VALog.setLogcontent(null);
+			VALog.setLogip(ip);
+			VALog.setLogtype("H");
+			commonService.saveOrUpdate(VALog);
+			dto.setOpFlg("1");
+   	   }
+	}
+	/*
+	 * 供应商对照界面 自动对照 按钮
+	 * hxy
+	 */
+	@SuppressWarnings({ "unchecked" })
+	public void autoContrast(BusinessRequest res) {
+		HopVendorDto dto = super.getDto(HopVendorDto.class, res);
+		
+		//HopVendor里vendorid是空的取法
+		DetachedCriteria detachedCriteria=DetachedCriteria.forClass(HopVendor.class);
+		detachedCriteria.add(Restrictions.eq("hopHopId", dto.getHopVendor().getHopHopId()));
+		detachedCriteria.add(Restrictions.isNull("hopVenId"));
+		List<HopVendor> hopVendors=commonService.findByDetachedCriteria(detachedCriteria);
+		
+		for(HopVendor hopVendor:hopVendors){
+			
+			List<Vendor> vendors=commonService.findByProperty(Vendor.class, "taxation", hopVendor.gethBusinessRegNo());
+			
+			if(vendors.size()>0){
+    			hopVendor.setHopVenId(vendors.get(0).getVendorId());
+    			commonService.saveOrUpdate(hopVendor);
+    		   }	
+		}
+		dto.setOpFlg("1");
+		
+	}
 	// 保存
 	public void save(BusinessRequest res) {
 
@@ -265,7 +314,6 @@ public class HopVendorBlh extends AbstractBaseBlh {
 		hopVendorService.findById(dto);
 
 	}
-	
 
 	/**
 	 * 
