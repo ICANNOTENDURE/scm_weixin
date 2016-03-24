@@ -130,25 +130,24 @@
    		});
     	
     	$("#autoContrast").on('click', function() {
-    		
     		if($("#hop").combobox('getValue').length != 1){
     			$CommonUI.alert("请选择医院!");
+    			return;
     		}
-    		else{$.post(
-     				
+    		$.post(
      				$WEB_ROOT_PATH+'/hop/hopVendorCtrl!autoContrast.htm',
      				{
      					'dto.hopVendor.hopHopId': $("#hop").combobox('getValue'),
      				},
-     				
      				function(data){
-     					if(data.dto.opFlg=="1"){
-     						$CommonUI.alert("操作成功!");//加提示多少条？
-     					}
+//    					if(data.dto.opFlg=="1"){
+                            $CommonUI.alert("对照成功："+data.resultContent+"条数据。");
+//     						$CommonUI.alert("操作成功!"); //加提示多少条？hopVendors.size()条吧 $.get(hopVendors.size()),
+//     					}
      				},
      				"json"
-     			);}
-     	});
+     			);
+    		});
     	
     	$("#queryZiZhi").on('click', function() {
     		if ($CommonUI.getDataGrid("#datagrid").datagrid('getSelections').length != 1) {

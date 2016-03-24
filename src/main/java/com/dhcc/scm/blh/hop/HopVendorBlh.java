@@ -249,10 +249,12 @@ public class HopVendorBlh extends AbstractBaseBlh {
 	 * 供应商对照界面 自动对照 按钮
 	 * hxy
 	 */
-	@SuppressWarnings({ "unchecked" })
+	@SuppressWarnings("unchecked")
 	public void autoContrast(BusinessRequest res) {
 		HopVendorDto dto = super.getDto(HopVendorDto.class, res);
 		
+		OperateResult operateResult=new OperateResult();
+		int count=0;
 		//HopVendor里vendorid是空的取法
 		DetachedCriteria detachedCriteria=DetachedCriteria.forClass(HopVendor.class);
 		detachedCriteria.add(Restrictions.eq("hopHopId", dto.getHopVendor().getHopHopId()));
@@ -266,10 +268,13 @@ public class HopVendorBlh extends AbstractBaseBlh {
 			if(vendors.size()>0){
     			hopVendor.setHopVenId(vendors.get(0).getVendorId());
     			commonService.saveOrUpdate(hopVendor);
+    			count++;
     		   }	
 		}
-		dto.setOpFlg("1");
-		
+		operateResult.setResultContent(String.valueOf(count));
+		//加了这个就不弹出提示了Caused by: java.lang.OutOfMemoryError: PermGen space
+//    	writeJSON(operateResult);
+//		dto.setOpFlg("1");
 	}
 	// 保存
 	public void save(BusinessRequest res) {
