@@ -43,6 +43,7 @@ import com.dhcc.framework.web.context.WebContextHolder;
 import com.dhcc.scm.blh.ord.OrdBlh;
 import com.dhcc.scm.dto.hop.HopVendorDto;
 import com.dhcc.scm.dto.sys.SysImpModelDto;
+import com.dhcc.scm.dto.ven.VenIncDto;
 import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.HopVendor;
 import com.dhcc.scm.entity.hop.Hospital;
@@ -50,6 +51,7 @@ import com.dhcc.scm.entity.sys.ImpModel;
 import com.dhcc.scm.entity.sys.SysLog;
 import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.ven.VenAuditLog;
+import com.dhcc.scm.entity.ven.VenHopInc;
 import com.dhcc.scm.entity.ven.VenReghop;
 import com.dhcc.scm.entity.ven.Vendor;
 import com.dhcc.scm.entity.vo.ws.HisVendorItmWeb;
@@ -244,34 +246,110 @@ public class HopVendorBlh extends AbstractBaseBlh {
 	 * @author hxy
 	 */	
 	
-	// ADD HXY 医院审核供应商 医院审核：①日志表；②服务医院表 T_VEN_REGHOP；③T_HOP_VENDOR：Y审核空 和 N未审核
+	// ADD HXY 医院审核供应商 医院审核：①②服务医院表 T_VEN_REGHOP；③T_HOP_VENDOR：空 、Y已审核 和 N未审核
 	public void hopAuditFLag(BusinessRequest res) {
-		InetAddress addr = null;
-		try {
-			addr = InetAddress.getLocalHost();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}       
-		String ip=addr.getHostAddress();//获得本机IP
-		 
 		HopVendorDto dto = super.getDto(HopVendorDto.class, res);
-		if (dto.getHopVendor().getHopVenId()!= null) {
-			VenAuditLog VALog=new VenAuditLog();
-			VALog.setLogvenid(dto.getHopVendor().getHopVenId());//供应商ID
-			VALog.setLoguserid(Long.valueOf((String) getLoginInfo().get("USERID")));
-			VALog.setLogdate(new Date());
-			VALog.setLogresult("Y");
-			VALog.setLogcontent(null);
-			VALog.setLogip(ip);
-			VALog.setLogtype("H");
-			commonService.saveOrUpdate(VALog);
-			dto.setOpFlg("1");
-   	   }
+		
+		dto.setOperateResult(new OperateResult());
+		
+		Long hopId=WebContextHolder.getContext().getVisit().getUserInfo().getHopId();//医院ID
+		//由医院ID取一次hopvendor 数据，然后再以vendorid 判断 ;或者倒过来
+		try {
+			
+			if(dto.getHopVendor().getHopVenId()!=null){
+//				HopVendor hopVendor=commonService.get(HopVendor.class,dto.getHopVendor().getHopVendorId());	
+				List<HopVendor> HopVendors=commonService.findByProperty(HopVendor.class, "hopVenId", dto.getHopVendor().getHopVendorId());
+				List<VenReghop> venReghops=commonService.findByProperty(VenReghop.class, "venid",HopVendors.get(0).getHopVenId());
+				if(HopVendors.size()>0){
+					for(HopVendor hopVendor:HopVendors){
+					    if(hopVendor.getHopHopId()==hopId){
+
+						   if(hopVendor.getHopAuditFlag()==null){
+								hopVendor.setHopAuditFlag("Y");
+						    	}else{
+								if(hopVendor.getHopAuditFlag().equals("N")){
+								  hopVendor.setHopAuditFlag("Y");
+								//Y
+								if(venReghops.size()>0){
+								 for(VenReghop venReghop:venReghops){
+									 venReghop.setAduitflag("H");//H 医院通过； HN 医院拒绝
+									 commonService.saveOrUpdate(venReghop);
+								 }}
+							
+								   	   
+						}else{
+							  hopVendor.setHopAuditFlag("N");
+										//N
+
+								if(venReghops.size()>0){
+								 for(VenReghop venReghop:venReghops){
+									 venReghop.setAduitflag("HN");//H 医院通过； HN 医院拒绝
+									 commonService.saveOrUpdate(venReghop);
+								 }}		
+									}
+								}
+								commonService.saveOrUpdate(hopVendor);
+								dto.getOperateResult().setResultCode("1");
+								
+					    	
+					    	} 
+					    	
+					   }
+					
+//					HopVendor hopVendorone = commonService.get(HopVendor.class, hopId);
+//					HopVendor hopVendor = commonService.get(HopVendor.class, dto.getHopVendor().getHopVenId());
+//					if(hopVendor.getHopAuditFlag()==null){
+//						hopVendor.setHopAuditFlag("Y");
+//					}else{
+//						if(hopVendor.getHopAuditFlag().equals("N")){
+//							hopVendor.setHopAuditFlag("Y");
+//							//Y
+//					   	   }
+//						}else{
+//							hopVendor.setHopAuditFlag("N");
+//							//N
+//						}
+//					}
+//					commonService.saveOrUpdate(hopVendor);
+//					dto.getOperateResult().setResultCode("1");
+//					super.writeJSON(dto.getOperateResult());
+				}
+				}
+			super.writeJSON(dto.getOperateResult());
+		} catch (Exception e) {
+			e.printStackTrace();
+			dto.getOperateResult().setResultContent((e.getMessage()));
+			super.writeJSON(dto.getOperateResult());
+		}
+		//同供应商同医院是一条；只限制供应商会有多条
+		//要根据供应商和医院 循环 判断	Long hopId=WebContextHolder.getContext().getVisit().getUserInfo().getHopId();
+//		HopVendor hopVendor = commonService.get(HopVendor.class, dto.getHopVendor().getHopVenId());
+		
+		
+//		if (dto.getHopVendor().getHopVenId()!= null) {
+//			VenAuditLog VALog=new VenAuditLog();
+//			VALog.setLogvenid(dto.getHopVendor().getHopVenId());//供应商ID
+//			VALog.setLoguserid(Long.valueOf((String) getLoginInfo().get("USERID")));
+//			VALog.setLogdate(new Date());
+//			VALog.setLogresult("Y");
+//			VALog.setLogcontent(null);
+//			VALog.setLogip(ip);
+//			VALog.setLogtype("H");//H 医院通过； HN 医院拒绝
+//			commonService.saveOrUpdate(VALog);
+//			
+//			List<VenReghop> venReghops=commonService.findByProperty(VenReghop.class, "venid", dto.getHopVendor().getHopVenId());
+//			if(venReghops.size()>0){
+//			    for(VenReghop venReghop:venReghops){
+//			    	 venReghop.setAduitflag("H");//H 医院通过； HN 医院拒绝
+//				    commonService.saveOrUpdate(venReghop);
+//			   }}
+//			dto.setOpFlg("1");
+//   	   }
 	}
 	
 	/**
 	 * 供应商对照界面 自动对照 按钮
-	 * hxy
+	 *  @author hxy
 	 */
 	@SuppressWarnings("unchecked")
 	public void autoContrast(BusinessRequest res) {

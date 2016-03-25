@@ -300,7 +300,8 @@ public class VendorDao extends HibernatePersistentObjectDAO<Vendor> {
 		hqlBuffer.append(" t1.ACCOUNT account, ");
 		hqlBuffer.append(" t1.CONTACT contact, ");
 		hqlBuffer.append(" t1.EMAIL email, ");
-		hqlBuffer.append(" t1.TAXATION taxation ");
+		hqlBuffer.append(" t1.TAXATION taxation, ");
+		hqlBuffer.append(" t2.H_VENID hopvendorid ");
 		hqlBuffer.append(" from ");
 		hqlBuffer.append(" T_VEN_VENDOR t1 left join T_HOP_VENDOR t2 on t1.VEN_ID=T2.H_VENDORID ");
 		hqlBuffer.append(" where 1=1 ");
