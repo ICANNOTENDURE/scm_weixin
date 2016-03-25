@@ -304,7 +304,7 @@ public class VendorDao extends HibernatePersistentObjectDAO<Vendor> {
 		hqlBuffer.append(" from ");
 		hqlBuffer.append(" T_VEN_VENDOR t1 left join T_HOP_VENDOR t2 on t1.VEN_ID=T2.H_VENDORID ");
 		hqlBuffer.append(" where 1=1 ");
-		//根据登录人员做判断
+		//根据登录人员做判断   感觉还是有问题
 		if(type==1){
 			hqlBuffer.append(" and t2.H_HOPID="+hopId );
 		}
