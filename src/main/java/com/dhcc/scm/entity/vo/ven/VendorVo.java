@@ -28,8 +28,16 @@ public class VendorVo {
 
 	private String taxation;
 	
+	private Long hopvendorid;
 	
-	
+	public Long getHopvendorid() {
+		return hopvendorid;
+	}
+
+	public void setHopvendorid(Long hopvendorid) {
+		this.hopvendorid = hopvendorid;
+	}
+
 	public String getAddress() {
 		return address;
 	}
