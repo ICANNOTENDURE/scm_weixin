@@ -30,6 +30,16 @@ public class VendorVo {
 	
 	private Long hopvendorid;
 	
+	private String auditflag;//add hxy
+		
+	public String getAuditflag() {
+		return auditflag;
+	}
+
+	public void setAuditflag(String auditflag) {
+		this.auditflag = auditflag;
+	}
+
 	public Long getHopvendorid() {
 		return hopvendorid;
 	}

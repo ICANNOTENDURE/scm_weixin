@@ -140,10 +140,10 @@
      					'dto.hopVendor.hopHopId': $("#hop").combobox('getValue'),
      				},
      				function(data){
-//    					if(data.dto.opFlg=="1"){
-                            $CommonUI.alert("对照成功："+data.resultContent+"条数据。");
-//     						$CommonUI.alert("操作成功!"); //加提示多少条？hopVendors.size()条吧 $.get(hopVendors.size()),
-//     					}
+    					if(data.dto.opFlg=="1"){
+//                            $CommonUI.alert("对照成功："+data.resultContent+"条数据。");  //undefined 条数据
+     						$CommonUI.alert("对照成功!"); //加提示多少条？hopVendors.size()条吧 $.get(hopVendors.size()),
+     					}
      				},
      				"json"
      			);

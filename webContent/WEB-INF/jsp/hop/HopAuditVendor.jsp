@@ -30,11 +30,10 @@
  })
 //审批资质
 function AuditT(value,row,index){
-	
-		if(row.auditFlag=="N"){
+		if(row.auditflag=="N"){
 				return '<a class="dhc-linkbutton l-btn l-btn-plain" onclick="javascript:UpdAudit('+index+')" ><span class="l-btn-left"><span class="l-btn-text icon-undo l-btn-icon-left"></span>取消拒绝</span></a>';
 			}else{
-				if(row.auditFlag=="Y"){
+				if(row.auditflag=="Y"){
 					return '<a class="dhc-linkbutton l-btn l-btn-plain" onclick="javascript:UpdAudit('+index+')" ><span class="l-btn-left"><span class="l-btn-text icon-no l-btn-icon-left"></span>拒绝</span></a>';
 				}else{
 					return '<a class="dhc-linkbutton l-btn l-btn-plain" onclick="javascript:UpdAudit('+index+')" ><span class="l-btn-left"><span class="l-btn-text icon-ok l-btn-icon-left"></span>审批</span></a>';
@@ -44,28 +43,27 @@ function AuditT(value,row,index){
 		
 	};
  function UpdAudit(row){
-	    vendorid=$('#datagrid').datagrid('getRows')[row]['vendorid'];
+//	    vendorid=$('#datagrid').datagrid('getRows')[row]['vendorid'];
 	    hopvendorid=$('#datagrid').datagrid('getRows')[row]['hopvendorid'];
-//		hopAuditFlag=$('#datagrid').datagrid('getRows')[row]['hopauditflag'];
 		$.post(
 			$WEB_ROOT_PATH+'/hop/hopVendorCtrl!hopAuditFLag.htm',
 			{
-				'dto.hopVendor.hopVenId': vendorid,
+//				'dto.hopVendor.hopVenId': vendorid,
 				'dto.hopVendor.hopVendorId': hopvendorid,
-//				'dto.hopVendor.hopAuditFlag': hopAuditFlag,
 			},
 			function(data){
-				if(data.resultCode=="1"){
+//				if(data.resultCode=="1"){
+				if(data.dto.opFlg=="1"){					
 					$CommonUI.alert("操作成功!");
 					$CommonUI.getDataGrid('#datagrid').datagrid('reload');
 				}else{
-					$CommonUI.alert("操作失败!"+data.resultContent);
+					$CommonUI.alert("操作失败!");				
+//					$CommonUI.alert("操作失败!"+data.resultContent);
 				}
 			},
 			"json"
 		);
 	}
-
  
  
  $(function(){
@@ -206,7 +204,7 @@ function AuditT(value,row,index){
                             	}
                         	}" width="1/13">审核意见</th>
                         	<th data-options="field:'hopvendorid',hidden:true" width="1/13">HopVendorId ID</th>
-							<th data-options="field:'auditFlag',formatter:AuditT,sortable:true" width="1/13">资质</th>
+							<th data-options="field:'auditflag',formatter:AuditT,sortable:true" width="1/13">资质</th>
 							
 						</tr>
 					</thead>
