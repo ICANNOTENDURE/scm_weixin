@@ -6,10 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Dic</title>
 <%@include file="/WEB-INF/jsp/common/scriptInc.jsp"%>
-<script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/uploadify/jquery.uploadify.min.js"></script>
-<link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/css/uploadify.css">
+<%@include file="/WEB-INF/jsp/common/scriptUploadify.jsp"%>
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/js/dhcc/pms/ven/VenInc.js"></script>
 <style>
@@ -76,6 +73,12 @@
 							<td class="textParent"><input style="width: 250px;"
 								class="validatebox" type="text" name="dto.venInc.venIncUomname"
 								data-options="required:true" id="venIncUomname" /></td>
+						</tr>
+						<tr>
+							<td class="textLabel">商品条码:</td>
+							<td class="textParent" colspan="3"><input style="width: 100%;"
+								class="validatebox" type="text" name="dto.venInc.venIncBarCode"
+								data-options="required:true" id="venIncUomcode" /></td>
 						</tr>
 						<tr>
 							<td class="textLabel">价格:</td>
