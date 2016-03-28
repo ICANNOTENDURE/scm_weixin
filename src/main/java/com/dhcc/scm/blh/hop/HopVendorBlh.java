@@ -257,7 +257,7 @@ public class HopVendorBlh extends AbstractBaseBlh {
 			   if(dto.getHopVendor().getHopVendorId()!=null){
 				  HopVendor hopVendor=commonService.get(HopVendor.class,dto.getHopVendor().getHopVendorId());	
 				  List<VenReghop> venReghops=commonService.findByProperty(VenReghop.class, "venid", hopVendor.getHopVenId());//为了共用优化到上边来的
-				  if(hopVendor.getHopHopId()==hopId){
+//				  if(hopVendor.getHopHopId()==hopId){
 					 if(hopVendor.getHopAuditFlag()==null){
 						 hopVendor.setHopAuditFlag("Y");
 					 }else{
@@ -266,15 +266,19 @@ public class HopVendorBlh extends AbstractBaseBlh {
 							 //Y
 							 if(venReghops.size()>0){
 							     for(VenReghop venReghop:venReghops){
+							    	 if(venReghop.getReghophopid()==hopVendor.getHopHopId()){
 							    	  venReghop.setAduitflag("H");//H 医院通过； HN 医院拒绝
+							    	 }
 								      commonService.saveOrUpdate(venReghop);
 							     }}
 						 }else{
 							 hopVendor.setHopAuditFlag("N");
 							 //N
-							 if(venReghops.size()>0){
+							 if(venReghops.size()>0){								
 							     for(VenReghop venReghop:venReghops){
+							    	 if(venReghop.getReghophopid()==hopVendor.getHopHopId()){
 							    	  venReghop.setAduitflag("HN");//H 医院通过； HN 医院拒绝
+							          }
 								      commonService.saveOrUpdate(venReghop);
 							     }}
 							 
@@ -285,7 +289,7 @@ public class HopVendorBlh extends AbstractBaseBlh {
 //					dto.getOperateResult().setResultCode("1");					
 //					super.writeJSON(dto.getOperateResult());
 					dto.setOpFlg("1");
-				  }//
+//				  }//
 				}
 			   
 			
