@@ -177,7 +177,7 @@ public class VenIncDao extends HibernatePersistentObjectDAO<VenInc> {
 			Long manfDr = venInc.getVenIncManfid();
 			Long venDr = venInc.getVenIncVenid();
 			if (!StringUtils.isNullOrEmpty(codeStr)) {
-				hqlBuffer.append(" AND t1.VEN_INC_CODE  like:codeStr ");
+				hqlBuffer.append(" AND t1.VEN_INC_BARCODE  like:codeStr ");
 				hqlParamMap.put("codeStr", "%" + codeStr + "%");
 			}
 			if (!StringUtils.isNullOrEmpty(nameStr)) {
@@ -288,7 +288,7 @@ public class VenIncDao extends HibernatePersistentObjectDAO<VenInc> {
 				hqlParamMap.put("hopincname11", "%" + dto.getVenIncContranstDto().getIncName() + "%");
 			}
 			if (!StringUtils.isNullOrEmpty(dto.getVenIncContranstDto().getIncCode())) {
-				hqlBuffer.append(" AND t1.inc_code  like :hopincode11 ");
+				hqlBuffer.append(" AND t1.INC_BARCODE  like :hopincode11 ");
 				hqlParamMap.put("hopincode11", "%" + dto.getVenIncContranstDto().getIncCode() + "%");
 			}
 			if (dto.getVenIncContranstDto().getFlag().equals("1")) {
@@ -296,6 +296,10 @@ public class VenIncDao extends HibernatePersistentObjectDAO<VenInc> {
 			}
 			if (dto.getVenIncContranstDto().getFlag().equals("2")) {
 				hqlBuffer.append(" AND t3.ven_inc_rowid is  null ");
+			}
+			if(dto.getVenIncContranstDto().getHopId()!=null){
+				hqlBuffer.append(" AND t1.inc_hospid  like :hopid ");
+				hqlParamMap.put("hopid", dto.getVenIncContranstDto().getHopId() );
 			}
 		}
 		dto.getPageModel().setQueryHql(hqlBuffer.toString());
@@ -367,6 +371,7 @@ public class VenIncDao extends HibernatePersistentObjectDAO<VenInc> {
 		hqlBuffer.append(" from t_ven_inc t1 ");
 		hqlBuffer.append("left join t_ven_hop_inc t2 on t2.ven_inc_id=t1.VEN_INC_ROWID ");
 		hqlBuffer.append("left join t_hop_inc t3 on t3.inc_id=t2.hop_inc_id  ");
+		//医院用户审核自己医院的商品
 		if (WebContextHolder.getContext().getVisit().getUserInfo().getUserType() == 1) {
 			hqlBuffer.append(" and t3.inc_hospid =:incihopid ");
 			hqlParamMap.put("incihopid", WebContextHolder.getContext().getVisit().getUserInfo().getHopId());
@@ -429,6 +434,10 @@ public class VenIncDao extends HibernatePersistentObjectDAO<VenInc> {
 				if (dto.getVenIncContranstDto().getAuditflag().equals("3")) {
 					hqlBuffer.append(" AND t2.VEN_HOP_AUDITFLAG='N' ");
 				}
+			}
+			if(dto.getVenIncContranstDto().getHopId()!=null){
+				hqlBuffer.append(" and t3.inc_hospid =:hopid ");
+				hqlParamMap.put("hopid", dto.getVenIncContranstDto().getHopId());
 			}
 		}
 		if (dto.getVenInc() != null) {

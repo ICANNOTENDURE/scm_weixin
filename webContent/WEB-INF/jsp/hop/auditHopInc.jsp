@@ -80,18 +80,10 @@
     	});
     	
     
-
+    	$("#auditFlag").combobox('setValue',1);
     });
     function ConT(value,row,index){
-		if(row.facid==null){
-			str='<a id="addBt" class="dhc-linkbutton l-btn l-btn-plain" onclick="javascript:ConTra('+row.venincid+','+row.fac+')" data-options="iconCls:"icon-save"><span class="l-btn-left"><span class="l-btn-text icon-save l-btn-icon-left">对照</span></span></a>'
-			return str;
-		}else{
-			var str='<a id="addBt" class="dhc-linkbutton l-btn l-btn-plain" onclick="javascript:deleteTra('+index+')" data-options="iconCls:"icon-remove" title="删除"><span class="l-btn-left"><span class="l-btn-text icon-remove l-btn-icon-left"></span></span></a>';
-			str=str+'<a class="dhc-linkbutton l-btn l-btn-plain" data-options="iconCls:icon-edit" onclick="javascript:updateConTra('+index+')" title="保存"><span class="l-btn-left"><span class="l-btn-text icon-edit l-btn-icon-left"></span></span></a>';
-			return str;
-			
-		}
+		return '<a class="dhc-linkbutton l-btn l-btn-plain" data-options="iconCls:icon-edit" onclick="javascript:updateConTra('+index+')" title="保存"><span class="l-btn-left"><span class="l-btn-text icon-edit l-btn-icon-left"></span>保存</span></a>';
 	};
 	
 	//保存对照
@@ -279,6 +271,8 @@
 				    			 striped:true,
 				    			 singleselect:true,
 				    			 onClickCell:onClickCell,
+				    			 title:'医院审核供应商商品',
+				    			 iconCls:'icon-ok'
 								 ">
 								 
 					<thead>
@@ -308,8 +302,8 @@
 							<th data-options="field:'hopincname',width:100,sortable:true">医院商品名称</th>
 							
 							<th data-options="field:'facid',width:40,hidden:true">对照表rowID</th>
-							<th data-options="field:'contranst',width:60,formatter:ConT">对照</th>
-							<th data-options="field:'auditFlag',width:60,formatter:AuditT">资质</th>
+							<th data-options="field:'contranst',width:40,formatter:ConT">对照</th>
+							<th data-options="field:'auditFlag',width:40,formatter:AuditT">资质</th>
 						</tr>
 					</thead>
 				</table>

@@ -69,6 +69,7 @@
     		    	'dto.venIncContranstDto.incCode': $("#incHopCode").val(),
     		    	'dto.venIncContranstDto.flag': $("#hopFlag").combobox('getValue'),
     		    	'dto.venInc.venIncAlias': $("#incHopAlias").val(),
+    		    	'dto.venIncContranstDto.hopId': $("#hop").combobox('getValue'),
     			}
 
    		 	});
@@ -360,7 +361,7 @@
 		  <div  style="margin-bottom:5px;margin-top:5px">
 			商品名称: <input id="incHopName" style="width: 150px;"
 			type="text" />
-			商品代码: <input id="incHopCode" style="width: 150px;"
+			商品码: <input id="incHopCode" style="width: 150px;"
 			type="text" />
 			拼音码: <input id="incHopAlias" style="width: 150px;"
 			type="text" />
@@ -370,17 +371,17 @@
 				<option value="1">已对照</option>
 				<option value="2">未对照</option>
 			</select>
-			<a href="#" class="linkbutton" iconCls="icon-search" id="searchHopInc" >查询</a>
 			医&nbsp;&nbsp;院:
 			<input style="width: 105px;" class="combobox" type="text"  id="hop" />
-			<a href="#" class="linkbutton" iconCls="icon-search" id="conIncByBarCode" >按商品码匹配</a>
+			<a href="#" class="linkbutton" iconCls="icon-search" id="searchHopInc" >查询</a>
+			<a href="#" class="linkbutton" iconCls="icon-save" id="conIncByBarCode" >按商品码自动匹配</a>
 		 </div>
 	</div>	
     <div id="toolbar2" style="height: auto">
 		  <div  style="margin-bottom:5px;margin-top:5px">
 			商品名称: <input id="incVenName" style="width: 100px;"
 			type="text" />
-			商品代码: <input id="incVenCode" style="width: 100px;"
+			商品码: <input id="incVenCode" style="width: 100px;"
 			type="text" />
 			拼音码: <input id="incVenAlias" style="width: 100px;"
 			type="text" />

@@ -15,7 +15,7 @@
 	<div class="am-g am-container">
 		<section class="am-panel dhcc-panel-mt"> <header
 			class="am-panel-hd">
-		<h3 class="am-panel-title">供应商注册基本信息</h3>
+		<h3 class="am-panel-title">供应商商品基本信息</h3>
 		</header>
 
 		<form class="am-form am-form-horizontal">
