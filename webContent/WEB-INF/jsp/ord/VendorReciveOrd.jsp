@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Dic</title>
 <link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/js/easyui/themes/metro-blue/easyui.css">
+	href="<%=request.getContextPath()%>/js/easyui/themes/dhcc/easyui.css">
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/js/jquery/jquery-1.8.3.min.js"></script>
 <script type="text/javascript"
