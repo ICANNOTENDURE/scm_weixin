@@ -57,8 +57,15 @@ function AuditT(value,row,index){
 					$CommonUI.alert("操作成功!");
 					$CommonUI.getDataGrid('#datagrid').datagrid('reload');
 				}else{
+					
+//				    if(data.dto.opFlg=="0"){
+//				    	$CommonUI.alert("您不具备权限!");
+				    	
+//				    }else{
 					$CommonUI.alert("操作失败!");				
 //					$CommonUI.alert("操作失败!"+data.resultContent);
+//				    }
+				    
 				}
 			},
 			"json"
@@ -197,12 +204,7 @@ function AuditT(value,row,index){
 							<th data-options="field:'tel',sortable:true" width="1/13">电话</th>
 							<th data-options="field:'fax',sortable:true" width="1/13">传真</th>
 							<th data-options="field:'address',sortable:true" width="1/13">联系地址</th>
-							<th data-options="field:'venfac',sortable:true,editor : {
-								type : 'numberbox',
-                            	options : {
-                                	required : true
-                            	}
-                        	}" width="1/13">审核意见</th>
+							
                         	<th data-options="field:'hopvendorid',hidden:true" width="1/13">HopVendorId ID</th>
 							<th data-options="field:'auditflag',formatter:AuditT,sortable:true" width="1/13">资质</th>
 							
