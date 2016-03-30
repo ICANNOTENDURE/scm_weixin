@@ -21,6 +21,7 @@ import com.dhcc.scm.dto.weixin.MpInGdRecDto;
 @Namespace(value = "/weixin")
 @Scope("prototype")
 @Action(value = "mpInGdRecCtrl", results = {
+		@Result(name = "mpEvalute", location = "/WEB-INF/jsp/weixin/mpEvalute.jsp"),
 		@Result(name = "mpListInGdRecDetail", location = "/WEB-INF/jsp/weixin/mpListInGdRecDetail.jsp"),
 		@Result(name = "mpListInGdRec", location = "/WEB-INF/jsp/weixin/mpListInGdRec.jsp"),
 		@Result(name = "mpSearchIngdRec", location = "/WEB-INF/jsp/weixin/mpSearchInGdRec.jsp"),
@@ -30,7 +31,7 @@ import com.dhcc.scm.dto.weixin.MpInGdRecDto;
 @Blh("mpInGdRecBlh")
 @MpOAuthRequireds({@MpOAuthRequired(BlhMethod="mpInGdRec"),@MpOAuthRequired(BlhMethod="mpSearchIngdRec"),@MpOAuthRequired(BlhMethod="mpListInGdRec")})
 public class MpInGdRecAction extends BaseAction {
-	
+	 
 	private static final long serialVersionUID = 1L;
 	
 	private MpInGdRecDto dto = new MpInGdRecDto();

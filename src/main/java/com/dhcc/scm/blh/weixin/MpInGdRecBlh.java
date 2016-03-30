@@ -347,4 +347,11 @@ public class MpInGdRecBlh extends AbstractBaseBlh {
 		}
 		return "mpListInGdRecDetail";
 	}
+	
+	
+	
+	public String mpEvalute(BusinessRequest res){
+		
+		return "mpEvalute";
+	}
 }
