@@ -58,8 +58,7 @@ public class VendorBlh extends AbstractBaseBlh {
 	@Resource
 	private CommonService commonService;
 	
-
-		
+	
 	public VendorBlh() {
 		
 	}
@@ -92,6 +91,19 @@ public class VendorBlh extends AbstractBaseBlh {
 		//调用对应的service方法
 		vendorService.listVendor(dto);
 	}
+	/**
+	 * 
+	* @Title: listVendorHistory 
+	* @Description: TODO(供应商注册审) 	
+	* @author hxy 
+	* @date 2016年3月31日 13:33:03
+	 */
+	public void listVendorHistory(BusinessRequest res) {
+		VendorDto dto = super.getDto(VendorDto.class, res);
+		//调用对应的service方法
+		vendorService.listVendorHistory(dto);	
+	}
+	
 	/**
 	 * 
 	* @Title: VendorBlh.java
