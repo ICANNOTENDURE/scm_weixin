@@ -44,4 +44,6 @@ public interface VendorService {
 	public Long findVendorIdByName(String name);
 	
 	public void listVendor(VendorDto dto);
+    //add hxy 2016-03-31
+	public void listVendorHistory(VendorDto dto);
 }

@@ -3,6 +3,8 @@
  */
 package com.dhcc.scm.entity.vo.ven;
 
+import java.util.Date;
+
 
 
 
@@ -31,7 +33,55 @@ public class VendorVo {
 	private Long hopvendorid;
 	
 	private String auditflag;//add hxy
-		
+	
+	//hxy 2016-03-30 历史查询 尝试
+	private Long loguserid;
+	private Date logdate;
+	private String logresult;
+	private String logip;
+	private String logtype;
+	
+	public Long getLoguserid() {
+		return loguserid;
+	}
+
+	public void setLoguserid(Long loguserid) {
+		this.loguserid = loguserid;
+	}
+
+	public Date getLogdate() {
+		return logdate;
+	}
+
+	public void setLogdate(Date logdate) {
+		this.logdate = logdate;
+	}
+
+	public String getLogresult() {
+		return logresult;
+	}
+
+	public void setLogresult(String logresult) {
+		this.logresult = logresult;
+	}
+
+	public String getLogip() {
+		return logip;
+	}
+
+	public void setLogip(String logip) {
+		this.logip = logip;
+	}
+
+	public String getLogtype() {
+		return logtype;
+	}
+
+	public void setLogtype(String logtype) {
+		this.logtype = logtype;
+	}
+	//hxy 2016-03-30 历史查询
+	
 	public String getAuditflag() {
 		return auditflag;
 	}
