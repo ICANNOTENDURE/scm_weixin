@@ -352,6 +352,8 @@ public class MpInGdRecBlh extends AbstractBaseBlh {
 	
 	public String mpEvalute(BusinessRequest res){
 		
+		MpInGdRecDto dto = super.getDto(MpInGdRecDto.class, res);
+		dto.setTitle("商品评价");
 		return "mpEvalute";
 	}
 }
