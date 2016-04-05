@@ -29,7 +29,10 @@ import com.dhcc.scm.dto.weixin.MpInGdRecDto;
 		@Result(name = "mpSubscribe", location = "/WEB-INF/jsp/weixin/mpSubscribe.jsp"),
 		@Result(name = "mpInGdRec", location = "/WEB-INF/jsp/weixin/mpInGdRec.jsp")})
 @Blh("mpInGdRecBlh")
-@MpOAuthRequireds({@MpOAuthRequired(BlhMethod="mpInGdRec"),@MpOAuthRequired(BlhMethod="mpSearchIngdRec"),@MpOAuthRequired(BlhMethod="mpListInGdRec")})
+@MpOAuthRequireds({@MpOAuthRequired(BlhMethod="mpInGdRec"),
+				  @MpOAuthRequired(BlhMethod="mpSearchIngdRec"),
+				  @MpOAuthRequired(BlhMethod="mpListInGdRec"),
+				  @MpOAuthRequired(BlhMethod="mpEvalute")})
 public class MpInGdRecAction extends BaseAction {
 	 
 	private static final long serialVersionUID = 1L;

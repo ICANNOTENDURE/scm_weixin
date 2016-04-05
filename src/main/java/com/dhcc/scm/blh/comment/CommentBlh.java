@@ -235,7 +235,7 @@ public class CommentBlh extends AbstractBaseBlh {
 	* @author zhouxin   
 	* @date 2015年5月21日 上午9:58:03
 	 */
-	public void getIncComment(BusinessRequest res) throws IOException {
+	public void getIncComment(BusinessRequest res) {
 		CommentDto dto=super.getDto(CommentDto.class, res);
 		NurseIncDto nurseIncDto=new NurseIncDto();
 		OrdShopping ordShopping=new OrdShopping();
@@ -278,5 +278,20 @@ public class CommentBlh extends AbstractBaseBlh {
 		}
 		dto.setCatGroupProperties(catGroupProperties);
 		return "listMain";
+	}
+	
+	
+	
+	public void saveMpEle(BusinessRequest res){
+		CommentDto dto=super.getDto(CommentDto.class, res);
+		if(dto.getEvalute()!=null){
+			dto.getEvalute().setEleDate(new Date());
+			dto.getEvalute().setEleUserId(super.getMpUserId().getAccountId());
+			commonService.saveOrUpdate(dto.getEvalute());
+			dto.getOperateResult().setResultCode("1");
+		}else{
+			dto.getOperateResult().setResultContent("入参为空");
+		}
+		writeJSON(dto.getOperateResult());
 	}
 }	

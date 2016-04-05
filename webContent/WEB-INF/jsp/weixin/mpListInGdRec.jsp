@@ -14,12 +14,18 @@
 <title>东华医疗供应链(SCI)</title>
 <script type="text/javascript">
 	$(function() {
-		$(".deliver-history-list li").on('click',
+		$(".deliver-history-list li h1").on('click',
 						function() {
 							window.location.href = $WEB_ROOT_PATH
 									+ "/weixin/mpInGdRecCtrl!mpListInGdRecDetail.htm?dto.stInGdRec.ingdrecId="
-									+ $(this).children().first().val();
+									+ $(this).parent().parent().attr("data-id");
 						});
+		$(".deliver-history-list li div").on('click',
+				function() {
+					window.location.href = $WEB_ROOT_PATH
+							+ "/weixin/mpInGdRecCtrl!mpEvalute.htm?dto.stInGdRec.ingdrecId="
+							+ $(this).parent().val();
+				});
 	});
 	function goUrl(pageNo){
 		$("#qurPageNo").val(pageNo);
@@ -54,17 +60,16 @@
 			<div data-tab-panel-0 class="am-tab-panel am-active">
 				<ul class="deliver-history-list">
 					<s:iterator value="dto.gdRecVOs" status="status" id="pageData">
-						<li ng-repeat="item in jobList">
-							<input type="hidden" value="${pageData.id}">
+						<li ng-repeat="item in jobList" data-id="${pageData.id}" >
 							<header class="ellipsis">
-								<h1 class="title ng-binding">${pageData.no}</h1>
+								<h1 class="title ng-binding" data-id="${pageData.id}">${pageData.no}</h1>
 							</header>
-							<div class="status ng-binding">${pageData.user}</div>
+							<div class="status ng-binding">评价</div>
 							<p class="ellipsis ng-binding">
-								<span class="salary ng-binding">${pageData.ven}</span>|
-								${pageData.loc}
+								<span class="salary ng-binding">${pageData.ven}</span>|${pageData.loc}
 							</p>
-							<p class="time ng-binding">${pageData.date}</p></li>
+							<p class="time ng-binding">${pageData.date} ${pageData.user}</p>
+						</li>
 					</s:iterator>
 				</ul>
 				<div class="am-margin am-cf">

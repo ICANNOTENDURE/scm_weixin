@@ -57,6 +57,10 @@ public class Evalute implements Serializable {
 	@Column(name="ELE_VENINCID")
 	private Long eleVenIncId;
 	
+	/*扫码入库主表Id*/
+	@Column(name="ele_ingdrecid")
+	private Long eleIngdrecId;
+	
 	/*物流*/
 	@Column(name="ELE_SPEED")
 	private String eleSpeed;
@@ -224,5 +228,21 @@ public class Evalute implements Serializable {
 	}
 
 
+
+
+
+	public Long getEleIngdrecId() {
+		return eleIngdrecId;
+	}
+
+
+
+
+
+	public void setEleIngdrecId(Long eleIngdrecId) {
+		this.eleIngdrecId = eleIngdrecId;
+	}
+
+	
 
 }

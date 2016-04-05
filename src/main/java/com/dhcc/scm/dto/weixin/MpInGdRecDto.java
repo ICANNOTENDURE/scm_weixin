@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.dhcc.framework.transmission.dto.BaseDto;
+import com.dhcc.scm.entity.hop.Evalute;
 import com.dhcc.scm.entity.st.StInGdRec;
 import com.dhcc.scm.entity.st.StInGdRecItm;
 import com.dhcc.scm.entity.st.StInGdRecPic;
@@ -51,8 +52,18 @@ public class MpInGdRecDto extends BaseDto {
 	
 	private List<StInGdRecPic> inGdRecPics;
 	
+	private Evalute evalute;
 	
 	
+	
+
+	public Evalute getEvalute() {
+		return evalute;
+	}
+
+	public void setEvalute(Evalute evalute) {
+		this.evalute = evalute;
+	}
 
 	public List<StInGdRecPic> getInGdRecPics() {
 		return inGdRecPics;

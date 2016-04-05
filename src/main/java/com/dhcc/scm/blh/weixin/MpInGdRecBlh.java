@@ -27,6 +27,7 @@ import com.dhcc.framework.transmission.event.BusinessRequest;
 import com.dhcc.framework.util.JsonUtils;
 import com.dhcc.scm.dto.st.StInGdRecDto;
 import com.dhcc.scm.dto.weixin.MpInGdRecDto;
+import com.dhcc.scm.entity.hop.Evalute;
 import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.HopInc;
 import com.dhcc.scm.entity.manf.HopManf;
@@ -354,6 +355,14 @@ public class MpInGdRecBlh extends AbstractBaseBlh {
 		
 		MpInGdRecDto dto = super.getDto(MpInGdRecDto.class, res);
 		dto.setTitle("商品评价");
+		if(dto.getStInGdRec().getIngdrecId()!=null){
+			StInGdRec inGdRec=commonService.get(StInGdRec.class, dto.getStInGdRec().getIngdrecId());
+			dto.setStInGdRec(inGdRec);
+			List<Evalute> evalutes=commonService.findByProperty(Evalute.class, "eleIngdrecId", inGdRec.getIngdrecId());
+			if(evalutes.size()>0){
+				dto.setEvalute(evalutes.get(0));
+			}
+		}
 		return "mpEvalute";
 	}
 }
