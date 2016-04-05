@@ -27,7 +27,7 @@ public class EvalutePic implements Serializable {
 	@Id
 	@GenericGenerator(name="idGenerator",strategy="identity")
 	@GeneratedValue(generator="idGenerator")	
-	@Column(name="pid_id", unique=true, nullable=false, precision=22)
+	@Column(name="pic_id", unique=true, nullable=false, precision=22)
 	private Long picId;
 
 	/*扫码入库主表Id*/

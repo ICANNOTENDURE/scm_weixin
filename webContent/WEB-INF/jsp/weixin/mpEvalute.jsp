@@ -33,8 +33,9 @@
 						       		<div class='thumbnail'>
 						        		<img width='200' height='200'  src="<%=request.getContextPath()%>/uploads/weixin/${evalutePics.picpath}" >
 						      			<div class='caption'>
-											<p><button type='button' class='btn btn-success' onclick='viewPic(this)'>预览</button>
-											<button type='button' class='btn btn-danger' onclick='deletePic(this)'>删除</button></p>
+											<p>
+												<button type='button' class='btn btn-success' onclick='viewPic(this)'>预览</button>
+											</p>
 										</div>
 									</div>
 								</div>

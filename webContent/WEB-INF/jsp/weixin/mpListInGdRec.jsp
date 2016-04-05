@@ -24,7 +24,7 @@
 				function() {
 					window.location.href = $WEB_ROOT_PATH
 							+ "/weixin/mpInGdRecCtrl!mpEvalute.htm?dto.stInGdRec.ingdrecId="
-							+ $(this).parent().val();
+							+ $(this).parent().attr("data-id");
 				});
 	});
 	function goUrl(pageNo){
