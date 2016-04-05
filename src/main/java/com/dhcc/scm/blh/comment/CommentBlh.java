@@ -5,21 +5,29 @@
 package com.dhcc.scm.blh.comment;
 
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Resource;
+
+import me.chanjar.weixin.common.exception.WxErrorException;
+import me.chanjar.weixin.mp.api.WxMpService;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.struts2.ServletActionContext;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
 
 import com.dhcc.framework.app.blh.AbstractBaseBlh;
 import com.dhcc.framework.app.service.CommonService;
+import com.dhcc.framework.common.BaseConstants;
 import com.dhcc.framework.transmission.event.BusinessRequest;
 import com.dhcc.framework.web.context.WebContextHolder;
 import com.dhcc.scm.dao.comment.CommentDao;
@@ -28,6 +36,7 @@ import com.dhcc.scm.dto.nur.NurseIncDto;
 import com.dhcc.scm.entity.cat.CatGroupProperty;
 import com.dhcc.scm.entity.cat.CatProperty;
 import com.dhcc.scm.entity.hop.Evalute;
+import com.dhcc.scm.entity.hop.EvalutePic;
 import com.dhcc.scm.entity.hop.EvaluteSub;
 import com.dhcc.scm.entity.ord.OrdShopping;
 import com.dhcc.scm.entity.ord.OrderDetail;
@@ -36,6 +45,7 @@ import com.dhcc.scm.entity.ven.VenIncProperty;
 import com.dhcc.scm.entity.ven.Vendor;
 import com.dhcc.scm.entity.vo.comment.CommentVenVO;
 import com.dhcc.scm.service.nur.NurseService;
+import com.dhcc.scm.tool.datetime.OperTime;
 
 /**
  * 
@@ -60,6 +70,9 @@ public class CommentBlh extends AbstractBaseBlh {
 	
 	@Resource
 	private NurseService nurseService;
+	
+	@Resource
+	private WxMpService wxMpService;
 	
 	public CommentBlh() {
 		
@@ -287,6 +300,40 @@ public class CommentBlh extends AbstractBaseBlh {
 		if(dto.getEvalute()!=null){
 			dto.getEvalute().setEleDate(new Date());
 			dto.getEvalute().setEleUserId(super.getMpUserId().getAccountId());
+			List<EvalutePic> evalutePics = new ArrayList<EvalutePic>();
+			if(org.apache.commons.lang3.StringUtils.isNotBlank(dto.getImgIdStr())){
+				// 获取文件存储路径
+				String storageFileName = ServletActionContext.getServletContext().getRealPath("/uploads/weixin");
+				// 判断文件存储路径是否存在，若不存在则自动新建
+				File document = new File(storageFileName);
+				if (!document.exists()) {
+					document.mkdir();
+				}
+				String[] mediaIds = dto.getImgIdStr().split(BaseConstants.COMMA);
+				for (String mediaId : mediaIds) {
+					if (org.apache.commons.lang3.StringUtils.isBlank(mediaId)) {
+						continue;
+					}
+					try {
+						File wxFile = wxMpService.mediaDownload(mediaId);
+						String newFileName = "ELEINGDREC" + OperTime.getCurrentDate() + "_" + UUID.randomUUID().toString() + com.dhcc.framework.util.FileUtils.getFileExp(wxFile.getName());
+						File dstFile = new File(storageFileName, newFileName);
+						com.dhcc.framework.util.FileUtils.copyFile(wxFile, dstFile, BaseConstants.BUFFER_SIZE);
+						EvalutePic inGdRecPic = new EvalutePic();
+						inGdRecPic.setPicpath(newFileName);
+						inGdRecPic.setPicIngdrecId(dto.getEvalute().getEleIngdrecId());
+						evalutePics.add(inGdRecPic);
+					} catch (WxErrorException e) {
+						e.printStackTrace();
+						dto.getOperateResult().setResultContent(e.getMessage());
+						writeJSON(dto.getOperateResult());
+						return;
+					}
+				}
+			}
+			for(EvalutePic evalutePic:evalutePics){
+				commonService.saveOrUpdate(evalutePic);
+			}
 			commonService.saveOrUpdate(dto.getEvalute());
 			dto.getOperateResult().setResultCode("1");
 		}else{

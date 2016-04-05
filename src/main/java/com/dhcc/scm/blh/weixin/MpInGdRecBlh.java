@@ -28,6 +28,7 @@ import com.dhcc.framework.util.JsonUtils;
 import com.dhcc.scm.dto.st.StInGdRecDto;
 import com.dhcc.scm.dto.weixin.MpInGdRecDto;
 import com.dhcc.scm.entity.hop.Evalute;
+import com.dhcc.scm.entity.hop.EvalutePic;
 import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.HopInc;
 import com.dhcc.scm.entity.manf.HopManf;
@@ -58,7 +59,7 @@ public class MpInGdRecBlh extends AbstractBaseBlh {
 
 	@Resource
 	private WxMpConfigStorage wxMpConfigStorage;
-	
+
 	@Resource
 	private StInGdRecService stInGdRecService;
 
@@ -236,15 +237,13 @@ public class MpInGdRecBlh extends AbstractBaseBlh {
 			super.writeJSON(gdRec);
 		}
 	}
-	
 
-	
-	//保存入库单
+	// 保存入库单
 	public void saveIngdRec(BusinessRequest res) {
 		MpInGdRecDto dto = super.getDto(MpInGdRecDto.class, res);
-		OperateResult operateResult=new OperateResult();
+		OperateResult operateResult = new OperateResult();
 		dto.setOperateResult(operateResult);
-		if(org.apache.commons.lang3.StringUtils.isBlank(dto.getOrdSubIdStr())){
+		if (org.apache.commons.lang3.StringUtils.isBlank(dto.getOrdSubIdStr())) {
 			operateResult.setResultContent("入参为空");
 			writeJSON(operateResult);
 			return;
@@ -256,18 +255,18 @@ public class MpInGdRecBlh extends AbstractBaseBlh {
 		if (!document.exists()) {
 			document.mkdir();
 		}
-		String[] mediaIds=dto.getImgIdStr().split(BaseConstants.COMMA);
-		List<StInGdRecPic> stInGdRecPics=new ArrayList<StInGdRecPic>();
-		for(String mediaId:mediaIds){
-			if(org.apache.commons.lang3.StringUtils.isBlank(mediaId)){
+		String[] mediaIds = dto.getImgIdStr().split(BaseConstants.COMMA);
+		List<StInGdRecPic> stInGdRecPics = new ArrayList<StInGdRecPic>();
+		for (String mediaId : mediaIds) {
+			if (org.apache.commons.lang3.StringUtils.isBlank(mediaId)) {
 				continue;
 			}
 			try {
-				File wxFile=wxMpService.mediaDownload(mediaId);
-				String newFileName = "INGDREC"+OperTime.getCurrentDate()+"_"+UUID.randomUUID().toString()+ com.dhcc.framework.util.FileUtils.getFileExp(wxFile.getName());
+				File wxFile = wxMpService.mediaDownload(mediaId);
+				String newFileName = "INGDREC" + OperTime.getCurrentDate() + "_" + UUID.randomUUID().toString() + com.dhcc.framework.util.FileUtils.getFileExp(wxFile.getName());
 				File dstFile = new File(storageFileName, newFileName);
 				com.dhcc.framework.util.FileUtils.copyFile(wxFile, dstFile, BaseConstants.BUFFER_SIZE);
-				StInGdRecPic inGdRecPic=new StInGdRecPic();
+				StInGdRecPic inGdRecPic = new StInGdRecPic();
 				inGdRecPic.setIngdrecpicPath(newFileName);
 				stInGdRecPics.add(inGdRecPic);
 			} catch (WxErrorException e) {
@@ -277,12 +276,12 @@ public class MpInGdRecBlh extends AbstractBaseBlh {
 				return;
 			}
 		}
-		
-		StInGdRec stInGdRec=new StInGdRec();
+
+		StInGdRec stInGdRec = new StInGdRec();
 		stInGdRec.setIngdrecRemark(dto.getRemark());
 		stInGdRec.setIngdrecLocId(getMpUserId().getNormalUser().getLocId());
 		stInGdRec.setIngdrecUserId(getMpUserId().getAccountId());
-		StInGdRecDto stDto=new StInGdRecDto();
+		StInGdRecDto stDto = new StInGdRecDto();
 		stDto.setStInGdRec(stInGdRec);
 		stDto.setOrdSubId(dto.getOrdSubIdStr());
 		stDto.setInGdRecPics(stInGdRecPics);
@@ -291,11 +290,10 @@ public class MpInGdRecBlh extends AbstractBaseBlh {
 		operateResult.setResultCode("0");
 		writeJSON(operateResult);
 	}
-	
-	
-	//查询入库单
+
+	// 查询入库单
 	public String mpSearchIngdRec(BusinessRequest res) {
-		
+
 		MpInGdRecDto dto = super.getDto(MpInGdRecDto.class, res);
 		dto.setTitle("入库单查询");
 		NormalAccount normalAccount = super.getMpUserId();
@@ -308,10 +306,10 @@ public class MpInGdRecBlh extends AbstractBaseBlh {
 		}
 		return "mpSearchIngdRec";
 	}
-	
-	//查询入库单
+
+	// 查询入库单
 	public String mpListInGdRec(BusinessRequest res) {
-		
+
 		MpInGdRecDto dto = super.getDto(MpInGdRecDto.class, res);
 		dto.setTitle("入库单列表");
 		NormalAccount normalAccount = super.getMpUserId();
@@ -326,10 +324,8 @@ public class MpInGdRecBlh extends AbstractBaseBlh {
 		stInGdRecService.listInGdRec(dto);
 		return "mpListInGdRec";
 	}
-	
-	
-	
-	public String mpListInGdRecDetail(BusinessRequest res){
+
+	public String mpListInGdRecDetail(BusinessRequest res) {
 		MpInGdRecDto dto = super.getDto(MpInGdRecDto.class, res);
 		dto.setTitle("入库单明细");
 		NormalAccount normalAccount = super.getMpUserId();
@@ -340,29 +336,32 @@ public class MpInGdRecBlh extends AbstractBaseBlh {
 		if (normalAccount.getNormalUser().getType().longValue() != 1) {
 			return "noPermission";
 		}
-		if(dto.getStInGdRec().getIngdrecId()!=null){
-			List<StInGdRecPic> inGdRecPics=commonService.findByProperty(StInGdRecPic.class, "ingdrecpicParrefId", dto.getStInGdRec().getIngdrecId());
+		if (dto.getStInGdRec().getIngdrecId() != null) {
+			List<StInGdRecPic> inGdRecPics = commonService.findByProperty(StInGdRecPic.class, "ingdrecpicParrefId", dto.getStInGdRec().getIngdrecId());
 			dto.setInGdRecPics(inGdRecPics);
-			List<StInGdRecItm> inGdRecItms=commonService.findByProperty(StInGdRecItm.class, "ingdrecitmParrefId", dto.getStInGdRec().getIngdrecId());
+			List<StInGdRecItm> inGdRecItms = commonService.findByProperty(StInGdRecItm.class, "ingdrecitmParrefId", dto.getStInGdRec().getIngdrecId());
 			dto.setStInGdRecItms(inGdRecItms);
 		}
 		return "mpListInGdRecDetail";
 	}
-	
-	
-	
-	public String mpEvalute(BusinessRequest res){
-		
+
+	public String mpEvalute(BusinessRequest res) {
+
 		MpInGdRecDto dto = super.getDto(MpInGdRecDto.class, res);
 		dto.setTitle("商品评价");
-		if(dto.getStInGdRec().getIngdrecId()!=null){
-			StInGdRec inGdRec=commonService.get(StInGdRec.class, dto.getStInGdRec().getIngdrecId());
-			dto.setStInGdRec(inGdRec);
-			List<Evalute> evalutes=commonService.findByProperty(Evalute.class, "eleIngdrecId", inGdRec.getIngdrecId());
-			if(evalutes.size()>0){
-				dto.setEvalute(evalutes.get(0));
+		if (dto.getStInGdRec() != null) {
+			if (dto.getStInGdRec().getIngdrecId() != null) {
+				StInGdRec inGdRec = commonService.get(StInGdRec.class, dto.getStInGdRec().getIngdrecId());
+				dto.setStInGdRec(inGdRec);
+				List<Evalute> evalutes = commonService.findByProperty(Evalute.class, "eleIngdrecId", inGdRec.getIngdrecId());
+				if (evalutes.size() > 0) {
+					dto.setEvalute(evalutes.get(0));
+				}
+				List<EvalutePic> evalutePics=commonService.findByProperty(EvalutePic.class, "picIngdrecId", inGdRec.getIngdrecId());
+				dto.setEvalutePics(evalutePics);
 			}
 		}
+
 		return "mpEvalute";
 	}
 }

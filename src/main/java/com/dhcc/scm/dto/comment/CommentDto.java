@@ -60,9 +60,22 @@ public class CommentDto extends BaseDto {
 	
 	private List<ChartVO> chartVOs;
 	
+	private String imgIdStr;
+	
+	
 	
 
 	
+
+
+	public String getImgIdStr() {
+		return imgIdStr;
+	}
+
+
+	public void setImgIdStr(String imgIdStr) {
+		this.imgIdStr = imgIdStr;
+	}
 
 
 	public List<ChartVO> getChartVOs() {
