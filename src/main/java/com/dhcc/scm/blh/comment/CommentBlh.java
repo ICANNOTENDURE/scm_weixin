@@ -40,6 +40,7 @@ import com.dhcc.scm.entity.hop.EvalutePic;
 import com.dhcc.scm.entity.hop.EvaluteSub;
 import com.dhcc.scm.entity.ord.OrdShopping;
 import com.dhcc.scm.entity.ord.OrderDetail;
+import com.dhcc.scm.entity.st.StInGdRec;
 import com.dhcc.scm.entity.ven.VenInc;
 import com.dhcc.scm.entity.ven.VenIncProperty;
 import com.dhcc.scm.entity.ven.Vendor;
@@ -335,6 +336,11 @@ public class CommentBlh extends AbstractBaseBlh {
 				commonService.saveOrUpdate(evalutePic);
 			}
 			commonService.saveOrUpdate(dto.getEvalute());
+			StInGdRec inGdRec=commonService.get(StInGdRec.class, dto.getEvalute().getEleIngdrecId());
+			if(inGdRec!=null){
+				inGdRec.setIngdrecStatus("PJ");
+				commonService.saveOrUpdate(inGdRec);
+			}
 			dto.getOperateResult().setResultCode("1");
 		}else{
 			dto.getOperateResult().setResultContent("入参为空");

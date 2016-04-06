@@ -12,6 +12,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import com.dhcc.framework.common.BaseConstants;
@@ -134,6 +135,7 @@ public class StInGdRecDao extends HibernatePersistentObjectDAO<StInGdRec> {
 		hqlBuffer.append("	t1.ingdrec_no as no , ");
 		hqlBuffer.append("  t2.CTLOC_NAME as loc , ");
 		hqlBuffer.append("	t3.NAME as ven , ");
+		hqlBuffer.append("	t1.ingdrec_status as status , ");
 		hqlBuffer.append("	t4.ALIAS as user ");
 		hqlBuffer.append("	FROM ");
 		hqlBuffer.append(" t_st_ingdrec t1 ");
@@ -152,6 +154,14 @@ public class StInGdRecDao extends HibernatePersistentObjectDAO<StInGdRec> {
 		if(dto.getEndDate()!=null){
 			hqlBuffer.append("and t1.ingdrec_date <=:end ");
 			hqlParamMap.put("end", dto.getEndDate());
+		}
+		if(StringUtils.isNotBlank(dto.getStatus())){
+			if(dto.getStatus().equals("PJ")){
+				hqlBuffer.append("and t1.ingdrec_status='PJ' ");
+			}
+			if(dto.getStatus().equals("WPJ")){
+				hqlBuffer.append("and t1.ingdrec_status is null ");
+			}
 		}
 		if(dto.getPageModel()==null){
 			dto.setPageModel(new PagerModel());

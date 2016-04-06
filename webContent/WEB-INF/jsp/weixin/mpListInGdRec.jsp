@@ -4,13 +4,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1.0, maximun-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximun-scale=1.0, user-scalable=no">
 <META name="apple-mobile-web-app-capable" content="yes">
 <META name="apple-mobile-web-app-status-bar-style" content="black">
 <%@include file="/WEB-INF/jsp/common/amaze.jsp"%>
-<link href="<%=request.getContextPath()%>/css/weixin/ToDoTask.css"
-	rel="stylesheet" type="text/css" />
+<link href="<%=request.getContextPath()%>/css/weixin/ToDoTask.css" rel="stylesheet" type="text/css" />
 <title>东华医疗供应链(SCI)</title>
 <script type="text/javascript">
 	$(function() {
@@ -64,7 +62,16 @@
 							<header class="ellipsis">
 								<h1 class="title ng-binding" data-id="${pageData.id}">${pageData.no}</h1>
 							</header>
-							<div class="status ng-binding">评价</div>
+							<div class="status ng-binding">
+								<s:property value="pageData.status"/>
+								<s:set name="status" value="#pageData.status" />
+								<s:if test="#status=='PJ'">
+									查看评价
+								</s:if>
+								<s:else>
+									去评价
+								</s:else>
+							</div>
 							<p class="ellipsis ng-binding">
 								<span class="salary ng-binding">${pageData.ven}</span>|${pageData.loc}
 							</p>

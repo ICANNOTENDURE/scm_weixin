@@ -57,8 +57,18 @@ public class MpInGdRecDto extends BaseDto {
 	
 	private List<EvalutePic> evalutePics;
 	
+	private String status;
 	
 	
+	
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
 	public List<EvalutePic> getEvalutePics() {
 		return evalutePics;
