@@ -138,5 +138,14 @@ public interface HisInfoServiceInterface {
 	    @WSDLDocumentation("确认入库成功")
 	    public OperateResult cmpInGdRec(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="ingdrecId")Long ingdrecId);
 
-		
+	    @WebMethod
+	    @WebResult(name="operateResult")
+	    @WSDLDocumentation("获取发票号,通过入库子表id")
+	    public OperateResult getInvByRec(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="ingdrecId")Long ingdrecId);
+
+	    @WebMethod
+	    @WebResult(name="operateResult")
+	    @WSDLDocumentation("更新平台发票号")
+	    public OperateResult syncInvByRec(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="ingdrecId")Long ingdrecId,@WebParam(name="invno")String invno);
+
 }

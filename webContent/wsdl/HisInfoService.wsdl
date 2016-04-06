@@ -200,6 +200,10 @@
     <wsdl:part name="hisOrderWebVo" type="tns:hisOrderWebVo">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="syncInvByRecResponse">
+    <wsdl:part name="operateResult" type="tns:operateResult">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="getHopLocIncQtyResponse">
     <wsdl:part name="operateResult" type="tns:operateResult">
     </wsdl:part>
@@ -242,12 +246,24 @@
     <wsdl:part name="hisCmpRecWeb" type="tns:hisCmpRecWeb">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="getInvByRecResponse">
+    <wsdl:part name="operateResult" type="tns:operateResult">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="getRecItmByInv">
     <wsdl:part name="invNo" type="xsd:string">
     </wsdl:part>
     <wsdl:part name="hopName" type="xsd:string">
     </wsdl:part>
     <wsdl:part name="venName" type="xsd:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getInvByRec">
+    <wsdl:part name="usename" type="xsd:string">
+    </wsdl:part>
+    <wsdl:part name="password" type="xsd:string">
+    </wsdl:part>
+    <wsdl:part name="ingdrecId" type="xsd:long">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="getHisOrderResponse">
@@ -264,6 +280,16 @@
   </wsdl:message>
   <wsdl:message name="getHopLocIncQty">
     <wsdl:part name="hisIncLocQtyWeb" type="tns:hisIncLocQtyWeb">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="syncInvByRec">
+    <wsdl:part name="usename" type="xsd:string">
+    </wsdl:part>
+    <wsdl:part name="password" type="xsd:string">
+    </wsdl:part>
+    <wsdl:part name="ingdrecId" type="xsd:long">
+    </wsdl:part>
+    <wsdl:part name="invno" type="xsd:string">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="getHopVendorResponse">
@@ -335,6 +361,20 @@
       <wsdl:input name="getHopVendor" message="tns:getHopVendor">
     </wsdl:input>
       <wsdl:output name="getHopVendorResponse" message="tns:getHopVendorResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getInvByRec">
+<wsdl:documentation>获取发票号,通过入库子表id</wsdl:documentation>
+      <wsdl:input name="getInvByRec" message="tns:getInvByRec">
+    </wsdl:input>
+      <wsdl:output name="getInvByRecResponse" message="tns:getInvByRecResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="syncInvByRec">
+<wsdl:documentation>更新平台发票号</wsdl:documentation>
+      <wsdl:input name="syncInvByRec" message="tns:syncInvByRec">
+    </wsdl:input>
+      <wsdl:output name="syncInvByRecResponse" message="tns:syncInvByRecResponse">
     </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="getHopInc">
@@ -427,12 +467,30 @@
         <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="getInvByRec">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="getInvByRec">
+        <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
+      </wsdl:input>
+      <wsdl:output name="getInvByRecResponse">
+        <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="getHopInc">
       <soap:operation soapAction="" style="rpc"/>
       <wsdl:input name="getHopInc">
         <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
       </wsdl:input>
       <wsdl:output name="getHopIncResponse">
+        <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="syncInvByRec">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="syncInvByRec">
+        <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
+      </wsdl:input>
+      <wsdl:output name="syncInvByRecResponse">
         <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
       </wsdl:output>
     </wsdl:operation>

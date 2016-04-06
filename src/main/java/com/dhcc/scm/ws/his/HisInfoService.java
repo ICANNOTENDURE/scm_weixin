@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.jws.WebService;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
@@ -17,6 +18,7 @@ import com.dhcc.scm.blh.hop.HopIncLocBlh;
 import com.dhcc.scm.blh.hop.HopVendorBlh;
 import com.dhcc.scm.blh.ord.OrdBlh;
 import com.dhcc.scm.blh.ord.OrderBlh;
+import com.dhcc.scm.entity.ord.OrderDetailSub;
 import com.dhcc.scm.entity.st.StInGdRecItm;
 import com.dhcc.scm.entity.sys.SysLog;
 import com.dhcc.scm.entity.vo.ws.HisCmpRecWeb;
@@ -290,6 +292,74 @@ public class HisInfoService implements HisInfoServiceInterface{
 				commonService.saveOrUpdate(stInGdRecItm);
 				operateResult.setResultCode("0");
 				operateResult.setResultContent("success");
+			}
+		} catch (Exception e) {
+			operateResult.setResultCode("1");
+			operateResult.setResultContent("程序异常->Exception:"+e.getMessage());
+			return operateResult;
+		}finally{
+			log.setOpResult(JsonUtils.toJson(operateResult));
+			commonService.saveOrUpdate(log);
+		}
+		return operateResult;
+	}
+
+	@Override
+	public OperateResult getInvByRec(String usename, String password, Long ingdrecId) {
+		
+		OperateResult operateResult=new OperateResult();
+		SysLog log = new SysLog();
+		log.setOpArg("usename:"+usename+",password:"+password+",ingdrecId:"+ingdrecId);
+		log.setOpName("webservice获取发票号：》getInvByRec");
+		log.setOpDate(new Date());
+		log.setOpType("webservice");
+		log.setOpUser(usename);
+		try {
+			if(ingdrecId==null){
+				operateResult.setResultContent("入参为空!");
+				return operateResult;
+			}
+			StInGdRecItm stInGdRecItm=commonService.get(StInGdRecItm.class, ingdrecId);
+			if(stInGdRecItm!=null){
+				operateResult.setResultCode("0");
+				operateResult.setResultContent(stInGdRecItm.getIngdrecitmInvNo());
+			}
+		} catch (Exception e) {
+			operateResult.setResultCode("1");
+			operateResult.setResultContent("程序异常->Exception:"+e.getMessage());
+			return operateResult;
+		}finally{
+			log.setOpResult(JsonUtils.toJson(operateResult));
+			commonService.saveOrUpdate(log);
+		}
+		return operateResult;
+	}
+
+	@Override
+	public OperateResult syncInvByRec(String usename, String password, Long ingdrecId, String invno) {
+		OperateResult operateResult=new OperateResult();
+		SysLog log = new SysLog();
+		log.setOpArg("usename:"+usename+",password:"+password+",ingdrecId:"+ingdrecId+",invno:"+invno);
+		log.setOpName("webservice同步医院发票号：》syncInvByRec");
+		log.setOpDate(new Date());
+		log.setOpType("webservice");
+		log.setOpUser(usename);
+		try {
+			if(ingdrecId==null){
+				operateResult.setResultContent("入库表id为空!");
+				return operateResult;
+			}
+			if(StringUtils.isBlank(invno)){
+				operateResult.setResultContent("发票号为空!");
+				return operateResult;
+			}
+			StInGdRecItm stInGdRecItm=commonService.get(StInGdRecItm.class, ingdrecId);
+			if(stInGdRecItm!=null){
+				stInGdRecItm.setIngdrecitmInvNo(invno);
+				OrderDetailSub detailSub=commonService.get(OrderDetailSub.class, stInGdRecItm.getIngdrecitmOrdsubId());
+				commonService.saveOrUpdate(detailSub);
+				commonService.saveOrUpdate(stInGdRecItm);
+				operateResult.setResultCode("0");
 			}
 		} catch (Exception e) {
 			operateResult.setResultCode("1");
