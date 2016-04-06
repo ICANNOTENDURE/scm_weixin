@@ -236,6 +236,7 @@ public class HopVendorBlh extends AbstractBaseBlh {
 	/**
 	 * 医院审核供应商
 	 * @author hxy
+	 * 拒绝时候弹出审核意见输入框
 	 */	
 	
 	// ADD HXY 医院审核供应商 医院审核：①服务医院表 T_VEN_REGHOP；②T_HOP_VENDOR：空 、Y已审核 和 N未审核
@@ -294,7 +295,7 @@ public class HopVendorBlh extends AbstractBaseBlh {
 							 VALog.setLoguserid(Long.valueOf((String) getLoginInfo().get("USERID")));
 						   	 VALog.setLogdate(new Date());
 							 VALog.setLogresult("N");
-							 VALog.setLogcontent(null);
+							 VALog.setLogcontent(dto.getRemark());
 							 VALog.setLogip(ip);
 							 VALog.setLogtype("H");
 							 commonService.saveOrUpdate(VALog);							 
@@ -310,8 +311,7 @@ public class HopVendorBlh extends AbstractBaseBlh {
 //					dto.setOpFlg("0");
 //				  }//
 //				}
-			   
-		
+			   	
 		} catch (Exception e) {
 			e.printStackTrace();
 			dto.getOperateResult().setResultContent((e.getMessage()));
@@ -351,6 +351,7 @@ public class HopVendorBlh extends AbstractBaseBlh {
 //    	writeJSON(operateResult);
 		dto.setOpFlg("1");
 	}
+
 	
 	// 保存
 	public void save(BusinessRequest res) {
