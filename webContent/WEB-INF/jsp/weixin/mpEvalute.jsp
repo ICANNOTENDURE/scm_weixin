@@ -44,16 +44,16 @@
 			<s:set name="eleId" value="dto.evalute.evaluteId" />
 			<s:if test="#eleId<=0">
 					<div class="row">
-						<div class="col-xs-5 col-xs-offset-7">
+						<div class="col-xs-6 col-xs-offset-6">
 							<button type="button" class="btn btn-success" id="uppic">上传照片</button>
 						</div>
 					</div>
 					<div class="row" style="margin-top: 10px">
-						<div class="col-xs-2 col-xs-offset-7">
-							<button type="button" class="btn btn-primary" id="saveBtn">保存</button>
+						<div class="col-xs-3 col-xs-offset-6">
+							<button type="button" class="btn btn-primary" id="saveBtn" data-loading-text="提交中...">保存</button>
 						</div>
 						<div class="col-xs-3 ">
-							<button type="button" class="btn btn-default">取消</button>
+							<button type="button" class="btn btn-default" id="back">取消</button>
 						</div>
 					</div>
 			</s:if>
@@ -129,8 +129,11 @@
 					}
 				});
 			});
-
+			$("#back").on('click', function() {
+				window.history.back();
+			});
 			$("#saveBtn").on('click',function(){
+				 var $btn = $(this).button('loading');
 				 var ingdrecid=$("#ingdrecid").val();
 				 var venid=$("#venid").val(); 
 				 var content=$("#content").val();
@@ -155,8 +158,9 @@
 							"dto.imgIdStr":imgIdStr
 						 },
 						 function(data){
-							 alert(data.ResultCode)
-							 if(data.ResultCode=="1"){
+							 $btn.button('reset');
+							 if(data.resultCode=="1"){
+								 $btn.remove();
 								 alert('操作成功');
 							 }else{
 								 alert('操作失败');
