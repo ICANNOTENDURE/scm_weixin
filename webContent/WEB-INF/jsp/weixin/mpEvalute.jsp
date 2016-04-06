@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s"%>
 <!DOCTYPE html>
 <html>
@@ -34,7 +33,7 @@
 						        		<img width='200' height='200'  src="<%=request.getContextPath()%>/uploads/weixin/${evalutePics.picpath}" >
 						      			<div class='caption'>
 											<p>
-												<button type='button' class='btn btn-success' onclick='viewPic(this)'>预览</button>
+												<button type='button' class='btn btn-success' onclick='viewNetPic("${evalutePics.picpath}")'>预览</button>
 											</p>
 										</div>
 									</div>
@@ -174,6 +173,13 @@
 			wx.previewImage({
 			    current: '', // 当前显示图片的http链接
 			    urls: [$(obj).parent().parent().parent().find("img").attr("src")] // 需要预览的图片http链接列表
+			});
+		}
+		//预览网上图片
+		function viewNetPic(path){
+			wx.previewImage({
+			    current: '', // 当前显示图片的http链接
+			    urls: [getContextPath()+"/uploads/weixin/"+path] // 需要预览的图片http链接列表
 			});
 		}
 		function deletePic(objPic){
