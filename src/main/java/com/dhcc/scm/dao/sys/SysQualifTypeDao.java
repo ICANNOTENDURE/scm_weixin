@@ -108,6 +108,7 @@ public class SysQualifTypeDao extends HibernatePersistentObjectDAO<SysQualifType
 		StringBuffer hqlBuffer = new StringBuffer();
 		hqlBuffer.append(" select ");
 		hqlBuffer.append("  t1.QUALIF_TYPE_ID as type, ");
+		hqlBuffer.append("  t1.QUALIF_TYPE_CODE as code , ");
 		hqlBuffer.append("  t1.QUALIF_TYPE_NAME as name , ");
 		hqlBuffer.append("	t2.qualif_date as expdate , ");
 		hqlBuffer.append("  t2.qualif_id as qualif, ");

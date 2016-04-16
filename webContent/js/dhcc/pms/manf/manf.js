@@ -6,7 +6,7 @@ $(function (){
 	    fit:true,
 	    columns:[[ 
             {field:'ck1',checkbox:true},
-            {field:'hopManfId',title:'表ID',width:100},
+            {field:'hopManfId',title:'表ID',width:100,hidden:true},
 	        {field:'manfCode',title:'厂商代码',width:100},  
 	        {field:'manfName',title:'厂商描述',width:100},  
 	        {field:'manfHisid',title:'his厂商ID',width:100,hidden:true},  
@@ -97,7 +97,6 @@ function delRow() {
 function selectClick() {
 	$CommonUI.getDialog("#searchManfWin").dialog("center");
 	$CommonUI.getDialog("#searchManfWin").dialog("open");
-	$("#title1").val('');	
 }
 
 //取消按钮

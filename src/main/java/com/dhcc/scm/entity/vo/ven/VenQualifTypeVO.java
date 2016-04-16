@@ -32,8 +32,20 @@ public class VenQualifTypeVO implements java.io.Serializable {
 	
 	private List<VenIncqQualifPic> incqQualifPics;
 	
+	private String code;
 	
 	
+	
+	public String getCode() {
+		return code;
+	}
+
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+
 	public List<VenIncqQualifPic> getIncqQualifPics() {
 		return incqQualifPics;
 	}

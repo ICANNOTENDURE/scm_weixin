@@ -7,6 +7,7 @@
 
 </title>
 <%@include file="/WEB-INF/jsp/common/scriptInc.jsp"%>
+<%@include file="/WEB-INF/jsp/common/lightbox.jsp"%>
  <script>
     $(function(){
     	 $.extend($.fn.datagrid.methods, {
@@ -81,11 +82,35 @@
     	
     
     	$("#auditFlag").combobox('setValue',1);
+    	
+    	
     });
+    function onLoadSuccess(){
+    	$('.dhc-light').lightBox({ fixedNavigation: true });
+    }
     function ConT(value,row,index){
 		return '<a class="dhc-linkbutton l-btn l-btn-plain" data-options="iconCls:icon-edit" onclick="javascript:updateConTra('+index+')" title="保存"><span class="l-btn-left"><span class="l-btn-text icon-edit l-btn-icon-left"></span>保存</span></a>';
 	};
-	
+	function viewPic(value,row,index){
+		$.getJSON($WEB_ROOT_PATH+"/sys/sysQualifTypeCtrl!getVenIncQualify.htm?dto.venIncId="+row.venincid, function(data){
+				html="";  
+				$.each(data, function(i,item){
+				   		if(item.code=='CGHTH'){
+
+					   		html=html+item.description;
+				   		}
+				   		if(item.code=='CGHTZP'){
+					   		 $.each(item.incqQualifPics, function(j,pic){
+						   			html=html+"'<a href="+$WEB_ROOT_PATH+"/uploadPic/venIncQualify/"+pic.picPath +"' >";
+						   			html=html+"<img src=''../js/easyui/themes/icons/search.png' > </a>";
+						   			html=html+"</a>";
+								  });
+				   		}
+				  });
+				 alert(html)
+				 return html;
+		});
+}
 	//保存对照
 	function ConTra(venincid,fac){
 		
@@ -255,6 +280,8 @@
 						 id="ven" />
 			<a href="#" class="linkbutton" iconCls="icon-search" id="searchInc" >查询</a>
 			<a href="#" class="linkbutton" iconCls="icon-search" id="venIncQualify" >商品资质</a>
+			<a href="#" class="linkbutton" iconCls="icon-save" id="pass" >通过</a>
+			<a href="#" class="linkbutton" iconCls="icon-cancel" id="refuse" >拒绝</a>
 		     <span style="color: red;font-size: 20px">注意(比如供应商单位盒(7),医院单位支,那分子就是7，分母是1)</span>
 		 </div>
 		
@@ -264,46 +291,51 @@
 					data-options="toolbar:'#toolbar2',
 					 			 fit:true,
 								 fitColumns:true,
-								 singleSelect:true,
 								 pagination:true,
 				    			 method:'post',
 				    			 rownumbers:true,
 				    			 striped:true,
-				    			 singleselect:true,
 				    			 onClickCell:onClickCell,
 				    			 title:'医院审核供应商商品',
-				    			 iconCls:'icon-ok'
+				    			 iconCls:'icon-ok',
+				    			 nowrap: false,
+				    			 onLoadSuccess:onLoadSuccess
 								 ">
 								 
 					<thead>
 						<tr>
-							<th data-options="field:'venincid',hidden:true">IncId ID</th>
-							<th data-options="field:'venname',width:100,sortable:true">供应商</th>
-							<th data-options="field:'veninccode',width:50,sortable:true">商品代码</th>
-							<th data-options="field:'venincname',width:150,sortable:true">商品名称</th>
-							<th data-options="field:'manf',width:80,sortable:true">产地</th>
-							<th data-options="field:'spec',width:60,sortable:true">规格</th>
-							<th data-options="field:'uom',width:50,sortable:true">单位</th>
-							<th data-options="field:'venfac',width:40,sortable:true,editor : {
+							<th data-options="checkbox:true">IncId ID</th>
+							
+							<th data-options="field:'venname',width:50,sortable:true">供应商</th>
+							<th data-options="field:'venincname',width:100,sortable:true">商品名称</th>
+							<th data-options="field:'cghth',width:50,sortable:true,formatter:viewPic">采购合同号</th>
+							<th data-options="field:'cghth1',width:50,sortable:true">产品注册证</th>
+							<th data-options="field:'cghth2',width:50,sortable:true">消毒合格证</th>
+							<th data-options="field:'hoprp',width:20,sortable:true">价格</th>
+							<th data-options="field:'spec',width:30,sortable:true">规格</th>
+							<th data-options="field:'uom',width:20,sortable:true">单位</th>
+							<th data-options="field:'venfac',width:20,sortable:true,editor : {
 								type : 'numberbox',
                             	options : {
                                 	required : true
                             	}
                         	}">分子</th>
-                        	<th data-options="field:'hopfac',width:40,sortable:true,editor : {
+                        	<th data-options="field:'hopfac',width:20,sortable:true,editor : {
 								type : 'numberbox',
                             	options : {
                                 	required : true
                             	}
                         	}">分母</th>
 							<th data-options="field:'hopincuom',width:50,sortable:true">医院单位</th>
-							<th data-options="field:'hopincid',hidden:true">IncId ID</th>
-							<th data-options="field:'hopinccode',width:60,sortable:true,hidden:true">医院商品代码</th>
-							<th data-options="field:'hopincname',width:100,sortable:true">医院商品名称</th>
-							
-							<th data-options="field:'facid',width:40,hidden:true">对照表rowID</th>
 							<th data-options="field:'contranst',width:40,formatter:ConT">对照</th>
 							<th data-options="field:'auditFlag',width:40,formatter:AuditT">资质</th>
+							
+							<th data-options="field:'hopinccode',width:60,sortable:true,hidden:true">医院商品代码</th>
+							<th data-options="field:'hopincname',width:100,sortable:true,hidden:true">医院商品名称</th>
+							<th data-options="field:'manf',width:80,sortable:true,hidden:true">产地</th>
+							<th data-options="field:'facid',width:40,hidden:true">对照表rowID</th>
+							<th data-options="field:'venincid',hidden:true">venincid</th>
+							<th data-options="field:'hopincid',hidden:true">hopincid</th>
 						</tr>
 					</thead>
 				</table>
