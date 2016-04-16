@@ -24,13 +24,17 @@ import com.dhcc.framework.transmission.dto.BaseDto;
 import com.dhcc.framework.util.PingYinUtil;
 import com.dhcc.framework.util.StringUtils;
 import com.dhcc.framework.web.context.WebContextHolder;
+import com.dhcc.scm.dao.sys.SysQualifTypeDao;
 import com.dhcc.scm.dto.hop.HopIncDto;
+import com.dhcc.scm.dto.sys.SysQualifTypeDto;
 import com.dhcc.scm.entity.cat.SubCatGroup;
 import com.dhcc.scm.entity.hop.HopInc;
 import com.dhcc.scm.entity.hop.HopIncAlias;
 import com.dhcc.scm.entity.ven.VenHopInc;
 import com.dhcc.scm.entity.ven.VenInc;
+import com.dhcc.scm.entity.ven.VenIncPic;
 import com.dhcc.scm.entity.vo.combo.ComboxVo;
+import com.dhcc.scm.entity.vo.hop.HopIncAuditVo;
 import com.dhcc.scm.entity.vo.hop.HopIncVo;
 import com.dhcc.scm.entity.vo.hop.ShowHopIncVo;
 
@@ -42,6 +46,9 @@ public class HopIncDao extends HibernatePersistentObjectDAO<HopInc> {
 	
 	@Resource
 	private JdbcTemplateWrapper jdbcTemplateWrapper;
+	
+	@Resource
+	private SysQualifTypeDao sysQualifTypeDao;
 	
 	public void buildPagerModelQuery(PagerModel pagerModel,BaseDto dto) {
 	
@@ -431,5 +438,83 @@ public class HopIncDao extends HibernatePersistentObjectDAO<HopInc> {
 		}
 		return (List<ComboxVo>)jdbcTemplateWrapper.queryAllMatchListWithParaMap(hqlBuffer.toString(), ComboxVo.class, hqlParamMap, 1,BaseConstants.COMBOX_PAGE_SIZE, "id");
 	
-	} 
+	}
+	
+	
+	
+	//查询供应商商品 给医院人员审核使用
+	@SuppressWarnings({ "unchecked" })
+	public void listHopIncAudit(HopIncDto dto){
+		
+		Map<String, Object> hqlParamMap = new HashMap<String, Object>();
+		StringBuffer hqlBuffer = new StringBuffer();
+		hqlBuffer.append("select ");
+		hqlBuffer.append("t3.VEN_INC_ROWID as venincid, ");
+		hqlBuffer.append("t3.VEN_INC_NAME as venincname, ");
+		hqlBuffer.append("t4.name as manf, ");
+		hqlBuffer.append("t3.VEN_INC_UOMNAME as uom, ");
+		hqlBuffer.append("t3.VEN_INC_SPEC as spec, ");
+		hqlBuffer.append("t3.VEN_INC_PRICE as venrp, ");
+		hqlBuffer.append("t1.INC_UOMNAME as hopincuom, ");
+		hqlBuffer.append("t1.inc_id as hopincid, ");
+		hqlBuffer.append("t1.inc_name as hopincname, ");
+		hqlBuffer.append("t5.name as venname, ");
+		hqlBuffer.append("t2.VEN_HOP_INC_ID as facId, ");
+		hqlBuffer.append("t2.VEN_FAC as venfac, ");
+		hqlBuffer.append("t2.HOP_FAC as hopfac, ");
+		hqlBuffer.append("round(t3.VEN_INC_PRICE*t2.VEN_FAC/t2.HOP_FAC,2) as hoprp, ");
+		hqlBuffer.append("t2.VEN_HOP_AUDITFLAG as auditflag ");
+
+		hqlBuffer.append(" from  t_ven_hop_inc t2");
+		if(org.apache.commons.lang.StringUtils.isNotBlank(dto.getAlias())){
+			hqlBuffer.append("left join (select distinct INCALIAS_TEXT,INCALIAS_INCID from T_HOP_INCALIAS where INCALIAS_TEXT like :incalias) t7 on t1.inc_id=t7.INCALIAS_INCID ");
+			hqlParamMap.put("incalias", "%" + dto.getAlias() + "%");
+		}
+		hqlBuffer.append(" left join t_hop_inc t1 on t2.hop_inc_id=t1.inc_id ");
+		hqlBuffer.append(" left join t_ven_inc t3 on t3.VEN_INC_ROWID=t2.ven_inc_id  ");
+		hqlBuffer.append("left join t_hop_manf t4 on t3.VEN_INC_MANFID=t4.id ");
+		hqlBuffer.append("left join t_ven_vendor t5 on t3.VEN_INC_VENID=t5.ven_id ");
+		hqlBuffer.append(" where 1=1 ");
+		hqlBuffer.append(" and t1.inc_hospid =:incihopid ");
+		hqlParamMap.put("incihopid", WebContextHolder.getContext().getVisit().getUserInfo().getHopId());
+		// 供应商药品审批资质
+		if (org.apache.commons.lang3.StringUtils.isNotBlank(dto.getAuditFlag())) {
+			if (dto.getAuditFlag().equals("1")) {
+				hqlBuffer.append(" AND t2.VEN_HOP_AUDITFLAG is null ");
+			}
+			if (dto.getAuditFlag().equals("2")) {
+				hqlBuffer.append(" AND t2.VEN_HOP_AUDITFLAG='Y' ");
+			}
+			if (dto.getAuditFlag().equals("3")) {
+				hqlBuffer.append(" AND t2.VEN_HOP_AUDITFLAG='N' ");
+			}
+		}
+		if(dto.getVenId()!=null){
+			hqlBuffer.append(" and t3.VEN_INC_VENID=:venId  ");
+			hqlParamMap.put("venId", dto.getVenId());
+		}
+		if(dto.getHopInc()!=null){
+			if(org.apache.commons.lang3.StringUtils.isNotBlank(dto.getHopInc().getIncBarCode())){
+				hqlBuffer.append(" AND t1.INC_BARCODE like :incbarcode ");
+				hqlParamMap.put("incbarcode", "%" + dto.getHopInc().getIncBarCode() + "%");
+			}
+			if(org.apache.commons.lang3.StringUtils.isNotBlank(dto.getHopInc().getIncName())){
+				hqlBuffer.append(" AND t1.INC_NAME like :incname  ");
+				hqlParamMap.put("incname", "%" + dto.getHopInc().getIncName() + "%");
+			}
+		}
+
+
+		dto.getPageModel().setTotals(jdbcTemplateWrapper.getResultCountWithValuesMap(hqlBuffer.toString(), "VEN_HOP_INC_ID", hqlParamMap));
+		List<HopIncAuditVo> hopIncAuditVos=jdbcTemplateWrapper.queryAllMatchListWithParaMap(hqlBuffer.toString(), HopIncAuditVo.class, hqlParamMap, dto.getPageModel().getPageNo(), dto.getPageModel().getPageSize(), "INC_ID");
+
+		for(HopIncAuditVo hopIncAuditVo:hopIncAuditVos){
+			SysQualifTypeDto sysQualifTypeDto=new SysQualifTypeDto();
+			sysQualifTypeDto.setVenIncId(hopIncAuditVo.getVenincid());
+			hopIncAuditVo.setQualifTypeVOs(sysQualifTypeDao.queryQualifyType(sysQualifTypeDto));
+			hopIncAuditVo.setIncPics(super.findByProperty(VenIncPic.class, "venIncPicVenincid", hopIncAuditVo.getVenincid()));
+		}
+		dto.getPageModel().setPageData(hopIncAuditVos);
+	}
+	
 }

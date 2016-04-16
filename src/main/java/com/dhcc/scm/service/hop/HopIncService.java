@@ -88,4 +88,6 @@ public interface HopIncService {
 	
 	public HopInc getHopIncByBarCode(String code,Long hospid);
 	
+	public void listHopIncAudit(HopIncDto dto);
+	
 }

@@ -480,4 +480,13 @@ public class HopIncBlh extends AbstractBaseBlh {
 			commonService.saveOrUpdate(hopInc);
 		}
 	}
+	
+	
+	
+	
+	
+	public void listHopIncAudit(BusinessRequest res) {
+		HopIncDto dto = super.getDto(HopIncDto.class, res);
+		hopIncService.listHopIncAudit(dto);
+	}
 }

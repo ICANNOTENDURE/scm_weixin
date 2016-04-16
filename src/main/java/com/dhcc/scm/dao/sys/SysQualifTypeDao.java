@@ -127,14 +127,7 @@ public class SysQualifTypeDao extends HibernatePersistentObjectDAO<SysQualifType
 		List<VenQualifTypeVO> venQualifTypeVOList=jdbcTemplateWrapper.queryAllMatchListWithParaMap(hqlBuffer.toString(), VenQualifTypeVO.class, hqlParamMap);
 		for(int i=0;i<venQualifTypeVOList.size();i++){
 			if(venQualifTypeVOList.get(i).getQualif()!=null){
-				Map<String, Object> paramMap = new HashMap<String, Object>();
-				StringBuffer hql = new StringBuffer();
-				hql.append(" from ");
-				hql.append(" VenIncqQualifPic t ");
-				hql.append(" where t.picParrefId = :qualifyid ");
-				paramMap.put("qualifyid",venQualifTypeVOList.get(i).getQualif());
-				List<VenIncqQualifPic> incqQualifPics=this.findByHqlWithValuesMap(hql.toString(),paramMap,false);
-				venQualifTypeVOList.get(i).setIncqQualifPics(incqQualifPics);
+				venQualifTypeVOList.get(i).setIncqQualifPics(findByProperty(VenIncqQualifPic.class, "picParrefId", venQualifTypeVOList.get(i).getQualif()));
 			}
 		}
 		return venQualifTypeVOList;

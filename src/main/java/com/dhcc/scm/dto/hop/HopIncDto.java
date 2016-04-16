@@ -25,6 +25,9 @@ public class HopIncDto extends BaseDto {
 	
 	private List<ShowHopIncVo> showHopIncVos;
 	
+	private String alias;
+	
+	private String auditFlag;
 	
 	private String comgridparam;
 	
@@ -35,7 +38,41 @@ public class HopIncDto extends BaseDto {
 	
 	private String uploadFileName;
 	
+	private Long venId;
 	
+	
+	
+	
+	public Long getVenId() {
+		return venId;
+	}
+
+
+	public void setVenId(Long venId) {
+		this.venId = venId;
+	}
+
+
+	public String getAuditFlag() {
+		return auditFlag;
+	}
+
+
+	public void setAuditFlag(String auditFlag) {
+		this.auditFlag = auditFlag;
+	}
+
+
+	public String getAlias() {
+		return alias;
+	}
+
+
+	public void setAlias(String alias) {
+		this.alias = alias;
+	}
+
+
 	/**
 	 * @return the uploadFileName
 	 */
