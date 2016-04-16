@@ -7,7 +7,8 @@
 
 </title>
 <%@include file="/WEB-INF/jsp/common/scriptInc.jsp"%>
-<%@include file="/WEB-INF/jsp/common/lightbox.jsp"%>
+<%@include file="/WEB-INF/jsp/common/foxibox.jsp"%>
+
  <script>
     $(function(){
     	 $.extend($.fn.datagrid.methods, {
@@ -85,7 +86,8 @@
     	
     });
     function onLoadSuccess(){
-    	$('.dhc-light').lightBox({ fixedNavigation: true });
+    	//$('.dhc-light').lightBox({ fixedNavigation: true });
+    	$('a[rel]').foxibox();
     }
     function ConT(value,row,index){
 		return '<a class="dhc-linkbutton l-btn l-btn-plain" data-options="iconCls:icon-edit" onclick="javascript:updateConTra('+index+')" title="保存"><span class="l-btn-left"><span class="l-btn-text icon-edit l-btn-icon-left"></span>保存</span></a>';
@@ -95,8 +97,8 @@
 		html="";
 		if(row.incPics!=null){
 			$.each(row.incPics, function(i,item){
-  					html=html+"<a class='dhc-light' href="+$WEB_ROOT_PATH+"/uploadPic/"+item.venIncPicPath+" >";
-  					if(i==1){
+  					html=html+"<a class='dhc-light' href="+$WEB_ROOT_PATH+"/uploadPic/"+item.venIncPicPath+" rel='[gall1]'>";
+  					if(i==0){
   						html=html+"<img src='../js/easyui/themes/icons/search.png' width='12' height='12'>";
   					}
   					html=html+"</a>";
@@ -119,8 +121,10 @@
 		   			if(item.fieldtype=='图片'){
 			   			if(item.incqQualifPics!=null){
 			   				$.each(item.incqQualifPics, function(j,pic){
-			   					html=html+"<a class='dhc-light' href="+$WEB_ROOT_PATH+"/uploadPic/venIncQualify/"+pic.picPath+" >";
-			   					html=html+"<img src='../js/easyui/themes/icons/search.png' width='12' height='12'>";
+			   					html=html+"<a class='dhc-light' href="+$WEB_ROOT_PATH+"/uploadPic/venIncQualify/"+pic.picPath+" rel='[gall1]'>";
+			   					if(j==0){
+			   						html=html+"<img src='../js/easyui/themes/icons/search.png' width='12' height='12'>";
+			   					}
 			   					html=html+"</a>";
 			   				});
 			   			}
@@ -144,8 +148,10 @@
 		   			if(item.fieldtype=='图片'){
 			   			if(item.incqQualifPics!=null){
 			   				$.each(item.incqQualifPics, function(j,pic){
-			   					html=html+"<a class='dhc-light' href="+$WEB_ROOT_PATH+"/uploadPic/venIncQualify/"+pic.picPath+" >";
-			   					html=html+"<img src='../js/easyui/themes/icons/search.png' width='12' height='12'>";
+			   					html=html+"<a class='dhc-light' href="+$WEB_ROOT_PATH+"/uploadPic/venIncQualify/"+pic.picPath+" rel='[gall1]'>";
+			   					if(j==0){
+			   						html=html+"<img src='../js/easyui/themes/icons/search.png' width='12' height='12'>";
+			   					}
 			   					html=html+"</a>";
 			   				});
 			   			}
@@ -169,8 +175,10 @@
 		   			if(item.fieldtype=='图片'){
 			   			if(item.incqQualifPics!=null){
 			   				$.each(item.incqQualifPics, function(j,pic){
-			   					html=html+"<a class='dhc-light' href="+$WEB_ROOT_PATH+"/uploadPic/venIncQualify/"+pic.picPath+" >";
-			   					html=html+"<img src='../js/easyui/themes/icons/search.png' width='12' height='12'>";
+			   					html=html+"<a class='dhc-light' href="+$WEB_ROOT_PATH+"/uploadPic/venIncQualify/"+pic.picPath+" rel='[gall1]'>";
+			   					if(j==0){
+			   						html=html+"<img src='../js/easyui/themes/icons/search.png' width='12' height='12'>";
+			   					}
 			   					html=html+"</a>";
 			   				});
 			   			}
@@ -377,7 +385,7 @@
 							
 							<th data-options="field:'venname',width:50,sortable:true">供应商</th>
 							<th data-options="field:'venincname',width:100,sortable:true">商品名称</th>
-							<th data-options="field:'pic',width:20,formatter:viewPic">图片</th>
+							<th data-options="field:'pic',width:10,formatter:viewPic">图片</th>
 							<th data-options="field:'CGHT',width:50,sortable:true,formatter:viewCGHTH">采购合同</th>
 							<th data-options="field:'CPZCZ',width:50,sortable:true,formatter:viewSPZCZ">产品注册证</th>
 							<th data-options="field:'XDHGZ',width:50,sortable:true,formatter:viewXDHGZ">消毒合格证</th>
