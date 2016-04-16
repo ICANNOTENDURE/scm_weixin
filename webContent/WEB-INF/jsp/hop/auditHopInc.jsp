@@ -329,6 +329,35 @@
 			editIndex = index;
 		}
 	}
+	
+	//批量审批通过
+	function batchAudit(flag){
+		var ids = [];
+		var rows = $('#datagrid2').datagrid('getSelections');
+		if (rows.length < 1) {
+			$CommonUI.alert('请选择');
+			return;
+		}
+		for(var i=0; i<rows.length; i++){
+			ids.push(rows[i].facid);
+		}
+		$.post(
+				$WEB_ROOT_PATH+'/ven/venIncCtrl!batchAudit.htm',
+				{
+					'dto.idStr': ids.join(','),
+					'dto.auditFlag': flag
+				},
+				function(data){
+					if(data.resultCode=="0"){
+						$CommonUI.alert("操作成功!");
+						$CommonUI.getDataGrid('#datagrid2').datagrid('reload');
+					}else{
+						$CommonUI.alert("操作失败!"+data.resultContent);
+					}
+				},
+				"json"
+		);
+	}
     </script>
 
 </head>
@@ -357,8 +386,8 @@
 						 id="ven" />
 			<a href="#" class="linkbutton" iconCls="icon-search" id="searchInc" >查询</a>
 			<a href="#" class="linkbutton" iconCls="icon-search" id="venIncQualify" >商品资质</a>
-			<a href="#" class="linkbutton" iconCls="icon-save" id="pass" >通过</a>
-			<a href="#" class="linkbutton" iconCls="icon-cancel" id="refuse" >拒绝</a>
+			<a href="#" class="linkbutton" iconCls="icon-save" id="pass" onclick="batchAudit('Y');">通过</a>
+			<a href="#" class="linkbutton" iconCls="icon-cancel" id="refuse" onclick="batchAudit('N');">拒绝</a>
 		     <span style="color: red;font-size: 20px">注意(比如供应商单位盒(7),医院单位支,那分子就是7，分母是1)</span>
 		 </div>
 		

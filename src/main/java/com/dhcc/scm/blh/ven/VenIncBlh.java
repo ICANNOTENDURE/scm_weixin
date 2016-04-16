@@ -495,6 +495,38 @@ public class VenIncBlh extends AbstractBaseBlh {
 		}
 	}
 	
+	//批量审核商品
+	public void batchAudit(BusinessRequest res){
+		
+		VenIncDto dto = super.getDto(VenIncDto.class, res);
+		dto.setOperateResult(new OperateResult());
+		
+		try {
+			if(org.apache.commons.lang3.StringUtils.isNotBlank(dto.getIdStr())){
+				String[] ids=dto.getIdStr().split(BaseConstants.COMMA);
+				for(String id:ids){
+					if(org.apache.commons.lang3.StringUtils.isNotBlank(id)){
+						VenHopInc venHopInc=commonService.get(VenHopInc.class, id);
+						VenInc venInc=commonService.get(VenInc.class, venHopInc.getVenIncId());
+						venHopInc.setVenHopAuditflag(dto.getAuditFlag());
+						venHopInc.setVenRp(venInc.getVenIncPrice());
+						if(venInc.getVenIncPrice()!=null){
+							venHopInc.setHopRp(venInc.getVenIncPrice().floatValue()/venHopInc.getVenFac().floatValue()*venHopInc.getHopFac().floatValue());
+						}
+						commonService.saveOrUpdate(venHopInc);
+					}
+				}
+				dto.getOperateResult().setResultCode("0");
+			}else{
+				dto.getOperateResult().setResultContent("参数为空");
+			}
+			writeJSON(dto.getOperateResult());
+		} catch (Exception e) {
+			e.printStackTrace();
+			dto.getOperateResult().setResultContent((e.getLocalizedMessage()));
+			super.writeJSON(dto.getOperateResult());
+		}
+	}
 	/**
 	 * 
 	* @Title: hopRefuseVenInc 

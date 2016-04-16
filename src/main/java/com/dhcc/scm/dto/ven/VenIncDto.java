@@ -49,6 +49,44 @@ public class VenIncDto extends BaseDto {
 	private String uploadFileName;
 
 	
+	private String auditFlag;
+	
+	private String idStr;
+	
+	private String auditContent;
+	
+	
+	
+	public String getAuditFlag() {
+		return auditFlag;
+	}
+
+
+	public void setAuditFlag(String auditFlag) {
+		this.auditFlag = auditFlag;
+	}
+
+
+	public String getIdStr() {
+		return idStr;
+	}
+
+
+	public void setIdStr(String idStr) {
+		this.idStr = idStr;
+	}
+
+
+	public String getAuditContent() {
+		return auditContent;
+	}
+
+
+	public void setAuditContent(String auditContent) {
+		this.auditContent = auditContent;
+	}
+
+
 	/**
 	 * @return the uploadFileName
 	 */
