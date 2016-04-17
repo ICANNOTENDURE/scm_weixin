@@ -321,13 +321,15 @@ public class HopVendor implements Serializable {
 		this.hopHopId = hopHopId;
 	}
 
-	public String gethBusinessRegNo() {
+	public String getBusinessRegNo() {
 		return businessRegNo;
 	}
 
-	public void sethBusinessRegNo(String hBusinessRegNo) {
-		this.businessRegNo = hBusinessRegNo;
+	public void setBusinessRegNo(String businessRegNo) {
+		this.businessRegNo = businessRegNo;
 	}
+
+	
 	
 	
 	

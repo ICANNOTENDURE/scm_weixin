@@ -338,7 +338,7 @@ public class HopVendorBlh extends AbstractBaseBlh {
 		
 		for(HopVendor hopVendor:hopVendors){
 			
-			List<Vendor> vendors=commonService.findByProperty(Vendor.class, "taxation", hopVendor.gethBusinessRegNo());
+			List<Vendor> vendors=commonService.findByProperty(Vendor.class, "taxation", hopVendor.getBusinessRegNo());
 			
 			if(vendors.size()>0){
     			hopVendor.setHopVenId(vendors.get(0).getVendorId());
@@ -568,20 +568,20 @@ public class HopVendorBlh extends AbstractBaseBlh {
 					case "HOPEVENDOR_BUSINESSREGNO":
 						if (cell != null) {
 							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
-							hopVendor.sethBusinessRegNo(cell.toString());
+							hopVendor.setBusinessRegNo(cell.toString());
 						}
 						break;	
 					}
 				 }
 				
 				//验证数据的完整性
-				if(org.apache.commons.lang3.StringUtils.isBlank(hopVendor.gethBusinessRegNo())){
+				if(org.apache.commons.lang3.StringUtils.isBlank(hopVendor.getBusinessRegNo())){
 					dto.setOpFlg("-1");
 					dto.setMsg("<br>"+"第"+numRows+"行工商执照注册号/统一社会信用代码不能为空！");
 					continue;
 				}else{
 						DetachedCriteria criteria = DetachedCriteria.forClass(HopVendor.class);
-						criteria.add(Restrictions.eq("hBusinessRegNo", hopVendor.gethBusinessRegNo()));
+						criteria.add(Restrictions.eq("hBusinessRegNo", hopVendor.getBusinessRegNo()));
 						criteria.add(Restrictions.eq("hopHopId", Long.valueOf(super.getLoginInfo().get("HOSPID").toString())));
 						List<HopVendor> hopVendorIds = commonService.findByDetachedCriteria(criteria);
 						if(hopVendorIds.size()>0){
@@ -768,14 +768,14 @@ public class HopVendorBlh extends AbstractBaseBlh {
 		
 			if (hopVendors.size() > 0) {
 				
-				hopVendors.get(0).sethBusinessRegNo(hisVendorItmWeb.getBusinessRegNo());
+				hopVendors.get(0).setBusinessRegNo(hisVendorItmWeb.getBusinessRegNo());
 				hopVendors.get(0).setHopName(hisVendorItmWeb.getName());
 				hopVendors.get(0).setHopCode(hisVendorItmWeb.getCode());
 				commonService.saveOrUpdate(hopVendors.get(0));
 			}else{
 				HopVendor hopVendor = new HopVendor();
 				hopVendor.setHopHopId(hopCtloc.getHospid());
-				hopVendor.sethBusinessRegNo(hisVendorItmWeb.getBusinessRegNo());
+				hopVendor.setBusinessRegNo(hisVendorItmWeb.getBusinessRegNo());
 				hopVendor.setHopName(hisVendorItmWeb.getName());
 				hopVendor.setHopCode(hisVendorItmWeb.getCode());
 				commonService.saveOrUpdate(hopVendor);
