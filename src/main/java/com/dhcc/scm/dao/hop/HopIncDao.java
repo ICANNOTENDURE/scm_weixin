@@ -171,6 +171,7 @@ public class HopIncDao extends HibernatePersistentObjectDAO<HopInc> {
 		hqlBuffer.append("t1.INC_HISSYSID as inchissysid, ");
 		hqlBuffer.append("t1.INC_HOSPID as inchospid, ");
 		hqlBuffer.append("t1.INC_RP as incrp, ");
+		hqlBuffer.append("t1.INC_BARCODE as incbarcode, ");
 		hqlBuffer.append("t2.HOSPITAL_NAME as hospitalname, ");
 		hqlBuffer.append("t3.NAME as manfname, ");
 		hqlBuffer.append("t4.INC_PIC_ID as hopincpicid, ");
