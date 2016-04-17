@@ -119,7 +119,7 @@ public class HopVendorServiceImpl implements HopVendorService {
 	@Override
 	public HopVendor getHopVendoByBarCode(String barcode, Long hopid) {
 		
-		String[] propertyNames={"hopHopId","hBusinessRegNo"};
+		String[] propertyNames={"hopHopId","businessRegNo"};
 		Object[] values={hopid,barcode};
 		List<HopVendor> hopVendors=hopVendorDao.findByProperties(HopVendor.class, propertyNames, values);
 		if(hopVendors.size()==0){

@@ -1280,7 +1280,7 @@ public class CommonServiceImpl implements CommonService {
 
 	@Override
 	public HopVendor getVenByBusinessRegNo(String businessRegNo, Long hopId) {
-		String[] propertyNames = {"hBusinessRegNo", "hopHopId"};
+		String[] propertyNames = {"businessRegNo", "hopHopId"};
 		Object[] values = {businessRegNo, hopId};
 		List<HopVendor>  hopVendors = commonDao.findByProperties(HopVendor.class,propertyNames, values);
 		if(hopVendors.size()>0){

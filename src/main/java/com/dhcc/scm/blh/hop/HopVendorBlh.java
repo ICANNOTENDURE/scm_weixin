@@ -762,7 +762,7 @@ public class HopVendorBlh extends AbstractBaseBlh {
 				operateResult.setResultContent("工商执照注册号/统一社会信用代码为空,");
 				continue;
 			}
-			String[] incPropertyNames = { "hopHopId", "hBusinessRegNo" };
+			String[] incPropertyNames = { "hopHopId", "businessRegNo" };
 			Object[] incValues = { hopCtloc.getHospid(), hisVendorItmWeb.getBusinessRegNo()};
 			List<HopVendor> hopVendors = commonService.findByProperties(HopVendor.class, incPropertyNames, incValues);
 		

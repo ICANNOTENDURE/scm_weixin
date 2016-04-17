@@ -68,7 +68,7 @@
 					<td class="textLabel" style="text-align: right; width: 20%" colspan="2">工商执照注册号/统一社会信用代码:</td>
 					<td class="textParent" style="text-align: left; width: 30%" colspan="2"><input
 						style="width: 250px;" class="validatebox" type="text"
-						name="dto.hopVendor.hBusinessRegNo" data-options="required:true"></input>
+						name="dto.hopVendor.businessRegNo" data-options="required:true"></input>
 					</td>
 				</tr>
 			</table>
