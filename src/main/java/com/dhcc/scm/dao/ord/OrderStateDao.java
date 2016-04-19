@@ -328,6 +328,7 @@ public class OrderStateDao extends HibernatePersistentObjectDAO<Order> {
 		hqlBuffer.append("t3.state_name statedesc, ");
 		hqlBuffer.append("t5.ctloc_name as recloc, ");
 		hqlBuffer.append("t4.ordsub_expdate as expdate, ");
+		hqlBuffer.append("t4.ordsub_arrivedate as arrivedate, ");
 		hqlBuffer.append("t4.ordsub_invno as invno, ");
 		hqlBuffer.append("t4.ordsub_batno as batno, ");
 		hqlBuffer.append("t4.ordsub_qty as devqty, ");
