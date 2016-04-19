@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.dhcc.scm.entity.ord.OrderDetail;
+import com.dhcc.scm.entity.ord.OrderDetailPic;
 import com.dhcc.scm.entity.vo.weixin.OrderInfo;
 import com.dhcc.scm.entity.weixin.MpUser;
 import com.dhcc.framework.transmission.dto.BaseDto;
@@ -45,8 +46,44 @@ public class MpUserDto extends BaseDto {
 	
 	private Long venid;
 	
+	private String orderno;
+	
+	private String imgIdStr;
+	
+	private List<OrderDetailPic> orderDetailPics;
 	
 	
+	
+	public List<OrderDetailPic> getOrderDetailPics() {
+		return orderDetailPics;
+	}
+
+
+	public void setOrderDetailPics(List<OrderDetailPic> orderDetailPics) {
+		this.orderDetailPics = orderDetailPics;
+	}
+
+
+	public String getOrderno() {
+		return orderno;
+	}
+
+
+	public void setOrderno(String orderno) {
+		this.orderno = orderno;
+	}
+
+
+	public String getImgIdStr() {
+		return imgIdStr;
+	}
+
+
+	public void setImgIdStr(String imgIdStr) {
+		this.imgIdStr = imgIdStr;
+	}
+
+
 	public Long getState() {
 		return state;
 	}
