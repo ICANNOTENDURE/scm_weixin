@@ -62,6 +62,18 @@
 																trhtml=trhtml+"<td hidden>"+itm.scmid+"</td></tr>";
 													});
 													$("#dataList").html(trhtml);
+													imghtml="";
+													//alert(JSON.stringify(data))
+													$.each(data.orderDetailPics, function( i, itm) {
+														imghtml=imghtml+"<li>";
+														imghtml=imghtml+"<div class='am-gallery-item'>";
+														imghtml=imghtml+"<a href='../uploads/weixin/order/"+itm.ordPicPath+"'>";
+														imghtml=imghtml+"<img src='../uploads/weixin/order/"+itm.ordPicPath+"'/>";
+														imghtml=imghtml+"</a>";
+														imghtml=imghtml+"</div>";
+														imghtml=imghtml+"</li>";
+													});
+													$("#ordImglist").html(imghtml);
 											}, 'json');
 
 							}
@@ -212,7 +224,10 @@
 	</table>
 	
 	</div>
-
+	<ul data-am-widget="gallery"
+		class="am-gallery am-avg-sm-2 am-gallery-imgbordered"
+		data-am-gallery="{ pureview: true }" id="ordImglist">
+	</ul>
 	<%@include file="/WEB-INF/jsp/common/WXfooter.jsp"%>
 </body>
 </html>

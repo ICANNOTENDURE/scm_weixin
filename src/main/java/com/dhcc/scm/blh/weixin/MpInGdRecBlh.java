@@ -34,6 +34,7 @@ import com.dhcc.scm.entity.hop.HopInc;
 import com.dhcc.scm.entity.manf.HopManf;
 import com.dhcc.scm.entity.ord.OrdLabel;
 import com.dhcc.scm.entity.ord.OrderDetail;
+import com.dhcc.scm.entity.ord.OrderDetailPic;
 import com.dhcc.scm.entity.ord.OrderDetailSub;
 import com.dhcc.scm.entity.st.StInGdRec;
 import com.dhcc.scm.entity.st.StInGdRecItm;
@@ -138,6 +139,9 @@ public class MpInGdRecBlh extends AbstractBaseBlh {
 			switch (qrCode.getCodeType()) {
 			case "ByOrder":
 				OrderDetail orderDetail = commonService.get(OrderDetail.class, Long.valueOf(qrCode.getContent()));
+				
+				List<OrderDetailPic> orderDetailPics=commonService.findByProperty(OrderDetailPic.class, "ordPicOrderNo", orderDetail.getOrderNo());
+				gdRec.setOrderDetailPics(orderDetailPics);
 				String[] ordNames = { "orderNo", "orderRecLoc" };
 				Object[] ordValues = { orderDetail.getOrderNo(), locId };
 				List<OrderDetail> orderDetails = commonService.findByProperties(OrderDetail.class, ordNames, ordValues);
