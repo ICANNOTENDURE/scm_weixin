@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <wsdl:definitions name="HisInfoServiceService" targetNamespace="http://his.ws.scm.dhcc.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://his.ws.scm.dhcc.com/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
   <wsdl:types>
-<xs:schema xmlns:tns="http://his.ws.scm.dhcc.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://his.ws.scm.dhcc.com/" version="1.0">
+<xs:schema xmlns:tns="http://his.ws.scm.dhcc.com/" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://his.ws.scm.dhcc.com/" version="1.0">
 
+  <xs:import namespace="http://www.w3.org/2005/05/xmlmime"/>
   <xs:complexType name="hisInvInfoWeb">
     <xs:sequence>
       <xs:element maxOccurs="unbounded" minOccurs="0" name="hisInvInfoItmWebs" nillable="true" type="tns:hisInvInfoItmWeb"/>
@@ -140,6 +141,16 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="CxfFileWrapper">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="file" type="xs:base64Binary" xmime:expectedContentTypes="application/octet-stream"/>
+      <xs:element minOccurs="0" name="fileExtension" type="xs:string"/>
+      <xs:element minOccurs="0" name="fileName" type="xs:string"/>
+      <xs:element minOccurs="0" name="resultCode" type="xs:string"/>
+      <xs:element minOccurs="0" name="resultContent" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="hisCmpRecWeb">
     <xs:sequence>
       <xs:element minOccurs="0" name="hopname" type="xs:string"/>
@@ -196,6 +207,12 @@
     <wsdl:part name="hisOrderWeb" type="tns:hisOrderWeb">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="downLoadPic">
+    <wsdl:part name="type" type="xsd:string">
+    </wsdl:part>
+    <wsdl:part name="path" type="xsd:string">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="getHisOrder">
     <wsdl:part name="hisOrderWebVo" type="tns:hisOrderWebVo">
     </wsdl:part>
@@ -222,32 +239,16 @@
     <wsdl:part name="password" type="xsd:string">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="listInGdRecResponse">
-    <wsdl:part name="hisInGdRec" type="tns:hisInGdRec">
-    </wsdl:part>
-  </wsdl:message>
   <wsdl:message name="getRecItmByInvResponse">
     <wsdl:part name="hisInvInfoWeb" type="tns:hisInvInfoWeb">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="getHopLoc">
-    <wsdl:part name="hisLocWeb" type="tns:hisLocWeb">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="getHopVendor">
     <wsdl:part name="hisVendorWeb" type="tns:hisVendorWeb">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="getHopInc">
-    <wsdl:part name="hisIncWeb" type="tns:hisIncWeb">
-    </wsdl:part>
-  </wsdl:message>
   <wsdl:message name="cmpRec">
     <wsdl:part name="hisCmpRecWeb" type="tns:hisCmpRecWeb">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="getInvByRecResponse">
-    <wsdl:part name="operateResult" type="tns:operateResult">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="getRecItmByInv">
@@ -258,28 +259,16 @@
     <wsdl:part name="venName" type="xsd:string">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="getHisOrderResponse">
+    <wsdl:part name="operateResult" type="tns:operateResult">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="getInvByRec">
     <wsdl:part name="usename" type="xsd:string">
     </wsdl:part>
     <wsdl:part name="password" type="xsd:string">
     </wsdl:part>
     <wsdl:part name="ingdrecId" type="xsd:long">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="getHisOrderResponse">
-    <wsdl:part name="operateResult" type="tns:operateResult">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="cmpInGdRec">
-    <wsdl:part name="usename" type="xsd:string">
-    </wsdl:part>
-    <wsdl:part name="password" type="xsd:string">
-    </wsdl:part>
-    <wsdl:part name="ingdrecId" type="xsd:long">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="getHopLocIncQty">
-    <wsdl:part name="hisIncLocQtyWeb" type="tns:hisIncLocQtyWeb">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="syncInvByRec">
@@ -292,15 +281,47 @@
     <wsdl:part name="invno" type="xsd:string">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="getHopOrderResponse">
+    <wsdl:part name="operateResult" type="tns:operateResult">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="downLoadPicResponse">
+    <wsdl:part name="cxfFileWrapper" type="tns:CxfFileWrapper">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="listInGdRecResponse">
+    <wsdl:part name="hisInGdRec" type="tns:hisInGdRec">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getHopLoc">
+    <wsdl:part name="hisLocWeb" type="tns:hisLocWeb">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getHopInc">
+    <wsdl:part name="hisIncWeb" type="tns:hisIncWeb">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getInvByRecResponse">
+    <wsdl:part name="operateResult" type="tns:operateResult">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getHopLocIncQty">
+    <wsdl:part name="hisIncLocQtyWeb" type="tns:hisIncLocQtyWeb">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cmpInGdRec">
+    <wsdl:part name="usename" type="xsd:string">
+    </wsdl:part>
+    <wsdl:part name="password" type="xsd:string">
+    </wsdl:part>
+    <wsdl:part name="ingdrecId" type="xsd:long">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="getHopVendorResponse">
     <wsdl:part name="operateResult" type="tns:operateResult">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="cmpInGdRecResponse">
-    <wsdl:part name="operateResult" type="tns:operateResult">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="getHopOrderResponse">
     <wsdl:part name="operateResult" type="tns:operateResult">
     </wsdl:part>
   </wsdl:message>
@@ -348,6 +369,12 @@
       <wsdl:input name="getHisOrder" message="tns:getHisOrder">
     </wsdl:input>
       <wsdl:output name="getHisOrderResponse" message="tns:getHisOrderResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downLoadPic">
+      <wsdl:input name="downLoadPic" message="tns:downLoadPic">
+    </wsdl:input>
+      <wsdl:output name="downLoadPicResponse" message="tns:downLoadPicResponse">
     </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="cmpRec">
@@ -410,6 +437,15 @@
         <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
       </wsdl:input>
       <wsdl:output name="getHopLocIncQtyResponse">
+        <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="downLoadPic">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="downLoadPic">
+        <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
+      </wsdl:input>
+      <wsdl:output name="downLoadPicResponse">
         <soap:body use="literal" namespace="http://his.ws.scm.dhcc.com/"/>
       </wsdl:output>
     </wsdl:operation>

@@ -1,8 +1,12 @@
 package com.dhcc.scm.ws.his;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.annotation.Resource;
 import javax.jws.WebService;
 
@@ -11,6 +15,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
 import com.dhcc.framework.app.service.CommonService;
+import com.dhcc.framework.common.config.PropertiesBean;
 import com.dhcc.framework.util.JsonUtils;
 import com.dhcc.scm.blh.hop.HopCtlocBlh;
 import com.dhcc.scm.blh.hop.HopIncBlh;
@@ -21,6 +26,7 @@ import com.dhcc.scm.blh.ord.OrderBlh;
 import com.dhcc.scm.entity.ord.OrderDetailSub;
 import com.dhcc.scm.entity.st.StInGdRecItm;
 import com.dhcc.scm.entity.sys.SysLog;
+import com.dhcc.scm.entity.vo.ws.FileWrapper;
 import com.dhcc.scm.entity.vo.ws.HisCmpRecWeb;
 import com.dhcc.scm.entity.vo.ws.HisInGdRec;
 import com.dhcc.scm.entity.vo.ws.HisInGdRecItm;
@@ -370,6 +376,47 @@ public class HisInfoService implements HisInfoServiceInterface{
 			commonService.saveOrUpdate(log);
 		}
 		return operateResult;
+	}
+
+	@Override
+	public FileWrapper downLoadPic(String type, String name) {
+		// TODO Auto-generated method stub
+		
+		FileWrapper fileWrapper=new FileWrapper();
+		SysLog log = new SysLog();
+		log.setOpArg("type:"+type+",path:"+name);
+		log.setOpName("webservice下载图片：》downLoadPic");
+		log.setOpDate(new Date());
+		log.setOpType("webservice");
+		if(StringUtils.isBlank(name)){
+			fileWrapper.setResultContent("path不能为空");
+			log.setOpResult("path不能为空");
+			return fileWrapper;
+		}
+		try {
+		
+			String result=this.getClass().getClassLoader().getResource("").getPath();
+			int index = result.indexOf("WEB-INF"); 
+			if(index == -1){ 
+				index = result.indexOf("bin"); 
+			} 
+			result = result.substring(0,index); 
+			fileWrapper.setFileName(name);
+			fileWrapper.setFileExtension(com.dhcc.framework.util.FileUtils.getFileExp(name));
+			log.setOpAfter(result+"uploads/weixin/"+name);
+			DataSource source = new FileDataSource(new File(result+"uploads/weixin/"+name));
+			fileWrapper.setFile(new DataHandler(source));
+			fileWrapper.setResultCode("0");
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.setOpResult(e.getMessage());
+			fileWrapper.setResultCode("-11");
+			fileWrapper.setResultContent(e.getMessage());
+			return fileWrapper;
+		}finally{
+			commonService.saveOrUpdate(log);
+		}
+		return fileWrapper;
 	}
 
 

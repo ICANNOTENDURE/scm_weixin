@@ -16,5 +16,9 @@
 </jaxws:endpoint>
 <bean id="hisInfoService" class="com.dhcc.scm.ws.his.HisInfoService" />
 <jaxws:endpoint id="hisInfoServiceWS" address="/hisInfoService" wsdlLocation="/wsdl/HisInfoService.wsdl" implementor="#hisInfoService">
+    <jaxws:properties>  
+        <!-- 开启MTOM -->
+        <entry key="mtom_enabled" value="true"></entry>  
+    </jaxws:properties>  
 </jaxws:endpoint>
 </beans>

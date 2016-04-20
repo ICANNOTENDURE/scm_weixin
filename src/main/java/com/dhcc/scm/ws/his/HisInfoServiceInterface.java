@@ -8,6 +8,7 @@ import javax.jws.soap.SOAPBinding;
 
 import org.apache.cxf.annotations.WSDLDocumentation;
 
+import com.dhcc.scm.entity.vo.ws.FileWrapper;
 import com.dhcc.scm.entity.vo.ws.HisCmpRecWeb;
 import com.dhcc.scm.entity.vo.ws.HisInGdRec;
 import com.dhcc.scm.entity.vo.ws.HisIncLocQtyWeb;
@@ -147,5 +148,9 @@ public interface HisInfoServiceInterface {
 	    @WebResult(name="operateResult")
 	    @WSDLDocumentation("更新平台发票号")
 	    public OperateResult syncInvByRec(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="ingdrecId")Long ingdrecId,@WebParam(name="invno")String invno);
-
+	    
+	    
+	    @WebMethod
+	    @WebResult(name="fileWrapper")
+	    public FileWrapper downLoadPic(@WebParam(name="type")String type,@WebParam(name="path")String path);
 }
