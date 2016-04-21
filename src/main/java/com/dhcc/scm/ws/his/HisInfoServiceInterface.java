@@ -153,4 +153,9 @@ public interface HisInfoServiceInterface {
 	    @WebMethod
 	    @WebResult(name="fileWrapper")
 	    public FileWrapper downLoadPic(@WebParam(name="type")String type,@WebParam(name="path")String path);
+	    
+	    @WebMethod
+	    @WebResult(name="hisInGdRec")
+	    @WSDLDocumentation("根据订单号查入库明细")
+	    public HisInGdRec getOrderDetail(@WebParam(name="orderno")String orderno);
 }

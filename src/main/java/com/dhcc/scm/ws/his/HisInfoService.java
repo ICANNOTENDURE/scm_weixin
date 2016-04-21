@@ -1,6 +1,7 @@
 package com.dhcc.scm.ws.his;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +16,6 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
 import com.dhcc.framework.app.service.CommonService;
-import com.dhcc.framework.common.config.PropertiesBean;
 import com.dhcc.framework.util.JsonUtils;
 import com.dhcc.scm.blh.hop.HopCtlocBlh;
 import com.dhcc.scm.blh.hop.HopIncBlh;
@@ -23,9 +23,14 @@ import com.dhcc.scm.blh.hop.HopIncLocBlh;
 import com.dhcc.scm.blh.hop.HopVendorBlh;
 import com.dhcc.scm.blh.ord.OrdBlh;
 import com.dhcc.scm.blh.ord.OrderBlh;
+import com.dhcc.scm.entity.hop.HopCtloc;
+import com.dhcc.scm.entity.hop.HopInc;
+import com.dhcc.scm.entity.ord.OrderDetail;
+import com.dhcc.scm.entity.ord.OrderDetailPic;
 import com.dhcc.scm.entity.ord.OrderDetailSub;
 import com.dhcc.scm.entity.st.StInGdRecItm;
 import com.dhcc.scm.entity.sys.SysLog;
+import com.dhcc.scm.entity.ven.Vendor;
 import com.dhcc.scm.entity.vo.ws.FileWrapper;
 import com.dhcc.scm.entity.vo.ws.HisCmpRecWeb;
 import com.dhcc.scm.entity.vo.ws.HisInGdRec;
@@ -36,6 +41,7 @@ import com.dhcc.scm.entity.vo.ws.HisInvInfoWeb;
 import com.dhcc.scm.entity.vo.ws.HisLocWeb;
 import com.dhcc.scm.entity.vo.ws.HisOrderWeb;
 import com.dhcc.scm.entity.vo.ws.HisOrderWebVo;
+import com.dhcc.scm.entity.vo.ws.HisPicWeb;
 import com.dhcc.scm.entity.vo.ws.HisVendorWeb;
 import com.dhcc.scm.entity.vo.ws.OperateResult;
 
@@ -419,6 +425,59 @@ public class HisInfoService implements HisInfoServiceInterface{
 		return fileWrapper;
 	}
 
+	@Override
+	public HisInGdRec getOrderDetail(String orderno) {
+		HisInGdRec hisInGdRec=new HisInGdRec();
+		List<HisInGdRecItm> inGdRecItms =new ArrayList<HisInGdRecItm>();
+		List<HisPicWeb> hisPicWebs=new ArrayList<HisPicWeb>();
+		try {
+			if(orderno==null){
+				hisInGdRec.setResultContent("入库表id为空!");
+				return hisInGdRec;
+			}
+			List<OrderDetail> OrderDetails=commonService.findByProperty(OrderDetail.class, "orderNo", orderno);
+			if(OrderDetails!=null){
+				for(OrderDetail orderdetil:OrderDetails)
+				{
+					HopInc hopInc=commonService.get(HopInc.class, orderdetil.getOrderHopIncId());
+					HopCtloc hopCtPurLoc=commonService.get(HopCtloc.class, orderdetil.getOrderPurLoc());
+					HopCtloc hopCtRecLoc=commonService.get(HopCtloc.class, orderdetil.getOrderRecLoc());
+					Vendor vendor=commonService.get(Vendor.class, orderdetil.getOrderVenId());
+					List<OrderDetailSub> detailSubs=commonService.findByProperty(OrderDetailSub.class, "ordSubDetailId",orderdetil.getOrderId());
+					for(OrderDetailSub detailsub:detailSubs)
+					{
+						HisInGdRecItm hisInGdRecItm=new HisInGdRecItm();
+						hisInGdRecItm.setBatNo(detailsub.getOrdSubBatNo());
+						hisInGdRecItm.setExpdate(detailsub.getOrdSubExpDate());
+						hisInGdRecItm.setArriveDate(detailsub.getOrdSubArriveDate());
+						hisInGdRecItm.setHisNo(orderdetil.getOrderHisNo());
+						hisInGdRecItm.setIncBarCode(hopInc.getIncBarCode());
+						hisInGdRecItm.setInvNo(detailsub.getOrdSubInvNo());
+						hisInGdRecItm.setOrderno(orderdetil.getOrderNo());
+						hisInGdRecItm.setPurLocCode(hopCtPurLoc.getCode());
+						hisInGdRecItm.setQty(detailsub.getOrderSubQty());
+						hisInGdRecItm.setRecLocCode(hopCtRecLoc.getCode());
+						hisInGdRecItm.setRp(detailsub.getOrderSubRp());
+						hisInGdRecItm.setVendorCode(vendor.getCode());
+						inGdRecItms.add(hisInGdRecItm);
+					}
+					
+				}
+			}
+			List<OrderDetailPic> orderDetailPics=commonService.findByProperty(OrderDetailPic.class, "orderNo", orderno);
+			for(OrderDetailPic detailPic:orderDetailPics)
+			{
+				hisPicWebs.add(new HisPicWeb("ORDER", detailPic.getOrdPicPath()));
+			}
+			hisInGdRec.setInGdRecItms(inGdRecItms);
+			hisInGdRec.setPicWebs(hisPicWebs);
+		} catch (Exception e) {
+			hisInGdRec.setResultCode("1");
+			hisInGdRec.setResultContent("程序异常->Exception:"+e.getMessage());
+			return hisInGdRec;
+		}
+		return hisInGdRec;
+	}
 
     
     
