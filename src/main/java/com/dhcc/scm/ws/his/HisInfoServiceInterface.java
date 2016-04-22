@@ -151,6 +151,7 @@ public interface HisInfoServiceInterface {
 	    
 	    
 	    @WebMethod
+	    @WSDLDocumentation("下载图片")
 	    @WebResult(name="fileWrapper")
 	    public FileWrapper downLoadPic(@WebParam(name="type")String type,@WebParam(name="path")String path);
 	    
