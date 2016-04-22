@@ -15,7 +15,6 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
 import com.dhcc.framework.app.service.CommonService;
-import com.dhcc.framework.common.config.PropertiesBean;
 import com.dhcc.framework.util.JsonUtils;
 import com.dhcc.scm.blh.hop.HopCtlocBlh;
 import com.dhcc.scm.blh.hop.HopIncBlh;
