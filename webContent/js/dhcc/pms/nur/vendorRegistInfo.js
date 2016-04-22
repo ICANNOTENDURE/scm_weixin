@@ -1,5 +1,5 @@
 $(function(){	
-	
+ 
 	// 扩展validatebox的validType属性
 	$.extend($.fn.validatebox.defaults.rules, {
 	  //添加自己的表单验证规则
@@ -275,7 +275,7 @@ $(function(){
 		  'dto.vendorDto.vendor.taxation': val,
 	  },function(data){
 		  if(data){
-			  add_message("am-btn-warning","税务号("+val+")已经存在!","");
+			  add_message("am-btn-warning","工商执照号("+val+")已经存在!","");
 			  $("#taxation").val("");
 			  $("#taxation").focus();
 			}
@@ -295,27 +295,80 @@ $(function(){
 	  },'json');
   });
 //验证注册帐号的唯一性
-  $("#account").on('blur',function(){
+  $("#email").on('blur',function(){
 	  var val=this.value;
 	  $.post($WEB_ROOT_PATH + "/nur/nurseCtrl!checkVenUnique.htm", {
 		  'dto.vendorDto.vendor.account': val
 	  },function(data){
 		  if(data){
-			  add_message("am-btn-warning","注册帐号("+val+")已经存在!","");
-			  $("#account").val("");
-			  $("#account").focus();
+			  add_message("am-btn-warning","邮箱("+val+")已经存在!","");
+			  $("#email").val("");
+			  $("#email").focus();
 		  }
 	  },'json');
   });
+ 
   
-	//单独加载页脚
-	if(document.body.clientHeight<document.documentElement.clientHeight){
+   //单独加载页脚
+   if(document.body.clientHeight<document.documentElement.clientHeight){
 		$("#xxx2").removeAttr("style");
 	}else{
 		$("#xxx1").removeAttr("style");
-	}	
+	}
+    
+	//邮箱获取验证码
+	$("#validateEmail").on('click',function(){
+		 var emailObj=$("#subDetails input[name='dto.vendorDto.vendor.email']");
+		 if(emailObj.val().trim() == ''){
+			 add_message("am-btn-danger","请先输入邮箱!","");
+			 emailObj.val("");
+			 return;
+		 }
+		 var filter  = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+		 if (!filter.test(emailObj.val())){
+			 add_message("am-btn-danger","请正确输入邮箱!","");
+			 return;
+		 }
+		  $.post($WEB_ROOT_PATH + "/sys/sendMailCtrl!sendValidate.htm", {
+			  'dto.recUser': emailObj.val()
+		  },function(data){
+			      if(data!="0"){
+			    	  add_message("am-btn-danger",data,"");
+			      }else{
+					  add_message("am-btn-success","验证码发送成功!","");
+					  $("#valCodeTr").remove();
+					  var html="";
+					  html=html+"<tr id='valCodeTr'>";
+					  html=html+"<td class='textLabel' style='width: 10%;'>输入验证码:</td>";
+					  html=html+"<td class='textParent' ><input type='text' style='width: 100%;' id='valCode'></td>";
+					  html=html+"<td class='textParent' colspan='2'><button class='am-btn am-btn-success am-btn-xs' type='button' onclick='checkCode();'>验证</button></td>";
+					  html=html+"</tr>";
+					  $(html).insertAfter("#emailtr");
+			      }
+
+		  });
+	  });
 });
 
+function checkCode(){
+	 if($("#valCode").val().trim() == ''){
+		 add_message("am-btn-danger","请输入验证码!","");
+		 return;
+	 }
+	   $.post($WEB_ROOT_PATH + "/sys/sendMailCtrl!validateCode.htm", {
+           'dto.content': $("#valCode").val(),
+           'dto.recUser': $("#subDetails input[name='dto.vendorDto.vendor.email']").val()
+       },
+       function(data) {
+    	   if(data>0){
+        	   add_message("am-btn-success","验证成功!","");
+        	   $("#subDetails input[name='dto.vendorDto.vendor.vendorId']").val(data);
+    	   }else{
+    		   add_message("am-btn-danger","error:验证码错误+"+data,"");
+    	   }
+
+       });
+}
 function deletePic(id){
 	   $.post($WEB_ROOT_PATH + "/ven/vendorCtrl!deleteUpload.htm", {
            'dto.venQualifPicId': id

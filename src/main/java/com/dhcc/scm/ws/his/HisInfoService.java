@@ -410,7 +410,17 @@ public class HisInfoService implements HisInfoServiceInterface{
 			fileWrapper.setFileName(name);
 			fileWrapper.setFileExtension(com.dhcc.framework.util.FileUtils.getFileExp(name));
 			log.setOpAfter(result+"uploads/weixin/"+name);
-			DataSource source = new FileDataSource(new File(result+"uploads/weixin/"+name));
+			String path="uploads/weixin/";
+			switch (type) {
+			case "ORDER":
+				path="uploads/weixin/order/";
+				break;
+
+			default:
+				break;
+			}
+			
+			DataSource source = new FileDataSource(new File(result+path+name));
 			fileWrapper.setFile(new DataHandler(source));
 			fileWrapper.setResultCode("0");
 		} catch (Exception e) {

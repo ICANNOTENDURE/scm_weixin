@@ -15,6 +15,8 @@ import javax.annotation.Resource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
 
 import com.dhcc.framework.app.blh.AbstractBaseBlh;
@@ -44,6 +46,7 @@ import com.dhcc.scm.entity.ven.VenHopInc;
 import com.dhcc.scm.entity.ven.VenInc;
 import com.dhcc.scm.entity.ven.VenQualifType;
 import com.dhcc.scm.entity.ven.VenQualification;
+import com.dhcc.scm.entity.ven.VenReghop;
 import com.dhcc.scm.entity.ven.Vendor;
 import com.dhcc.scm.entity.vo.nur.OrderDetailGroupByVenVo;
 import com.dhcc.scm.entity.vo.ord.OrderExeStateVo;
@@ -52,7 +55,6 @@ import com.dhcc.scm.service.nur.NurseService;
 import com.dhcc.scm.service.sys.SysAppParamService;
 import com.dhcc.scm.tool.datetime.OperTime;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.dhcc.scm.entity.ven.VenReghop;
 
 @Component
 public class NurseBlh extends AbstractBaseBlh {
@@ -946,10 +948,11 @@ public class NurseBlh extends AbstractBaseBlh {
 	/**
 	 * 验证唯一性
 	 */
+	@SuppressWarnings("unchecked")
 	public void checkVenUnique(BusinessRequest res) throws Exception {
 		NurseIncDto dto = super.getDto(NurseIncDto.class, res);
 		// 税务
-		if (null != dto.getVendorDto().getVendor().getTaxation() && "" != dto.getVendorDto().getVendor().getTaxation()) {
+		if (org.apache.commons.lang3.StringUtils.isNotBlank(dto.getVendorDto().getVendor().getTaxation())) {
 			List<Vendor> taxation = commonService.findByProperty(Vendor.class, "taxation", dto.getVendorDto().getVendor().getTaxation());
 			if (taxation.size() > 0) {
 				dto.setSuccess(true);
@@ -957,16 +960,20 @@ public class NurseBlh extends AbstractBaseBlh {
 			}
 		}
 		// 供应商名称
-		if (null != dto.getVendorDto().getVendor().getName() && "" != dto.getVendorDto().getVendor().getName()) {
+		if (org.apache.commons.lang3.StringUtils.isNotBlank(dto.getVendorDto().getVendor().getName())) {
 			List<Vendor> name = commonService.findByProperty(Vendor.class, "name", dto.getVendorDto().getVendor().getName());
 			if (name.size() > 0) {
 				dto.setSuccess(true);
 				super.writeJSON(dto.isSuccess());
 			}
 		}
-		// 注册帐号
-		if (null != dto.getVendorDto().getVendor().getAccount() && "" != dto.getVendorDto().getVendor().getAccount()) {
-			List<Vendor> account = commonService.findByProperty(Vendor.class, "account", dto.getVendorDto().getVendor().getAccount());
+		// 邮箱
+		if (org.apache.commons.lang3.StringUtils.isNotBlank(dto.getVendorDto().getVendor().getAccount())) {
+
+			DetachedCriteria criteria=DetachedCriteria.forClass(Vendor.class);
+			criteria.add(Restrictions.eq("email", dto.getVendorDto().getVendor().getAccount()));
+			criteria.add(Restrictions.isNotNull("audit_flag"));
+			List<Vendor> account=commonService.findByDetachedCriteria(criteria);
 			if (account.size() > 0) {
 				dto.setSuccess(true);
 				super.writeJSON(dto.isSuccess());
