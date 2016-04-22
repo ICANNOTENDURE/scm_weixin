@@ -34,7 +34,7 @@ public class LogInInterceptor extends AbstractPhaseInterceptor<Message> {
 	        	logger.info(message.getId() + "#" + message.getDestination().getMessageObserver());
 	        }
 	        if (message.getExchange() != null) {
-	        	logger.info(message.getExchange().getInMessage() + "#" + message.getExchange().getInFaultMessage().values());
+	        	//logger.info(message.getExchange().getInMessage() + "#" + message.getExchange().getInFaultMessage().values());
 	           logger.info(message.getExchange().getOutMessage() + "#" + message.getExchange().getOutFaultMessage());
 	        }
 		System.out.println(1);

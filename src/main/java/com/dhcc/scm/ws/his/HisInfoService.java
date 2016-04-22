@@ -440,8 +440,13 @@ public class HisInfoService implements HisInfoServiceInterface{
 				for(OrderDetail orderdetil:OrderDetails)
 				{
 					HopInc hopInc=commonService.get(HopInc.class, orderdetil.getOrderHopIncId());
-					HopCtloc hopCtPurLoc=commonService.get(HopCtloc.class, orderdetil.getOrderPurLoc());
-					HopCtloc hopCtRecLoc=commonService.get(HopCtloc.class, orderdetil.getOrderRecLoc());
+					String purLoc="",recLoc="";
+					if(orderdetil.getOrderPurLoc()!=null){
+						purLoc=commonService.get(HopCtloc.class, orderdetil.getOrderPurLoc()).getCode();
+					}
+					if(orderdetil.getOrderRecLoc()!=null){
+						recLoc=commonService.get(HopCtloc.class, orderdetil.getOrderRecLoc()).getCode();
+					}
 					Vendor vendor=commonService.get(Vendor.class, orderdetil.getOrderVenId());
 					List<OrderDetailSub> detailSubs=commonService.findByProperty(OrderDetailSub.class, "ordSubDetailId",orderdetil.getOrderId());
 					for(OrderDetailSub detailsub:detailSubs)
@@ -454,9 +459,9 @@ public class HisInfoService implements HisInfoServiceInterface{
 						hisInGdRecItm.setIncBarCode(hopInc.getIncBarCode());
 						hisInGdRecItm.setInvNo(detailsub.getOrdSubInvNo());
 						hisInGdRecItm.setOrderno(orderdetil.getOrderNo());
-						hisInGdRecItm.setPurLocCode(hopCtPurLoc.getCode());
+						hisInGdRecItm.setPurLocCode(purLoc);
 						hisInGdRecItm.setQty(detailsub.getOrderSubQty());
-						hisInGdRecItm.setRecLocCode(hopCtRecLoc.getCode());
+						hisInGdRecItm.setRecLocCode(recLoc);
 						hisInGdRecItm.setRp(detailsub.getOrderSubRp());
 						hisInGdRecItm.setVendorCode(vendor.getCode());
 						inGdRecItms.add(hisInGdRecItm);
@@ -464,7 +469,7 @@ public class HisInfoService implements HisInfoServiceInterface{
 					
 				}
 			}
-			List<OrderDetailPic> orderDetailPics=commonService.findByProperty(OrderDetailPic.class, "orderNo", orderno);
+			List<OrderDetailPic> orderDetailPics=commonService.findByProperty(OrderDetailPic.class, "ordPicOrderNo", orderno);
 			for(OrderDetailPic detailPic:orderDetailPics)
 			{
 				hisPicWebs.add(new HisPicWeb("ORDER", detailPic.getOrdPicPath()));
