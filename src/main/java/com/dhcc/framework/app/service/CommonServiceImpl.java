@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -41,7 +42,9 @@ import com.dhcc.framework.jdbc.JdbcTemplateWrapper;
 import com.dhcc.framework.util.DhccBeanUtils;
 import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.HopVendor;
+import com.dhcc.scm.entity.ord.ExeState;
 import com.dhcc.scm.entity.ord.OrderDetail;
+import com.dhcc.scm.entity.ord.OrderDetailSub;
 import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.ven.VenHopInc;
 import com.dhcc.scm.entity.ven.VenInc;
@@ -1310,6 +1313,34 @@ public class CommonServiceImpl implements CommonService {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public void saveOrdSub(OrderDetailSub detailSub, String remark, Long userId) {
+		
+		commonDao.saveOrUpdate(detailSub);
+		OrderDetail orderDetail=commonDao.get(OrderDetail.class, detailSub.getOrdSubDetailId());
+		ExeState ordExe=new ExeState();
+		ordExe.setOrdId(orderDetail.getOrderId());
+		ordExe.setRemark(remark);
+		ordExe.setUserid(userId);
+		ordExe.setStateId(detailSub.getOrdSubStatus().equals("Y")?3l:4l);
+		ordExe.setExedate(new java.sql.Timestamp(new Date().getTime()));
+		commonDao.save(ordExe);
+		
+		ExeState subExe=new ExeState();
+		subExe.setOrdSubId(detailSub.getOrdSubId());
+		subExe.setUserid(userId);
+		subExe.setRemark(remark);
+		subExe.setStateId(detailSub.getOrdSubStatus().equals("Y")?3l:4l);
+		subExe.setExedate(new java.sql.Timestamp(new Date().getTime()));
+		commonDao.save(subExe);
+	}
+
+	@Override
+	public void saveOrd(OrderDetail detail, String type, Long userId) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

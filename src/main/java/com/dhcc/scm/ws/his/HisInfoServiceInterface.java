@@ -1,5 +1,7 @@
 package com.dhcc.scm.ws.his;
 
+import java.util.List;
+
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -157,6 +159,11 @@ public interface HisInfoServiceInterface {
 	    
 	    @WebMethod
 	    @WebResult(name="hisInGdRec")
-	    @WSDLDocumentation("根据订单号查入库明细")
+	    @WSDLDocumentation("根据订单号,查入库明细,库房电脑扫码入库返回的信息")
 	    public HisInGdRec getOrderDetail(@WebParam(name="orderno")String orderno);
+	    
+	    @WebMethod
+	    @WebResult(name="operateResult")
+	    @WSDLDocumentation("库房扫码确认完成")
+	    public OperateResult cmpOrder(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="ordsubs")List<String> ordsubs);
 }

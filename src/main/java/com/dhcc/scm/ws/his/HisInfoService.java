@@ -30,6 +30,7 @@ import com.dhcc.scm.entity.ord.OrderDetailPic;
 import com.dhcc.scm.entity.ord.OrderDetailSub;
 import com.dhcc.scm.entity.st.StInGdRecItm;
 import com.dhcc.scm.entity.sys.SysLog;
+import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.ven.Vendor;
 import com.dhcc.scm.entity.vo.ws.FileWrapper;
 import com.dhcc.scm.entity.vo.ws.HisCmpRecWeb;
@@ -493,6 +494,43 @@ public class HisInfoService implements HisInfoServiceInterface{
 			return hisInGdRec;
 		}
 		return hisInGdRec;
+	}
+
+	@Override
+	public OperateResult cmpOrder(String username, String password, List<String> ordsubs) {
+		
+		OperateResult operateResult=new OperateResult();
+		SysLog log = new SysLog();
+		log.setOpArg("usename:"+username+",password:"+password+",ordsubs:"+JsonUtils.toJson(ordsubs));
+		log.setOpName("webservice库房扫码确认完成：》cmpOrder");
+		log.setOpDate(new Date());
+		log.setOpType("webservice");
+		log.setOpUser(username);
+		try {
+			NormalAccount normalAccount=ordBlh.checkWsParam(operateResult, username, password, ordsubs);
+			if(normalAccount==null){
+				return operateResult;
+			}
+			for(String sub:ordsubs){
+				OrderDetailSub orderDetailSub=commonService.get(OrderDetailSub.class, sub);
+				if(orderDetailSub!=null){
+					if(orderDetailSub.getOrdSubStatus().equals("Y")){
+						orderDetailSub.setOrdSubStatus("T");
+						commonService.saveOrdSub(orderDetailSub, "库房扫码入库确认", normalAccount.getAccountId());
+					}
+				}
+			}
+			operateResult.setResultCode("0");
+			operateResult.setResultContent("success");
+		} catch (Exception e) {
+			operateResult.setResultCode("1");
+			operateResult.setResultContent("程序异常->Exception:"+e.getMessage());
+			return operateResult;
+		}finally{
+			log.setOpResult(JsonUtils.toJson(operateResult));
+			commonService.saveOrUpdate(log);
+		}
+		return operateResult;
 	}
 
     

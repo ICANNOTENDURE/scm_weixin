@@ -84,8 +84,6 @@ public class OrderDetailSub implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="ordsub_arrivedate")
 	private Date ordSubArriveDate;
-	
-	
 
 	public Date getOrdSubArriveDate() {
 		return ordSubArriveDate;

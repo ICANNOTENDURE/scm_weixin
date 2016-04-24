@@ -18,6 +18,8 @@ import com.dhcc.framework.common.PagerModel;
 import com.dhcc.framework.hibernate.dao.CommonDao;
 import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.HopVendor;
+import com.dhcc.scm.entity.ord.OrderDetail;
+import com.dhcc.scm.entity.ord.OrderDetailSub;
 import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.ven.VenInc;
 import com.dhcc.scm.entity.vo.ws.OperateResult;
@@ -214,5 +216,15 @@ public interface CommonService {
 	 */
 	public boolean checkIncIsCon(Long venIncId, Long hopIncId);
 	
+	
+	/**
+	 * @see  :修改发货表状态，订单表状态，并生成订单执行记录表
+	 */
+	public void saveOrdSub(OrderDetailSub detailSub,String remark,Long userId);
+	
+	/**
+	 * @see  :修改订单表状态，并生成订单执行记录表
+	 */
+	public void saveOrd(OrderDetail detail,String remark,Long userId);
 
 }
