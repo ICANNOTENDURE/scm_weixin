@@ -39,17 +39,17 @@
 		<ref bean="hisInfoService"/>    
 	</jaxws:serviceBean>
 	       
-     <!-- 输入日志拦截器 -->  
+     <!-- 输入日志拦截器  
     <jaxws:inInterceptors>  
        <ref bean="inMessageInterceptor"/>  
        <ref bean="logInInterceptor"/>  
     </jaxws:inInterceptors>
-       
-     <!-- 输出日志拦截器 -->  
+     -->   
+     <!-- 输出日志拦截器  
     <jaxws:outInterceptors>
        <ref bean="outMessageInterceptor"/>  
     </jaxws:outInterceptors>
-       
+     -->   
     <jaxws:properties>  
         <!-- 开启MTOM -->
         <entry key="mtom_enabled" value="true"></entry>  
