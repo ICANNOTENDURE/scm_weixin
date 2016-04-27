@@ -6,37 +6,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@include file="/WEB-INF/jsp/common/amaze.jsp"%>
-<link href="<%=request.getContextPath()%>/css/nur/nurse.css"
-	rel="stylesheet" type="text/css"/>
-<link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/css/uploadify.css">
-	<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/css/font-awesome/css/font-awesome.css">
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/css/font-awesome/css/font-awesome-ie7.min.css">
+
 <% request.setCharacterEncoding("utf-8");%>
 <title>东华电子商务平台(SCI)</title>
 <%@include file="/WEB-INF/jsp/common/scriptInc.jsp"%>		
-<%@include file="/WEB-INF/jsp/common/scriptUploadify.jsp"%>	
-<%@include file="/WEB-INF/jsp/common/scriptZoomImage.jsp"%>	
-<link rel="stylesheet"	rel="stylesheet" type="text/css"/>
-<script type="text/javascript">
-/* $(function() {
-	//查看供应商是否审核
-	var hopVenId=$("#vendorId").val();
-	var html1="<button type='button' class='am-btn am-btn-waring'>审核通过</button>";
-	var html2="<button type='button' class='am-btn am-btn-waring'>审核中...</button>";
-	$.post($WEB_ROOT_PATH + "/nur/nurseCtrl!checkVenAudit.htm", {
-		  'dto.hopVendorDto.hopVendor.hopVenId': hopVenId
-	  },function(data){
-		  if(data){
-			  $("#buttons").html(html1);
-		  }else{
-			  $("#buttons").html(html2);
-		  }
-	  },'json');
-}); */
-</script>
+
 <script type="text/javascript">
 $(function() {
 	$("#goIndex").on('click',function(){
@@ -168,15 +142,18 @@ $(function() {
 							</s:if>
 						   <s:if test="#venQualifys.fieldtype=='图片'">
 								<td class="textParent" style="text-align: left;">
-									<!--  <input id="file_upload${venQualifys.type}"
-									name="upload" type="file" multiple="true" style="width: 80%">-->
-									<div id="queue${venQualifys.type}" name="queue"></div>
-									<input type="hidden" value=""
-									name="dto.vendorDto.venQualificationList.venQualification.venQualificationId" id="${venQualifys.type}" />
+
+									 <ul data-am-widget="gallery" class="am-gallery am-avg-sm-2 am-avg-md-3 am-avg-lg-4 am-gallery-bordered" data-am-gallery="{  }" >
 									 <s:iterator value="venQualifPics" status="all" id="venQualifPicss">
-										<a><s:property value="#venQualifPicss.name" /></a>
-										<a title="<s:property value="#venQualifPicss.name" />" class="toRegister" id="idContainer<s:property value="#venQualifPicss.id" />" href="<%=request.getContextPath()%>/uploads/<s:property value="#venQualifPicss.path"/>"  ><img src="<%=request.getContextPath()%>/uploads/<s:property value="#venQualifPicss.path"/>" style="width: 100px;height: 100px" alt="<s:property value="#venQualifPicss.name" />"/></a>
+										 <li>
+										 	 <div class="am-gallery-item">
+												<a href="<%=request.getContextPath()%>/uploads/<s:property value="#venQualifPicss.path"/>" >
+									 				<img src="<%=request.getContextPath()%>/uploads/<s:property value="#venQualifPicss.path"/>"  />
+           		 								</a>
+									 		</div>
+									 	 </li>
 									 </s:iterator>
+									 </ul>
 								</td>
 						  </s:if>
 						</tr>
@@ -204,15 +181,6 @@ $(function() {
 
 
 
-<div id="xxx1" style="display:none;">
-		<footer class="footer" style="bottom:0;width:100%;*position:relative;">
-			<p>Copyright &copy; 2015 东华软件股份公司. by the Dhcc Pharmacy Team.</p>
-		</footer>
-	</div>
-	<div id="xxx2" style="display:none;">
-		<footer class="footer" style="bottom:0;width:100%;position:fixed;*position:relative;;">
-			<p>Copyright &copy; 2015 东华软件股份公司. by the Dhcc Pharmacy Team.</p>
-		</footer>
-	</div>
+
 </body>
 </html>

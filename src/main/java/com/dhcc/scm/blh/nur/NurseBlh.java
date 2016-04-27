@@ -870,12 +870,11 @@ public class NurseBlh extends AbstractBaseBlh {
 			// 默认未激活
 			dto.setNormalAccountDto(new NormalAccountDto());
 			dto.getNormalAccountDto().setNormalAccount(new NormalAccount());
-			;
 			dto.getNormalAccountDto().getNormalAccount().setNormalUser(new NormalUser());
 			dto.getNormalAccountDto().getNormalAccount().setUseState("3"); // 待审核
 			dto.getNormalAccountDto().getNormalAccount().getNormalUser().setUseState("3");
 			// 帐号
-			dto.getNormalAccountDto().getNormalAccount().setAccountAlias(dto.getVendorDto().getVendor().getAccount());
+			dto.getNormalAccountDto().getNormalAccount().setAccountAlias(dto.getVendorDto().getVendor().getEmail());
 			// Name
 			dto.getNormalAccountDto().getNormalAccount().setAccountName(new Date().getTime() + "");
 			// 真实姓名
@@ -953,16 +952,22 @@ public class NurseBlh extends AbstractBaseBlh {
 		NurseIncDto dto = super.getDto(NurseIncDto.class, res);
 		// 税务
 		if (org.apache.commons.lang3.StringUtils.isNotBlank(dto.getVendorDto().getVendor().getTaxation())) {
-			List<Vendor> taxation = commonService.findByProperty(Vendor.class, "taxation", dto.getVendorDto().getVendor().getTaxation());
-			if (taxation.size() > 0) {
+			DetachedCriteria criteria=DetachedCriteria.forClass(Vendor.class);
+			criteria.add(Restrictions.eq("taxation", dto.getVendorDto().getVendor().getTaxation()));
+			criteria.add(Restrictions.eq("audit_flag", "I"));
+			List<Vendor> account=commonService.findByDetachedCriteria(criteria);
+			if (account.size() > 0) {
 				dto.setSuccess(true);
 				super.writeJSON(dto.isSuccess());
 			}
 		}
 		// 供应商名称
 		if (org.apache.commons.lang3.StringUtils.isNotBlank(dto.getVendorDto().getVendor().getName())) {
-			List<Vendor> name = commonService.findByProperty(Vendor.class, "name", dto.getVendorDto().getVendor().getName());
-			if (name.size() > 0) {
+			DetachedCriteria criteria=DetachedCriteria.forClass(Vendor.class);
+			criteria.add(Restrictions.eq("name", dto.getVendorDto().getVendor().getName()));
+			criteria.add(Restrictions.eq("audit_flag", "I"));
+			List<Vendor> account=commonService.findByDetachedCriteria(criteria);
+			if (account.size() > 0) {
 				dto.setSuccess(true);
 				super.writeJSON(dto.isSuccess());
 			}
@@ -972,7 +977,7 @@ public class NurseBlh extends AbstractBaseBlh {
 
 			DetachedCriteria criteria=DetachedCriteria.forClass(Vendor.class);
 			criteria.add(Restrictions.eq("email", dto.getVendorDto().getVendor().getAccount()));
-			criteria.add(Restrictions.isNotNull("audit_flag"));
+			criteria.add(Restrictions.eq("audit_flag", "I"));
 			List<Vendor> account=commonService.findByDetachedCriteria(criteria);
 			if (account.size() > 0) {
 				dto.setSuccess(true);

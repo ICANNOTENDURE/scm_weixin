@@ -124,7 +124,7 @@ public class VendorDao extends HibernatePersistentObjectDAO<Vendor> {
 		hqlBuffer.append(" from ");
 		hqlBuffer.append(" T_VEN_QUALIF_TYPE t1   left  join T_VEN_QUALIFICATION t2 ");
 		hqlBuffer.append(" on t1.VENQUALIFTYPE_ID=t2.QUALIFY_TYPE_ID");
-		hqlBuffer.append(" where 1=1 ");
+	
 		Map<String, Object> hqlParamMap = new HashMap<String, Object>();
 		if (vendor != null) {
 			if ((vendor.getVendorId() != null)) {
@@ -137,13 +137,13 @@ public class VendorDao extends HibernatePersistentObjectDAO<Vendor> {
 		List<VenQualifTypeVO> venQualifTypeVOList=jdbcTemplateWrapper.queryAllMatchListWithParaMap(hqlBuffer.toString(), VenQualifTypeVO.class, hqlParamMap);
 		for(int i=0;i<venQualifTypeVOList.size();i++){
 			if(venQualifTypeVOList.get(i).getQualif()!=null){
-//				Map<String, Object> paramMap = new HashMap<String, Object>();
-//				StringBuffer hql = new StringBuffer();
-//				hql.append(" from ");
-//				hql.append(" VenQualifPic t ");
-//				hql.append(" where t.qualifyid = :qualifyid ");
-//				paramMap.put("qualifyid",venQualifTypeVOList.get(i).getQualif());
-				List<VenQualifPic> VenQualifPics=super.findByProperty(VenQualifPic.class, "qualifyid", venQualifTypeVOList.get(i).getQualif());// (hql.toString(),paramMap,false);
+				Map<String, Object> paramMap = new HashMap<String, Object>();
+				StringBuffer hql = new StringBuffer();
+				hql.append(" from ");
+				hql.append(" VenQualifPic t ");
+				hql.append(" where t.qualifyid = :qualifyid ");
+				paramMap.put("qualifyid",venQualifTypeVOList.get(i).getQualif());
+				List<VenQualifPic> VenQualifPics=super.findByHqlWithValuesMap(hql.toString(),paramMap,false);
 				venQualifTypeVOList.get(i).setVenQualifPics(VenQualifPics);
 			}
 		}
