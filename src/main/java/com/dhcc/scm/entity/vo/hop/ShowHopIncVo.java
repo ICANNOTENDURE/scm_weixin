@@ -44,6 +44,18 @@ public class ShowHopIncVo {
 	private String incpicpath;
 	//图片顺序
 	private Long incpicseq;
+	
+	private String incbarcode;
+	
+	
+	
+	public String getIncbarcode() {
+		return incbarcode;
+	}
+	public void setIncbarcode(String incbarcode) {
+		this.incbarcode = incbarcode;
+	}
+	
 	public Long getIncid() {
 		return incid;
 	}

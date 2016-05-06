@@ -5,8 +5,44 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title></title>
 <%@include file="/WEB-INF/jsp/common/scriptInc.jsp"%>
- <script>
+
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/js/easyui/themes/dhcc/easyui.css">
+<script type="text/javascript"
+	src="<%=request.getContextPath()%>/js/easyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript"
+	src="<%=request.getContextPath()%>/js/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript"
+	src="<%=request.getContextPath()%>/js/easyui/locale/easyui-lang-zh_CN.js"></script>
+	
+ <script type="text/javascript">
  $(function(){
+	 //双击显示审核历史
+	 $('#datagrid').datagrid({
+		 onDblClickRow: function(rowIndex, rowData){		 
+			var row =$("#datagrid").datagrid('getSelected');			
+		    $('#detail').dialog('open');
+		    $('#detailgrid').datagrid({  
+	    	    url:$WEB_ROOT_PATH+'/ven/vendorCtrl!listVendorHistory.htm?dto.vendor.vendorId='+row.vendorid,
+	    	    method:'post',
+	    	    fit:true,
+	    	    loadMsg:'加载数据中.....',
+	    	    pagination:true,
+	    	    fitColumns:true,
+	    	    rownumbers:true,
+	    	    columns:[[ 
+						{field:'name',title:'供应商',width:60,sortable:true}, 
+	    	            {field:'loguserid',title:'审核人',width:60,},  	
+	    	  	        {field:'logdate',title:'审核时间',width:100,},
+	    	  	        {field:'logresult',title:'审核结果',width:60,},
+	    	  	        {field:'logip',title:'审核IP',width:100,},
+	    	  	]],
+	    	  	
+		    });   
+		    }
+		    });
+	
+
  $.extend($.fn.datagrid.methods, {
 	 editCell: function(jq,param){
 		 return jq.each(function(){
@@ -27,6 +63,7 @@
 		 });
 	 }
  });
+ 
  })
 //审批资质
 function AuditT(value,row,index){
@@ -34,7 +71,7 @@ function AuditT(value,row,index){
 				return '<a class="dhc-linkbutton l-btn l-btn-plain" onclick="javascript:UpdAudit('+index+')" ><span class="l-btn-left"><span class="l-btn-text icon-undo l-btn-icon-left"></span>取消拒绝</span></a>';
 			}else{
 				if(row.auditflag=="Y"){
-					return '<a class="dhc-linkbutton l-btn l-btn-plain" onclick="javascript:UpdAudit('+index+')" ><span class="l-btn-left"><span class="l-btn-text icon-no l-btn-icon-left"></span>拒绝</span></a>';
+					return '<a class="dhc-linkbutton l-btn l-btn-plain" onclick="javascript:ReClick('+index+')" ><span class="l-btn-left"><span class="l-btn-text icon-no l-btn-icon-left"></span>拒绝</span></a>';
 				}else{
 					return '<a class="dhc-linkbutton l-btn l-btn-plain" onclick="javascript:UpdAudit('+index+')" ><span class="l-btn-left"><span class="l-btn-text icon-ok l-btn-icon-left"></span>审批</span></a>';
 				}
@@ -44,7 +81,7 @@ function AuditT(value,row,index){
 	};
  function UpdAudit(row){
 //	    vendorid=$('#datagrid').datagrid('getRows')[row]['vendorid'];
-	    hopvendorid=$('#datagrid').datagrid('getRows')[row]['hopvendorid'];
+	    hopvendorid=$('#datagrid').datagrid('getRows')[row]['hopvendorid']; //主键
 		$.post(
 			$WEB_ROOT_PATH+'/hop/hopVendorCtrl!hopAuditFLag.htm',
 			{
@@ -57,14 +94,43 @@ function AuditT(value,row,index){
 					$CommonUI.alert("操作成功!");
 					$CommonUI.getDataGrid('#datagrid').datagrid('reload');
 				}else{
+					
+//				    if(data.dto.opFlg=="0"){
+//				    	$CommonUI.alert("您不具备权限!");				    	
+//				    }else{
 					$CommonUI.alert("操作失败!");				
 //					$CommonUI.alert("操作失败!"+data.resultContent);
+//				    }
+				    
 				}
 			},
 			"json"
 		);
 	}
- 
+			
+ //拒绝时候弹出审核意见录入框  
+ function ReClick(row){
+    hopvendorid=$('#datagrid').datagrid('getRows')[row]['hopvendorid']; //主键
+	var title="";
+	var content="审核意见:";
+	$.messager.prompt(title,content,function(r){    
+	    if (r){  	    		    
+ 	           $.post(getContextPath() + '/hop/hopVendorCtrl!hopAuditFLag.htm', {
+ 	        	'dto.hopVendor.hopVendorId': hopvendorid,	           
+	    		"dto.remark":r
+			}, function(data) {
+	//			if (data.resultCode == "1") {
+			    if (data.dto.opFlg=="1") {
+					$('#datagrid').datagrid('load');
+					$.messager.alert("提示","操作成功");
+				} else {
+					$.messager.alert("错误",data.resultContent);
+				}
+			}, 'json');
+	    }    
+	}); 
+	
+}
  
  $(function(){
  	
@@ -79,28 +145,33 @@ function AuditT(value,row,index){
  			}
 			});
 		});
- 	
-// 	$("#queryAudit").on('click', function() {
-// 		if ($CommonUI.getDataGrid("#datagrid").datagrid('getSelections').length != 1) {
-// 			$CommonUI.alert('请选一个供应商');
-// 			return;
-// 		}
-// 		var row =$("#datagrid").datagrid('getSelected');
-//        var vendorId=row.vendorid;
-// 		$.post(
-// 				$WEB_ROOT_PATH+'/hop/hopVendorCtrl!hopAuditFLag.htm',
-// 				{
-// 					'dto.hopVendor.hopVenId': vendorId,
-// 				},
-// 				function(data){
-// 					if(data.dto.opFlg=="1"){
-// 						$CommonUI.alert("操作成功!");
-//
-// 					}
-// 				},
- //				"json"
-// 			);
- //	});
+
+ 	//选中单击 显示审核历史
+ 	$("#queryHistory").on('click', function() {
+ 		if ($CommonUI.getDataGrid("#datagrid").datagrid('getSelections').length != 1) {
+ 			$CommonUI.alert('请选一个供应商');
+ 			return;
+ 		}
+ 		var row =$("#datagrid").datagrid('getSelected');
+		$('#detail').dialog('open');
+	    $('#detailgrid').datagrid({  
+	    	url:$WEB_ROOT_PATH+'/ven/vendorCtrl!listVendorHistory.htm?dto.vendor.vendorId='+row.vendorid,
+	    	    method:'post',
+	    	    fit:true,
+	    	    loadMsg:'加载数据中.....',
+	    	    pagination:true,
+	    	    fitColumns:true,
+	    	    rownumbers:true,
+	    	    columns:[[ 
+						{field:'name',title:'供应商',width:60,sortable:true}, 
+	    	            {field:'loguserid',title:'审核人',width:60,},  	
+	    	  	        {field:'logdate',title:'审核时间',width:100,},
+	    	  	        {field:'logresult',title:'审核结果',width:60,},
+	    	  	        {field:'logip',title:'审核IP',width:100,},
+	    	  	]],  
+	    	  	
+		    });   
+ 	});
  	
  	$("#queryZiZhi").on('click', function() {
  		if ($CommonUI.getDataGrid("#datagrid").datagrid('getSelections').length != 1) {
@@ -138,10 +209,16 @@ function AuditT(value,row,index){
 			editIndex = index;
 		}
 	}
-    </script>
 
+    </script>
 </head>
 <body >
+    <div id="detail" class="dialog" title="审核历史"
+		             data-options="modal:true,width:500,height:240,closed:true,maximizable:true"
+					 style="vertical-align: middle">
+		             <table id="detailgrid" ></table>
+	</div>
+                        
 	<div id="toolbar" style="height: auto">
 		  <div  style="margin-bottom:5px;margin-top:5px">
 			名称: <input id="venName" style="width: 100px;"
@@ -163,7 +240,8 @@ function AuditT(value,row,index){
 			<br>
 			<a href="#" class="linkbutton" iconCls="icon-save" id="queryZiZhi">查看供应商资质</a>
 			<a href="#" class="linkbutton" iconCls="icon-save" id="queryTimeLine">查看供应商时间轴</a>
-		
+			<a href="#" class="linkbutton" iconCls="icon-save" id="queryHistory">查看供应商审核历史</a>			
+
 		 </div>
 	</div>	
     
@@ -196,19 +274,12 @@ function AuditT(value,row,index){
 							<th data-options="field:'account',sortable:true" width="1/13">注册帐号</th>
 							<th data-options="field:'tel',sortable:true" width="1/13">电话</th>
 							<th data-options="field:'fax',sortable:true" width="1/13">传真</th>
-							<th data-options="field:'address',sortable:true" width="1/13">联系地址</th>
-							<th data-options="field:'venfac',sortable:true,editor : {
-								type : 'numberbox',
-                            	options : {
-                                	required : true
-                            	}
-                        	}" width="1/13">审核意见</th>
+							<th data-options="field:'address',sortable:true" width="1/13">联系地址</th>	
                         	<th data-options="field:'hopvendorid',hidden:true" width="1/13">HopVendorId ID</th>
-							<th data-options="field:'auditflag',formatter:AuditT,sortable:true" width="1/13">资质</th>
-							
+							<th data-options="field:'auditflag',formatter:AuditT,sortable:true" width="1/13">资质</th>	
 						</tr>
 					</thead>
-				</table>
+				</table>			
         </div>
     </div>  
    

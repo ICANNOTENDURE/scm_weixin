@@ -402,7 +402,9 @@ function saveClick(){
 		if(changes[j]["expdate"]!=""){
 			orderDetailSub.ordSubExpDate=changes[j]["expdate"]+" 00:00:00";
 		}
-		
+		if(changes[j]["arrivedate"]!=""){
+			orderDetailSub.ordSubArriveDate=changes[j]["arrivedate"]+" 00:00:00";
+		}
 		orderDetailSub.orderSubRp=changes[j]["rp"];
 		orderDetailSub.orderSubQty=changes[j]["devqty"];
 		orderDetailSub.ordSubDetailId=changes[j]["orderid"];
@@ -452,7 +454,9 @@ function saveClick(){
              <th data-options="field:'expdate',width:70,sortable:true,editor : {
 						type : 'datebox'
                 	}">效期</th>
-
+			 <th data-options="field:'arrivedate',width:70,sortable:true,editor : {
+						type : 'datebox'
+                	}">预计送达日期</th>	
                <th data-options="field:'devqty',width:70,sortable:true,editor : {
 						type : 'numberbox',
                     	options : {

@@ -233,7 +233,7 @@ $(function (){
         'buttonText':'上传图片',
         'fileTypeDesc': '支持的格式：',
         'fileTypeExts': '*.jpg;*.jpeg;*.png',
-        'fileSizeLimit': '30MB',
+        'fileSizeLimit': '10MB',
         'width': '60',
         'height': '20',
         'debug' : false,

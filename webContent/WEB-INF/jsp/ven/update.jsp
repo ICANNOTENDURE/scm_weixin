@@ -58,9 +58,9 @@
 						class="combobox" name="dto.vendor.parentId" id="parentId"  value="<s:property value="dto.vendor.parentId"/>" /></td>
 				</tr>
 				<tr>
-					<td class="textLabel">HIS标识:</td>
+					<td class="textLabel">工商执照注册号/统一社会信用代码:</td>
 					<td class="textParent"><input style="width: 250px;" type="text"
-						name="dto.vendor.hisId" value="<s:property value="dto.vendor.hisId"/>"></input></td>
+						name="dto.vendor.taxation" value="<s:property value="dto.vendor.taxation"/>"></input></td>
 					<td class="textLabel">别名:</td>
 					<td class="textParent"><input style="width: 250px;" type="text"
 					name="dto.vendor.alias" value="<s:property value="dto.vendor.alias"/>"></input></td>	

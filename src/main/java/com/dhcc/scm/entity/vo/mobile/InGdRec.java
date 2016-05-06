@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dhcc.scm.entity.ord.OrderDetailPic;
+
 
 
 public class InGdRec implements Serializable{
@@ -23,6 +25,18 @@ public class InGdRec implements Serializable{
 		private String resultComtent="";
 		
 		private List<InGdRecItm> gdRecItms=new ArrayList<InGdRecItm>();
+		
+		private List<OrderDetailPic> orderDetailPics;
+		
+		
+		
+		public List<OrderDetailPic> getOrderDetailPics() {
+			return orderDetailPics;
+		}
+
+		public void setOrderDetailPics(List<OrderDetailPic> orderDetailPics) {
+			this.orderDetailPics = orderDetailPics;
+		}
 
 		public String getResultCode() {
 			return resultCode;

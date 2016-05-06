@@ -7,6 +7,6 @@ import com.dhcc.framework.common.codegen.CodeGenUtils;
 
 public class PmsCodeGen {
 	public static void main(String[] args){
-		CodeGenUtils.createCode("com.dhcc.scm", "StInGdRec", "StInGdRec","st");
+		CodeGenUtils.createCode("com.dhcc.scm", "Student", "Student","demo");
 	}
 }

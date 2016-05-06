@@ -4,13 +4,17 @@
  */
 package com.dhcc.scm.blh.weixin;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 
+import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.WxMpCustomMessage;
 import me.chanjar.weixin.mp.bean.WxMpTemplateData;
@@ -18,10 +22,12 @@ import me.chanjar.weixin.mp.bean.WxMpTemplateMessage;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.struts2.ServletActionContext;
 import org.springframework.stereotype.Component;
 
 import com.dhcc.framework.app.blh.AbstractBaseBlh;
 import com.dhcc.framework.app.service.CommonService;
+import com.dhcc.framework.common.BaseConstants;
 import com.dhcc.framework.common.config.PropertiesBean;
 import com.dhcc.framework.transmission.event.BusinessRequest;
 import com.dhcc.scm.dto.weixin.MpUserDto;
@@ -31,6 +37,7 @@ import com.dhcc.scm.entity.hop.HopCtlocDestination;
 import com.dhcc.scm.entity.hop.Hospital;
 import com.dhcc.scm.entity.ord.ExeState;
 import com.dhcc.scm.entity.ord.OrderDetail;
+import com.dhcc.scm.entity.ord.OrderDetailPic;
 import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.userManage.NormalUser;
 import com.dhcc.scm.entity.ven.VenInc;
@@ -38,6 +45,7 @@ import com.dhcc.scm.entity.ven.Vendor;
 import com.dhcc.scm.entity.vo.ws.OperateResult;
 import com.dhcc.scm.entity.weixin.MpUser;
 import com.dhcc.scm.service.weixin.WxMessageService;
+import com.dhcc.scm.tool.datetime.OperTime;
 
 @Component
 public class MpMessageBlh extends AbstractBaseBlh {
@@ -176,6 +184,8 @@ public class MpMessageBlh extends AbstractBaseBlh {
 				if (details.size() > 0) {
 					dto.setAccpectFlag(details.get(0).getOrderState());
 				}
+				List<OrderDetailPic> detailPics=commonService.findByProperty(OrderDetailPic.class, "ordPicOrderNo", dto.getOrderDetail().getOrderNo());
+				dto.setOrderDetailPics(detailPics);
 			}
 		}
 		return "mpListOrderDetail";
@@ -325,5 +335,69 @@ public class MpMessageBlh extends AbstractBaseBlh {
 			e.printStackTrace();
 		}	
 	
+	}
+	
+	
+	
+	/**
+	 * 
+	* @Title: uploadOrdPic 
+	* @Description: TODO(供应商上传发货图片) 
+	* @param @param res    微信服务器图片id ,分割，订单号 
+	* @return void    返回类型 
+	* @throws 
+	* @author zhouxin   
+	* @date 2016年4月19日 下午10:37:17
+	 */
+	public void uploadOrdPic(BusinessRequest res){
+		MpUserDto dto = super.getDto(MpUserDto.class, res);
+		
+		OperateResult operateResult = new OperateResult();
+		dto.setOperateResult(operateResult);
+		if (org.apache.commons.lang3.StringUtils.isBlank(dto.getImgIdStr())) {
+			operateResult.setResultContent("图片为空");
+			writeJSON(operateResult);
+			return;
+		}
+		if (org.apache.commons.lang3.StringUtils.isBlank(dto.getOrderno())) {
+			operateResult.setResultContent("入参为空");
+			writeJSON(operateResult);
+			return;
+		}
+		// 获取文件存储路径
+		String storageFileName = ServletActionContext.getServletContext().getRealPath("/uploads/weixin/order");
+		// 判断文件存储路径是否存在，若不存在则自动新建
+		File document = new File(storageFileName);
+		if (!document.exists()) {
+			document.mkdir();
+		}
+		String[] mediaIds = dto.getImgIdStr().split(BaseConstants.COMMA);
+		List<OrderDetailPic> orderDetailPics = new ArrayList<OrderDetailPic>();
+		for (String mediaId : mediaIds) {
+			if (org.apache.commons.lang3.StringUtils.isBlank(mediaId)) {
+				continue;
+			}
+			try {
+				File wxFile = wxMpService.mediaDownload(mediaId);
+				String newFileName = "ORDER" + OperTime.getCurrentDate() + "_" + UUID.randomUUID().toString() + com.dhcc.framework.util.FileUtils.getFileExp(wxFile.getName());
+				File dstFile = new File(storageFileName, newFileName);
+				com.dhcc.framework.util.FileUtils.copyFile(wxFile, dstFile, BaseConstants.BUFFER_SIZE);
+				OrderDetailPic orderDetailPic = new OrderDetailPic();
+				orderDetailPic.setOrdPicPath(newFileName);
+				orderDetailPic.setOrdPicOrderNo(dto.getOrderno());
+				orderDetailPics.add(orderDetailPic);
+			} catch (WxErrorException e) {
+				e.printStackTrace();
+				operateResult.setResultContent(e.getMessage());
+				writeJSON(operateResult);
+				return;
+			}
+		}
+
+		for(OrderDetailPic orderDetailPic:orderDetailPics){
+			commonService.saveOrUpdate(orderDetailPic);
+		}
+		operateResult.setResultCode("0");
+		writeJSON(operateResult);
 	}
 }

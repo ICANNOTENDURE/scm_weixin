@@ -80,6 +80,19 @@ public class OrderDetailSub implements Serializable {
 	@Column(name="ordsub_ingdrec_date")
 	private Date ordIngdrecDate;
 	
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="ordsub_arrivedate")
+	private Date ordSubArriveDate;
+
+	public Date getOrdSubArriveDate() {
+		return ordSubArriveDate;
+	}
+
+	public void setOrdSubArriveDate(Date ordSubArriveDate) {
+		this.ordSubArriveDate = ordSubArriveDate;
+	}
+
 	public String getOrderSubImpId() {
 		return orderSubImpId;
 	}

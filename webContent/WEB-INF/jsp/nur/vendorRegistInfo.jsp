@@ -1,20 +1,19 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<%@include file="/WEB-INF/jsp/common/amaze.jsp"%>
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/css/ven/regStep.css">
+<%@include file="/WEB-INF/jsp/common/amaze.jsp"%>	
 <title>东华电子商务平台(SCI)</title>
 <%@include file="/WEB-INF/jsp/common/scriptInc.jsp"%>
+
 <%@include file="/WEB-INF/jsp/common/scriptUploadify.jsp"%>
-<%@include file="/WEB-INF/jsp/common/scriptZoomImage.jsp"%>
 
 <script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/dhcc/pms/nur/vendorRegistInfo.js"></script>	
+	src="<%=request.getContextPath()%>/js/dhcc/pms/nur/vendorRegistInfo.js"></script>
 </head>
 <body>
 	<div class="am-g am-container" style="margin-top: 20px">
@@ -47,49 +46,66 @@
 									<table id="subDetails"
 										class="am-table am-table-bordered am-table-hover">
 										<tr style="display: none">
-											<input type="hidden" name="dto.vendorDto.vendor.vendorId" id="vendorId"/>
+											<input type="hidden" name="dto.vendorDto.vendor.vendorId"
+												id="vendorId" />
 										</tr>
+										<!-- 
 										<tr>
-
-
 											<td class="textLabel" style="width: 10%;"><span
 												style='color: red'>*</span>注册帐号:</td>
 											<td class="textParent"><input type="text"
 												class="validatebox"
 												data-options="required:true,
-			      validType:['accountAlias']"
+			      								validType:['accountAlias']"
 												name="dto.vendorDto.vendor.account" id="account"
 												style="width: 70%;" /></td>
 											<td class="textParent" colspan="2" style="border-left: none">
 												(注册帐号不能以数字开头，不能包含"@",长度为6-20位)</td>
 										</tr>
-										<tr>
+										 -->
+										<tr id="emailtr">
 											<td class="textLabel" style="width: 10%;"><span
-												style='color: red'>*</span>供应商代码:</td>
-											<td class="textParent"><input type="text"
-												class="validatebox" name="dto.vendorDto.vendor.code"
-												id="code" style="width: 70%;"
-												data-options="
-			      required:true
-			      "></td>
-
-											<td class="textLabel" style="width: 10%;"><span
-												style='color: red'>*</span>供应商名称:</td>
-											<td class="textParent"><input type="text"
-												class="validatebox" id="name" data-options="required:true"
-												name="dto.vendorDto.vendor.name" style="width: 70%;"></td>
+												style='color: red'>*</span>注册邮箱:</td>
+											<td class="textParent"><input type="text" id="email"
+												name="dto.vendorDto.vendor.email" class="validatebox"
+												data-options="required:true,validType:['mail']"
+												style="width: 100%;"></td>
+											<td class="textParent" colspan="2" style="border-left: none">
+												 <span class="am-kai am-text-default am-text-middle">(邮箱可以直接登录，以后收到医院新订单通知)</span>
+												 <button class="am-btn am-btn-success am-btn-xs" type="button" id="validateEmail">验证邮箱</button>
+											</td>
 										</tr>
 
 										<tr>
-
 											<td class="textLabel" style="width: 10%;"><span
 												style='color: red'>*</span>工商执照号:</td>
 											<td class="textParent"><input type="text"
 												class="validatebox" data-options="required:true"
 												name="dto.vendorDto.vendor.taxation" id="taxation"
+												style="width: 100%;"></td>
+											<td class="textParent" colspan="2" style="border-left: none">
+												<span class="am-kai am-text-default am-text-middle">(工商执照注册号/统一社会信用代码)</span>
+											</td>
+
+										</tr>
+										<tr>
+											<td class="textLabel" style="width: 10%;"><span
+												style='color: red'>*</span>供应商名称:</td>
+											<td class="textParent"><input type="text"
+												class="validatebox" data-options="required:true"
+												name="dto.vendorDto.vendor.name" id="name"
+												style="width: 100%;"></td>
+											<td class="textParent" colspan="2" style="border-left: none">
+												<span class="am-kai am-text-default am-text-middle">(机构名称)</span>
+											</td>
+										</tr>
+										<tr>
+											<td class="textLabel" style="width: 10%;">传真:</td>
+											<td class="textParent"><input type="text"
+												name="dto.vendorDto.vendor.fax" 
 												style="width: 70%;"></td>
 											<td class="textLabel" style="width: 10%;"><span
-												style='color: red'>*</span>联系人电话:</td>
+												style='color: red'>*</span>联系人手机:</td>
 											<td class="textParent"><input type="text"
 												name="dto.vendorDto.vendor.tel" class="validatebox"
 												data-options="required:true,validType:['telphone']"
@@ -97,21 +113,7 @@
 										</tr>
 										<tr>
 											<td class="textLabel" style="width: 10%;"><span
-												style='color: red'>*</span>联系人邮箱:</td>
-											<td class="textParent"><input type="text"
-												name="dto.vendorDto.vendor.email" class="validatebox"
-												data-options="required:true,validType:['mail']"
-												style="width: 70%;"></td>
-
-											<td class="textLabel" style="width: 10%;"><span
-												style='color: red'>*</span>联系人传真:</td>
-											<td class="textParent"><input type="text"
-												name="dto.vendorDto.vendor.fax" class="validatebox"
-												data-options="required:true" style="width: 70%;"></td>
-										</tr>
-										<tr>
-											<td class="textLabel" style="width: 10%;"><span
-												style='color: red'>*</span>联系人地址:</td>
+												style='color: red'>*</span>公司地址:</td>
 											<td class="textParent"><input type="text"
 												name="dto.vendorDto.vendor.address" class="validatebox"
 												data-options="required:true" style="width: 70%;"></td>
@@ -123,13 +125,13 @@
 										</tr>
 										<tr>
 											<td class="textLabel" style="width: 10%;"><span
-											    style='color: red'>*</span>所服务医院:</td>
-											<td class="textParent">
-											    <select id="reghopid" multiple data-am-selected name="dto.hopVendorDto.hopVendor.hopHopId">
- 												<s:iterator value="dto.hospital" status="all" id="hospital">
-												<option value="${hospital.hospitalId}">${hospital.hospitalName}</option>
-												</s:iterator>
-												</select></td>
+												style='color: red'>*</span>所服务医院:</td>
+											<td class="textParent"><select id="reghopid" multiple
+												data-am-selected name="dto.hopVendorDto.hopVendor.hopHopId">
+													<s:iterator value="dto.hospital" status="all" id="hospital">
+														<option value="${hospital.hospitalId}">${hospital.hospitalName}</option>
+													</s:iterator>
+											</select></td>
 										</tr>
 									</table>
 								</div>
@@ -219,9 +221,5 @@
 		</section>
 	</div>
 	<!-- content end -->
-
-
-
-
 </body>
 </html>

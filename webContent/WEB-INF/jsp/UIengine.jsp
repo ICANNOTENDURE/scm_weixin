@@ -234,17 +234,19 @@
 
 
 				<!-- Your Page Content Here -->
-				<iframe name="mainIframe" frameborder="0" src="" style="width: 100%; height: 600px;" id="mainIframe"></iframe>
+				<iframe name="mainIframe" frameborder="0" src="" style="width: 100%; height: 800px;" id="mainIframe"></iframe>
 		
 			<!-- /.content -->
 		</div>
 		<!-- /.content-wrapper -->
-
-		<!-- Main Footer -->
+		
+		<!-- To the right -->
+		<!-- Default to the left -->
+		<!-- Main Footer  -->
 		<footer class="main-footer">
-			<!-- To the right -->
+			
 			<div class="pull-right hidden-xs">By the Dhcc Pharmacy Team</div>
-			<!-- Default to the left -->
+		
 			<strong>Copyright &copy; 2015 <a href="#">东华软件股份公司</a>.
 			</strong> All rights reserved.
 		</footer>

@@ -119,4 +119,10 @@ public class HopIncServiceImpl implements HopIncService {
 		return hopIncs.get(0);
 	}
 
+	@Override
+	public void listHopIncAudit(HopIncDto dto) {
+		// TODO Auto-generated method stub
+		hopIncDao.listHopIncAudit(dto);
+	}
+
 }

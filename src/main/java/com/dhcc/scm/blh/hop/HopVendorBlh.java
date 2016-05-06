@@ -131,7 +131,7 @@ public class HopVendorBlh extends AbstractBaseBlh {
 			if (dto.getHopVendor().getHopVendorId() != null) {
 				HopVendor hopVendor = commonService.get(HopVendor.class, dto.getHopVendor().getHopVendorId());
 				Vendor vendor = commonService.get(Vendor.class, hopVendor.getHopVenId());
-				//update T_VEN_REGHOP 
+				//update T_VEN_REGHOP  hxy
 				List<VenReghop> venReghops=commonService.findByProperty(VenReghop.class, "venid", vendor.getVendorId());
 				
 				InetAddress addr = null;//获得本机IP
@@ -140,22 +140,18 @@ public class HopVendorBlh extends AbstractBaseBlh {
 				} catch (UnknownHostException e) {
 					e.printStackTrace();
 				}       
-				String ip=addr.getHostAddress();//获得本机IP
+				String ip=addr.getHostAddress();
 
 				if (dto.getHopVendor().getHopAuditFlag().equals("Y")) {
 					hopVendor.setHopAuditFlag("N");
-					
-					//update t_ven_vendor
 					vendor.setAudit_flag("IN");// I 平台通过/ IN 平台拒绝
-					commonService.saveOrUpdate(vendor);
-					//update T_VEN_REGHOP  
+					commonService.saveOrUpdate(vendor);					 
 					if(venReghops.size()>0){
 					    for(VenReghop venReghop:venReghops){
 					    	 venReghop.setAduitflag("IN");// I 平台通过/ IN 平台拒绝
 		    			    commonService.saveOrUpdate(venReghop);
 		    		   }
 					}
-					//save T_VEN_AUDIT_LOG hxy
 					VenAuditLog VALog=new VenAuditLog();
 					VALog.setLogvenid(vendor.getVendorId());
 					VALog.setLoguserid(Long.valueOf((String) getLoginInfo().get("USERID")));
@@ -179,13 +175,11 @@ public class HopVendorBlh extends AbstractBaseBlh {
 						}
 					}
 				} else {
-					hopVendor.setHopAuditFlag("Y");
-					
+					hopVendor.setHopAuditFlag("Y");					
 					//update t_ven_vendor
 					vendor.setAudit_flag("I");// I 平台通过/ IN 平台拒绝
 					commonService.saveOrUpdate(vendor);
-					
-					//update T_VEN_REGHOP  
+					//update T_VEN_REGHOP  hxy
 					if(venReghops.size()>0){
 					    for(VenReghop venReghop:venReghops){
 						    venReghop.setAduitflag("I");// I 平台通过/ IN 平台拒绝
@@ -242,6 +236,7 @@ public class HopVendorBlh extends AbstractBaseBlh {
 	/**
 	 * 医院审核供应商
 	 * @author hxy
+	 * 拒绝时候弹出审核意见输入框
 	 */	
 	
 	// ADD HXY 医院审核供应商 医院审核：①服务医院表 T_VEN_REGHOP；②T_HOP_VENDOR：空 、Y已审核 和 N未审核
@@ -250,34 +245,60 @@ public class HopVendorBlh extends AbstractBaseBlh {
 		
 		dto.setOperateResult(new OperateResult());
 		
-		Long hopId=WebContextHolder.getContext().getVisit().getUserInfo().getHopId();//医院ID
+//		Long hopId=WebContextHolder.getContext().getVisit().getUserInfo().getHopId();//医院ID
 		//由医院ID取一次hopvendor 数据，然后再以vendorid 判断 ;或者倒过来（先选取对应供应商的，再if判断医院）
+		InetAddress addr = null;//获得本机IP
+		try {
+			addr = InetAddress.getLocalHost();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}       
+		String ip=addr.getHostAddress();//获得本机IP
 		try {
 			
 			   if(dto.getHopVendor().getHopVendorId()!=null){
 				  HopVendor hopVendor=commonService.get(HopVendor.class,dto.getHopVendor().getHopVendorId());	
 				  List<VenReghop> venReghops=commonService.findByProperty(VenReghop.class, "venid", hopVendor.getHopVenId());//为了共用优化到上边来的
-				  if(hopVendor.getHopHopId()==hopId){
+//				  if(hopVendor.getHopHopId()==hopId){
 					 if(hopVendor.getHopAuditFlag()==null){
 						 hopVendor.setHopAuditFlag("Y");
 					 }else{
 						 if(hopVendor.getHopAuditFlag().equals("N")){
-							 hopVendor.setHopAuditFlag("Y");
-							 //Y
+							 hopVendor.setHopAuditFlag("Y");//Y						 
 							 if(venReghops.size()>0){
 							     for(VenReghop venReghop:venReghops){
+							    	 if(venReghop.getReghophopid()==hopVendor.getHopHopId()){
 							    	  venReghop.setAduitflag("H");//H 医院通过； HN 医院拒绝
+							    	 }
 								      commonService.saveOrUpdate(venReghop);
-							     }}
+							     }}												
+							 VenAuditLog VALog=new VenAuditLog();
+							 VALog.setLogvenid(hopVendor.getHopVenId());
+							 VALog.setLoguserid(Long.valueOf((String) getLoginInfo().get("USERID")));
+						   	 VALog.setLogdate(new Date());
+							 VALog.setLogresult("Y");
+							 VALog.setLogcontent(null);
+							 VALog.setLogip(ip);
+							 VALog.setLogtype("H");
+							 commonService.saveOrUpdate(VALog);
 						 }else{
-							 hopVendor.setHopAuditFlag("N");
-							 //N
-							 if(venReghops.size()>0){
+							 hopVendor.setHopAuditFlag("N"); //N							
+							 if(venReghops.size()>0){								
 							     for(VenReghop venReghop:venReghops){
+							    	 if(venReghop.getReghophopid()==hopVendor.getHopHopId()){
 							    	  venReghop.setAduitflag("HN");//H 医院通过； HN 医院拒绝
+							          }
 								      commonService.saveOrUpdate(venReghop);
-							     }}
-							 
+							     }}							
+							 VenAuditLog VALog=new VenAuditLog();
+							 VALog.setLogvenid(hopVendor.getHopVenId());
+							 VALog.setLoguserid(Long.valueOf((String) getLoginInfo().get("USERID")));
+						   	 VALog.setLogdate(new Date());
+							 VALog.setLogresult("N");
+							 VALog.setLogcontent(dto.getRemark());
+							 VALog.setLogip(ip);
+							 VALog.setLogtype("H");
+							 commonService.saveOrUpdate(VALog);							 
 						}
 					
 					}
@@ -285,71 +306,18 @@ public class HopVendorBlh extends AbstractBaseBlh {
 //					dto.getOperateResult().setResultCode("1");					
 //					super.writeJSON(dto.getOperateResult());
 					dto.setOpFlg("1");
-				  }//
-				}
-			   
-			
-//		try {			
-//			if(dto.getHopVendor().getHopVenId()!=null){
-////				HopVendor hopVendor=commonService.get(HopVendor.class,dto.getHopVendor().getHopVendorId());	
-//				List<HopVendor> HopVendors=commonService.findByProperty(HopVendor.class, "hopVenId", dto.getHopVendor().getHopVendorId());
-//				List<VenReghop> venReghops=commonService.findByProperty(VenReghop.class, "venid",HopVendors.get(0).getHopVenId());//为了共用优化到上边来的
-//				if(HopVendors.size()>0){
-//					for(HopVendor hopVendor:HopVendors){
-//					    if(hopVendor.getHopHopId()==hopId){
-//
-//						   if(hopVendor.getHopAuditFlag()==null){
-//							 hopVendor.setHopAuditFlag("Y");
-//						     }else{
-//								if(hopVendor.getHopAuditFlag().equals("N")){
-//								  hopVendor.setHopAuditFlag("Y");
-//								     //Y
-//								 if(venReghops.size()>0){
-//								 for(VenReghop venReghop:venReghops){
-//									 venReghop.setAduitflag("H");//H 医院通过； HN 医院拒绝
-//									 commonService.saveOrUpdate(venReghop);
-//								 }}
-//															   	   
-//						       }else{
-//							    hopVendor.setHopAuditFlag("N");
-//										//N
-//								if(venReghops.size()>0){
-//								 for(VenReghop venReghop:venReghops){
-//									 venReghop.setAduitflag("HN");//H 医院通过； HN 医院拒绝
-//									 commonService.saveOrUpdate(venReghop);
-//								 }}		
-//									}
-//								}
-//								commonService.saveOrUpdate(hopVendor);
-//								dto.getOperateResult().setResultCode("1");
-//								dto.setOpFlg("1");
-//								
-//					    	
-//					    	} 
-//					    	
-//					   }
-//					
+				  }
+//				  else{
+//					dto.setOpFlg("0");
+//				  }//
 //				}
-//				}
-//			super.writeJSON(dto.getOperateResult());
+			   	
 		} catch (Exception e) {
 			e.printStackTrace();
 			dto.getOperateResult().setResultContent((e.getMessage()));
 			super.writeJSON(dto.getOperateResult());
 		}
-		//同供应商同医院是一条；只限制供应商会有多条
-		//要根据供应商和医院 循环 判断	Long hopId=WebContextHolder.getContext().getVisit().getUserInfo().getHopId();
-//		HopVendor hopVendor = commonService.get(HopVendor.class, dto.getHopVendor().getHopVenId());
-				
-//		if (dto.getHopVendor().getHopVenId()!= null) {
-//			List<VenReghop> venReghops=commonService.findByProperty(VenReghop.class, "venid", dto.getHopVendor().getHopVenId());
-//			if(venReghops.size()>0){
-//			    for(VenReghop venReghop:venReghops){
-//			    	 venReghop.setAduitflag("H");//H 医院通过； HN 医院拒绝
-//				    commonService.saveOrUpdate(venReghop);
-//			   }}
-//			dto.setOpFlg("1");
-//   	   }
+		//同供应商同医院是一条；只限制供应商会有多条,要根据供应商和医院 循环 判断
 	}
 	
 	/**
@@ -370,7 +338,7 @@ public class HopVendorBlh extends AbstractBaseBlh {
 		
 		for(HopVendor hopVendor:hopVendors){
 			
-			List<Vendor> vendors=commonService.findByProperty(Vendor.class, "taxation", hopVendor.gethBusinessRegNo());
+			List<Vendor> vendors=commonService.findByProperty(Vendor.class, "taxation", hopVendor.getBusinessRegNo());
 			
 			if(vendors.size()>0){
     			hopVendor.setHopVenId(vendors.get(0).getVendorId());
@@ -383,6 +351,7 @@ public class HopVendorBlh extends AbstractBaseBlh {
 //    	writeJSON(operateResult);
 		dto.setOpFlg("1");
 	}
+
 	
 	// 保存
 	public void save(BusinessRequest res) {
@@ -599,20 +568,20 @@ public class HopVendorBlh extends AbstractBaseBlh {
 					case "HOPEVENDOR_BUSINESSREGNO":
 						if (cell != null) {
 							cell.setCellType(HSSFCell.CELL_TYPE_STRING);
-							hopVendor.sethBusinessRegNo(cell.toString());
+							hopVendor.setBusinessRegNo(cell.toString());
 						}
 						break;	
 					}
 				 }
 				
 				//验证数据的完整性
-				if(org.apache.commons.lang3.StringUtils.isBlank(hopVendor.gethBusinessRegNo())){
+				if(org.apache.commons.lang3.StringUtils.isBlank(hopVendor.getBusinessRegNo())){
 					dto.setOpFlg("-1");
 					dto.setMsg("<br>"+"第"+numRows+"行工商执照注册号/统一社会信用代码不能为空！");
 					continue;
 				}else{
 						DetachedCriteria criteria = DetachedCriteria.forClass(HopVendor.class);
-						criteria.add(Restrictions.eq("hBusinessRegNo", hopVendor.gethBusinessRegNo()));
+						criteria.add(Restrictions.eq("hBusinessRegNo", hopVendor.getBusinessRegNo()));
 						criteria.add(Restrictions.eq("hopHopId", Long.valueOf(super.getLoginInfo().get("HOSPID").toString())));
 						List<HopVendor> hopVendorIds = commonService.findByDetachedCriteria(criteria);
 						if(hopVendorIds.size()>0){
@@ -793,20 +762,20 @@ public class HopVendorBlh extends AbstractBaseBlh {
 				operateResult.setResultContent("工商执照注册号/统一社会信用代码为空,");
 				continue;
 			}
-			String[] incPropertyNames = { "hopHopId", "hBusinessRegNo" };
+			String[] incPropertyNames = { "hopHopId", "businessRegNo" };
 			Object[] incValues = { hopCtloc.getHospid(), hisVendorItmWeb.getBusinessRegNo()};
 			List<HopVendor> hopVendors = commonService.findByProperties(HopVendor.class, incPropertyNames, incValues);
 		
 			if (hopVendors.size() > 0) {
 				
-				hopVendors.get(0).sethBusinessRegNo(hisVendorItmWeb.getBusinessRegNo());
+				hopVendors.get(0).setBusinessRegNo(hisVendorItmWeb.getBusinessRegNo());
 				hopVendors.get(0).setHopName(hisVendorItmWeb.getName());
 				hopVendors.get(0).setHopCode(hisVendorItmWeb.getCode());
 				commonService.saveOrUpdate(hopVendors.get(0));
 			}else{
 				HopVendor hopVendor = new HopVendor();
 				hopVendor.setHopHopId(hopCtloc.getHospid());
-				hopVendor.sethBusinessRegNo(hisVendorItmWeb.getBusinessRegNo());
+				hopVendor.setBusinessRegNo(hisVendorItmWeb.getBusinessRegNo());
 				hopVendor.setHopName(hisVendorItmWeb.getName());
 				hopVendor.setHopCode(hisVendorItmWeb.getCode());
 				commonService.saveOrUpdate(hopVendor);

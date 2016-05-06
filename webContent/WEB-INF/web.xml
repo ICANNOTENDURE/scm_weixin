@@ -33,7 +33,7 @@
 			<param-name>urlMath</param-name>
 			<param-value>^((?!authenTicket/authenTicketCtrl!getTicket.htm|dhccApi|authenTicket/authenTicketCtrl!getTicket.htm
 		|authenTicket/authenTicketCtrl|login.htm|nur/nurseCtrl!vendorRegist.htm|nur/nurseCtrl!saveVendor.htm|nur/nurseCtrl!registSucess.htm|nur/nurseCtrl!upload.htm|nur/nurseCtrl!auditResult.htm|nur/nurseCtrl!queryAudit.htm|nur/nurseCtrl!checkVenUnique.htm|nur/nurseCtrl!checkVenAudit.htm|ven/vendorCtrl!deleteUpload.htm|demo/demoCtrl!testCon.htm|weixin/wxMessageCtrl!
-		|weixin/mpUserCtrl!|weixin/mpMessageCtrl!|weixin/mpInGdRecCtrl!).)*$</param-value>
+		|weixin/mpUserCtrl!|weixin/mpMessageCtrl!|weixin/mpInGdRecCtrl!|comment/CommentCtrl!saveMpEle.htm|sys/sendMailCtrl!sendValidate.htm|sys/sendMailCtrl!validateCode.htm).)*$</param-value>
 		</init-param>
 		<init-param>
 			<param-name>loginUrl</param-name>

@@ -17,7 +17,20 @@ public class HopVendorDto extends BaseDto {
 	 */
 	private static final long serialVersionUID = 1L;
 	private HopVendor hopVendor;
+	/**
+	 * 医院审核供应商 拒绝时候 弹出审核意见  hxy
+	 */	
+	private String remark;
 	
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+
 	/**
 	 * 医院供应商是否以对照
 	 */

@@ -925,7 +925,6 @@ public class OrdBlh extends AbstractBaseBlh {
 				msg.append(hisOrderWebItm.getHisId()+"订单重复提交。");
 				continue;
 			}
-			
 			OrderDetail orderDetail = new OrderDetail();
 			orderDetail.setIncName(hopInc.getIncName());
 			orderDetail.setOrderDate(new Date());
@@ -944,7 +943,6 @@ public class OrdBlh extends AbstractBaseBlh {
 			orderDetail.setAmt(hisOrderWebItm.getRp().floatValue()*hisOrderWebItm.getQty().floatValue());
 			orderDetail.setOrderVenQty(hisOrderWebItm.getQty().floatValue()/fac);
 			orderDetail.setOrderRecLoc(hopCtloc.getHopCtlocId());
-			
 			if (map.containsKey(String.valueOf(hopVendor.getHopVendorId()))) {
 				map.get(String.valueOf(hopVendor.getHopVendorId())).add(orderDetail);
 			} else {
@@ -952,11 +950,9 @@ public class OrdBlh extends AbstractBaseBlh {
 				orderDetails.add(orderDetail);
 				map.put(String.valueOf(hopVendor.getHopVendorId()), orderDetails);
 			}
-
 		}
 		operateResult.setResultContent(msg.toString());
 		ordService.impHisOrder(operateResult, map,hopCtloc.getHospid(),hopCtloc.getHopCtlocId());
 	}
-	
 	
 }

@@ -39,6 +39,10 @@ public class HopIncVo {
 	//his药品id
 	private Long incHissysid;
 	
+	private String incBarCode;
+	
+	
+	
 	public HopIncVo(){
 		
 	}
@@ -190,6 +194,14 @@ public class HopIncVo {
 
 	public void setIncHissysid(Long incHissysid) {
 		this.incHissysid = incHissysid;
+	}
+
+	public String getIncBarCode() {
+		return incBarCode;
+	}
+
+	public void setIncBarCode(String incBarCode) {
+		this.incBarCode = incBarCode;
 	}
 	
 	

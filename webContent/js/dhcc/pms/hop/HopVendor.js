@@ -63,7 +63,7 @@ $(function (){
 	    columns:[[ 
 	        {field:'hopCode',title:'代码',width:100},  
 	        {field:'hopName',title:'名称',width:100},
-	        {field:'hBusinessRegNo',title:'工商执照注册号/统一社会信用代码',width:100},
+	        {field:'businessRegNo',title:'工商执照注册号/统一社会信用代码',width:100},
 	        {field:'hopType',title:'分类',width:100} 
 	    ]],
 	    pageSize:20,

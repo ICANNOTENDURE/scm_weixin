@@ -12,6 +12,8 @@ import org.apache.struts2.convention.annotation.Result;
 import org.springframework.context.annotation.Scope;
 
 import com.dhcc.framework.annotation.Blh;
+import com.dhcc.framework.annotation.MpOAuthRequired;
+import com.dhcc.framework.annotation.MpOAuthRequireds;
 import com.dhcc.framework.app.service.CommonService;
 import com.dhcc.framework.exception.BaseException;
 import com.dhcc.framework.transmission.dto.BaseDto;
@@ -28,6 +30,7 @@ import com.dhcc.scm.service.hop.HopVendorService;
 		@Result(name = "venIncEval", location = "/WEB-INF/jsp/comments/venIncEval.jsp"),
 		@Result(name = "listMain", location = "/WEB-INF/jsp/comments/comment.jsp")})
 @Blh("commentBlh")
+@MpOAuthRequireds({@MpOAuthRequired(BlhMethod="saveMpEle")})
 public class CommentAction extends BaseAction {
 	
 	private static final long serialVersionUID = 1L;

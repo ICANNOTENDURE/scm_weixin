@@ -18,7 +18,7 @@ $(function (){
 	    columns:[[ 
             {field:'incid',title:'表ID',hidden:true},
 	        {field:'inccode',title:'商品代码',width:100},
-	        {field:'incBarCode',title:'商品条码',width:100},
+	        {field:'incbarcode',title:'商品条码',width:100},
 	        {field:'incname',title:'商品描述',width:100},
 	        {field:'incuomcode',title:'单位代码',width:80,hidden:true}, 
 	        {field:'incuomname',title:'单位描述',width:80}, 

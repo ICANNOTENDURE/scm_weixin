@@ -15,6 +15,17 @@ public class HisInGdRec implements Serializable{
 	
 	private List<HisInGdRecItm> inGdRecItms =new ArrayList<HisInGdRecItm>();
 
+	private List<HisPicWeb>  picWebs=new ArrayList<HisPicWeb>();
+	
+	
+	public List<HisPicWeb> getPicWebs() {
+		return picWebs;
+	}
+
+	public void setPicWebs(List<HisPicWeb> picWebs) {
+		this.picWebs = picWebs;
+	}
+
 	public String getResultCode() {
 		return resultCode;
 	}

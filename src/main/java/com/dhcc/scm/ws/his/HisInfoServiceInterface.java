@@ -1,5 +1,7 @@
 package com.dhcc.scm.ws.his;
 
+import java.util.List;
+
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -8,6 +10,7 @@ import javax.jws.soap.SOAPBinding;
 
 import org.apache.cxf.annotations.WSDLDocumentation;
 
+import com.dhcc.scm.entity.vo.ws.FileWrapper;
 import com.dhcc.scm.entity.vo.ws.HisCmpRecWeb;
 import com.dhcc.scm.entity.vo.ws.HisInGdRec;
 import com.dhcc.scm.entity.vo.ws.HisIncLocQtyWeb;
@@ -18,6 +21,7 @@ import com.dhcc.scm.entity.vo.ws.HisOrderWeb;
 import com.dhcc.scm.entity.vo.ws.HisOrderWebVo;
 import com.dhcc.scm.entity.vo.ws.HisVendorWeb;
 import com.dhcc.scm.entity.vo.ws.OperateResult;
+import com.dhcc.scm.entity.vo.ws.VenQualifyWeb;
 
 
 @WebService
@@ -138,5 +142,34 @@ public interface HisInfoServiceInterface {
 	    @WSDLDocumentation("确认入库成功")
 	    public OperateResult cmpInGdRec(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="ingdrecId")Long ingdrecId);
 
-		
+	    @WebMethod
+	    @WebResult(name="operateResult")
+	    @WSDLDocumentation("获取发票号,通过入库子表id")
+	    public OperateResult getInvByRec(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="ingdrecId")Long ingdrecId);
+
+	    @WebMethod
+	    @WebResult(name="operateResult")
+	    @WSDLDocumentation("更新平台发票号")
+	    public OperateResult syncInvByRec(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="ingdrecId")Long ingdrecId,@WebParam(name="invno")String invno);
+	    
+	    
+	    @WebMethod
+	    @WSDLDocumentation("下载图片")
+	    @WebResult(name="fileWrapper")
+	    public FileWrapper downLoadPic(@WebParam(name="type")String type,@WebParam(name="path")String path);
+	    
+	    @WebMethod
+	    @WebResult(name="hisInGdRec")
+	    @WSDLDocumentation("根据订单号,查入库明细,库房电脑扫码入库返回的信息")
+	    public HisInGdRec getOrderDetail(@WebParam(name="orderno")String orderno);
+	    
+	    @WebMethod
+	    @WebResult(name="operateResult")
+	    @WSDLDocumentation("库房扫码确认完成")
+	    public OperateResult cmpOrder(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="ordsubs")List<String> ordsubs);
+
+	    @WebMethod
+	    @WebResult(name="operateResult")
+	    @WSDLDocumentation("库房扫码确认完成")
+	    public VenQualifyWeb getVenQualify(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="hopVenCodes")List<String> hopVenCodes);
 }

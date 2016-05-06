@@ -31,9 +31,38 @@ public class HisInGdRecItm implements Serializable{
 	
 	private String recLocCode;
 	
+	private Date arriveDate;
+	
+	private String orderno;
+	
+	private String orderDetailSubId;
 	
 	
 	
+	public String getOrderDetailSubId() {
+		return orderDetailSubId;
+	}
+
+	public void setOrderDetailSubId(String orderDetailSubId) {
+		this.orderDetailSubId = orderDetailSubId;
+	}
+
+	public Date getArriveDate() {
+		return arriveDate;
+	}
+
+	public void setArriveDate(Date arriveDate) {
+		this.arriveDate = arriveDate;
+	}
+
+	public String getOrderno() {
+		return orderno;
+	}
+
+	public void setOrderno(String orderno) {
+		this.orderno = orderno;
+	}
+
 	public String getVendorCode() {
 		return vendorCode;
 	}

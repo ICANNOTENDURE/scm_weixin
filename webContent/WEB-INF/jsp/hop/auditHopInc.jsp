@@ -7,6 +7,8 @@
 
 </title>
 <%@include file="/WEB-INF/jsp/common/scriptInc.jsp"%>
+<%@include file="/WEB-INF/jsp/common/foxibox.jsp"%>
+
  <script>
     $(function(){
     	 $.extend($.fn.datagrid.methods, {
@@ -49,14 +51,13 @@
     	});
     	$("#searchInc").on('click', function() {
     		$CommonUI.getDataGrid('#datagrid2').datagrid({  
-    		    url:$WEB_ROOT_PATH+'/ven/venIncCtrl!listVenContranst.htm',
+    		    url:$WEB_ROOT_PATH+'/hop/hopIncCtrl!listHopIncAudit.htm',
     		    queryParams: {
-    		    	'dto.venIncContranstDto.hopIncName': $("#incHopName").val(),
-    		    	'dto.venIncContranstDto.hopIncCode': $("#incHopCode").val(),
-    		    	'dto.venInc.comgridparam': $("#incHopAlias").val(),
-    		    	'dto.venInc.venIncVenid': $("#ven").combobox('getValue'),
-    		    	'dto.venIncContranstDto.flag': 1,
-    		    	'dto.venIncContranstDto.auditflag': $("#auditFlag").combobox('getValue')
+    		    	'dto.hopInc.incName': $("#incHopName").val(),
+    		    	'dto.hopInc.incBarCode': $("#incHopCode").val(),
+    		    	'dto.alias': $("#incHopAlias").val(),
+    		    	'dto.venId': $("#ven").combobox('getValue'),
+    		    	'dto.auditFlag': $("#auditFlag").combobox('getValue')
     			}
 
    		 	});
@@ -81,11 +82,112 @@
     	
     
     	$("#auditFlag").combobox('setValue',1);
+    	
+    	
     });
+    function onLoadSuccess(){
+    	//$('.dhc-light').lightBox({ fixedNavigation: true });
+    	$('a[rel]').foxibox();
+    }
     function ConT(value,row,index){
 		return '<a class="dhc-linkbutton l-btn l-btn-plain" data-options="iconCls:icon-edit" onclick="javascript:updateConTra('+index+')" title="保存"><span class="l-btn-left"><span class="l-btn-text icon-edit l-btn-icon-left"></span>保存</span></a>';
 	};
 	
+	function viewPic(value,row,index){
+		html="";
+		if(row.incPics!=null){
+			$.each(row.incPics, function(i,item){
+  					html=html+"<a class='dhc-light' href="+$WEB_ROOT_PATH+"/uploadPic/"+item.venIncPicPath+" rel='[gall1]'>";
+  					if(i==0){
+  						html=html+"<img src='../js/easyui/themes/icons/search.png' width='12' height='12'>";
+  					}
+  					html=html+"</a>";
+		  });
+		}
+	 	return html;	
+	}
+	//采购合同
+	function viewCGHTH(value,row,index){
+		key='CGHTH';
+		html="";
+		if(row.qualifTypeVOs!=null){
+			$.each(row.qualifTypeVOs, function(i,item){
+		   		if(item.code==key){
+		   			if(item.fieldtype=='文本'){
+			   			if(item.description!=null){
+			   				html=html+item.description;
+			   			}
+		   			}
+		   			if(item.fieldtype=='图片'){
+			   			if(item.incqQualifPics!=null){
+			   				$.each(item.incqQualifPics, function(j,pic){
+			   					html=html+"<a class='dhc-light' href="+$WEB_ROOT_PATH+"/uploadPic/venIncQualify/"+pic.picPath+" rel='[gall1]'>";
+			   					if(j==0){
+			   						html=html+"<img src='../js/easyui/themes/icons/search.png' width='12' height='12'>";
+			   					}
+			   					html=html+"</a>";
+			   				});
+			   			}
+		   			}
+		   		}
+		  });
+		}
+	 	return html;	
+	}
+	function viewSPZCZ(value,row,index){
+		key='SPZCZ';
+		html="";
+		if(row.qualifTypeVOs!=null){
+			$.each(row.qualifTypeVOs, function(i,item){
+		   		if(item.code==key){
+		   			if(item.fieldtype=='文本'){
+			   			if(item.description!=null){
+			   				html=html+item.description;
+			   			}
+		   			}
+		   			if(item.fieldtype=='图片'){
+			   			if(item.incqQualifPics!=null){
+			   				$.each(item.incqQualifPics, function(j,pic){
+			   					html=html+"<a class='dhc-light' href="+$WEB_ROOT_PATH+"/uploadPic/venIncQualify/"+pic.picPath+" rel='[gall1]'>";
+			   					if(j==0){
+			   						html=html+"<img src='../js/easyui/themes/icons/search.png' width='12' height='12'>";
+			   					}
+			   					html=html+"</a>";
+			   				});
+			   			}
+		   			}
+		   		}
+		  });
+		}
+	 	return html;	
+	}
+	function viewXDHGZ(value,row,index){
+		key ="XDHGZ";
+		html="";
+		if(row.qualifTypeVOs!=null){
+			$.each(row.qualifTypeVOs, function(i,item){
+		   		if(item.code==key){
+		   			if(item.fieldtype=='文本'){
+			   			if(item.description!=null){
+			   				html=html+item.description;
+			   			}
+		   			}
+		   			if(item.fieldtype=='图片'){
+			   			if(item.incqQualifPics!=null){
+			   				$.each(item.incqQualifPics, function(j,pic){
+			   					html=html+"<a class='dhc-light' href="+$WEB_ROOT_PATH+"/uploadPic/venIncQualify/"+pic.picPath+" rel='[gall1]'>";
+			   					if(j==0){
+			   						html=html+"<img src='../js/easyui/themes/icons/search.png' width='12' height='12'>";
+			   					}
+			   					html=html+"</a>";
+			   				});
+			   			}
+		   			}
+		   		}
+		  });
+		}
+	 	return html;	
+	}
 	//保存对照
 	function ConTra(venincid,fac){
 		
@@ -227,6 +329,35 @@
 			editIndex = index;
 		}
 	}
+	
+	//批量审批通过
+	function batchAudit(flag){
+		var ids = [];
+		var rows = $('#datagrid2').datagrid('getSelections');
+		if (rows.length < 1) {
+			$CommonUI.alert('请选择');
+			return;
+		}
+		for(var i=0; i<rows.length; i++){
+			ids.push(rows[i].facid);
+		}
+		$.post(
+				$WEB_ROOT_PATH+'/ven/venIncCtrl!batchAudit.htm',
+				{
+					'dto.idStr': ids.join(','),
+					'dto.auditFlag': flag
+				},
+				function(data){
+					if(data.resultCode=="0"){
+						$CommonUI.alert("操作成功!");
+						$CommonUI.getDataGrid('#datagrid2').datagrid('reload');
+					}else{
+						$CommonUI.alert("操作失败!"+data.resultContent);
+					}
+				},
+				"json"
+		);
+	}
     </script>
 
 </head>
@@ -255,6 +386,8 @@
 						 id="ven" />
 			<a href="#" class="linkbutton" iconCls="icon-search" id="searchInc" >查询</a>
 			<a href="#" class="linkbutton" iconCls="icon-search" id="venIncQualify" >商品资质</a>
+			<a href="#" class="linkbutton" iconCls="icon-save" id="pass" onclick="batchAudit('Y');">通过</a>
+			<a href="#" class="linkbutton" iconCls="icon-cancel" id="refuse" onclick="batchAudit('N');">拒绝</a>
 		     <span style="color: red;font-size: 20px">注意(比如供应商单位盒(7),医院单位支,那分子就是7，分母是1)</span>
 		 </div>
 		
@@ -264,46 +397,52 @@
 					data-options="toolbar:'#toolbar2',
 					 			 fit:true,
 								 fitColumns:true,
-								 singleSelect:true,
 								 pagination:true,
 				    			 method:'post',
 				    			 rownumbers:true,
 				    			 striped:true,
-				    			 singleselect:true,
 				    			 onClickCell:onClickCell,
 				    			 title:'医院审核供应商商品',
-				    			 iconCls:'icon-ok'
+				    			 iconCls:'icon-ok',
+				    			 nowrap: false,
+				    			 onLoadSuccess:onLoadSuccess
 								 ">
 								 
 					<thead>
 						<tr>
-							<th data-options="field:'venincid',hidden:true">IncId ID</th>
-							<th data-options="field:'venname',width:100,sortable:true">供应商</th>
-							<th data-options="field:'veninccode',width:50,sortable:true">商品代码</th>
-							<th data-options="field:'venincname',width:150,sortable:true">商品名称</th>
-							<th data-options="field:'manf',width:80,sortable:true">产地</th>
-							<th data-options="field:'spec',width:60,sortable:true">规格</th>
-							<th data-options="field:'uom',width:50,sortable:true">单位</th>
-							<th data-options="field:'venfac',width:40,sortable:true,editor : {
+							<th data-options="checkbox:true">IncId ID</th>
+							
+							<th data-options="field:'venname',width:50,sortable:true">供应商</th>
+							<th data-options="field:'venincname',width:100,sortable:true">商品名称</th>
+							<th data-options="field:'pic',width:10,formatter:viewPic">图片</th>
+							<th data-options="field:'CGHT',width:50,sortable:true,formatter:viewCGHTH">采购合同</th>
+							<th data-options="field:'CPZCZ',width:50,sortable:true,formatter:viewSPZCZ">产品注册证</th>
+							<th data-options="field:'XDHGZ',width:50,sortable:true,formatter:viewXDHGZ">消毒合格证</th>
+							<th data-options="field:'hoprp',width:20,sortable:true">价格</th>
+							<th data-options="field:'spec',width:30,sortable:true">规格</th>
+							<th data-options="field:'uom',width:20,sortable:true">单位</th>
+							<th data-options="field:'venfac',width:20,sortable:true,editor : {
 								type : 'numberbox',
                             	options : {
                                 	required : true
                             	}
                         	}">分子</th>
-                        	<th data-options="field:'hopfac',width:40,sortable:true,editor : {
+                        	<th data-options="field:'hopfac',width:20,sortable:true,editor : {
 								type : 'numberbox',
                             	options : {
                                 	required : true
                             	}
                         	}">分母</th>
 							<th data-options="field:'hopincuom',width:50,sortable:true">医院单位</th>
-							<th data-options="field:'hopincid',hidden:true">IncId ID</th>
-							<th data-options="field:'hopinccode',width:60,sortable:true,hidden:true">医院商品代码</th>
-							<th data-options="field:'hopincname',width:100,sortable:true">医院商品名称</th>
-							
-							<th data-options="field:'facid',width:40,hidden:true">对照表rowID</th>
 							<th data-options="field:'contranst',width:40,formatter:ConT">对照</th>
 							<th data-options="field:'auditFlag',width:40,formatter:AuditT">资质</th>
+							
+							<th data-options="field:'hopinccode',width:60,sortable:true,hidden:true">医院商品代码</th>
+							<th data-options="field:'hopincname',width:100,sortable:true,hidden:true">医院商品名称</th>
+							<th data-options="field:'manf',width:80,sortable:true,hidden:true">产地</th>
+							<th data-options="field:'facid',width:40,hidden:true">对照表rowID</th>
+							<th data-options="field:'venincid',hidden:true">venincid</th>
+							<th data-options="field:'hopincid',hidden:true">hopincid</th>
 						</tr>
 					</thead>
 				</table>

@@ -51,9 +51,19 @@ public class DevPropertyGridVo implements java.io.Serializable{
 	
 	private Float rp;
 
+	private Date arrivedate;
+	
 	
 	
 
+
+	public Date getArrivedate() {
+		return arrivedate;
+	}
+
+	public void setArrivedate(Date arrivedate) {
+		this.arrivedate = arrivedate;
+	}
 
 	public Long getStateid() {
 		return stateid;

@@ -2,6 +2,7 @@ package com.dhcc.scm.entity.ord;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -49,11 +50,26 @@ public class ExeState implements Serializable {
 	@Column(name="DELIVER_ID")
 	private Long deliverId;
 	
+	@Column(name="ORDSUB_ID")
+	private String ordSubId;
+	
 	public ExeState() {
 	}
 
 	
 	
+	public String getOrdSubId() {
+		return ordSubId;
+	}
+
+
+
+	public void setOrdSubId(String ordSubId) {
+		this.ordSubId = ordSubId;
+	}
+
+
+
 	/**
 	 * @return the deliverId
 	 */
@@ -81,6 +97,9 @@ public class ExeState implements Serializable {
 	}
 
 	public Timestamp getExedate() {
+		if(this.exedate==null){
+			this.exedate=new java.sql.Timestamp(new Date().getTime());
+		}
 		return this.exedate;
 	}
 

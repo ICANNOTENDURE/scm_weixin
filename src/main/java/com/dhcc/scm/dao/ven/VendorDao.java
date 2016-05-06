@@ -120,11 +120,11 @@ public class VendorDao extends HibernatePersistentObjectDAO<Vendor> {
 
 		StringBuffer hqlBuffer = new StringBuffer();
 		hqlBuffer.append(" select ");
-		hqlBuffer.append("t1.venqualiftype_id as type,t1.name as name ,t2.EXPDATE as expdate ,t2.QUALIFICATION_ID as   qualif,t1.type as fieldtype,t2.QUALIFY_DESCRIPTION as description  ");// ,t2.venQualificationId,t2.expdate,t2.vendorid)																														// ");
+		hqlBuffer.append("t1.venqualiftype_id as type,t1.name as name ,t2.EXPDATE as expdate ,t2.QUALIFICATION_ID as   qualif,t1.type as fieldtype,t2.QUALIFY_DESCRIPTION as description,t1.code code  ");// ,t2.venQualificationId,t2.expdate,t2.vendorid)																														// ");
 		hqlBuffer.append(" from ");
 		hqlBuffer.append(" T_VEN_QUALIF_TYPE t1   left  join T_VEN_QUALIFICATION t2 ");
 		hqlBuffer.append(" on t1.VENQUALIFTYPE_ID=t2.QUALIFY_TYPE_ID");
-		//hqlBuffer.append(" where 1=1 ");
+	
 		Map<String, Object> hqlParamMap = new HashMap<String, Object>();
 		if (vendor != null) {
 			if ((vendor.getVendorId() != null)) {
@@ -143,7 +143,7 @@ public class VendorDao extends HibernatePersistentObjectDAO<Vendor> {
 				hql.append(" VenQualifPic t ");
 				hql.append(" where t.qualifyid = :qualifyid ");
 				paramMap.put("qualifyid",venQualifTypeVOList.get(i).getQualif());
-				List<VenQualifPic> VenQualifPics=this.findByHqlWithValuesMap(hql.toString(),paramMap,false);
+				List<VenQualifPic> VenQualifPics=super.findByHqlWithValuesMap(hql.toString(),paramMap,false);
 				venQualifTypeVOList.get(i).setVenQualifPics(VenQualifPics);
 			}
 		}
@@ -336,6 +336,39 @@ public class VendorDao extends HibernatePersistentObjectDAO<Vendor> {
 			hqlBuffer.append(" and (t1.ACCOUNT=:inputStr or t1.TAXATION=:inputStr or t1.EMAIL=:inputStr)" );
 			hqlParamMap.put("inputStr", dto.getInputStr().trim());
 		}
+		dto.getPageModel().setQueryHql(hqlBuffer.toString());
+		dto.getPageModel().setHqlParamMap(hqlParamMap);
+		jdbcTemplateWrapper.fillPagerModelData(dto.getPageModel(), VendorVo.class, "t1.VEN_ID");
+	}
+	
+	/**
+	*@Title: listVendorHistory 
+	* @Description: TODO(供应商审核历史) 
+	* @author hxy   
+	* @date 2016年3月31日 上午11:10:31
+	 */
+	public void listVendorHistory(VendorDto dto){
+		StringBuffer hqlBuffer = new StringBuffer();
+		Map<String, Object> hqlParamMap = new HashMap<String, Object>();
+//		String userId=WebContextHolder.getContext().getVisit().getUserInfo().getId();
+		
+		hqlBuffer.append(" select ");
+		hqlBuffer.append(" t1.VEN_ID vendorid, ");
+		hqlBuffer.append(" t1.CODE code, ");
+		hqlBuffer.append(" t1.NAME name, ");
+		hqlBuffer.append(" t2.AUDIT_LOG_USERID loguserid, ");
+		hqlBuffer.append(" t2.AUDIT_LOG_DATE logdate, ");
+		hqlBuffer.append(" t2.AUDIT_LOG_RESULT logresult, ");
+		hqlBuffer.append(" t2.AUDIT_LOG_IP logip, ");
+		hqlBuffer.append(" t2.AUDIT_LOG_TYPE logtype ");		
+		hqlBuffer.append(" from ");
+		hqlBuffer.append(" T_VEN_VENDOR t1 left join T_VEN_AUDIT_LOG t2 on t1.VEN_ID=T2.AUDIT_LOG_VENID  ");
+		hqlBuffer.append(" where 1=1 ");
+//		hqlBuffer.append(" and t2.AUDIT_LOG_USERID ="+userId||1 );//当前和平台
+		if(dto.getVendor().getVendorId()!=null){
+		hqlBuffer.append(" and t2.AUDIT_LOG_VENID ="+dto.getVendor().getVendorId() );
+		}
+
 		dto.getPageModel().setQueryHql(hqlBuffer.toString());
 		dto.getPageModel().setHqlParamMap(hqlParamMap);
 		jdbcTemplateWrapper.fillPagerModelData(dto.getPageModel(), VendorVo.class, "t1.VEN_ID");

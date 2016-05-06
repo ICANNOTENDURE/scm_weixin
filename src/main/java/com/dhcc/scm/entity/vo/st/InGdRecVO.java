@@ -21,8 +21,18 @@ public class InGdRecVO implements java.io.Serializable {
 	
 	private String loc;
 	
+	private String status;
 	
 	
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public String getLoc() {
 		return loc;
 	}

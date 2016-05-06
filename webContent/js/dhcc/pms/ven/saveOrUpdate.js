@@ -120,7 +120,7 @@ $(function() {
             "dto.vendor.account": $("#detail input[name='dto.vendor.account']").val(),
             "dto.vendor.contact": $("#detail input[name='dto.vendor.contact']").val(),
             "dto.vendor.parentId": $("#detail input[name='dto.vendor.parentId']").val(),
-            "dto.vendor.hisId": $("#detail input[name='dto.vendor.hisId']").val(),
+            "dto.vendor.taxation": $("#detail input[name='dto.vendor.taxation']").val(),
             "dto.vendor.email": $("#detail input[name='dto.vendor.email']").val(),
             "dto.venQualificationList": jQuery.toJSON(venQualifTypeList)
         },

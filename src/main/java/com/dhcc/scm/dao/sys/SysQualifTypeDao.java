@@ -108,6 +108,7 @@ public class SysQualifTypeDao extends HibernatePersistentObjectDAO<SysQualifType
 		StringBuffer hqlBuffer = new StringBuffer();
 		hqlBuffer.append(" select ");
 		hqlBuffer.append("  t1.QUALIF_TYPE_ID as type, ");
+		hqlBuffer.append("  t1.QUALIF_TYPE_CODE as code , ");
 		hqlBuffer.append("  t1.QUALIF_TYPE_NAME as name , ");
 		hqlBuffer.append("	t2.qualif_date as expdate , ");
 		hqlBuffer.append("  t2.qualif_id as qualif, ");
@@ -126,14 +127,7 @@ public class SysQualifTypeDao extends HibernatePersistentObjectDAO<SysQualifType
 		List<VenQualifTypeVO> venQualifTypeVOList=jdbcTemplateWrapper.queryAllMatchListWithParaMap(hqlBuffer.toString(), VenQualifTypeVO.class, hqlParamMap);
 		for(int i=0;i<venQualifTypeVOList.size();i++){
 			if(venQualifTypeVOList.get(i).getQualif()!=null){
-				Map<String, Object> paramMap = new HashMap<String, Object>();
-				StringBuffer hql = new StringBuffer();
-				hql.append(" from ");
-				hql.append(" VenIncqQualifPic t ");
-				hql.append(" where t.picParrefId = :qualifyid ");
-				paramMap.put("qualifyid",venQualifTypeVOList.get(i).getQualif());
-				List<VenIncqQualifPic> incqQualifPics=this.findByHqlWithValuesMap(hql.toString(),paramMap,false);
-				venQualifTypeVOList.get(i).setIncqQualifPics(incqQualifPics);
+				venQualifTypeVOList.get(i).setIncqQualifPics(findByProperty(VenIncqQualifPic.class, "picParrefId", venQualifTypeVOList.get(i).getQualif()));
 			}
 		}
 		return venQualifTypeVOList;
