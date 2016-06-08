@@ -234,7 +234,7 @@
 
 
 				<!-- Your Page Content Here -->
-				<iframe name="mainIframe" frameborder="0" src="" style="width: 100%; height: 800px;" id="mainIframe"></iframe>
+				<iframe name="mainIframe" frameborder="0" src="" style="width: 100%; height: 600px;" id="mainIframe"></iframe>
 		
 			<!-- /.content -->
 		</div>

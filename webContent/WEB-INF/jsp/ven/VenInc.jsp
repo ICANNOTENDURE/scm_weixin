@@ -58,7 +58,7 @@
 							<td class="textLabel">商品代码:</td>
 							<td class="textParent"><input style="width: 250px;"
 								class="validatebox" type="text" name="dto.venInc.venIncCode"
-								data-options="required:true" id="venIncCode" /></td>
+								 id="venIncCode" /></td>
 							<td class="textLabel">商品名称:</td>
 							<td class="textParent"><input style="width: 250px;"
 								class="validatebox" type="text" name="dto.venInc.venIncName"
@@ -68,7 +68,7 @@
 							<td class="textLabel">单位代码:</td>
 							<td class="textParent"><input style="width: 250px;"
 								class="validatebox" type="text" name="dto.venInc.venIncUomcode"
-								data-options="required:true" id="venIncUomcode" /></td>
+								 id="venIncUomcode" /></td>
 							<td class="textLabel">单位名称:</td>
 							<td class="textParent"><input style="width: 250px;"
 								class="validatebox" type="text" name="dto.venInc.venIncUomname"
@@ -78,7 +78,7 @@
 							<td class="textLabel">商品条码:</td>
 							<td class="textParent" colspan="3"><input style="width: 100%;"
 								class="validatebox" type="text" name="dto.venInc.venIncBarCode"
-								data-options="required:true" id="venIncUomcode" /></td>
+								 id="venIncUomcode" /></td>
 						</tr>
 						<tr>
 							<td class="textLabel">价格:</td>
@@ -110,7 +110,7 @@
 							<td class="textLabel" >小类:</td>
 							<td class="textParent"><input id="subcatgroup"
 								class="combobox" type="text" name="dto.venInc.venIncCatId"
-								data-options="required:true" id="venIncCat"
+								 id="venIncCat"
 								style="width: 250px;" /></td>
 						</tr>
 						<tr>
