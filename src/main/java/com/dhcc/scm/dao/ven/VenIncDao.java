@@ -209,11 +209,11 @@ public class VenIncDao extends HibernatePersistentObjectDAO<VenInc> {
 				hqlParamMap.put("catGroupId", venInc.getCatGroupId());
 			}
 		}
-		//String type = WebContextHolder.getContext().getVisit().getUserInfo().getUserType().toString();
-		//if (type.equals("2")) {
-			//hqlBuffer.append(" AND t1.VEN_INC_VENID =:venDr ");
-			//hqlParamMap.put("venDr", WebContextHolder.getContext().getVisit().getUserInfo().getVendorIdLong());
-		//}
+		String type = WebContextHolder.getContext().getVisit().getUserInfo().getUserType().toString();
+		if (type.equals("2")) {
+			hqlBuffer.append(" AND t1.VEN_INC_VENID =:venDr ");
+			hqlParamMap.put("venDr", WebContextHolder.getContext().getVisit().getUserInfo().getVendorIdLong());
+		}
 		hqlBuffer.append(" order by t1.VEN_INC_VENID desc");
 		pagerModel.setQueryHql(hqlBuffer.toString());
 		pagerModel.setHqlParamMap(hqlParamMap);
