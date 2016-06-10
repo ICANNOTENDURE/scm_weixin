@@ -57,6 +57,11 @@ $(function(){
 					if(!isValid){
 						return isValid;
 					}
+					if($("#subDetails input[name='dto.vendorDto.vendor.vendorId']").val()==""){
+						add_message("am-btn-warning","请先验证邮箱!","");
+						return;
+					}
+					
 					step=1;
 				}
 				if($("#step2").css("display")=='block'){
