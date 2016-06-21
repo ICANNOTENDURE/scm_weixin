@@ -300,26 +300,26 @@ public class VendorDao extends HibernatePersistentObjectDAO<Vendor> {
 		hqlBuffer.append(" t1.ACCOUNT account, ");
 		hqlBuffer.append(" t1.CONTACT contact, ");
 		hqlBuffer.append(" t1.EMAIL email, ");
-		hqlBuffer.append(" t1.TAXATION taxation, ");
-		hqlBuffer.append(" t2.H_AUDITFLAG auditflag, ");//add hxy
-		hqlBuffer.append(" t2.H_VENID hopvendorid ");//主键
+		hqlBuffer.append(" t1.TAXATION taxation ");
+		//hqlBuffer.append(" t2.H_AUDITFLAG auditflag, ");//add hxy
+		//hqlBuffer.append(" t2.H_VENID hopvendorid ");//主键
 		hqlBuffer.append(" from ");
-		hqlBuffer.append(" T_VEN_VENDOR t1 left join T_HOP_VENDOR t2 on t1.VEN_ID=T2.H_VENDORID ");
+		hqlBuffer.append(" T_VEN_VENDOR t1 ") ; //left join T_HOP_VENDOR t2 on t1.VEN_ID=T2.H_VENDORID ");
 		hqlBuffer.append(" where 1=1 ");
 		//根据登录人员做判断   感觉还是有问题
 		if(type==1){
-			hqlBuffer.append(" and t2.H_HOPID="+hopId );
+			//hqlBuffer.append(" and t2.H_HOPID="+hopId );
 		}
 		
 		if(org.apache.commons.lang.StringUtils.isNotBlank(dto.getAuditFlag())){
 			if(dto.getAuditFlag().equals("1")){
-				hqlBuffer.append(" and t2.H_AUDITFLAG='Y' " );
+				//hqlBuffer.append(" and t2.H_AUDITFLAG='Y' " );
 			}
 			if(dto.getAuditFlag().equals("2")){
-				hqlBuffer.append(" and (t2.H_AUDITFLAG is null or t2.H_AUDITFLAG='N')" );
+				//hqlBuffer.append(" and (t2.H_AUDITFLAG is null or t2.H_AUDITFLAG='N')" );
 			}
 			if(dto.getAuditFlag().equals("3")){
-				hqlBuffer.append(" and (t2.H_AUDITFLAG is null )" );
+				//hqlBuffer.append(" and (t2.H_AUDITFLAG is null )" );
 			}
 		}
 		if(dto.getVendor()!=null){

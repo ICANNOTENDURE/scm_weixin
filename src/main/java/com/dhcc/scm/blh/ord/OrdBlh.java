@@ -896,8 +896,11 @@ public class OrdBlh extends AbstractBaseBlh {
 			}
 			HopVendor hopVendor = hopVendorService.getHopVendoByBarCode(hisOrderWebItm.getVendorBarCode(), hopCtloc.getHospid());
 			if (hopVendor == null) {
-				msg.append(hisOrderWebItm.getHisId()+"供应商工商执照错误。");
-				continue;
+				hopVendor = hopVendorService.findVendorByCode(hisOrderWebItm.getVendorBarCode(), hopCtloc.getHospid());
+				if (hopVendor == null) {
+					msg.append(hisOrderWebItm.getHisId()+"供应商工商执照错误。");
+					continue;
+				}
 			}
 			if(hopVendor.getHopVenId()==null){
 				msg.append(hisOrderWebItm.getHisId()+"医院供应商未与平台供应商对照。");

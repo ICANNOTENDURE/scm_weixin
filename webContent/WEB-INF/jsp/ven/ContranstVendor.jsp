@@ -178,13 +178,15 @@
 			
 			别名: <input id="venAlias" style="width: 100px;"
 			type="text" />
+			
 			审核状态:
-			<select class="combobox" panelHeight="auto" style="width:105px" id="venAuditFlag">
+			<select class="combobox" panelHeight="auto" style="width:105px" id="venAuditFlag"  disabled="disabled">
 				<option value="0">空</option>
 				<option value="1">已审核</option>
 				<option value="2">审核不通过</option>
 				<option value="3">未审核</option>
 			</select>
+			 
 			<br>
 			邮箱/注册名/工商执照号: <input id="venInputStr" style="width: 200px;"
 			type="text" />
@@ -247,7 +249,9 @@
 							<th data-options="field:'venname',sortable:true" width="1/6">对照供应商</th>
 							<th data-options="field:'venid',hidden:true"></th>
 							<th data-options="field:'operate',formatter:ConT" width="1/6">对照</th>
+							<!--  
 							<th data-options="field:'audit',formatter:AuditT" width="1/6">资质</th>
+							-->
 						</tr>
 					</thead>
 				</table>
@@ -271,7 +275,7 @@
 					<thead>
 						<tr>
 							<th data-options="field:'vendorid',hidden:true">IncId ID</th>
-							<th data-options="field:'code',sortable:true">代码</th>
+							
 							<th data-options="field:'name',sortable:true">供应商</th>
 							<th data-options="field:'taxation',sortable:true">工商执照号</th>
 							<th data-options="field:'email',sortable:true">邮箱</th>
@@ -280,6 +284,7 @@
 							<th data-options="field:'tel',sortable:true">电话</th>
 							<th data-options="field:'fax',sortable:true">传真</th>
 							<th data-options="field:'address',sortable:true">联系地址</th>
+							<th data-options="field:'code',sortable:true">代码</th>
 						</tr>
 					</thead>
 				</table>
