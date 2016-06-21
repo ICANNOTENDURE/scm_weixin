@@ -37,6 +37,24 @@
  			valueField:'hospitalId',							
  			textField:'hospitalName'
  		});
+     	
+     	$("#conByCodeBTN").on('click', function() {
+     		ven=$("#ven").combobox('getValue');
+    		if(ven==""){
+    			$CommonUI.alert("请选择供应商!");
+    			return;
+    		}
+    		$.post(
+    				$WEB_ROOT_PATH+'/hop/hopIncCtrl!autoConByIncCode.htm',
+    				{
+    					'dto.venId': ven,
+    				},
+    				function(data){
+    					$CommonUI.alert("对照成功："+data+"条数据。");
+    				},
+    				"json"
+    			);
+   		});
      	$("#conIncByBarCode").on('click', function() {
     		hopid=$("#hop").combobox('getValue');
     		if(hopid==""){
@@ -407,6 +425,7 @@
 			<a href="#" class="linkbutton" iconCls="icon-search" id="searchVenInc" >查询</a>
 			<a href="#" class="linkbutton" iconCls="icon-search" id="venIncQualify" >商品资质</a>
 			<a href="#" class="linkbutton" iconCls="icon-save" id="importBTN" >导入对照关系</a>
+			<a href="#" class="linkbutton" iconCls="icon-save" id="conByCodeBTN" >按代码自动对照</a>
 		     <span style="color: red;font-size: 20px">注意(比如供应商单位盒(7),医院单位支,那分子就是7，分母是1)</span>
 		 </div>
 		

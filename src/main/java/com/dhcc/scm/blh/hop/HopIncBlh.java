@@ -30,6 +30,7 @@ import org.apache.struts2.ServletActionContext;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
+import org.junit.Test;
 import org.springframework.stereotype.Component;
 
 import com.dhcc.framework.app.blh.AbstractBaseBlh;
@@ -52,6 +53,8 @@ import com.dhcc.scm.entity.manf.HopManf;
 import com.dhcc.scm.entity.sys.ImpModel;
 import com.dhcc.scm.entity.sys.SysLog;
 import com.dhcc.scm.entity.userManage.NormalAccount;
+import com.dhcc.scm.entity.ven.VenHopInc;
+import com.dhcc.scm.entity.ven.VenInc;
 import com.dhcc.scm.entity.vo.hop.HopIncVo;
 import com.dhcc.scm.entity.vo.ws.HisIncItmWeb;
 import com.dhcc.scm.entity.vo.ws.HisIncWeb;
@@ -488,5 +491,50 @@ public class HopIncBlh extends AbstractBaseBlh {
 	public void listHopIncAudit(BusinessRequest res) {
 		HopIncDto dto = super.getDto(HopIncDto.class, res);
 		hopIncService.listHopIncAudit(dto);
+	}
+	
+	
+	/**
+	 * 
+	* @Title: autoConByIncCode 
+	* @Description: TODO(按照商品代码自动对照) 
+	* @param @param res    设定文件 
+	* @return void    返回类型 
+	* @throws 
+	* @author zhouxin   
+	* @date 2016年6月21日 下午4:42:56
+	 */
+	@Test
+	public void autoConByIncCode(BusinessRequest res){
+		
+		HopIncDto dto = super.getDto(HopIncDto.class, res);
+		Long hopId=8l;
+		List<VenInc> venIncs=commonService.findByProperty(VenInc.class, "venIncVenid", dto.getVenId());
+		int succ=0;
+		for(VenInc venInc:venIncs){
+			Long hopInc=hopIncService.getHopIncByCode(venInc.getVenIncCode(),hopId);
+			if(hopInc!=null){
+				String[] propertyNames={"hopIncId","venIncId"};
+				Object[] values={hopInc,venInc.getVenIncId()};
+				List<VenHopInc> hopIncs=commonService.findByProperties(VenHopInc.class, propertyNames, values);
+				if(hopIncs.size()==0){
+					VenHopInc venHopInc=new VenHopInc();
+					venHopInc.setHopFac(1f);
+					venHopInc.setHopIncId(hopInc);
+					venHopInc.setVenFac(1f);
+					venHopInc.setVenHopAuditflag("Y");
+					venHopInc.setVenIncId(venInc.getVenIncId());
+					commonService.saveOrUpdate(venHopInc);
+					succ++;
+				}
+				venInc.setVenIncBarCode(venInc.getVenIncCode());
+				commonService.saveOrUpdate(venInc);
+				HopInc hopInc2=commonService.get(HopInc.class, hopInc);
+				hopInc2.setIncBarCode(venInc.getVenIncCode());
+				commonService.saveOrUpdate(hopInc2);
+			}
+
+		}
+		super.writeJSON(succ);
 	}
 }
