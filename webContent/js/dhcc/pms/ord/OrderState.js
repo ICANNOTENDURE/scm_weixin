@@ -32,12 +32,13 @@ $(function (){
 	    	    rownumbers:true,
 	    	    columns:[[ 
 	    	            {field:'comment',title:'评价',width:60,sortable:true,formatter:commentRow},  	
-	    	  	        {field:'hopinccode',title:'代码',width:100,},
-	    	  	        {field:'hopincname',title:'名称',width:100,},
-	    	  	        {field:'hopqty',title:'数量',width:100,},
-	    	  	        {field:'hopuom',title:'单位',width:150,},  
-	    	  	        {field:'rp',title:'进价',width:150,},
-	    	  	        {field:'manf',title:'产地',width:200,}
+	    	  	        {field:'hopinccode',title:'代码',width:100},
+	    	  	        {field:'hopincname',title:'名称',width:100},
+	    	  	        {field:'spec',title:'规格',width:100},
+	    	  	        {field:'hopqty',title:'数量',width:100},
+	    	  	        {field:'hopuom',title:'单位',width:150},  
+	    	  	        {field:'rp',title:'进价',width:150},
+	    	  	        {field:'manf',title:'产地',width:200}
 	    	  	]],
 	    	    view: detailview,
 	    	    detailFormatter:function(index,row){

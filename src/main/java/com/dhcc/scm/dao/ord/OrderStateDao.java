@@ -876,8 +876,8 @@ public class OrderStateDao extends HibernatePersistentObjectDAO<Order> {
 			hqlParamMap.put("venid", dto.getVendor());
 		}
 		
-		hqlBuffer.append(" and ORDER_USER_ID=:userid");
-		hqlParamMap.put("userid", Long.valueOf(WebContextHolder.getContext().getVisit().getUserInfo().getId()));
+		hqlBuffer.append(" and ORDER_RECLOC=:loc");
+		hqlParamMap.put("loc", Long.valueOf(WebContextHolder.getContext().getVisit().getUserInfo().getLocId()));
 		hqlBuffer.append(" group by ORDER_NO order by ORDER_NO desc ");
 		Integer total=jdbcTemplateWrapper.getResultCount(hqlBuffer.toString(), hqlParamMap);
 		dto.getPageModel().setTotals(total);

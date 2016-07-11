@@ -466,10 +466,7 @@ function saveClick(){
                     	}
                 	}">数量</th>  	   	
               <th data-options="field:'invno',width:70,sortable:true,editor : {
-						type : 'validatebox',
-                    	options : {
-                        	required : true
-                    	}
+						type : 'validatebox'
                 	}">发票</th>  	
 			  <th data-options="field:'operatedate',sortable:true,fixColumnSize:100">录入时间</th>
 			  <th data-options="field:'operatuser',sortable:true,fixColumnSize:100">更新人</th>

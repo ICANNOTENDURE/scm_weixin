@@ -525,8 +525,8 @@ public class NurseDao extends HibernatePersistentObjectDAO<VenInc> {
 				hqlParamMap.put("venid", hopVendor.getHopVenId());
 			}
 		}
-		hqlBuffer.append(" and ORDER_USER_ID=:userid");
-		hqlParamMap.put("userid", Long.valueOf(WebContextHolder.getContext().getVisit().getUserInfo().getId()));
+		hqlBuffer.append(" and ORDER_RECLOC=:loc");
+		hqlParamMap.put("loc", Long.valueOf(WebContextHolder.getContext().getVisit().getUserInfo().getLocId()));
 		hqlBuffer.append(" group by ORDER_NO order by ORDER_NO desc ");
 		dto.getPageModel().setQueryHql(hqlBuffer.toString());
 		dto.getPageModel().setHqlParamMap(hqlParamMap);

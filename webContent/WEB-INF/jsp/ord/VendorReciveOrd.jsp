@@ -205,6 +205,7 @@
 				<th data-options="field:'orderno',fixColumnSize:150">单号</th>
 				<th data-options="field:'orderid',width:100,hidden:true">名称</th>
 				<th data-options="field:'veninccode',fixColumnSize:150">代码</th>
+				<th data-options="field:'spec',fixColumnSize:100">规格</th>
 				<th data-options="field:'venincname',width:100">名称</th>
 				<th data-options="field:'venqty',fixColumnSize:100">数量</th>
 				<th data-options="field:'uom',fixColumnSize:100">单位</th>
