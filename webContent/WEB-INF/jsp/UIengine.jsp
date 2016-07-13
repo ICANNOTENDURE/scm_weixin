@@ -28,6 +28,9 @@
 <![endif]-->
 <script type="text/javascript">
 	$(function() {
+
+
+		$("#mainIframe").height(document.body.scrollHeight-101)
 		$.ajaxSettings.async = false;
 		var navigationHTML = "";
 
@@ -113,18 +116,15 @@
 				"json"
 		);
 		$("#content-wrapper iframe").attr("src","./chart/chartCtrl!index.htm");
-		try{
-			$("#mainIframe").height($("#mainIframe").contents().find("body")[0].scrollHeight + 50);
-			if(navigator.appName=="Netscape"){
-				
-			}else{
-				//$("#mainIframe").height($("#mainIframe").contents().find("body")[0].clientHeight + 50);
-			}
-		}catch(e){}
+
 		var myDate=new Date()
 		$("#currdate").html(myDate.getFullYear()+"-"+(myDate.getMonth()+1)+"-"+myDate.getDate());
 		
+
 	});
+	
+  
+
 </script>
 
 </head>
@@ -235,7 +235,7 @@
 
 				<!-- Your Page Content Here -->
 
-				<iframe name="mainIframe" frameborder="0" src="" style="width: 100%; height: 600px;" id="mainIframe"></iframe>
+				<iframe name="mainIframe" frameborder="0" src="" style="width: 100%" id="mainIframe" ></iframe>
 
 		
 			<!-- /.content -->
