@@ -109,6 +109,7 @@ $(function (){
 	        {field:'venincid',title:'表ID',hidden:true},  
 	        {field:'veninccode',title:'商品代码',width:200},
 	        {field:'venincname',title:'商品名称',width:200},
+	        {field:'spec',title:'规格',width:100},
 	        {field:'venincuomcode',title:'单位代码',width:50,hidden:true},
 	        {field:'venincuomname',title:'单位',width:50},
 	        {field:'venincbuomcode',title:'小单位代码',width:50,hidden:true},

@@ -141,6 +141,7 @@ public class VenIncDao extends HibernatePersistentObjectDAO<VenInc> {
 		StringBuffer hqlBuffer = new StringBuffer();
 		hqlBuffer.append("select ");
 		hqlBuffer.append("t1.VEN_INC_CODE     as  veninccode, ");
+		hqlBuffer.append("t1.VEN_INC_SPEC     as  spec, ");
 		hqlBuffer.append("t1.VEN_INC_NAME     as  venincname, ");
 		hqlBuffer.append("t1.VEN_INC_UOMCODE  as  venincuomcode, ");
 		hqlBuffer.append("t1.VEN_INC_UOMNAME  as  venincuomname, ");
