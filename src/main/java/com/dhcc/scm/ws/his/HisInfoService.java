@@ -34,13 +34,13 @@ import com.dhcc.scm.entity.ord.OrderDetailSub;
 import com.dhcc.scm.entity.st.StInGdRecItm;
 import com.dhcc.scm.entity.sys.SysLog;
 import com.dhcc.scm.entity.userManage.NormalAccount;
-import com.dhcc.scm.entity.ven.VenHopInc;
 import com.dhcc.scm.entity.ven.VenInc;
 import com.dhcc.scm.entity.ven.VenQualifPic;
 import com.dhcc.scm.entity.ven.VenQualification;
 import com.dhcc.scm.entity.ven.Vendor;
 import com.dhcc.scm.entity.vo.ws.FileWrapper;
 import com.dhcc.scm.entity.vo.ws.HisCmpRecWeb;
+import com.dhcc.scm.entity.vo.ws.HisHvInvWeb;
 import com.dhcc.scm.entity.vo.ws.HisHvLabelWeb;
 import com.dhcc.scm.entity.vo.ws.HisInGdRec;
 import com.dhcc.scm.entity.vo.ws.HisInGdRecItm;
@@ -694,6 +694,114 @@ public class HisInfoService implements HisInfoServiceInterface{
 			hvLabel.setHvQty(hisHvLabelWeb.getQty());
 			hvLabel.setHvVenIncId(venInc.getVenIncId());
 			commonService.saveOrUpdate(hvLabel);
+			operateResult.setResultCode("0");
+			operateResult.setResultContent("sucess");
+		}catch(Exception e){
+			operateResult.setResultCode("-1");
+			operateResult.setResultContent(e.getMessage());
+			log.setOpResult(e.getMessage());
+		}finally{
+			commonService.saveOrUpdate(log);
+		}	
+		return operateResult;
+	}
+
+	@Override
+	public HisHvInvWeb getHvInvNo(String usename, String password, String label,String vendorCode) {
+		// TODO Auto-generated method stub
+		HisHvInvWeb hisHvInvWeb=new HisHvInvWeb();
+		OperateResult operateResult=new OperateResult();
+		SysLog log = new SysLog();
+		log.setOpArg("usename:"+usename+",password:"+password+",label:"+label+",vendorCode:"+vendorCode);
+		log.setOpName("webservice 高值条码完成，确认完成信息：》cmpHvInv");
+		log.setOpDate(new Date());
+		log.setOpType("webservice");
+		log.setOpUser(usename);
+		try {
+
+			if(StringUtils.isBlank(label)){
+				hisHvInvWeb.setResultCode("-5");
+				hisHvInvWeb.setResultContent("条码不能为空");
+				return hisHvInvWeb;
+			}
+			if(StringUtils.isBlank(vendorCode)){
+				hisHvInvWeb.setResultCode("-6");
+				hisHvInvWeb.setResultContent("供应商编码不能为空");
+				return hisHvInvWeb;
+			}
+			NormalAccount normalAccount=ordBlh.checkWsParam(operateResult, usename, password, null);
+			if(normalAccount==null){
+				hisHvInvWeb.setResultCode(operateResult.getResultCode());
+				hisHvInvWeb.setResultContent(operateResult.getResultContent());
+				return hisHvInvWeb;
+			}
+			HopCtloc ctloc=commonService.get(HopCtloc.class, normalAccount.getNormalUser().getLocId());
+			HopVendor hopVendor=commonService.getVenByCode(vendorCode, ctloc.getHospid());
+			if(hopVendor==null){
+				hisHvInvWeb.setResultCode("-3");
+				hisHvInvWeb.setResultContent("供应商编码错误");
+				return hisHvInvWeb;
+			}
+			HvLabel tmpHvLabel=commonService.getHvLabel(label, ctloc.getHospid(), hopVendor.getHopVenId());
+			if(tmpHvLabel==null){
+				hisHvInvWeb.setResultCode("-4");
+				hisHvInvWeb.setResultContent("高值条码错误");
+				return hisHvInvWeb;
+			}
+			hisHvInvWeb.setResultCode("0");
+			hisHvInvWeb.setInvDate(tmpHvLabel.getHvInvNoDate());
+			hisHvInvWeb.setInvNo(tmpHvLabel.getHvInvNo());
+		}catch(Exception e){
+			hisHvInvWeb.setResultCode("-1");
+			hisHvInvWeb.setResultContent(e.getMessage());
+			log.setOpResult(e.getMessage());
+		}finally{
+			commonService.saveOrUpdate(log);
+		}	
+		return hisHvInvWeb;
+	}
+
+	@Override
+	public OperateResult cmpHvInv(String usename, String password, String label,String vendorCode) {
+		
+		OperateResult operateResult=new OperateResult();
+		SysLog log = new SysLog();
+		log.setOpArg("usename:"+usename+",password:"+password+",label:"+label+",vendorCode:"+vendorCode);
+		log.setOpName("webservice 高值条码完成，确认完成信息：》cmpHvInv");
+		log.setOpDate(new Date());
+		log.setOpType("webservice");
+		log.setOpUser(usename);
+		try {
+
+			if(StringUtils.isBlank(label)){
+				operateResult.setResultCode("-5");
+				operateResult.setResultContent("条码不能为空");
+				return operateResult;
+			}
+			if(StringUtils.isBlank(vendorCode)){
+				operateResult.setResultCode("-6");
+				operateResult.setResultContent("供应商编码不能为空");
+				return operateResult;
+			}
+			NormalAccount normalAccount=ordBlh.checkWsParam(operateResult, usename, password, null);
+			if(normalAccount==null){
+				return operateResult;
+			}
+			HopCtloc ctloc=commonService.get(HopCtloc.class, normalAccount.getNormalUser().getLocId());
+			HopVendor hopVendor=commonService.getVenByCode(vendorCode, ctloc.getHospid());
+			if(hopVendor==null){
+				operateResult.setResultCode("-3");
+				operateResult.setResultContent("供应商编码错误");
+				return operateResult;
+			}
+			HvLabel tmpHvLabel=commonService.getHvLabel(label, ctloc.getHospid(), hopVendor.getHopVenId());
+			if(tmpHvLabel==null){
+				operateResult.setResultCode("-4");
+				operateResult.setResultContent("高值条码错误");
+				return operateResult;
+			}
+			tmpHvLabel.setHvFlag("Y");
+			commonService.saveOrUpdate(tmpHvLabel);
 			operateResult.setResultCode("0");
 			operateResult.setResultContent("sucess");
 		}catch(Exception e){
