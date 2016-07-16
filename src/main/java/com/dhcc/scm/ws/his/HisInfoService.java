@@ -670,23 +670,25 @@ public class HisInfoService implements HisInfoServiceInterface{
 				operateResult.setResultContent("供应商编码错误");
 				return operateResult;
 			}
-			HvLabel tmpHvLabel=commonService.getHvLabel(hisHvLabelWeb.getLabel(), ctloc.getHospid(), hopVendor.getHopVenId());
-			if(tmpHvLabel!=null){
-				if("Y".equals(tmpHvLabel.getHvFlag())){
+			HvLabel hvLabel=new HvLabel();
+			HvLabel tmphvLabel=commonService.getHvLabel(hisHvLabelWeb.getLabel(), ctloc.getHospid(), hopVendor.getHopVenId());
+			if(tmphvLabel!=null){
+				if("Y".equals(tmphvLabel.getHvFlag())){
 					operateResult.setResultCode("-6");
 					operateResult.setResultContent("该条码状态不能更新");
 					return operateResult;
+				}else{
+					hvLabel.setHvId(tmphvLabel.getHvId());
 				}
 			}
 			//弋矶山医院商品编码和供应商商品编号相同
 			//弋矶山医院商品编码和供应商商品码相同
-			VenInc venInc=commonService.getVenIncByBarCode(hopVendor.getHopVenId(), hisHvLabelWeb.getHopVendorCode());
+			VenInc venInc=commonService.getVenIncByBarCode(hopVendor.getHopVenId(), hisHvLabelWeb.getHopIncCode());
 			if(venInc==null){
 				operateResult.setResultCode("-7");
 				operateResult.setResultContent("商品编码错误");
 				return operateResult;
 			}
-			HvLabel hvLabel=new HvLabel();
 			hvLabel.setHvHopId( ctloc.getHospid());
 			hvLabel.setHvVendorId(hopVendor.getHopVenId());
 			hvLabel.setHvInvNoDate(hisHvLabelWeb.getOrdDate());

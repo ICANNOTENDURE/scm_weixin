@@ -857,10 +857,12 @@ public class OrdBlh extends AbstractBaseBlh {
 			operateResult.setResultContent("密码不能为空");
 			return null;
 		}
-		if (dadaList.size() == 0) {
-			operateResult.setResultCode("-6");
-			operateResult.setResultContent("入参为空");
-			return null;
+		if(dadaList!=null){
+			if (dadaList.size() == 0) {
+				operateResult.setResultCode("-6");
+				operateResult.setResultContent("入参为空");
+				return null;
+			}
 		}
 		
 		NormalAccount normalAccount=commonService.checkUser(operateResult, username, password);
