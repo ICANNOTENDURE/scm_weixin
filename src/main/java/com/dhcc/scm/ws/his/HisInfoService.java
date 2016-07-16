@@ -691,10 +691,12 @@ public class HisInfoService implements HisInfoServiceInterface{
 			}
 			hvLabel.setHvHopId( ctloc.getHospid());
 			hvLabel.setHvVendorId(hopVendor.getHopVenId());
-			hvLabel.setHvInvNoDate(hisHvLabelWeb.getOrdDate());
+			hvLabel.setHvOrdDate(hisHvLabelWeb.getOrdDate());
 			hvLabel.setHvLabel(hisHvLabelWeb.getLabel());
 			hvLabel.setHvQty(hisHvLabelWeb.getQty());
 			hvLabel.setHvVenIncId(venInc.getVenIncId());
+			hvLabel.setHvRp(hisHvLabelWeb.getRp());
+			
 			commonService.saveOrUpdate(hvLabel);
 			operateResult.setResultCode("0");
 			operateResult.setResultContent("sucess");
