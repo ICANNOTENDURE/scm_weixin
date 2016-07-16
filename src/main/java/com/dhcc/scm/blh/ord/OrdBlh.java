@@ -839,11 +839,14 @@ public class OrdBlh extends AbstractBaseBlh {
 	//检查webservice用户名密码和参数
 	public NormalAccount checkWsParam(OperateResult operateResult,String username,String password,List<?> dadaList){
 		
-		if (dadaList.size() > 1000) {
-			operateResult.setResultCode("-1");
-			operateResult.setResultContent("每次上传数据不能大于1000条");
-			return null;
+		if(dadaList!=null){
+			if (dadaList.size() > 1000) {
+				operateResult.setResultCode("-1");
+				operateResult.setResultContent("每次上传数据不能大于1000条");
+				return null;
+			}
 		}
+
 		if (org.apache.commons.lang3.StringUtils.isBlank(username)) {
 			operateResult.setResultCode("-2");
 			operateResult.setResultContent("用户名不能为空");

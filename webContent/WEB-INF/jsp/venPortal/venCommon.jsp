@@ -59,6 +59,9 @@
 			 <li><a href="<%=request.getContextPath()%>/ven/vendorCtrl!vendorInc.htm"><span class="am-icon-reorder"></span>
 					商品信息<span class="am-badge am-badge-warning">5</span></a></li>
 			 -->
+			 <li><a
+				href="<%=request.getContextPath()%>/ven/vendorCtrl!vendorHvInvNo.htm"><span
+					class="am-icon-money"></span> 高值发票录入</a></li>
 			<li><a
 				href="<%=request.getContextPath()%>/ven/vendorCtrl!vendorImpInv.htm"><span
 					class="am-icon-upload"></span> 上传发票</a></li>

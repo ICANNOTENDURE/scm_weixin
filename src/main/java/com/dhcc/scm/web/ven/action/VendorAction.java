@@ -27,6 +27,7 @@ import com.dhcc.scm.service.ven.VendorService;
 @Namespace(value = "/ven")
 @Scope("prototype")
 @Action(value = "vendorCtrl", results = {
+		@Result(name = "vendorHvInvNo", location = "/WEB-INF/jsp/venPortal/vendorHvInvNo.jsp"),
 		@Result(name = "vendorImpInv", location = "/WEB-INF/jsp/venPortal/vendorImpInv.jsp"),
 		@Result(name = "vendReplayAdvice", location = "/WEB-INF/jsp/venPortal/vendReplayAdvice.jsp"),
 		@Result(name = "editinfo", location = "/WEB-INF/jsp/venPortal/editinfo.jsp"),
@@ -97,6 +98,10 @@ public class VendorAction extends BaseAction {
 		//导入发票
 		if("vendorImpInv".equals(super.getBusinessFlow())){
 			return "vendorImpInv";
+		}
+		//高值录入发票
+		if("vendorHvInvNo".equals(super.getBusinessFlow())){
+			return "vendorHvInvNo";
 		}
 		return null;
 	}

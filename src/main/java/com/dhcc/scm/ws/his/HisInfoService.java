@@ -27,17 +27,21 @@ import com.dhcc.scm.dao.ven.VendorDao;
 import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.HopInc;
 import com.dhcc.scm.entity.hop.HopVendor;
+import com.dhcc.scm.entity.hv.HvLabel;
 import com.dhcc.scm.entity.ord.OrderDetail;
 import com.dhcc.scm.entity.ord.OrderDetailPic;
 import com.dhcc.scm.entity.ord.OrderDetailSub;
 import com.dhcc.scm.entity.st.StInGdRecItm;
 import com.dhcc.scm.entity.sys.SysLog;
 import com.dhcc.scm.entity.userManage.NormalAccount;
+import com.dhcc.scm.entity.ven.VenHopInc;
+import com.dhcc.scm.entity.ven.VenInc;
 import com.dhcc.scm.entity.ven.VenQualifPic;
 import com.dhcc.scm.entity.ven.VenQualification;
 import com.dhcc.scm.entity.ven.Vendor;
 import com.dhcc.scm.entity.vo.ws.FileWrapper;
 import com.dhcc.scm.entity.vo.ws.HisCmpRecWeb;
+import com.dhcc.scm.entity.vo.ws.HisHvLabelWeb;
 import com.dhcc.scm.entity.vo.ws.HisInGdRec;
 import com.dhcc.scm.entity.vo.ws.HisInGdRecItm;
 import com.dhcc.scm.entity.vo.ws.HisIncLocQtyWeb;
@@ -624,6 +628,82 @@ public class HisInfoService implements HisInfoServiceInterface{
 			hisPicWebs.add(hisPicWeb);
 		}
 		return hisPicWebs;
+	}
+
+	@Override
+	public OperateResult getHvLabel(String usename, String password,
+			HisHvLabelWeb hisHvLabelWeb) {
+		
+		
+		OperateResult operateResult=new OperateResult();
+		SysLog log = new SysLog();
+		log.setOpArg("usename:"+usename+",password:"+password+",hisHvLabelWeb:"+JsonUtils.toJson(hisHvLabelWeb));
+		log.setOpName("webservice his 传送高值医嘱条码信息：》getHvLabel");
+		log.setOpDate(new Date());
+		log.setOpType("webservice");
+		log.setOpUser(usename);
+		try {
+			if(hisHvLabelWeb==null){
+				operateResult.setResultCode("-2");
+				operateResult.setResultContent("入参不能为空");
+				return operateResult;
+			}
+			if(hisHvLabelWeb.getOrdDate()==null){
+				operateResult.setResultCode("-4");
+				operateResult.setResultContent("医嘱日期不能为空");
+				return operateResult;
+			}
+			if(StringUtils.isBlank(hisHvLabelWeb.getLabel())){
+				operateResult.setResultCode("-5");
+				operateResult.setResultContent("条码不能为空");
+				return operateResult;
+			}
+			NormalAccount normalAccount=ordBlh.checkWsParam(operateResult, usename, password, null);
+			if(normalAccount==null){
+				return operateResult;
+			}
+			HopCtloc ctloc=commonService.get(HopCtloc.class, normalAccount.getNormalUser().getLocId());
+			
+			HopVendor hopVendor=commonService.getVenByCode(hisHvLabelWeb.getHopVendorCode(), ctloc.getHospid());
+			if(hopVendor==null){
+				operateResult.setResultCode("-3");
+				operateResult.setResultContent("供应商编码错误");
+				return operateResult;
+			}
+			HvLabel tmpHvLabel=commonService.getHvLabel(hisHvLabelWeb.getLabel(), ctloc.getHospid(), hopVendor.getHopVenId());
+			if(tmpHvLabel!=null){
+				if("Y".equals(tmpHvLabel.getHvFlag())){
+					operateResult.setResultCode("-6");
+					operateResult.setResultContent("该条码状态不能更新");
+					return operateResult;
+				}
+			}
+			//弋矶山医院商品编码和供应商商品编号相同
+			//弋矶山医院商品编码和供应商商品码相同
+			VenInc venInc=commonService.getVenIncByBarCode(hopVendor.getHopVenId(), hisHvLabelWeb.getHopVendorCode());
+			if(venInc==null){
+				operateResult.setResultCode("-7");
+				operateResult.setResultContent("商品编码错误");
+				return operateResult;
+			}
+			HvLabel hvLabel=new HvLabel();
+			hvLabel.setHvHopId( ctloc.getHospid());
+			hvLabel.setHvVendorId(hopVendor.getHopVenId());
+			hvLabel.setHvInvNoDate(hisHvLabelWeb.getOrdDate());
+			hvLabel.setHvLabel(hisHvLabelWeb.getLabel());
+			hvLabel.setHvQty(hisHvLabelWeb.getQty());
+			hvLabel.setHvVenIncId(venInc.getVenIncId());
+			commonService.saveOrUpdate(hvLabel);
+			operateResult.setResultCode("0");
+			operateResult.setResultContent("sucess");
+		}catch(Exception e){
+			operateResult.setResultCode("-1");
+			operateResult.setResultContent(e.getMessage());
+			log.setOpResult(e.getMessage());
+		}finally{
+			commonService.saveOrUpdate(log);
+		}	
+		return operateResult;
 	}
     
     

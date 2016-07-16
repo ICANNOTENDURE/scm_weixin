@@ -12,6 +12,7 @@ import org.apache.cxf.annotations.WSDLDocumentation;
 
 import com.dhcc.scm.entity.vo.ws.FileWrapper;
 import com.dhcc.scm.entity.vo.ws.HisCmpRecWeb;
+import com.dhcc.scm.entity.vo.ws.HisHvLabelWeb;
 import com.dhcc.scm.entity.vo.ws.HisInGdRec;
 import com.dhcc.scm.entity.vo.ws.HisIncLocQtyWeb;
 import com.dhcc.scm.entity.vo.ws.HisIncWeb;
@@ -172,4 +173,9 @@ public interface HisInfoServiceInterface {
 	    @WebResult(name="operateResult")
 	    @WSDLDocumentation("库房扫码确认完成")
 	    public VenQualifyWeb getVenQualify(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="hopVenCodes")List<String> hopVenCodes);
+
+	    @WebMethod
+	    @WebResult(name="operateResult")
+	    @WSDLDocumentation("his传送高值医嘱条码信息")
+	    public OperateResult getHvLabel(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="hisHvLabelWeb")HisHvLabelWeb hisHvLabelWeb);
 }

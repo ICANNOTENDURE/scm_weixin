@@ -18,6 +18,7 @@ import com.dhcc.framework.common.PagerModel;
 import com.dhcc.framework.hibernate.dao.CommonDao;
 import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.HopVendor;
+import com.dhcc.scm.entity.hv.HvLabel;
 import com.dhcc.scm.entity.ord.OrderDetail;
 import com.dhcc.scm.entity.ord.OrderDetailSub;
 import com.dhcc.scm.entity.userManage.NormalAccount;
@@ -201,7 +202,12 @@ public interface CommonService {
 	 * @param hopId  ：医院id
 	 */
 	public HopVendor getVenByBusinessRegNo(String businessRegNo,Long hopId);
-	
+	/**
+	 * @see  :查找供应商
+	 * @param code  : 供应商编码 
+	 * @param hopId  ：医院id
+	 */
+	public HopVendor getVenByCode(String code,Long hopId);
 	/**
 	 * @see  :查找医院科室
 	 * @param code  : 科室编码 
@@ -226,5 +232,10 @@ public interface CommonService {
 	 * @see  :修改订单表状态，并生成订单执行记录表
 	 */
 	public void saveOrd(OrderDetail detail,String remark,Long userId);
-
+	
+	/**
+	 * @see  :根据高值条码获取高值信息
+	 */
+	public HvLabel getHvLabel(String label,Long hopId,Long vendorId);
+	
 }

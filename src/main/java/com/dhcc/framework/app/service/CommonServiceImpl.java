@@ -42,6 +42,7 @@ import com.dhcc.framework.jdbc.JdbcTemplateWrapper;
 import com.dhcc.framework.util.DhccBeanUtils;
 import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.HopVendor;
+import com.dhcc.scm.entity.hv.HvLabel;
 import com.dhcc.scm.entity.ord.ExeState;
 import com.dhcc.scm.entity.ord.OrderDetail;
 import com.dhcc.scm.entity.ord.OrderDetailSub;
@@ -1340,6 +1341,29 @@ public class CommonServiceImpl implements CommonService {
 	@Override
 	public void saveOrd(OrderDetail detail, String type, Long userId) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public HopVendor getVenByCode(String code, Long hopId) {
+		String[] propertyNames = {"hopCode", "hopHopId"};
+		Object[] values = {code, hopId};
+		List<HopVendor>  hopVendors = commonDao.findByProperties(HopVendor.class,propertyNames, values);
+		if(hopVendors.size()>0){
+			return hopVendors.get(0);
+		}
+		return null;
+	}
+
+	@Override
+	public HvLabel getHvLabel(String label, Long hopId, Long vendorId) {
+		String[] propertyNames = {"hvLabel", "hvHopId","hvVendorId"};
+		Object[] values = {label, hopId,vendorId};
+		List<HvLabel>  hvLabels = commonDao.findByProperties(HvLabel.class,propertyNames, values);
+		if(hvLabels.size()>0){
+			return hvLabels.get(0);
+		}
+		return null;
 		
 	}
 	
