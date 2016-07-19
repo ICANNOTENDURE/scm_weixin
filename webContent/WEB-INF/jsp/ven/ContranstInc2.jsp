@@ -44,12 +44,14 @@
     			$CommonUI.alert("请选择供应商!");
     			return;
     		}
+    		loading();
     		$.post(
     				$WEB_ROOT_PATH+'/hop/hopIncCtrl!autoConByIncCode.htm',
     				{
     					'dto.venId': ven,
     				},
     				function(data){
+    					disLoading();
     					$CommonUI.alert("对照成功："+data+"条数据。");
     				},
     				"json"
@@ -61,12 +63,14 @@
     			$CommonUI.alert("请选择医院!");
     			return;
     		}
+    		loading();
     		$.post(
     				$WEB_ROOT_PATH+'/ven/venIncCtrl!autoConIncByBarCode.htm',
     				{
     					'dto.venIncContranstDto.hopId': hopid,
     				},
     				function(data){
+    					disLoading();
     					$CommonUI.alert("对照成功："+data.resultContent+"条数据。");
     				},
     				"json"

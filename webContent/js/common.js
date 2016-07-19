@@ -780,3 +780,16 @@ function isNullOrEmpty(strVal) {
 		return false;
 	}
 }
+
+//显示隐藏遮罩层
+function loading(){
+	
+	$('#load_msg', window.parent.document).css("display","block");
+	$('#load_wrap', window.parent.document).css("display","block");
+}
+function disLoading(){
+	
+	$('#load_msg', window.parent.document).css("display","none");
+	$('#load_wrap', window.parent.document).css("display","none");
+}
+

@@ -126,7 +126,90 @@
   
 
 </script>
-
+<style>
+.dimmer.active {
+	opacity: 1;
+}
+.dimmer {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	display: none;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,.6);
+	z-index: 1100;
+	opacity: 0;
+}
+.am-modal {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1110;
+	display: none;
+	opacity: 0;
+	outline: 0;
+	text-align: center;
+	-webkit-transform: scale(1.185);
+	-ms-transform: scale(1.185);
+	transform: scale(1.185);
+	-webkit-transition-property: opacity,-webkit-transform;
+	transition-property: opacity,-webkit-transform;
+	transition-property: transform,opacity;
+	transition-property: transform,opacity,-webkit-transform;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+	-webkit-perspective: 1000px;
+	perspective: 1000px;
+}
+.am-modal:before {
+	content: "\200B";
+	display: inline-block;
+	height: 100%;
+	vertical-align: middle;
+}
+.am-modal.active {
+	opacity: 1;
+	-webkit-transition-duration: .3s;
+	transition-duration: .3s;
+	-webkit-transform: scale(1);
+	-ms-transform: scale(1);
+	transform: scale(1);
+	overflow-x: hidden;
+	overflow-y: auto;
+	display:block;
+}
+.am-modal-dialog {
+	width: 540px;
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 100%;
+	border-radius: 0;
+	background: #f8f8f8;
+}
+.am-modal-hd {
+	padding: 15px 10px 5px 10px;
+	font-size: 1.8rem;
+	font-weight: 500;
+}
+.am-modal-bd {
+	padding: 15px 10px;
+	text-align: center;
+	border-bottom: 1px solid #dedede;
+	border-radius: 2px 2px 0 0;
+}
+am-icon-spin {
+	display: inline-block;
+	font-size: 2.4rem;
+}
+</style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
 	<div class="wrapper">
@@ -302,5 +385,13 @@
         </div><!-- /.modal-dialog -->
       </div><!-- /.modal -->
     </div><!-- /.example-modal -->
+  
+    <div class="am-modal active" tabindex="-1"  style="display: none;" id="load_msg">
+    	<div class="am-modal-dialog">
+    		<div class="am-modal-hd">正在载入...</div>
+    		<div class="am-modal-bd"><span class="fa fa-spinner fa-spin fa-2x" ></span></div>
+    	</div>
+    </div>
+    <div class="dimmer active"  style="display: none;" id="load_wrap"></div>
 </body>
 </html>
