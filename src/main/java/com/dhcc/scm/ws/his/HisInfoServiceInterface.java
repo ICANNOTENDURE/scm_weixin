@@ -189,4 +189,9 @@ public interface HisInfoServiceInterface {
 	    @WebResult(name="operateResult")
 	    @WSDLDocumentation("高值条码完成，确认完成信息")
 	    public OperateResult cmpHvInv(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="label")String label,@WebParam(name="vendorCode")String vendorCode);
+
+	    @WebMethod
+	    @WebResult(name="name")
+	    @WSDLDocumentation("医院获取供应商商品上传图片名称")
+	    public List<String> getIncPicName(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="vendorCode")String vendorCode,@WebParam(name="incCode")String incCode);
 }

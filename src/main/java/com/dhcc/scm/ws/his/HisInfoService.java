@@ -35,6 +35,7 @@ import com.dhcc.scm.entity.st.StInGdRecItm;
 import com.dhcc.scm.entity.sys.SysLog;
 import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.ven.VenInc;
+import com.dhcc.scm.entity.ven.VenIncPic;
 import com.dhcc.scm.entity.ven.VenQualifPic;
 import com.dhcc.scm.entity.ven.VenQualification;
 import com.dhcc.scm.entity.ven.Vendor;
@@ -428,7 +429,15 @@ public class HisInfoService implements HisInfoServiceInterface{
 			case "ORDER":
 				path="uploads/weixin/order/";
 				break;
-
+			case "INC":
+				path="uploadPic/";
+				break;
+			case "INCQUALIFY":
+				path="uploadPic/venIncQualify/";
+				break;
+			case "VENQUALIFY":
+				path="uploads";
+				break;		
 			default:
 				break;
 			}
@@ -571,6 +580,9 @@ public class HisInfoService implements HisInfoServiceInterface{
 			HopCtloc ctloc=commonService.get(HopCtloc.class, normalAccount.getNormalUser().getLocId());
 			for(String hopvenCode:hopVenCodes){
 				HopVendor hopVendor=commonService.getVenByBusinessRegNo(hopvenCode, ctloc.getHospid());
+				if(hopVendor==null){
+					hopVendor=commonService.getVenByCode(hopvenCode, ctloc.getHospid());
+				}
 				if(hopVendor!=null){
 				if(hopVendor.getHopVenId()!=null){
 					List<VenQualification> qualifications=commonService.findByProperty(VenQualification.class, "vendorid", hopVendor.getHopVenId());
@@ -816,6 +828,30 @@ public class HisInfoService implements HisInfoServiceInterface{
 			commonService.saveOrUpdate(log);
 		}	
 		return operateResult;
+	}
+
+	@Override
+	public List<String> getIncPicName(String usename, String password, String vendorCode, String incCode) {
+		
+		List<String> list=new ArrayList<String>();
+		NormalAccount normalAccount=ordBlh.checkWsParam(new OperateResult(), usename, password, null);
+		if(normalAccount==null){
+			return list;
+		}
+		HopCtloc ctloc=commonService.get(HopCtloc.class, normalAccount.getNormalUser().getLocId());
+		HopVendor hopVendor=commonService.getVenByCode(vendorCode, ctloc.getHospid());
+		if(hopVendor==null){
+			return list;
+		}
+		VenInc venInc=commonService.getVenIncByBarCode(hopVendor.getHopVenId(), incCode);
+		if(venInc==null){
+			return list;
+		}
+		List<VenIncPic> incPics=commonService.findByProperty(VenIncPic.class, "venIncPicVenincid", venInc.getVenIncId());
+		for (VenIncPic incPic:incPics){
+			list.add(incPic.getVenIncPicPath());
+		}
+		return list;
 	}
     
     
