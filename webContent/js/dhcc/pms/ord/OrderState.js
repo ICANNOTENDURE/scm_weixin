@@ -81,7 +81,9 @@ $(function (){
 		          
 				{field:'orderno',title:'单号',width:100},
 				{field:'date',title:'日期',width:100,sortable:true},
-				{field:'emflag',title:'加急',width:50,sortable:true},
+				{field:'emflag',title:'加急',width:50,sortable:true,formatter: function(value,row,index){
+					return value==1?"加急":"普通";
+				}},
 				{field:'purloc',title:'入库科室',width:150,sortable:true},  
 				{field:'recloc',title:'收货科室',width:150,sortable:true},
 				{field:'venname',title:'供应商',width:150,sortable:true}
