@@ -32,7 +32,18 @@ public class OrderGrpByNo implements Serializable {
 	
 	private String emflag;
 	
+	private String state;
 	
+	
+	
+	
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
 
 	public String getEmflag() {
 		return emflag;
