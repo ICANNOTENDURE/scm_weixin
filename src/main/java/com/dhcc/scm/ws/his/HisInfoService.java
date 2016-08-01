@@ -717,7 +717,11 @@ public class HisInfoService implements HisInfoServiceInterface{
 			operateResult.setResultContent(e.getMessage());
 			log.setOpResult(e.getMessage());
 		}finally{
-			commonService.saveOrUpdate(log);
+			log.setOpResult(JsonUtils.toJson(operateResult));
+			if("0".equals(operateResult.getResultCode())){
+			}else{
+				commonService.saveOrUpdate(log);
+			}
 		}	
 		return operateResult;
 	}
@@ -772,7 +776,9 @@ public class HisInfoService implements HisInfoServiceInterface{
 			hisHvInvWeb.setResultContent(e.getMessage());
 			log.setOpResult(e.getMessage());
 		}finally{
-			commonService.saveOrUpdate(log);
+			if(!"0".equals(operateResult.getResultCode())){
+				commonService.saveOrUpdate(log);
+			}
 		}	
 		return hisHvInvWeb;
 	}
@@ -825,7 +831,9 @@ public class HisInfoService implements HisInfoServiceInterface{
 			operateResult.setResultContent(e.getMessage());
 			log.setOpResult(e.getMessage());
 		}finally{
-			commonService.saveOrUpdate(log);
+			if(!"0".equals(operateResult.getResultCode())){
+				commonService.saveOrUpdate(log);
+			}
 		}	
 		return operateResult;
 	}
