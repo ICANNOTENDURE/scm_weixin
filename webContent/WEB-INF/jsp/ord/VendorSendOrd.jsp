@@ -42,31 +42,10 @@
 		function onClickRow(index){
 		   stateid=$('#datagrid').datagrid('getRows')[index]['stateid'];
 		   if(stateid!=2){
-			   return;
+			   //return;
 		   }
 		   $('#datagrid').datagrid('selectRow', index).datagrid('beginEdit', index);
 		   
-		   return;
-			if (editIndex != index){
-		        if (endEditing()){
-		            $('#datagrid').datagrid('selectRow', index).datagrid('beginEdit', index);
-		            var ed = $('#datagrid').datagrid('getEditors', index);
-                    for (var i = 0; i < ed.length; i++)
-                    {
-                        var e = ed[i];
-                        $(e.target).bind('keyup', function()
-                        {
-                            if (window.event.keyCode == 13)
-                            {
-                            	onAfterEdit();	                                    	                                                                    
-                            }
-                        });
-                    }
-		            editIndex = index;
-		        } else {
-		            $('#datagrid').datagrid('selectRow', editIndex);
-		        }
-		    }
 		}
 		$('#datagrid').datagrid({
 							title:'录入发票信息',
@@ -405,6 +384,9 @@ function saveClick(){
 		if(changes[j]["arrivedate"]!=""){
 			orderDetailSub.ordSubArriveDate=changes[j]["arrivedate"]+" 00:00:00";
 		}
+		if(changes[j]["invdate"]!=""){
+			orderDetailSub.ordSubInvDate=changes[j]["invdate"]+" 00:00:00";
+		}
 		orderDetailSub.orderSubRp=changes[j]["rp"];
 		orderDetailSub.orderSubQty=changes[j]["devqty"];
 		orderDetailSub.ordSubDetailId=changes[j]["orderid"];
@@ -429,6 +411,48 @@ function saveClick(){
 			}, 
 			'json'
 	);
+}
+function updInvClick(){
+	var row=$('#datagrid').datagrid('getRows').length;
+
+	for(var i=0;i<row;i++){
+		if ($('#datagrid').datagrid('validateRow', i)){
+			$('#datagrid').datagrid('endEdit', i); 
+		}
+	}
+	
+	var changes=$('#datagrid').datagrid('getChanges');
+	if(changes.length==0){
+		$.messager.alert("提示","没有需要保存的信息");
+		return;
+	}
+	par=[];
+	for(var j=0;j<changes.length;j++){
+		orderDetailSub= new Object();
+		orderDetailSub.ordSubInvNo=changes[j]["invno"];
+		orderDetailSub.ordSubId=changes[j]["ordersubid"];
+		if(changes[j]["invdate"]!=""){
+			orderDetailSub.ordSubInvDate=changes[j]["invdate"]+" 00:00:00";
+		}
+		par.push(orderDetailSub);
+	}
+
+	$.post(
+			getContextPath() + '/ord/orderStateCtrl!updInv.htm',
+			{
+				"dto.orderIdStr":jQuery.toJSON(par)
+			}, 
+			function(data) {
+				if (data.resultCode == "1") {
+					$('#datagrid').datagrid('load');
+					$.messager.alert("提示","保存成功");
+				} else {
+					$.messager.alert("错误",data.resultContent);
+				}
+			}, 
+			'json'
+	);
+	
 }
 </script>
 </head>
@@ -467,7 +491,10 @@ function saveClick(){
                 	}">数量</th>  	   	
               <th data-options="field:'invno',width:70,sortable:true,editor : {
 						type : 'validatebox'
-                	}">发票</th>  	
+                	}">发票</th>
+              <th data-options="field:'invdate',width:70,sortable:true,editor : {
+						type : 'datebox'
+                	}">发票日期</th>	  	
 			  <th data-options="field:'operatedate',sortable:true,fixColumnSize:100">录入时间</th>
 			  <th data-options="field:'operatuser',sortable:true,fixColumnSize:100">更新人</th>
 			  <th data-options="field:'operate',sortable:true,fixColumnSize:50,formatter:deleteOrdSub">操作</th>		
@@ -498,6 +525,9 @@ function saveClick(){
 			<a
 				 class="linkbutton" onclick="javascript:sendClick()"
 				data-options="iconCls:'icon-ok',plain:true">发货</a>	
+			<a
+				 class="linkbutton" onclick="javascript:updInvClick()"
+				data-options="iconCls:'icon-edit',plain:true">更新发票</a>		
 		</div>
 
 	</div>

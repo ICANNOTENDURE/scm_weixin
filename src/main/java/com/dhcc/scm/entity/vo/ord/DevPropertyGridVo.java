@@ -53,9 +53,19 @@ public class DevPropertyGridVo implements java.io.Serializable{
 
 	private Date arrivedate;
 	
+	private Date invdate;
+	
 	
 	
 
+
+	public Date getInvdate() {
+		return invdate;
+	}
+
+	public void setInvdate(Date invdate) {
+		this.invdate = invdate;
+	}
 
 	public Date getArrivedate() {
 		return arrivedate;

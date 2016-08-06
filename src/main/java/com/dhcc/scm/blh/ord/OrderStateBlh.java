@@ -210,6 +210,34 @@ public class OrderStateBlh extends AbstractBaseBlh {
 	
 	/**
 	 * 
+	* @Title: updInv 
+	* @Description: TODO(发货后可以修改发票) 
+	* @param @param res    设定文件 
+	* @return void    返回类型 
+	* @throws 
+	* @author zhouxin   
+	* @date 2016年8月6日 下午4:32:30
+	 */
+	public void updInv(BusinessRequest res){
+		OrderStateDto dto = super.getDto(OrderStateDto.class, res);
+		dto.setOperateResult(new OperateResult());
+		if(org.apache.commons.lang3.StringUtils.isNotBlank(dto.getOrderIdStr())){
+			List<OrderDetailSub> orderDetailSubs=JsonUtils.toObject(dto.getOrderIdStr(), new TypeReference<List<OrderDetailSub>>() { });
+			for(OrderDetailSub orderDetailSub:orderDetailSubs){
+				if(org.apache.commons.lang3.StringUtils.isNotBlank(orderDetailSub.getOrdSubId())){
+					OrderDetailSub tmpOrderDetailSub=commonService.get(OrderDetailSub.class, orderDetailSub.getOrdSubId());
+					tmpOrderDetailSub.setOrdSubInvNo(orderDetailSub.getOrdSubInvNo());
+					tmpOrderDetailSub.setOrdSubInvDate(orderDetailSub.getOrdSubInvDate());
+					commonService.saveOrUpdate(tmpOrderDetailSub);
+				}
+			}
+			dto.getOperateResult().setResultCode("1");
+		}
+		super.writeJSON(dto.getOperateResult());
+	}
+	
+	/**
+	 * 
 	* @Title: saveOrd 
 	* @Description: TODO(这里用一句话描述这个方法的作用) 
 	* @param @param res    设定文件 
