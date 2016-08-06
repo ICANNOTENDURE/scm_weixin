@@ -436,7 +436,7 @@ public class HisInfoService implements HisInfoServiceInterface{
 				path="uploadPic/venIncQualify/";
 				break;
 			case "VENQUALIFY":
-				path="uploads";
+				path="uploads/";
 				break;		
 			default:
 				break;
