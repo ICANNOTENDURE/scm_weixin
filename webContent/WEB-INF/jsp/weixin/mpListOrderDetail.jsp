@@ -151,6 +151,7 @@
 				<th>名称</th>
 				<th>单位</th>
 				<th>数量</th>
+				<th>规格</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -159,6 +160,7 @@
 					<td>${detail.incName}</td>
 					<td>${detail.orderVenuom}</td>
 					<td>${detail.orderVenQty}</td>
+					<td>${detail.spec}</td>
 				</tr>
 			</s:iterator>
 		</tbody>

@@ -179,6 +179,7 @@ public class MpMessageBlh extends AbstractBaseBlh {
 				for (OrderDetail detail : details) {
 					VenInc venInc = commonService.get(VenInc.class, detail.getOrderVenIncId());
 					detail.setIncName(venInc.getVenIncName());
+					detail.setSpec(venInc.getVenIncSpec());
 				}
 				dto.setOrderDetails(details);
 				if (details.size() > 0) {

@@ -118,10 +118,20 @@ public class OrderDetail implements Serializable {
 	@Transient
 	private String stateDesc;
 	
+	@Transient
+	private String spec;
 	
 	
 	
 
+
+	public String getSpec() {
+		return spec;
+	}
+
+	public void setSpec(String spec) {
+		this.spec = spec;
+	}
 
 	public Long getOrderPurLoc() {
 		return orderPurLoc;
