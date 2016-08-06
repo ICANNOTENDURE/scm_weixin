@@ -6,6 +6,8 @@ $(function() {
 		iconCls : 'icon-edit',// 图标
 		method : 'post',
 		fit : true,
+		pageSize:50,
+		pageList:[50,100,200],
 		onClickRow:onClickRow,
 		columns : [ [ {
 			"title" : "id",
@@ -27,7 +29,7 @@ $(function() {
 		}, {
 			"title" : "商品名称",
 			"field" : "venincname",
-			"sortable" : false,
+			"sortable" : true,
 			"hidden" : false,
 			"width":200
 		}, {

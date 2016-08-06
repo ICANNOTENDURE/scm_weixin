@@ -55,7 +55,15 @@ body {font:12px/1.5  "宋体";color:#333}
 
 				    </tr>
 				</table>
+				<table width="100%" border="0" cellspacing="0" cellpadding="0"
+						class="tb3">
+						<tr>
+							<td class="t8"><img
+								src="<%=request.getContextPath()%>/sys/qrCodeCtrl!qrAndroid.htm?dto.content=${dto.printVos[0].ordrid}&dto.codeType=ByOrder"
+								style='height: 100; width: 100px'> </img></td>
 
+						</tr>
+				</table>
 			</div>
 			<div class="m2">
 				<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb4">

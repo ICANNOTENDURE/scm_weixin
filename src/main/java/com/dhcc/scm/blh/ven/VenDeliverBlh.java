@@ -1116,6 +1116,7 @@ public class VenDeliverBlh extends AbstractBaseBlh {
 				HopCtloc ctloc = commonService.get(HopCtloc.class, orderDetail.getOrderRecLoc());
 				PrintVo printVo = new PrintVo();
 				printVo.setHisno(orderDetail.getOrderNo());
+				printVo.setOrdrid(orderDetail.getOrderId());
 				printVo.setOrderDate(orderDetail.getOrderDate());
 				if (orderDetail.getOrderRecDestination() != null) {
 					HopCtlocDestination hopCtlocDestination = commonService.get(HopCtlocDestination.class, orderDetail.getOrderRecDestination());

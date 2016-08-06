@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import com.dhcc.framework.common.PagerModel;
@@ -66,9 +67,22 @@ public class HvLabelDao extends HibernatePersistentObjectDAO<HvLabel> {
 		if("1".equals(dto.getFlag())){
 			hqlBuffer.append("  and  t1.hv_flag='Y' ");
 		}
+		if(StringUtils.isNotBlank(dto.getIncname())){
+			hqlBuffer.append("  and  t3.VEN_INC_NAME like :incname");
+			hqlParamMap.put("incname", "%"+dto.getIncname()+"%");
+		}
+		if(StringUtils.isNotBlank(dto.getInvno())){
+			hqlBuffer.append("  and  t1.hv_invno=:invno ");
+			hqlParamMap.put("invno", dto.getInvno());
+		}
 		if("2".equals(dto.getFlag())){
 			hqlBuffer.append("  and  t1.hv_flag is null ");
 		}
+		
+		if(StringUtils.isNotBlank(dto.getSort())){
+			hqlBuffer.append(" order by  t3.VEN_INC_NAME "+dto.getSortOrder());
+		}
+		
 		if(dto.getPageModel()==null){
 			dto.setPageModel(new PagerModel());
 		}

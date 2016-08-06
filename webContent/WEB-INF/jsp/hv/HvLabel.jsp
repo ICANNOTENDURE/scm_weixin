@@ -12,8 +12,10 @@
 	<div id="toolbar" class="toolbar">
 	
 			医嘱开始日期:<input type="text"  name="dto.ordStart" class="datebox"  style="width:100px"/>
-			医嘱结束日期:<input type="text" name="dto.ordEnd" class="datebox"/ style="width:100px">
-			同步标志:<<select class="combobox" panelHeight="auto" style="width:100px"  name="dto.flag">
+			医嘱结束日期:<input type="text" name="dto.ordEnd" class="datebox" style="width:100px">
+			发票号:<input type="text" name="dto.invno"  style="width:100px">
+			商品名称:<input type="text" name="dto.incname"  style="width:100px">
+			同步标志:<select class="combobox" panelHeight="auto" style="width:100px"  name="dto.flag">
 								<option value="0">空</option>
 								<option value="1">已同步</option>
 								<option value="2">未同步</option>

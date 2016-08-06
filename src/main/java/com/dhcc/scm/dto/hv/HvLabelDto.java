@@ -28,9 +28,33 @@ public class HvLabelDto extends BaseDto {
 	
 	private String flag;
 	
+	private String invno;
+	
+	private String incname;
 	
 	
 	
+	
+	public String getInvno() {
+		return invno;
+	}
+
+
+	public void setInvno(String invno) {
+		this.invno = invno;
+	}
+
+
+	public String getIncname() {
+		return incname;
+	}
+
+
+	public void setIncname(String incname) {
+		this.incname = incname;
+	}
+
+
 	public String getFlag() {
 		return flag;
 	}
