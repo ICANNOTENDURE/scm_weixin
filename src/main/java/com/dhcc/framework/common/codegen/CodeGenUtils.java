@@ -189,7 +189,9 @@ public  abstract class CodeGenUtils {
     						.replace("{$entityName_1lower}", to1Lower(parmsList.get(2)))
     						.replace("{$modulesName}", parmsList.get(3))
     						.replace("{$TableTr}", parmsList.get(4))
-            				.replace("{$JsColoumn}", parmsList.get(5)));
+            				.replace("{$JsColoumn}", parmsList.get(5))
+            				.replace("{$entitiyId_1Uper}", parmsList.get(6))
+            				.replace("{$entitiyId}", parmsList.get(7)));
                 output.write(replaceString.toString());
                 output.newLine();
             }
@@ -229,7 +231,8 @@ public  abstract class CodeGenUtils {
 		parmsList.add(modulesName);
 		parmsList.add(getJspTable(packageName,modulesName,entityName));
 		parmsList.add(getJsGridColunm(packageName,modulesName,entityName));
-		
+		parmsList.add(to1Upper(getEnitiyId(packageName,modulesName,entityName)));
+		parmsList.add(getEnitiyId(packageName,modulesName,entityName));
 		//分别产生目前需要的文件 —— 四层
 		for (String type : new String[]{"action","blh","serviceimpl","service","dao","dto","jsp","js"}){
 			readTemplateFile2Code(parmsList,type);
@@ -315,11 +318,31 @@ public  abstract class CodeGenUtils {
 				}
 				dataGridColumn.setField(f.getName());
 				dataGridColumn.setTitle(jsTitle);
+				dataGridColumn.setWidth(50);
 				dataGridColumns.add(dataGridColumn);
 			}
 		} catch (Exception e) {
 		}
 		return JsonUtils.toJson(dataGridColumns);
+	
+	}
+	
+	public static String getEnitiyId(String ...args) {
+	
+		try {
+			Class<?> userCla = Class.forName(args[0]+".entity."+args[1]+"."+args[2]);
+			Field[] fs = userCla.getDeclaredFields();
+			for (int i = 0; i < fs.length; i++) {
+				Field f = fs[i];
+				javax.persistence.Id id=(javax.persistence.Id)f.getAnnotation(javax.persistence.Id.class);
+				if(id!=null){
+					return f.getName();
+				}
+			}
+		} catch (Exception e) {
+			
+		}
+		return "";
 	
 	}
 }

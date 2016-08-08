@@ -7,6 +7,6 @@ import com.dhcc.framework.common.codegen.CodeGenUtils;
 
 public class PmsCodeGen {
 	public static void main(String[] args){
-		CodeGenUtils.createCode("com.dhcc.scm", "HvLabel", "HvLabel","hv");
+		CodeGenUtils.createCode("com.dhcc.scm", "CarteType", "CarteType","stu");
 	}
 }
