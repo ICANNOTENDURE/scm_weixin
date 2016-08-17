@@ -61,6 +61,7 @@ public class Order extends AbstractTransactionalJUnit4SpringContextTests{
 	* @author zhouxin   
 	* @date 2015年6月3日 上午9:37:16
 	 */
+	
 	public static void beaut() {  
 	     
 		HashMap<java.lang.String, Integer> hashMap=new HashMap<String,Integer>();
@@ -224,7 +225,7 @@ public class Order extends AbstractTransactionalJUnit4SpringContextTests{
     }
     
     
-    @Test
+  
     public void hibernate(){
     	System.out.println("start");
 	//t_ven_vendor de rowid
@@ -250,4 +251,9 @@ public class Order extends AbstractTransactionalJUnit4SpringContextTests{
     
 	}
     
+    
+    @Test
+    public void test(){
+    	System.out.println("11");
+    }
 }

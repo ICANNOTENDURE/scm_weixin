@@ -211,7 +211,7 @@
 				<th data-options="field:'uom',fixColumnSize:100">单位</th>
 				<th data-options="field:'statedesc',fixColumnSize:150">状态</th>
 				<th data-options="field:'recloc',fixColumnSize:200">收货科室</th>
-				<th data-options="field:'destination',fixColumnSize:200">收货地址</th>
+				<th data-options="field:'purloc',fixColumnSize:200">请求科室</th>
 				<th data-options="field:'realname',fixColumnSize:50">订单人</th>
 				<th data-options="field:'orderdate',fixColumnSize:50">订单日期</th>
 				<th data-options="field:'hopname',fixColumnSize:100">医院</th>

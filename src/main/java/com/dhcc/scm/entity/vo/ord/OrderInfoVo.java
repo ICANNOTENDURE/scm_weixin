@@ -52,8 +52,19 @@ public class OrderInfoVo implements java.io.Serializable{
 	
 	private Float rp;
 	
+	private String purloc;
 	
 	
+	
+	
+	public String getPurloc() {
+		return purloc;
+	}
+
+	public void setPurloc(String purloc) {
+		this.purloc = purloc;
+	}
+
 	public Float getRp() {
 		return rp;
 	}

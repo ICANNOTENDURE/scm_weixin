@@ -921,6 +921,15 @@ public class OrdBlh extends AbstractBaseBlh {
 				msg.append(hisOrderWebItm.getHisId()+"医院商品码错误。");
 				continue;
 			}
+			//医院请求科室
+			Long purLoc=null;
+			if(org.apache.commons.lang3.StringUtils.isNotBlank(hisOrderWebItm.getPurloc())){
+				HopCtloc hopCtloc2=commonService.getCtlocByCode(hisOrderWebItm.getPurloc(), hopCtloc.getHospid());
+				if(hopCtloc2!=null){
+					purLoc=hopCtloc2.getHopCtlocId();
+				}
+			}
+			
 			//供应商商品
 			VenInc venInc=commonService.getVenIncByBarCode(hopVendor.getHopVenId(), hisOrderWebItm.getHopBarCode());
 			if(venInc==null){
@@ -951,6 +960,7 @@ public class OrdBlh extends AbstractBaseBlh {
 			orderDetail.setAmt(hisOrderWebItm.getRp().floatValue()*hisOrderWebItm.getQty().floatValue());
 			orderDetail.setOrderVenQty(hisOrderWebItm.getQty().floatValue()/fac);
 			orderDetail.setOrderRecLoc(hopCtloc.getHopCtlocId());
+			orderDetail.setOrderPurLoc(purLoc);
 			if (map.containsKey(String.valueOf(hopVendor.getHopVendorId()))) {
 				map.get(String.valueOf(hopVendor.getHopVendorId())).add(orderDetail);
 			} else {
