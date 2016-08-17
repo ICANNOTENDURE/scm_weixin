@@ -236,7 +236,7 @@ public class OrderStateDao extends HibernatePersistentObjectDAO<Order> {
 		hqlBuffer.append("left join T_VEN_INC t2 on t1.ORDER_VEN_INC_ID=t2.VEN_INC_ROWID  ");
 		hqlBuffer.append("left join t_ord_state t3 on t1.ORDER_STATE=t3.state_seq ");
 		hqlBuffer.append("left join t_sys_ctloc t5 on t5.ctloc_id=t1.ORDER_RECLOC ");
-		hqlBuffer.append("left join t_sys_ctloc t4 on t4.ctloc_id=t1.ORDER_PURLOC ");
+		hqlBuffer.append("left join t_sys_ctloc t4 on t4.ctloc_id=t1.ORDER_PUR_LOC ");
 		hqlBuffer.append("left join t_sys_ctloc_destination t6 on t6.ctlocdes_id=t1.ORDER_RECDESTINATION ");
 		hqlBuffer.append("left join t_sys_normal_account t7 on  t7.account_id=t1.ORDER_USER_ID ");
 		hqlBuffer.append("left join t_sys_normal_user t8 on  t8.user_id=t7.user_id ");
