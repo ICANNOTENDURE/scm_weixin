@@ -48,24 +48,5 @@ public class {$entityName}Dao extends HibernatePersistentObjectDAO<{$entityName}
 		//hqlParamMap.put("day", day);
 	}
 		
-	public void save({$entityName} {$entityName_1lower}){
-	
-		super.save({$entityName_1lower});
-	}
-	
-	public void delete({$entityName} {$entityName_1lower}){
-		
-		super.delete({$entityName_1lower});
-	}
-	
-	public void update({$entityName} {$entityName_1lower}){
-	
-		super.update({$entityName_1lower});
-	}
-	
-	public {$entityName} findById({$entityName} {$entityName_1lower}){
 
-		return super.findById({$entityName_1lower}.get{$entityName}Id());
-
-	} 
 }

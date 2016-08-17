@@ -28,7 +28,9 @@
 			onclick="javascript:save()">保存</a>
 		<a
 			class="linkbutton" data-options="iconCls:'icon-save',plain:true"
-			id="down">下载</a> 	 	
+			id="down">下载</a>
+		<br>	
+		按第一行填写发票<input type="checkbox" id="auto">	 	 	
 	</div>
 
 

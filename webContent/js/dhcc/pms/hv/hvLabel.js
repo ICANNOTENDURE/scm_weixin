@@ -93,7 +93,51 @@ $(function() {
 	$("#down").on('click',function(){
 	  	window.location.href="downLoadCtrl!downLoad.htm?stDate="+$("#StDate").datebox('getValue')+"&edDate="+$("#EdDate").datebox('getValue');   
 	});
+	
+	$("#auto").on('click',function(){
+		
+		ff=$(this).attr("checked");
+		if(ff==undefined){
+			$('#datagrid').datagrid('rejectChanges');
+			return;
+		}
+		$('#datagrid').datagrid('endEdit', 0);
+		editIndex = undefined;
+		invno=$('#datagrid').datagrid('getRows')[0].invno;
+		invnodate=$('#datagrid').datagrid('getRows')[0].invnodate;
+		
+		for(var i=1;i<$('#datagrid').datagrid('getRows').length;i++){
+			
+			tmpinvno=$('#datagrid').datagrid('getRows')[i].invno;
+			tmpinvnodate=$('#datagrid').datagrid('getRows')[i].invnodate;
 
+			if((tmpinvno==undefined)||(tmpinvno=="")){
+				$('#datagrid').datagrid('updateRow',{
+					index: i,
+					row: {
+						invno: invno
+					}
+				});
+			}
+
+			if((tmpinvnodate==undefined)||(tmpinvnodate=="")){
+				$('#datagrid').datagrid('updateRow',{
+					index: i,
+					row: {
+						invnodate:invnodate
+					}
+				});
+				
+			}
+
+			
+
+
+		}
+
+
+
+	})
 });
 
 

@@ -63,7 +63,7 @@ function editRow() {
 	$CommonUI.getForm('#detail').form('clear');
 	
 	var row =$("#datagrid").datagrid('getSelected');
-	var Id=row.{$entityName_1lower}Id;
+	var Id=row.{$entitiyId};
 	var url = $WEB_ROOT_PATH+'/{$modulesName}/{$businessName_1lower}Ctrl.htm?BLHMI=findById&dto.{$entityName_1lower}.{$entityName_1lower}Id='+Id;
 	$("#detailWin").dialog("open");
 	$CommonUI.getDialog("#detailWin").dialog("setTitle","修改");
@@ -85,7 +85,7 @@ function delRow() {
 	}
 	$CommonUI.confirm('确定删除吗？', 'question', 0, function(){
 		var row = $CommonUI.getDataGrid("#datagrid").datagrid('getSelected');
-		$.post($WEB_ROOT_PATH+"/{$modulesName}/{$businessName_1lower}Ctrl!delete.htm", {'dto.{$entityName_1lower}.{$entityName_1lower}Id':row.{$entityName_1lower}Id},function(){
+		$.post($WEB_ROOT_PATH+"/{$modulesName}/{$businessName_1lower}Ctrl!delete.htm", {'dto.{$entityName_1lower}.{$entitiyId}':row.{$entitiyId}},function(){
 			$CommonUI.getDataGrid("#datagrid").datagrid('reload');
 		} );
 	});
