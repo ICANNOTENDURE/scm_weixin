@@ -187,7 +187,7 @@ public interface HisInfoServiceInterface {
 	    
 	    @WebMethod
 	    @WebResult(name="operateResult")
-	    @WSDLDocumentation("高值条码完成，确认完成信息,或者取消flag=T 入库完成 flag=N 取消入库完成")
+	    @WSDLDocumentation("高值条码完成，确认完成信息,或者取消flag=Y 入库完成 flag=N 取消入库完成")
 	    public OperateResult cmpHvInv(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="label")String label,@WebParam(name="vendorCode")String vendorCode,@WebParam(name="flag")String flag);
 	    
 
