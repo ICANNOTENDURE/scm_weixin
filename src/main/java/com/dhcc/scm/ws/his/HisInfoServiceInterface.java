@@ -167,8 +167,8 @@ public interface HisInfoServiceInterface {
 	    
 	    @WebMethod
 	    @WebResult(name="operateResult")
-	    @WSDLDocumentation("库房扫码确认完成")
-	    public OperateResult cmpOrder(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="ordsubs")List<String> ordsubs);
+	    @WSDLDocumentation("库房扫码确认完成 flag=T 入库完成 flag=Y 取消入库完成")
+	    public OperateResult cmpOrder(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="ordsubs")List<String> ordsubs,@WebParam(name="flag")String flag);
 
 	    @WebMethod
 	    @WebResult(name="operateResult")
@@ -187,11 +187,14 @@ public interface HisInfoServiceInterface {
 	    
 	    @WebMethod
 	    @WebResult(name="operateResult")
-	    @WSDLDocumentation("高值条码完成，确认完成信息")
-	    public OperateResult cmpHvInv(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="label")String label,@WebParam(name="vendorCode")String vendorCode);
+	    @WSDLDocumentation("高值条码完成，确认完成信息,或者取消flag=T 入库完成 flag=N 取消入库完成")
+	    public OperateResult cmpHvInv(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="label")String label,@WebParam(name="vendorCode")String vendorCode,@WebParam(name="flag")String flag);
+	    
 
 	    @WebMethod
 	    @WebResult(name="name")
 	    @WSDLDocumentation("医院获取供应商商品上传图片名称")
 	    public List<String> getIncPicName(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="vendorCode")String vendorCode,@WebParam(name="incCode")String incCode);
+	    
+	    
 }

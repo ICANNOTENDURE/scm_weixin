@@ -1320,10 +1320,11 @@ public class CommonServiceImpl implements CommonService {
 	public void saveOrdSub(OrderDetailSub detailSub, String remark, Long userId) {
 		
 		commonDao.saveOrUpdate(detailSub);
+		String stat=detailSub.getOrdSubStatus();
 		OrderDetail orderDetail=commonDao.get(OrderDetail.class, detailSub.getOrdSubDetailId());
 		ExeState ordExe=new ExeState();
 		ordExe.setOrdId(orderDetail.getOrderId());
-		ordExe.setRemark(remark);
+		ordExe.setRemark("T".equals(stat)?"确认完成":"取消确认完成");
 		ordExe.setUserid(userId);
 		ordExe.setStateId(detailSub.getOrdSubStatus().equals("Y")?3l:4l);
 		ordExe.setExedate(new java.sql.Timestamp(new Date().getTime()));
@@ -1332,7 +1333,7 @@ public class CommonServiceImpl implements CommonService {
 		ExeState subExe=new ExeState();
 		subExe.setOrdSubId(detailSub.getOrdSubId());
 		subExe.setUserid(userId);
-		subExe.setRemark(remark);
+		subExe.setRemark("T".equals(stat)?"确认完成":"取消确认完成");
 		subExe.setStateId(detailSub.getOrdSubStatus().equals("Y")?3l:4l);
 		subExe.setExedate(new java.sql.Timestamp(new Date().getTime()));
 		commonDao.save(subExe);

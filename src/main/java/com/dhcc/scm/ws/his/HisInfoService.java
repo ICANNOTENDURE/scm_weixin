@@ -520,15 +520,19 @@ public class HisInfoService implements HisInfoServiceInterface{
 	}
 
 	@Override
-	public OperateResult cmpOrder(String username, String password, List<String> ordsubs) {
+	public OperateResult cmpOrder(String username, String password, List<String> ordsubs,String flag) {
 		
 		OperateResult operateResult=new OperateResult();
 		SysLog log = new SysLog();
-		log.setOpArg("usename:"+username+",password:"+password+",ordsubs:"+JsonUtils.toJson(ordsubs));
+		log.setOpArg("usename:"+username+",password:"+password+",ordsubs:"+JsonUtils.toJson(ordsubs)+",flag:"+flag);
 		log.setOpName("webservice库房扫码确认完成：》cmpOrder");
 		log.setOpDate(new Date());
 		log.setOpType("webservice");
 		log.setOpUser(username);
+		if(StringUtils.isEmpty(flag)){
+			operateResult.setResultContent("入参为空");
+			return operateResult;
+		}
 		try {
 			NormalAccount normalAccount=ordBlh.checkWsParam(operateResult, username, password, ordsubs);
 			if(normalAccount==null){
@@ -538,11 +542,9 @@ public class HisInfoService implements HisInfoServiceInterface{
 			for(String sub:ordsubs){
 				OrderDetailSub orderDetailSub=commonService.get(OrderDetailSub.class, sub);
 				if(orderDetailSub!=null){
-					if(orderDetailSub.getOrdSubStatus().equals("Y")){
-						orderDetailSub.setOrdSubStatus("T");
+						orderDetailSub.setOrdSubStatus(flag);
 						commonService.saveOrdSub(orderDetailSub, "库房扫码入库确认", normalAccount.getAccountId());
 						succ++;
-					}
 				}
 			}
 			operateResult.setResultCode("0");
@@ -552,8 +554,10 @@ public class HisInfoService implements HisInfoServiceInterface{
 			operateResult.setResultContent("程序异常->Exception:"+e.getMessage());
 			return operateResult;
 		}finally{
-			log.setOpResult(JsonUtils.toJson(operateResult));
-			commonService.saveOrUpdate(log);
+			if(!"0".equals(operateResult.getResultCode())){
+				log.setOpResult(JsonUtils.toJson(operateResult));
+				commonService.saveOrUpdate(log);
+			}
 		}
 		return operateResult;
 	}
@@ -784,11 +788,11 @@ public class HisInfoService implements HisInfoServiceInterface{
 	}
 
 	@Override
-	public OperateResult cmpHvInv(String usename, String password, String label,String vendorCode) {
+	public OperateResult cmpHvInv(String usename, String password, String label,String vendorCode,String flag) {
 		
 		OperateResult operateResult=new OperateResult();
 		SysLog log = new SysLog();
-		log.setOpArg("usename:"+usename+",password:"+password+",label:"+label+",vendorCode:"+vendorCode);
+		log.setOpArg("usename:"+usename+",password:"+password+",label:"+label+",vendorCode:"+vendorCode+",flag："+flag);
 		log.setOpName("webservice 高值条码完成，确认完成信息：》cmpHvInv");
 		log.setOpDate(new Date());
 		log.setOpType("webservice");
@@ -821,6 +825,11 @@ public class HisInfoService implements HisInfoServiceInterface{
 				operateResult.setResultCode("-4");
 				operateResult.setResultContent("高值条码错误");
 				return operateResult;
+			}
+			if("Y".equals(flag)){
+				tmpHvLabel.setHvFlag("Y");
+			}else{
+				tmpHvLabel.setHvFlag(null);
 			}
 			tmpHvLabel.setHvFlag("Y");
 			commonService.saveOrUpdate(tmpHvLabel);
@@ -861,6 +870,8 @@ public class HisInfoService implements HisInfoServiceInterface{
 		}
 		return list;
 	}
+
+
     
     
 }
