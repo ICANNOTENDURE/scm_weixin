@@ -50,10 +50,6 @@ public class {$businessName}Blh extends AbstractBaseBlh {
 	
 		{$businessName}Dto dto = super.getDto({$businessName}Dto.class, res);
 		
-		//调用对应的service方法
-		if(StringUtils.isEmpty(dto.get{$businessName}().get{$businessName}Id())){
-			dto.get{$businessName}().set{$businessName}Id(null);
-		}
 		commonService.saveOrUpdate(dto.get{$businessName}());
 	}
 	
@@ -63,7 +59,7 @@ public class {$businessName}Blh extends AbstractBaseBlh {
 		{$businessName}Dto dto = super.getDto({$businessName}Dto.class, res);
 		
 		//调用对应的service方法
-		commonService.delete({$entityName}.class, dto.get{$entityName}().get{$entityName}Id());
+		commonService.delete(commonService.get({$entityName}.class,dto.get{$entityName}().get{$entitiyId_1Uper}()));
 	}
 
 	
@@ -79,7 +75,8 @@ public class {$businessName}Blh extends AbstractBaseBlh {
 		{$businessName}Dto dto = super.getDto({$businessName}Dto.class, res);
 		
 		//调用对应的service方法
-		{$businessName_1lower}Service.findById(dto);
+		dto.set{$entityName}(commonService.get({$entityName}.class,dto.get{$entityName}().get{$entitiyId_1Uper}()));
+		
 		
 	}
 	

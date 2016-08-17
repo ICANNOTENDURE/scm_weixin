@@ -11,8 +11,8 @@
 <body>
 	<div id="toolbar" class="toolbar">
 	
-			医嘱开始日期:<input type="text"  name="dto.ordStart" class="datebox"  style="width:100px"/>
-			医嘱结束日期:<input type="text" name="dto.ordEnd" class="datebox" style="width:100px">
+			医嘱开始日期:<input type="text"  name="dto.ordStart" class="datebox"  style="width:100px" id="StDate"/>
+			医嘱结束日期:<input type="text" name="dto.ordEnd" class="datebox" style="width:100px" id="EdDate">
 			发票号:<input type="text" name="dto.invno"  style="width:100px">
 			商品名称:<input type="text" name="dto.incname"  style="width:100px">
 			同步标志:<select class="combobox" panelHeight="auto" style="width:100px"  name="dto.flag">
@@ -25,7 +25,10 @@
 			onclick="javascript:selectClick()">查询</a>
 		<a
 			class="linkbutton" data-options="iconCls:'icon-save',plain:true"
-			onclick="javascript:save()">保存</a> 	
+			onclick="javascript:save()">保存</a>
+		<a
+			class="linkbutton" data-options="iconCls:'icon-save',plain:true"
+			id="down">下载</a> 	 	
 	</div>
 
 

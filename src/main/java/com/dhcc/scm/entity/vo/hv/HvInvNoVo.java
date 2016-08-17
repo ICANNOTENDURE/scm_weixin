@@ -29,7 +29,6 @@ public class HvInvNoVo {
 	private Float rp;
 	
 	
-	
 	public Float getRp() {
 		return rp;
 	}

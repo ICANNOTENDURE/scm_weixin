@@ -89,7 +89,10 @@ $(function() {
 		}] ]
 	});
 
-
+	
+	$("#down").on('click',function(){
+	  	window.location.href="downLoadCtrl!downLoad.htm?stDate="+$("#StDate").datebox('getValue')+"&edDate="+$("#EdDate").datebox('getValue');   
+	});
 
 });
 
@@ -166,5 +169,8 @@ function selectClick() {
 	var json = $CommonUI.loopBlock('#toolbar');
 	$("#datagrid").datagrid('load', json);
 }
+
+
+
 
 
