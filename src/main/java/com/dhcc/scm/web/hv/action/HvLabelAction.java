@@ -23,6 +23,7 @@ import com.dhcc.scm.dto.hv.HvLabelDto;
 @Scope("prototype")
 @Action(value = "hvLabelCtrl", results = {
 		@Result(name = "list", location = "/WEB-INF/jsp/hv/HvLabel.jsp"),
+		@Result(name = "print", location = "/WEB-INF/jsp/hv/PrintHV.jsp"),
 		@Result(name = "listMain", location = "/WEB-INF/jsp/hv/HvLabel.jsp")})
 @Blh("hvLabelBlh")
 @JsonResults({@JResult(BlhMethod="findById",ognlExpress="dto.hvLabel")})

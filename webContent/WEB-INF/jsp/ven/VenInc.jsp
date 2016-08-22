@@ -31,7 +31,9 @@
 			data-options="iconCls:'icon-search',plain:true"
 			onclick="javascript:selectClick()">查询</a> <a class="linkbutton"
 			data-options="iconCls:'icon-save',plain:true"
-			onclick="javascript:importClick()">导入</a>
+			onclick="javascript:importClick()">导入</a><a class="linkbutton"
+			data-options="iconCls:'icon-print',plain:true"
+			onclick="javascript:printHvClick()">打印高值条码</a>
 	</div>
 
 
@@ -210,7 +212,57 @@
 			</table>
 		</div>
 	</div>
-
+	
+	
+	<!-- 打印高值条码 -->
+	<div id="printHvWin" class="dialog" title="打印高值条码 "
+		data-options="modal:true,width:400,height:300,closed:true,buttons:'#printHvBtn'"
+		style="vertical-align: middle;">
+		<table style="width: 100%;">
+			<input type="hidden" name="dto.venIncIdPrn" />
+			<tr>
+				<td class="textLabel">供应商代码:</td>
+				<td class="textParent"><input style="width: 250px;" type="text"
+					name="dto.venCodePrn" /></td>
+			</tr>
+			<tr>
+				<td class="textLabel">商品编码:</td>
+				<td class="textParent"><input style="width: 250px;" type="text"
+					name="dto.venIncCodePrn" readonly="readonly"/></td>
+			</tr>
+			<tr>
+				<td class="textLabel">商品名称:</td>
+				<td class="textParent"><input style="width: 250px;" type="text"
+					name="dto.venIncNamePrn" readonly="readonly"/></td>
+			</tr>
+			<tr>
+				<td class="textLabel">效期:</td>
+				<td class="textParent"><input style="width: 250px;"
+					class="datebox" type="text" name="dto.venExpPrn"
+				id="venExpPrn"	/></td>
+			</tr>
+			<tr>
+				<td class="textLabel">打印次数:</td>
+				<td class="textParent"><input style="width: 250px;"
+					 type="text" name="dto.venCountPrn"
+					/></td>
+			</tr>
+			<tr>
+				<td class="textLabel">重复次数:</td>
+				<td class="textParent"><input style="width: 250px;"
+					 type="text" name="dto.venReaptPrn"
+					/></td>
+			</tr>
+		</table>
+		<div id="printHvBtn" align="center">
+			<table cellpadding="0" cellspacing="0" style="width: 100%">
+				<tr>
+					<td style="text-align: center;"><a id="searchIncInfoBtn"
+						class="linkbutton" data-options="iconCls:'icon-save'" onclick="javascript:printSelectHv()"> 打印</a> </td>
+				</tr>
+			</table>
+		</div>
+	</div>
 
 	<div id="importDialog" class="dialog" title="导入商品"
 		style="width: 600px; height: 400px; background-color: #F5FAFD;"
@@ -238,7 +290,7 @@
 		</table>
 		<div id="err"></div>
 	</div>
-
+	
 
 
 	<div id="gg" class="dialog" title="请等待"
