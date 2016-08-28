@@ -499,6 +499,7 @@ public class HisInfoService implements HisInfoServiceInterface{
 						hisInGdRecItm.setRp(detailsub.getOrderSubRp());
 						hisInGdRecItm.setVendorCode(vendor.getCode());
 						hisInGdRecItm.setOrderDetailSubId(detailsub.getOrdSubId());
+						hisInGdRecItm.setInvDate(detailsub.getOrdSubInvDate());
 						inGdRecItms.add(hisInGdRecItm);
 					}
 					
