@@ -40,8 +40,19 @@ public class HisIncItmWeb implements Serializable{
 	
 	private String barCode;
 	
+	//型号
+	private String form;
 	
 	
+	
+	public String getForm() {
+		return form;
+	}
+
+	public void setForm(String form) {
+		this.form = form;
+	}
+
 	public String getBarCode() {
 		return barCode;
 	}

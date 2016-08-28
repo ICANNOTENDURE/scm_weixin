@@ -116,6 +116,11 @@ public class VenInc implements Serializable {
 	@Column(name="VEN_INC_BARCODE")
 	private String venIncBarCode;
 	
+	
+	@Column(name="VEN_INC_FORM")
+	private String venIncForm;
+	
+	
 	@Transient
 	private Long groupId;
 	
@@ -141,6 +146,15 @@ public class VenInc implements Serializable {
 	
 	
 	
+	
+	public String getVenIncForm() {
+		return venIncForm;
+	}
+
+	public void setVenIncForm(String venIncForm) {
+		this.venIncForm = venIncForm;
+	}
+
 	public Long getGroupId() {
 		return groupId;
 	}
