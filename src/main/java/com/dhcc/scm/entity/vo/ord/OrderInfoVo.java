@@ -54,9 +54,19 @@ public class OrderInfoVo implements java.io.Serializable{
 	
 	private String purloc;
 	
+	private String form;
 	
 	
 	
+	
+	public String getForm() {
+		return form;
+	}
+
+	public void setForm(String form) {
+		this.form = form;
+	}
+
 	public String getPurloc() {
 		return purloc;
 	}

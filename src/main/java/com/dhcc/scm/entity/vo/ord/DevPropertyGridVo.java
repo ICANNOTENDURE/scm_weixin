@@ -55,9 +55,39 @@ public class DevPropertyGridVo implements java.io.Serializable{
 	
 	private Date invdate;
 	
+	private String spec;
+	
+	private String form;
+	
+	private String purloc;
+	
 	
 	
 
+
+	public String getSpec() {
+		return spec;
+	}
+
+	public void setSpec(String spec) {
+		this.spec = spec;
+	}
+
+	public String getForm() {
+		return form;
+	}
+
+	public void setForm(String form) {
+		this.form = form;
+	}
+
+	public String getPurloc() {
+		return purloc;
+	}
+
+	public void setPurloc(String purloc) {
+		this.purloc = purloc;
+	}
 
 	public Date getInvdate() {
 		return invdate;

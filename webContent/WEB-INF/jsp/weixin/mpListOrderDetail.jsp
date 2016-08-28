@@ -153,6 +153,7 @@
 				<th>数量</th>
 				<th>规格</th>
 				<th>型号</th>
+				<th>价格</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -163,6 +164,7 @@
 					<td>${detail.orderVenQty}</td>
 					<td>${detail.spec}</td>
 					<td>${detail.form}</td>
+					<td>${detail.orderRp}</td>
 				</tr>
 			</s:iterator>
 		</tbody>
