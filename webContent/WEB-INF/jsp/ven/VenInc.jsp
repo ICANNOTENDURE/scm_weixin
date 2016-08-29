@@ -112,6 +112,9 @@
 								class="combobox" type="text" name="dto.venInc.venIncCatId"
 								 id="venIncCat"
 								style="width: 250px;" /></td>
+							<td class="textLabel">规格:</td>
+							<td class="textParent"><input style="width: 250px;"
+								class="validatebox" type="text" name="dto.venInc.venIncSpec" id="venIncSpec" /></td>
 						</tr>
 						<tr>
 							<td class="textLabel">上传图片:</td>
