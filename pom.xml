@@ -12,6 +12,7 @@
 
 	<packaging>war</packaging>
 	<build>
+	    <defaultGoal>compile</defaultGoal>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<resources>
 			<resource>
@@ -94,7 +95,7 @@
 		<version>1.0</version>
 		<relativePath>parentPom/basePom.xml</relativePath>
 	</parent>
-
+      
 	<dependencies>
 		<!-- 资源监控依赖包 -->
 		<dependency>
