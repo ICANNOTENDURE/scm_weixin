@@ -153,7 +153,7 @@
 		<!-- 医院通知 -->
 		<div class="am-u-lg-4 am-u-end">
 			<div class="am-panel am-panel-success" style="margin-bottom: 5px">
-				<div class="am-panel-hd am-cf"
+				<div class="am-panel-hd am-cf">
 					<span class="am-icon-newspaper-o"></span>&nbsp;医院通知<span
 						class="am-fr am-text-sm"
 						onclick="javascript:window.location.href='<%=request.getContextPath()%>/hop/hopIncNewsCtrl!listNewsMain.htm;'">更多</span>
@@ -184,10 +184,9 @@
 				</div>
 			</div>
 		</div>
-	</div
-	<div class="am-g">
-	<div class="am-u-sm-10 am-u-lg-offset-1 am-u-end">
-		<!-- 热卖商品 -->
+	</div>
+  <div class="am-g">
+	 <div class="am-u-sm-10 am-u-lg-offset-1 am-u-end">
 		<div class="am-panel am-panel-success">
 			<div class="am-panel-hd" >
 				<i class="am-icon-signal"></i>&nbsp;热卖商品
@@ -207,12 +206,8 @@
 					</tbody>
 				</table>
 			</div>
-	
+	    </div>
+	 </div>
 	</div>
-	</div>
-	<!-- 热卖商品 end-->
-	</div>
-	</div>
-
 </body>
 </html>

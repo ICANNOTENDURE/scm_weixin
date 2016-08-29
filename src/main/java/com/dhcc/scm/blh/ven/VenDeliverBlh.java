@@ -1284,33 +1284,7 @@ public class VenDeliverBlh extends AbstractBaseBlh {
 				printVo.setRecloc(ctloc.getName());
 				
 
-				printVo.setDeliverItmVos(new ArrayList<DeliverItmVo>());
-				PagerModel model = new PagerModel();
-				model.setPageSize(999999);
-				dto.setPageModel(model);
-				dto.setOrderno(orderDetail.getOrderNo());
-				venDeliverService.listDeliverItmNew(dto);
-				Float sumamt = 0f;
-				for (Object o : dto.getPageModel().getPageData()) {
-					DeliverItmVo deliverItmVo = (DeliverItmVo) o;
-					printVo.getDeliverItmVos().add(deliverItmVo);
-					sumamt = sumamt + deliverItmVo.getRpamt().floatValue();
-					OrderDetailSub orderDetailSub = commonService.get(OrderDetailSub.class, deliverItmVo.getDeliveritmid());
-					orderDetailSub.setOrderSubPrintFlag("1");
-					commonService.saveOrUpdate(orderDetailSub);
-				}
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-			//打印随行单（按订单）打印后使状态变为已打印状态的方法；
+				//打印随行单（按订单）打印后使状态变为已打印状态的方法；
 				printVo.setDeliverItmVos(new ArrayList<DeliverItmVo>());
 				PagerModel model = new PagerModel();
 				model.setPageSize(999999);
