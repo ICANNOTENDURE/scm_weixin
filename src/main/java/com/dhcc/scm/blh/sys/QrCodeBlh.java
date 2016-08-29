@@ -62,4 +62,9 @@ public class QrCodeBlh extends AbstractBaseBlh {
 		QrCode code=new QrCode(dto.getContent(), dto.getCodeType(),dto.getSeq());
 		QrCodeUtil.QrCode(JsonUtils.toJson(code),true);
 	}
+	
+	public void hvAndroid(BusinessRequest res) throws IOException, WriterException{
+		QrCodeDto dto=super.getDto(QrCodeDto.class, res);
+		QrCodeUtil.QrCode(dto.getContent(),false);
+	}
 }

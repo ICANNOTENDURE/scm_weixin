@@ -1322,6 +1322,9 @@ public class CommonServiceImpl implements CommonService {
 		commonDao.saveOrUpdate(detailSub);
 		String stat=detailSub.getOrdSubStatus();
 		OrderDetail orderDetail=commonDao.get(OrderDetail.class, detailSub.getOrdSubDetailId());
+		orderDetail.setOrderState(detailSub.getOrdSubStatus().equals("Y")?3l:4l);
+		commonDao.save(orderDetail);
+		
 		ExeState ordExe=new ExeState();
 		ordExe.setOrdId(orderDetail.getOrderId());
 		ordExe.setRemark("T".equals(stat)?"确认完成":"取消确认完成");

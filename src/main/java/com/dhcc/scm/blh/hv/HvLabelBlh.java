@@ -4,6 +4,9 @@
  */
 package com.dhcc.scm.blh.hv;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -17,6 +20,8 @@ import com.dhcc.framework.transmission.event.BusinessRequest;
 import com.dhcc.framework.util.JsonUtils;
 import com.dhcc.scm.dto.hv.HvLabelDto;
 import com.dhcc.scm.entity.hv.HvLabel;
+import com.dhcc.scm.entity.hv.HvPrintCount;
+import com.dhcc.scm.entity.ven.VenInc;
 import com.dhcc.scm.service.hv.HvLabelService;
 import com.fasterxml.jackson.core.type.TypeReference;
 
@@ -79,5 +84,58 @@ public class HvLabelBlh extends AbstractBaseBlh {
 	}
 	
 	
+	/**
+	 * 
+	* @Title: Print 
+	* @Description: TODO(打印高值条码) 
+	* @param @param res
+	* @param @return    设定文件 
+	* @return String    返回类型 
+	* @throws 
+	* @author zhouxin   
+	* @date 2016年8月22日 下午9:07:40
+	 */
+	public String Print(BusinessRequest res){
+		HvLabelDto dto = super.getDto(HvLabelDto.class, res);
+		if(dto.getVenIncIdPrn()==null){
+			return "print";
+		}
+		try {
+			VenInc inc=commonService.get(VenInc.class, dto.getVenIncIdPrn());
+			dto.setIncname(inc.getVenIncName());
+			String[] propertyNames={"printCountDate","printCountVenIncId"};
+			Object[] values={new Date(),dto.getVenIncIdPrn()};
+			List<HvPrintCount> hvPrintCounts=commonService.findByProperties(HvPrintCount.class, propertyNames, values);
+			int currSeq=1;Long countId=null;
+			if(hvPrintCounts.size()==0){
+				HvPrintCount hvPrintCount=new HvPrintCount();
+				hvPrintCount.setPrintCountDate(new Date());
+				hvPrintCount.setPrintCountVenIncId(dto.getVenIncIdPrn());
+				hvPrintCount.setPrintCountSeq(1);
+				commonService.saveOrUpdate(hvPrintCount);
+				countId=hvPrintCount.getPrintCountId();
+			}else{
+				currSeq=hvPrintCounts.get(0).getPrintCountSeq();
+				countId=hvPrintCounts.get(0).getPrintCountId();
+			}
+			SimpleDateFormat sdf =new SimpleDateFormat("yyMMdd");
+			dto.setBarCodes(new ArrayList<String>());
+			for(int i=1;i<=dto.getVenCountPrn();i++){
+				currSeq=currSeq+1;
+				for(int j=1;j<=dto.getVenReaptPrn();j++){
+					String bar=dto.getVenCodePrn()+dto.getVenIncCodePrn()+sdf.format(dto.getVenExpPrn())+sdf.format(new Date())+String.format("%04d", currSeq);
+					dto.getBarCodes().add(bar);
+				}
+			}
+			HvPrintCount hvPrintCount=commonService.get(HvPrintCount.class, countId);
+			hvPrintCount.setPrintCountSeq(hvPrintCount.getPrintCountSeq()+dto.getVenCountPrn());
+			commonService.saveOrUpdate(hvPrintCount);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "print";
+	}
+		
 	
 }

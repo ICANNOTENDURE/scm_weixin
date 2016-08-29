@@ -206,9 +206,11 @@
 				<th data-options="field:'orderid',width:100,hidden:true">名称</th>
 				<th data-options="field:'veninccode',fixColumnSize:150">代码</th>
 				<th data-options="field:'spec',fixColumnSize:100">规格</th>
+				<th data-options="field:'form',fixColumnSize:100">型号</th>
 				<th data-options="field:'venincname',width:100">名称</th>
 				<th data-options="field:'venqty',fixColumnSize:100">数量</th>
 				<th data-options="field:'uom',fixColumnSize:100">单位</th>
+				<th data-options="field:'rp',fixColumnSize:50">进价</th>
 				<th data-options="field:'statedesc',fixColumnSize:150">状态</th>
 				<th data-options="field:'recloc',fixColumnSize:200">收货科室</th>
 				<th data-options="field:'purloc',fixColumnSize:200">请求科室</th>
