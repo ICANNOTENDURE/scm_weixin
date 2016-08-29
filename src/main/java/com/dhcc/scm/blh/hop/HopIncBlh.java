@@ -469,6 +469,7 @@ public class HopIncBlh extends AbstractBaseBlh {
 			hopInc.setIncRp(hisIncItmWeb.getVenIncPrice());
 			hopInc.setIncSp(hisIncItmWeb.getVenIncSp());
 			hopInc.setIncSpec(hisIncItmWeb.getVenIncSpec());
+			hopInc.setIncForm(hisIncItmWeb.getForm());
 			if (!StringUtils.isNullOrEmpty(hisIncItmWeb.getVenIncManf())) {
 				Long manfIdLong = hopManfService.getIdByName(hisIncItmWeb.getVenIncManf());
 				if (manfIdLong == null) {

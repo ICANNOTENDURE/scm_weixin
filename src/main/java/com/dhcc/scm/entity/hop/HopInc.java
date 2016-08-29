@@ -79,6 +79,9 @@ public class HopInc implements Serializable {
 	@Column(name="INC_BARCODE")
 	private String incBarCode;
 	
+	@Column(name="INC_FORM")
+	private String incForm;
+	
 	@Transient
 	private String incAliaS;
 	
@@ -86,6 +89,16 @@ public class HopInc implements Serializable {
 	
 	
 	
+	public String getIncForm() {
+		return incForm;
+	}
+
+
+	public void setIncForm(String incForm) {
+		this.incForm = incForm;
+	}
+
+
 	public String getIncBarCode() {
 		return incBarCode;
 	}

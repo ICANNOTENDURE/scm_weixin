@@ -30,7 +30,6 @@
 	$(function() {
 
 
-		$("#mainIframe").height(document.body.scrollHeight-101)
 		$.ajaxSettings.async = false;
 		var navigationHTML = "";
 
@@ -120,7 +119,8 @@
 		var myDate=new Date()
 		$("#currdate").html(myDate.getFullYear()+"-"+(myDate.getMonth()+1)+"-"+myDate.getDate());
 		
-
+		//height=document.documentElement.clientHeight;
+		//$("#mainIframe").height(height)
 	});
 	
   
@@ -318,7 +318,7 @@ am-icon-spin {
 
 				<!-- Your Page Content Here -->
 
-				<iframe name="mainIframe" frameborder="0" src="" style="width: 100%" id="mainIframe" ></iframe>
+				<iframe name="mainIframe" frameborder="0" src="" style="width: 100%;height:560px" id="mainIframe" ></iframe>
 
 		
 			<!-- /.content -->

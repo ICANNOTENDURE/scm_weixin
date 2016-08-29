@@ -468,6 +468,9 @@ function updInvClick(){
             <th data-options="field:'orderno',sortable:true,fixColumnSize:150">订单号</th>
 			<th data-options="field:'veninccode',width:50,sortable:true,fixColumnSize:150">药品代码</th>
 			<th data-options="field:'venincname',width:150,sortable:true">药品名称</th>
+			<th data-options="field:'purloc',sortable:true,fixColumnSize:100">请求科室</th>
+			<th data-options="field:'spec',sortable:true,fixColumnSize:100">规格</th>
+			<th data-options="field:'form',sortable:true,fixColumnSize:50">型号</th>
 			<th data-options="field:'ordqty',sortable:true,fixColumnSize:100">订单数</th>
 			<th data-options="field:'uom',sortable:true,fixColumnSize:100">单位</th>
 			<th data-options="field:'rp',width:70,sortable:true">价格</th>
@@ -476,7 +479,8 @@ function updInvClick(){
 				type : 'validatebox'
                     	}">批号</th>
              <th data-options="field:'expdate',width:70,sortable:true,editor : {
-						type : 'datebox'
+						type : 'datebox',
+						required : true
                 	}">效期</th>
 			 <th data-options="field:'arrivedate',width:70,sortable:true,editor : {
 						type : 'datebox'

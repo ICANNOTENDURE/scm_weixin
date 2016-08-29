@@ -37,8 +37,18 @@ public class HisInGdRecItm implements Serializable{
 	
 	private String orderDetailSubId;
 	
+	private Date invDate;
 	
 	
+	
+	public Date getInvDate() {
+		return invDate;
+	}
+
+	public void setInvDate(Date invDate) {
+		this.invDate = invDate;
+	}
+
 	public String getOrderDetailSubId() {
 		return orderDetailSubId;
 	}

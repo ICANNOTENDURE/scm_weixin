@@ -34,6 +34,7 @@ import com.dhcc.scm.dto.weixin.MpUserDto;
 import com.dhcc.scm.dto.weixin.WxMessageDto;
 import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.HopCtlocDestination;
+import com.dhcc.scm.entity.hop.HopInc;
 import com.dhcc.scm.entity.hop.Hospital;
 import com.dhcc.scm.entity.ord.ExeState;
 import com.dhcc.scm.entity.ord.OrderDetail;
@@ -180,6 +181,8 @@ public class MpMessageBlh extends AbstractBaseBlh {
 					VenInc venInc = commonService.get(VenInc.class, detail.getOrderVenIncId());
 					detail.setIncName(venInc.getVenIncName());
 					detail.setSpec(venInc.getVenIncSpec());
+					HopInc hopInc=commonService.get(HopInc.class, detail.getOrderHopIncId());
+					detail.setForm(hopInc.getIncForm());
 				}
 				dto.setOrderDetails(details);
 				if (details.size() > 0) {

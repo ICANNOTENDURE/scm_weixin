@@ -227,6 +227,7 @@ public class OrderStateDao extends HibernatePersistentObjectDAO<Order> {
 		hqlBuffer.append("t8.realname as realname, ");
 		hqlBuffer.append("t11.NAME as vendor, ");
 		hqlBuffer.append("t12.INC_SPEC as spec, ");
+		hqlBuffer.append("t12.INC_FORM as form, ");
 		hqlBuffer.append("t12.INC_UOMNAME as hopuom, ");
 		hqlBuffer.append("t12.INC_CODE as hopinccode, ");
 		hqlBuffer.append("t12.INC_NAME as hopincname, ");
@@ -337,6 +338,9 @@ public class OrderStateDao extends HibernatePersistentObjectDAO<Order> {
 		hqlBuffer.append("t4.ordsub_date as operatedate, ");
 		hqlBuffer.append("t4.ORDSUB_INVDATE as invdate, ");
 		hqlBuffer.append("t8.realname as operatuser, ");
+		hqlBuffer.append("t13.ctloc_name as purloc, ");
+		hqlBuffer.append("t2.VEN_INC_SPEC as spec, ");
+		hqlBuffer.append("t12.INC_FORM as form, ");
 		hqlBuffer.append("t10.HOSPITAL_NAME as hopname ");
 		hqlBuffer.append("from T_ORD_ORDERDETAIL t1  ");
 		hqlBuffer.append("left join T_ORD_ORDERDETAILSUB t4 on t4.ordsub_detail_id=t1.ORDER_ID  ");
@@ -346,6 +350,8 @@ public class OrderStateDao extends HibernatePersistentObjectDAO<Order> {
 		hqlBuffer.append("left join t_sys_normal_account t7 on  t4.ordsub_userid=t7.account_id ");
 		hqlBuffer.append("left join t_sys_normal_user t8 on  t8.user_id=t7.user_id ");
 		hqlBuffer.append("left join T_SYS_HOSPITAL t10 on t10.HOSPITAL_ID=t1.ORDER_HOP_ID ");
+		hqlBuffer.append("left join T_HOP_INC t12 on t1.ORDER_HOP_INC_ID=t12.INC_ID  ");
+		hqlBuffer.append("left join t_sys_ctloc t13 on t13.ctloc_id=t1.ORDER_PUR_LOC ");
 		hqlBuffer.append("where 1=1 ");
 	
 		if(dto.getStdate()!=null){
