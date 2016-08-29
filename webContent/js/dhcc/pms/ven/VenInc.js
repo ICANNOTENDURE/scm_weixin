@@ -704,3 +704,33 @@ function importClick(){
         }
     });
 }
+
+function printHvClick(){
+	if ($CommonUI.getDataGrid("#datagrid").datagrid('getSelections').length != 1) {
+		$CommonUI.alert('请选一个打印');
+		return;
+	}
+	var row = $CommonUI.getDataGrid("#datagrid").datagrid('getSelected');
+	$("#printHvWin input[name='dto.venIncIdPrn']").val(row.venincid);
+	$("#printHvWin input[name='dto.venIncCodePrn']").val(row.veninccode);
+	$("#printHvWin input[name='dto.venIncNamePrn']").val(row.venincname);
+	$('#printHvWin').dialog('open');
+	
+}
+
+function printSelectHv(){
+	venIncIdPrn=$("#printHvWin input[name='dto.venIncIdPrn']").val();
+	venCodePrn=$("#printHvWin input[name='dto.venCodePrn']").val();
+	venIncCodePrn=$("#printHvWin input[name='dto.venIncCodePrn']").val();
+	venExpPrn=$("#venExpPrn").datebox('getValue');
+	venCountPrn=$("#printHvWin input[name='dto.venCountPrn']").val();
+	venReaptPrn=$("#printHvWin input[name='dto.venReaptPrn']").val();
+
+	 window.open($WEB_ROOT_PATH+"/hv/hvLabelCtrl!Print.htm?dto.venIncIdPrn="+venIncIdPrn
+			 	+"&dto.venCodePrn="+venCodePrn
+			 	+"&dto.venIncCodePrn="+venIncCodePrn
+			 	+"&dto.venExpPrn="+venExpPrn
+			 	+"&dto.venCountPrn="+venCountPrn
+			 	+"&dto.venReaptPrn="+venReaptPrn
+	 );
+}

@@ -5,6 +5,7 @@
 package com.dhcc.scm.dto.hv;
 
 import java.util.Date;
+import java.util.List;
 
 import com.dhcc.framework.transmission.dto.BaseDto;
 import com.dhcc.scm.entity.hv.HvLabel;
@@ -33,8 +34,93 @@ public class HvLabelDto extends BaseDto {
 	private String incname;
 	
 	
+	private Long venIncIdPrn;
+	
+	private String venCodePrn;
+	
+	private String venIncCodePrn;
+	
+	private Date venExpPrn;
+	
+	private int venCountPrn;
+	
+	private int venReaptPrn;
 	
 	
+	private List<String> barCodes;
+	
+	
+	
+	public List<String> getBarCodes() {
+		return barCodes;
+	}
+
+
+	public void setBarCodes(List<String> barCodes) {
+		this.barCodes = barCodes;
+	}
+
+
+	public Long getVenIncIdPrn() {
+		return venIncIdPrn;
+	}
+
+
+	public void setVenIncIdPrn(Long venIncIdPrn) {
+		this.venIncIdPrn = venIncIdPrn;
+	}
+
+
+	public String getVenCodePrn() {
+		return venCodePrn;
+	}
+
+
+	public void setVenCodePrn(String venCodePrn) {
+		this.venCodePrn = venCodePrn;
+	}
+
+
+	public String getVenIncCodePrn() {
+		return venIncCodePrn;
+	}
+
+
+	public void setVenIncCodePrn(String venIncCodePrn) {
+		this.venIncCodePrn = venIncCodePrn;
+	}
+
+
+	public Date getVenExpPrn() {
+		return venExpPrn;
+	}
+
+
+	public void setVenExpPrn(Date venExpPrn) {
+		this.venExpPrn = venExpPrn;
+	}
+
+
+	public int getVenCountPrn() {
+		return venCountPrn;
+	}
+
+
+	public void setVenCountPrn(int venCountPrn) {
+		this.venCountPrn = venCountPrn;
+	}
+
+
+	public int getVenReaptPrn() {
+		return venReaptPrn;
+	}
+
+
+	public void setVenReaptPrn(int venReaptPrn) {
+		this.venReaptPrn = venReaptPrn;
+	}
+
+
 	public String getInvno() {
 		return invno;
 	}
