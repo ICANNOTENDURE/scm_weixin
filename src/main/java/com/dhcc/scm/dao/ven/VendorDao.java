@@ -161,6 +161,7 @@ public class VendorDao extends HibernatePersistentObjectDAO<Vendor> {
 	* @author zhouxin   
 	* @date 2015年5月27日 下午2:45:45
 	 */
+	@SuppressWarnings({ "unchecked" })
 	public void saveOrUpdatePic(VendorDto dto) {
 
 		if (dto.getVendor()==null){
@@ -285,58 +286,61 @@ public class VendorDao extends HibernatePersistentObjectDAO<Vendor> {
 	 */
 	public void listVendor(VendorDto dto){
 		
-		StringBuffer hqlBuffer = new StringBuffer();
+		
 		Map<String, Object> hqlParamMap = new HashMap<String, Object>();
 		Long hopId=WebContextHolder.getContext().getVisit().getUserInfo().getHopId();
 		Long type=WebContextHolder.getContext().getVisit().getUserInfo().getUserType();
 		
-		hqlBuffer.append(" select ");
-		hqlBuffer.append(" t1.VEN_ID vendorid, ");
-		hqlBuffer.append(" t1.CODE code, ");
-		hqlBuffer.append(" t1.NAME name, ");
-		hqlBuffer.append(" t1.ADDRESS address, ");
-		hqlBuffer.append(" t1.FAX fax, ");
-		hqlBuffer.append(" t1.TEL tel, ");
-		hqlBuffer.append(" t1.ACCOUNT account, ");
-		hqlBuffer.append(" t1.CONTACT contact, ");
-		hqlBuffer.append(" t1.EMAIL email, ");
-		hqlBuffer.append(" t1.TAXATION taxation ");
-		//hqlBuffer.append(" t2.H_AUDITFLAG auditflag, ");//add hxy
-		//hqlBuffer.append(" t2.H_VENID hopvendorid ");//主键
-		hqlBuffer.append(" from ");
-		hqlBuffer.append(" T_VEN_VENDOR t1 ") ; //left join T_HOP_VENDOR t2 on t1.VEN_ID=T2.H_VENDORID ");
-		hqlBuffer.append(" where 1=1 ");
+		StringBuffer sqlStr = new StringBuffer();
+		sqlStr.append("select ");
+		sqlStr.append("t1.VEN_ID vendorid, ");
+		sqlStr.append("t1.CODE code, ");
+		sqlStr.append("t1.NAME name, ");
+		sqlStr.append("t1.ADDRESS address, ");
+		sqlStr.append("t1.FAX fax, ");
+		sqlStr.append("t1.TEL tel, ");
+		sqlStr.append("t1.ACCOUNT account, ");
+		sqlStr.append("t1.CONTACT contact, ");
+		sqlStr.append("t1.EMAIL email, ");
+		sqlStr.append("t1.TAXATION taxation, ");
+		sqlStr.append("t2.H_AUDITFLAG auditflag, ");//add hxy
+		sqlStr.append("t2.H_VENID hopvendorid ");//主键
+		sqlStr.append("from ");
+		sqlStr.append("T_VEN_VENDOR t1 ") ; 
+		sqlStr.append("left join T_HOP_VENDOR t2 on t1.VEN_ID=T2.H_VENDORID ");
+		sqlStr.append("where 1=1 ");
 		//根据登录人员做判断   感觉还是有问题
 		if(type==1){
-			//hqlBuffer.append(" and t2.H_HOPID="+hopId );
+			sqlStr.append(" and t2.H_HOPID="+hopId);
 		}
 		
+		//审批资质
 		if(org.apache.commons.lang.StringUtils.isNotBlank(dto.getAuditFlag())){
 			if(dto.getAuditFlag().equals("1")){
-				//hqlBuffer.append(" and t2.H_AUDITFLAG='Y' " );
+				sqlStr.append(" and t2.H_AUDITFLAG='Y' " );
 			}
 			if(dto.getAuditFlag().equals("2")){
-				//hqlBuffer.append(" and (t2.H_AUDITFLAG is null or t2.H_AUDITFLAG='N')" );
+				sqlStr.append(" and t2.H_AUDITFLAG='N' " );
 			}
 			if(dto.getAuditFlag().equals("3")){
-				//hqlBuffer.append(" and (t2.H_AUDITFLAG is null )" );
+				sqlStr.append(" and t2.H_AUDITFLAG is null " );
 			}
 		}
 		if(dto.getVendor()!=null){
 			if(org.apache.commons.lang.StringUtils.isNotBlank(dto.getVendor().getName())){
-				hqlBuffer.append(" and t1.NAME like :name" );
+				sqlStr.append(" and t1.NAME like :name" );
 				hqlParamMap.put("name", "%"+dto.getVendor().getName().trim()+"%");
 			}
 			if(org.apache.commons.lang.StringUtils.isNotBlank(dto.getVendor().getAlias())){
-				hqlBuffer.append(" and t1.ALIAS like :alias" );
+				sqlStr.append(" and t1.ALIAS like :alias" );
 				hqlParamMap.put("alias", "%"+dto.getVendor().getAlias().trim()+"%");
 			}
 		}
 		if(org.apache.commons.lang.StringUtils.isNotBlank(dto.getInputStr())){
-			hqlBuffer.append(" and (t1.ACCOUNT=:inputStr or t1.TAXATION=:inputStr or t1.EMAIL=:inputStr)" );
+			sqlStr.append(" and (t1.ACCOUNT=:inputStr or t1.TAXATION=:inputStr or t1.EMAIL=:inputStr)" );
 			hqlParamMap.put("inputStr", dto.getInputStr().trim());
 		}
-		dto.getPageModel().setQueryHql(hqlBuffer.toString());
+		dto.getPageModel().setQueryHql(sqlStr.toString());
 		dto.getPageModel().setHqlParamMap(hqlParamMap);
 		jdbcTemplateWrapper.fillPagerModelData(dto.getPageModel(), VendorVo.class, "t1.VEN_ID");
 	}
@@ -364,7 +368,7 @@ public class VendorDao extends HibernatePersistentObjectDAO<Vendor> {
 		hqlBuffer.append(" from ");
 		hqlBuffer.append(" T_VEN_VENDOR t1 left join T_VEN_AUDIT_LOG t2 on t1.VEN_ID=T2.AUDIT_LOG_VENID  ");
 		hqlBuffer.append(" where 1=1 ");
-//		hqlBuffer.append(" and t2.AUDIT_LOG_USERID ="+userId||1 );//当前和平台
+        //hqlBuffer.append(" and t2.AUDIT_LOG_USERID ="+userId||1 );//当前和平台
 		if(dto.getVendor().getVendorId()!=null){
 		hqlBuffer.append(" and t2.AUDIT_LOG_VENID ="+dto.getVendor().getVendorId() );
 		}
