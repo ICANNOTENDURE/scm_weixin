@@ -102,17 +102,25 @@
     	$('#printOrderBTN').on('click',function(){
     		var selected = $("#searchOrderTable").datagrid('getSelections');
     		if (selected.length == 0) {
+    			
     			$CommonUI.alert("请选择！");
                 return;
             }
     		orderStr="";
             $.each(selected, function (index, item) {
+            //	console.log(typeof selected)
+            	//console.log(selected instanceof Array)
+            	//console.log(selected.length)
+            	//console.log(selected[0])
+            	
             	if(orderStr==""){
             		orderStr=item.serialno;
+            		//console.log(item.serialno)
             	}else{
             		orderStr=orderStr+","+item.serialno;
             	};
             });
+           // console.log($WEB_ROOT_PATH+"/ven/venDeliverCtrl!PrintOrder.htm?dto.ordIdStr="+orderStr)
             window.open($WEB_ROOT_PATH+"/ven/venDeliverCtrl!PrintOrder.htm?dto.ordIdStr="+orderStr);
     	});
     	//打印明细(按数量)
@@ -249,9 +257,9 @@ function enCodeItm(value,row,index){
 			</select>	
 		 	<a href="#" class="linkbutton" iconCls="icon-search" id="searchOrderTool">查询</a>
 		 	<a href="#" class="linkbutton" iconCls="icon-print" id="printBTN" plain=true>打印随行单(按商品)</a>
-		 	<a href="#" class="linkbutton" iconCls="icon-print" id="printOrderBTN" plain=true>打印订单(按订单)</a>
-		 	<a href="#" class="linkbutton" iconCls="icon-print" id="printByQtyBTN" plain=true>打印明细(按数量)</a>
-		 	<a href="#" class="linkbutton" iconCls="icon-print" id="printByQtySelectBTN" plain=true>打印明细(按数量,勾选明细)</a>
+		 	<a href="#" class="linkbutton" iconCls="icon-print" id="printOrderBTN"  style="display:none"  plain=true>打印订单(按订单)</a>
+		 	<a href="#" class="linkbutton" iconCls="icon-print" id="printByQtyBTN"  style="display:none"  plain=true>打印明细(按数量)</a>
+		 	<a href="#" class="linkbutton" iconCls="icon-print" id="printByQtySelectBTN"  style="display:none" plain=true>打印明细(按数量,勾选明细)</a>
 		 	<div id="qrcode" ></div>
 		 </div>
 	</div>

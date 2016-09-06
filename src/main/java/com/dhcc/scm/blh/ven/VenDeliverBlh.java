@@ -42,8 +42,10 @@ import com.dhcc.framework.util.JsonUtils;
 import com.dhcc.framework.util.SendMailUtil;
 import com.dhcc.framework.util.StringUtils;
 import com.dhcc.framework.web.context.WebContextHolder;
+import com.dhcc.scm.dto.ord.OrdDto;
 import com.dhcc.scm.dto.sys.SysImpModelDto;
 import com.dhcc.scm.dto.ven.VenDeliverDto;
+import com.dhcc.scm.dto.ven.VenIncQualifyPicDto;
 import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.HopCtlocDestination;
 import com.dhcc.scm.entity.hop.Hospital;
@@ -59,6 +61,7 @@ import com.dhcc.scm.entity.ven.VenDel;
 import com.dhcc.scm.entity.ven.VenDeliver;
 import com.dhcc.scm.entity.ven.VenDeliveritm;
 import com.dhcc.scm.entity.ven.VenInc;
+import com.dhcc.scm.entity.ven.VenIncqQualif;
 import com.dhcc.scm.entity.ven.Vendor;
 import com.dhcc.scm.entity.vo.ven.DeliverItmVo;
 import com.dhcc.scm.entity.vo.ven.PrintByQtyVo;
@@ -1112,17 +1115,31 @@ public class VenDeliverBlh extends AbstractBaseBlh {
 			for (String ordno : ords) {
 				ordno = AESCoder.aesCbcDecrypt(ordno.trim(), servicePassword);
 				OrderDetail orderDetail = commonService.get(OrderDetail.class, Long.valueOf(ordno));
+				;
 				Hospital hospital = commonService.get(Hospital.class, orderDetail.getOrderHopId());
+				//VenIncqQualif venIncqQualif = new VenIncqQualif();
 				HopCtloc ctloc = commonService.get(HopCtloc.class, orderDetail.getOrderRecLoc());
 				PrintVo printVo = new PrintVo();
 				printVo.setHisno(orderDetail.getOrderNo());
 				printVo.setOrdrid(orderDetail.getOrderId());
 				printVo.setOrderDate(orderDetail.getOrderDate());
+				if(orderDetail.getOrderVenIncId() != null){
+					long id=31;
+					String[] propertyNames={"qualifyIncId","sysQualifType.qualifTypeId"};
+					Object[] values={orderDetail.getOrderVenIncId(),id};
+					List<VenIncqQualif> incqQualifs2=commonService.findByProperties(VenIncqQualif.class, propertyNames, values);
+					if(incqQualifs2.size()>0){
+						VenIncqQualif venIncqQualif = commonService.get(VenIncqQualif.class, incqQualifs2.get(0).getQualifyId());
+						printVo.setQualifdate(venIncqQualif.getQualifDate());
+					}
+				
+				}
+				
 				if (orderDetail.getOrderRecDestination() != null) {
 					HopCtlocDestination hopCtlocDestination = commonService.get(HopCtlocDestination.class, orderDetail.getOrderRecDestination());
 					printVo.setDestination(hopCtlocDestination.getDestination());
 				}
-
+               // printVo.setQualifdate(venIncqQualif.getQualifDate());
 				printVo.setHopname(hospital.getHospitalName());
 				printVo.setRecloc(ctloc.getName());
 
@@ -1283,8 +1300,7 @@ public class VenDeliverBlh extends AbstractBaseBlh {
 				printVo.setHopname(hospital.getHospitalName());
 				printVo.setRecloc(ctloc.getName());
 				
-
-				//打印随行单（按订单）打印后使状态变为已打印状态的方法；
+			//打印随行单（按订单）打印后使状态变为已打印状态的方法；
 				printVo.setDeliverItmVos(new ArrayList<DeliverItmVo>());
 				PagerModel model = new PagerModel();
 				model.setPageSize(999999);

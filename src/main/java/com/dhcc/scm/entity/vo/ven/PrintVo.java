@@ -22,6 +22,22 @@ public class PrintVo implements java.io.Serializable{
 	
 	private Date orderDate;
 	
+	private Date qualifdate;
+	
+	/**
+	 * @return the qualifdate
+	 */
+	public Date getQualifdate() {
+		return qualifdate;
+	}
+
+	/**
+	 * @param qualifdate the qualifdate to set
+	 */
+	public void setQualifdate(Date qualifdate) {
+		this.qualifdate = qualifdate;
+	}
+
 	private Float amt;
 	
 	private Long ordrid;

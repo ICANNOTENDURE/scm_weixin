@@ -13,6 +13,7 @@ body {font:12px/1.5  "宋体";color:#333}
 .w{width:100%}
 .m1 td{height:0.6cm;line-height:0.6cm;}
 .t3,.t7,.t6{width:1.6cm}
+.t4{width:2.5cm}
 .t1{width:6.8cm}
 .t5{width:1.1cm}
 .tb4{border-collapse:collapse;border:1px solid #000}
@@ -69,11 +70,12 @@ body {font:12px/1.5  "宋体";color:#333}
 				<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb4">
 					<tr>
 						<th class="t3">商品编号</th>
-						<th class="t3">条码</th>
+					<!--	<th class="t3">条码</th>  -->
 						<th class="t4">商品名称</th>
 						<th class="t5">发票</th>
 						<th class="t5">批号</th>
 						<th class="t5">效期</th>
+						<th class="t4">商品注册证效期</th>
 						<th class="t5">数量</th>
 						<th class="t5">产地</th>
 						<th class="t5">进价</th>
@@ -83,11 +85,14 @@ body {font:12px/1.5  "宋体";color:#333}
 										id="deliverItmVos">
 					    <tr>
 							<td>${venincncode}</td>
-							<td><img  src="<%=request.getContextPath()%>/sys/qrCodeCtrl!qrAndroid.htm?dto.content=${deliveritmid}&dto.codeType='ByInc'" style='height: 100;width: 100px'> </img></td>
+						<!--  	<td><img  src="<%=request.getContextPath()%>/sys/qrCodeCtrl!qrAndroid.htm?dto.content=${deliveritmid}&dto.codeType='ByInc'" style='height: 100;width: 100px'> </img></td> -->
 							<td><div class="p-name">${venincname}</div></td>
 							<td>${invno}</td>
 							<td>${batno}</td>
 							<td>${expdate}</td>
+							<s:iterator value="dto.printVos"  id="printVos">
+							<td>${printVos.qualifdate}</td>
+							</s:iterator>
 							<td>${orderqty}</td>
 							<td>${manf}</td>
 							<td>${rp}</td>
