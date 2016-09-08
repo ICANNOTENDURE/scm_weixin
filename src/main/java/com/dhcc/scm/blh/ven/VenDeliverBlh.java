@@ -42,10 +42,8 @@ import com.dhcc.framework.util.JsonUtils;
 import com.dhcc.framework.util.SendMailUtil;
 import com.dhcc.framework.util.StringUtils;
 import com.dhcc.framework.web.context.WebContextHolder;
-import com.dhcc.scm.dto.ord.OrdDto;
 import com.dhcc.scm.dto.sys.SysImpModelDto;
 import com.dhcc.scm.dto.ven.VenDeliverDto;
-import com.dhcc.scm.dto.ven.VenIncQualifyPicDto;
 import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.HopCtlocDestination;
 import com.dhcc.scm.entity.hop.Hospital;
@@ -1224,6 +1222,17 @@ public class VenDeliverBlh extends AbstractBaseBlh {
 		return "PrintByQty";
 	}
 
+	/**
+	 * 
+	* @Title: PrintByQty 
+	* @Description: TODO(打印高职条码) 
+	* @param @param res
+	* @param @return    设定文件 
+	* @return String    返回类型 
+	* @throws 
+	* @author zhouxin   
+	* @date 2016年9月8日 下午3:09:55
+	 */
 	public String PrintByQty(BusinessRequest res) {
 		VenDeliverDto dto = super.getDto(VenDeliverDto.class, res);
 		if (org.apache.commons.lang.StringUtils.isNotBlank(dto.getOrdIdStr())) {

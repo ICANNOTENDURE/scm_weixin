@@ -28,6 +28,7 @@ import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.HopInc;
 import com.dhcc.scm.entity.hop.HopVendor;
 import com.dhcc.scm.entity.hv.HvLabel;
+import com.dhcc.scm.entity.ord.OrdLabel;
 import com.dhcc.scm.entity.ord.OrderDetail;
 import com.dhcc.scm.entity.ord.OrderDetailPic;
 import com.dhcc.scm.entity.ord.OrderDetailSub;
@@ -500,6 +501,11 @@ public class HisInfoService implements HisInfoServiceInterface{
 						hisInGdRecItm.setVendorCode(vendor.getCode());
 						hisInGdRecItm.setOrderDetailSubId(detailsub.getOrdSubId());
 						hisInGdRecItm.setInvDate(detailsub.getOrdSubInvDate());
+						hisInGdRecItm.setLabels(new ArrayList<String>());
+						List<OrdLabel> labels=commonService.findByProperty(OrdLabel.class, "labelParentId", detailsub.getOrdSubId());
+						for(OrdLabel label:labels){
+							hisInGdRecItm.getLabels().add(label.getLabelId());
+						}
 						inGdRecItms.add(hisInGdRecItm);
 					}
 					

@@ -3,6 +3,7 @@ package com.dhcc.scm.entity.vo.ws;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class HisInGdRecItm implements Serializable{
 
@@ -39,8 +40,18 @@ public class HisInGdRecItm implements Serializable{
 	
 	private Date invDate;
 	
+	private List<String> labels;
 	
 	
+	
+	public List<String> getLabels() {
+		return labels;
+	}
+
+	public void setLabels(List<String> labels) {
+		this.labels = labels;
+	}
+
 	public Date getInvDate() {
 		return invDate;
 	}
