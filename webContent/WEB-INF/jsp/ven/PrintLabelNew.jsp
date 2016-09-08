@@ -183,15 +183,17 @@ function enCodeItm(value,row,index){
 			 															   method:'post',
 			 															   nowrap:true,
 			 															   striped:true,
-			 															   pageSize: 2,
-    																	   pageList: [2, 6, 10],
+			 															   pageSize: 8,
+    																	   pageList: [8, 16, 50],
 			 															   ">
 			 		<thead>
 					<tr>
 						<th data-options="field:'ck',checkbox:true"></th>
 						<th data-options="field:'serialno',hidden:true"></th>
 						<th data-options="field:'hisno',width:90">订单号</th>
+						<!-- 
 						<th data-options="field:'qrcode',fixColumnSize:80,formatter:enCode,align:'center'">二维码</th>
+						 -->
 						<th data-options="field:'hopname',width:90">医院</th>
 						<th data-options="field:'statedesc',width:50">状态</th>
 						<th data-options="field:'emflag',width:20">加急</th>

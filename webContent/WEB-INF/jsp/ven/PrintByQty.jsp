@@ -26,7 +26,9 @@
 				<td>${seq}</td>
 				<td>${venincname}</td>
 				 -->
-				<td><img
+				<td>
+					${seq}:${venincname}<br>
+					<img
 					src="<%=request.getContextPath()%>/sys/qrCodeCtrl!qrAndroid.htm?dto.content=${deliveritmid}&dto.codeType=ByQty&dto.seq=${seq}&dto.code128=${dto.code128}"
 					style='height: 100; width: 100px'> </img></td>
 			</tr>
