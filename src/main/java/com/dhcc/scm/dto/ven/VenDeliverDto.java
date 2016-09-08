@@ -45,9 +45,21 @@ public class VenDeliverDto extends BaseDto {
 	private String impId;
 	private String printFlag;
 	private List<PrintByQtyVo> printByQtyVos;
+	private String code128;
 	
 	
 	
+	
+
+	public String getCode128() {
+		return code128;
+	}
+
+
+	public void setCode128(String code128) {
+		this.code128 = code128;
+	}
+
 
 	public List<PrintByQtyVo> getPrintByQtyVos() {
 		return printByQtyVos;

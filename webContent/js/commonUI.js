@@ -124,7 +124,7 @@ function CommonUI(option){
 	/**
 	 * 默认colorbox的选项
 	 */
-	this._EASYUI_DEFAULT_THEMES = 'dhcc';//'metro-blue';
+	this._EASYUI_DEFAULT_THEMES = 'metro-blue';//'dhcc';
 
 	/**
 	 * 默认colorbox的选项

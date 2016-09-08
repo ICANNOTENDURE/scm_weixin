@@ -6,6 +6,7 @@ package com.dhcc.scm.blh.sys;
 
 import java.io.IOException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.dhcc.framework.app.blh.AbstractBaseBlh;
@@ -42,8 +43,13 @@ public class QrCodeBlh extends AbstractBaseBlh {
 	 */
 	public void qrAndroid(BusinessRequest res) throws IOException, WriterException{
 		QrCodeDto dto=super.getDto(QrCodeDto.class, res);
-		QrCode code=new QrCode(dto.getContent(), dto.getCodeType(),dto.getSeq());
-		QrCodeUtil.QrCode(JsonUtils.toJson(code),false);
+		if(StringUtils.isNotBlank(dto.getCode128())){
+			QrCodeUtil.CODE128(dto.getContent());
+		}else{
+			QrCode code=new QrCode(dto.getContent(), dto.getCodeType(),dto.getSeq());
+			QrCodeUtil.QrCode(JsonUtils.toJson(code),false);
+		}
+
 	}
 	/**
 	 * 
@@ -67,4 +73,5 @@ public class QrCodeBlh extends AbstractBaseBlh {
 		QrCodeDto dto=super.getDto(QrCodeDto.class, res);
 		QrCodeUtil.QrCode(dto.getContent(),false);
 	}
+	
 }

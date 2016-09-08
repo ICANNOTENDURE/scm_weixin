@@ -138,7 +138,10 @@
             		orderStr=orderStr+","+item.serialno;
             	};
             });
-            window.open($WEB_ROOT_PATH+"/ven/venDeliverCtrl!PrintByQty.htm?dto.ordIdStr="+orderStr);
+            
+            prtCodeType=$('#prtCodeType').combobox('getValue');
+            code128=prtCodeType=="1"?"":"Y";
+            window.open($WEB_ROOT_PATH+"/ven/venDeliverCtrl!PrintByQty.htm?dto.ordIdStr="+orderStr+"&dto.code128="+code128);
     	});
      	//打印明细(按数量,勾选明细)
     	$('#printByQtySelectBTN').on('click',function(){
@@ -220,7 +223,9 @@ function enCodeItm(value,row,index){
 					<tr>
 						<th data-options="field:'ck',checkbox:true"></th>
 						<th data-options="field:'deliveritmid',hidden:true">代码</th>
+						<!-- 
 						<th data-options="field:'qrCodeItm',fixColumnSize:50,formatter:enCodeItm,align:'center'">二维码</th>
+						 -->
 						<th data-options="field:'venincncode',width:90">代码</th>
 						<th data-options="field:'venincname',width:150">名称</th>
 						<th data-options="field:'deliverqty',width:90">数量</th>
@@ -256,11 +261,16 @@ function enCodeItm(value,row,index){
 				<option value="2">未打印</option>
 			</select>	
 		 	<a href="#" class="linkbutton" iconCls="icon-search" id="searchOrderTool">查询</a>
-		 	<a href="#" class="linkbutton" iconCls="icon-print" id="printBTN" plain=true>打印随行单(按商品)</a>
+		 	<br>
+			条码类型: <select class="combobox" panelHeight="auto" style="width:100px" id="prtCodeType">
+				<option value="1">二维码</option>
+				<option value="2">一维码</option>
+			</select>
+			<a href="#" class="linkbutton" iconCls="icon-print" id="printBTN" plain=true>打印随行单(按商品)</a>
 		 	<a href="#" class="linkbutton" iconCls="icon-print" id="printOrderBTN"  style="display:none"  plain=true>打印订单(按订单)</a>
 		 	<a href="#" class="linkbutton" iconCls="icon-print" id="printByQtyBTN"  plain=true>打印高职</a>
 		 	<a href="#" class="linkbutton" iconCls="icon-print" id="printByQtySelectBTN"  style="display:none" plain=true>打印明细(按数量,勾选明细)</a>
-		 	<div id="qrcode" ></div>
+		 		
 		 </div>
 	</div>
 

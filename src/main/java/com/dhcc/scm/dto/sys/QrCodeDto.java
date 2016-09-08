@@ -17,7 +17,17 @@ public class QrCodeDto extends BaseDto {
 	
 	private int seq;
 	
+	private String code128;
 	
+	
+
+	public String getCode128() {
+		return code128;
+	}
+
+	public void setCode128(String code128) {
+		this.code128 = code128;
+	}
 
 	public String getCodeType() {
 		return codeType;

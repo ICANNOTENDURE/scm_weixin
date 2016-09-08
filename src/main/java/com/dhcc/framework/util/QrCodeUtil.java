@@ -46,7 +46,31 @@ public final class QrCodeUtil {
 		BitMatrix bitMatrix = new MultiFormatWriter().encode(content, BarcodeFormat.QR_CODE, width, height, hints);// 生成矩阵
 		MatrixToImageWriter.writeToStream(bitMatrix, format, WebContextHolder.getContext().getResponse().getOutputStream());
 	}
+	
+	/**
+	 * 
+	* @Title: CODE128 
+	* @Description: TODO(一维码) 
+	* @param @param content
+	* @param @throws IOException
+	* @param @throws WriterException    设定文件 
+	* @return void    返回类型 
+	* @throws 
+	* @author zhouxin   
+	* @date 2016年9月8日 下午3:40:35
+	 */
+	public static void CODE128(String content) throws IOException, WriterException {
+		
 
+		int width = 200; // 图像宽度
+		int height = 100; // 图像高度
+		String format = "png";// 图像类型
+		Map<EncodeHintType, Object> hints = new HashMap<EncodeHintType, Object>();
+		hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+		BitMatrix bitMatrix = new MultiFormatWriter().encode(content, BarcodeFormat.CODE_128, width, height, hints);// 生成矩阵
+		MatrixToImageWriter.writeToStream(bitMatrix, format, WebContextHolder.getContext().getResponse().getOutputStream());
+	
+	}
 	public static void DcoderQrCode(String path) {
 
 	}
