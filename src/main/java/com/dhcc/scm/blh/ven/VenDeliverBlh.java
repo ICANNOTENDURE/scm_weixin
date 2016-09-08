@@ -1121,6 +1121,15 @@ public class VenDeliverBlh extends AbstractBaseBlh {
 				printVo.setHisno(orderDetail.getOrderNo());
 				printVo.setOrdrid(orderDetail.getOrderId());
 				printVo.setOrderDate(orderDetail.getOrderDate());
+				if(orderDetail.getOrderPurLoc()!=null){
+					HopCtloc ctloc1 = commonService.get(HopCtloc.class, orderDetail.getOrderPurLoc());
+				    printVo.setPurloc(ctloc1.getName());
+				}
+				if(orderDetail.getOrderVenIncId()!= null){
+					VenInc venInc = commonService.get(VenInc.class, orderDetail.getOrderVenIncId());
+					printVo.setVenincspec(venInc.getVenIncSpec());
+				}
+
 				if(orderDetail.getOrderVenIncId() != null){
 					long id=31;
 					String[] propertyNames={"qualifyIncId","sysQualifType.qualifTypeId"};

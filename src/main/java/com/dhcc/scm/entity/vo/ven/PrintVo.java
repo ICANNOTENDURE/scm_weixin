@@ -14,6 +14,8 @@ public class PrintVo implements java.io.Serializable{
 
 	private String recloc;
 	
+	private String purloc;
+	
 	private String destination;
 
 	private String hisno;
@@ -23,6 +25,30 @@ public class PrintVo implements java.io.Serializable{
 	private Date orderDate;
 	
 	private Date qualifdate;
+	
+	private Float amt;
+
+	private Long ordrid;
+	
+    private String venincspec;
+	
+	/**
+	 * @return the venincspec
+	 */
+	public String getVenincspec() {
+		return venincspec;
+	}
+
+	/**
+	 * @param venincspec the venincspec to set
+	 */
+	public void setVenincspec(String venincspec) {
+		this.venincspec = venincspec;
+	}
+	
+	private String orderno;
+	
+	private List<DeliverItmVo> deliverItmVos;
 	
 	/**
 	 * @return the qualifdate
@@ -37,18 +63,21 @@ public class PrintVo implements java.io.Serializable{
 	public void setQualifdate(Date qualifdate) {
 		this.qualifdate = qualifdate;
 	}
+	
+	/**
+	 * @return the purloc
+	 */
+	public String getPurloc() {
+		return purloc;
+	}
 
-	private Float amt;
-	
-	private Long ordrid;
-	
-	private String orderno;
-	
-	private List<DeliverItmVo> deliverItmVos;
-	
-	
-	
-	
+	/**
+	 * @param purloc the purloc to set
+	 */
+	public void setPurloc(String purloc) {
+		this.purloc = purloc;
+	}
+
 	
 	public Long getOrdrid() {
 		return ordrid;

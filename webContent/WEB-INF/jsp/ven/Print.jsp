@@ -76,6 +76,8 @@ body {font:12px/1.5  "宋体";color:#333}
 						<th class="t5">批号</th>
 						<th class="t5">效期</th>
 						<th class="t4">商品注册证效期</th>
+						<th class="t5">请求科室</th>
+						<th class="t5">规格</th>
 						<th class="t5">数量</th>
 						<th class="t5">产地</th>
 						<th class="t5">进价</th>
@@ -92,6 +94,8 @@ body {font:12px/1.5  "宋体";color:#333}
 							<td>${expdate}</td>
 							<s:iterator value="dto.printVos"  id="printVos">
 							<td>${printVos.qualifdate}</td>
+							<td>${printVos.purloc}</td>
+							<td>${printVos.venincspec}</td>
 							</s:iterator>
 							<td>${orderqty}</td>
 							<td>${manf}</td>
