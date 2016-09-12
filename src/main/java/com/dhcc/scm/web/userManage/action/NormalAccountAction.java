@@ -38,7 +38,7 @@ import com.dhcc.scm.service.ven.VendorService;
 		@Result(name="deleteNormalAccount",location="/WEB-INF/jsp/userManage/normalAccount.jsp"),
 		@Result(name="editPassword",location="/WEB-INF/jsp/userManage/password.jsp")
 })
-@JsonResult4Pojo("saveInfo:normalAccountDto;getUserInfo:normalAccountDto;getNormalAccountRole:normalAccountDto.roles;saveOrUpdateNormalAccount,saveNormalAccountRole:normalAccountDto;getNormalAccountFunc:normalAccountDto.funcs;updatePassword:normalAccountDto")
+@JsonResult4Pojo("saveInfo:normalAccountDto;getUserInfo:normalAccountDto;getNormalAccountRole:normalAccountDto.roles;saveOrUpdateNormalAccount,saveNormalAccountRole:normalAccountDto;getNormalAccountFunc:normalAccountDto.funcs;updatePassword:normalAccountDto;findbyId:normalAccountDto")
 public class NormalAccountAction extends BaseAction{
 
 	/**  

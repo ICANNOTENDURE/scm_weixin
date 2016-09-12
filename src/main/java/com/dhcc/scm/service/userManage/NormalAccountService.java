@@ -137,4 +137,6 @@ public interface NormalAccountService {
 	* @version V1.0
 	 */
 	public NormalAccount getNormalAccountByAccount(String account);
+	
+	public void listUser(NormalAccountDto dto);
 }

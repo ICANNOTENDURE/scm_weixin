@@ -197,6 +197,12 @@ public class NormalAccountServiceImpl implements NormalAccountService{
 		// TODO Auto-generated method stub
 		return normalAccountDao.getNormalAccountByAccount(account);
 	}
+
+	@Override
+	public void listUser(NormalAccountDto dto) {
+		// TODO Auto-generated method stub
+		normalAccountDao.listUser(dto);
+	}
 	
 	
 

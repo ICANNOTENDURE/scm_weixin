@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.StatelessSession;
 import org.springframework.stereotype.Repository;
 
@@ -20,6 +21,7 @@ import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.userManage.NormalAccountRole;
 import com.dhcc.scm.entity.userManage.Role;
 import com.dhcc.scm.entity.vo.combo.ComboxVo;
+import com.dhcc.scm.entity.vo.platformManage.UserVo;
 
 /**
  * 标题: NormalAccountDao.java
@@ -324,5 +326,59 @@ public class NormalAccountDao extends HibernatePersistentObjectDAO<NormalAccount
 			return normalAccounts.get(0);
 		}
 		return null;
+	}
+	
+	/**
+	 * 
+	* @Title: listUser 
+	* @Description: TODO(查询用户,按类型) 
+	* @param     设定文件 
+	* @return void    返回类型 
+	* @throws 
+	* @author zhouxin   
+	* @date 2016年9月12日 下午3:32:52
+	 */
+	public void listUser(NormalAccountDto dto){
+		
+		Map<String, Object> hqlParamMap = new HashMap<String, Object>();
+		StringBuffer hqlBuffer = new StringBuffer();
+		if (dto.getPageModel() == null) {
+			dto.setPageModel(new PagerModel());
+		}
+		hqlBuffer.append("select ");
+		hqlBuffer.append("t1.ACCOUNT_ID as accountid, ");
+		hqlBuffer.append("t1.USER_ID as userid, ");
+		hqlBuffer.append("T4.CTLOC_NAME as loc, ");
+		hqlBuffer.append("t3.NAME as ven, ");
+		hqlBuffer.append("t1.USESTATE as state, ");
+		hqlBuffer.append("t5.HOSPITAL_NAME as hop, ");
+		hqlBuffer.append("t2.TYPE as type, ");
+		hqlBuffer.append("t1.ALIAS as account ");
+		hqlBuffer.append("from t_sys_normal_account t1 ");
+		hqlBuffer.append("LEFT JOIN t_sys_normal_user t2 ON t1.USER_ID=T2.USER_ID  ");
+		hqlBuffer.append("left join t_ven_vendor t3 on t3.VEN_ID=t2.VENDORID  ");
+		hqlBuffer.append("left join t_sys_ctloc t4 on t4.CTLOC_ID = t2.LOCID  ");
+		hqlBuffer.append("left join t_sys_hospital t5 on t5.HOSPITAL_ID = t4.CTLOC_HOSPID  ");
+		hqlBuffer.append("where 1=1 ");
+		
+		if (dto.getHopId() != null) {
+			hqlBuffer.append(" and t5.HOSPITAL_ID=:hopid");
+			hqlParamMap.put("hopid", dto.getHopId());
+		}
+		if (dto.getLocId() != null) {
+			hqlBuffer.append(" and t4.CTLOC_ID=:locid");
+			hqlParamMap.put("locid", dto.getLocId());
+		}
+		if (dto.getVenId() != null) {
+			hqlBuffer.append(" and t3.VEN_ID=:venid");
+			hqlParamMap.put("venid", dto.getVenId());
+		}
+		if (StringUtils.isNotBlank(dto.getColumnName())) {
+			hqlBuffer.append(" and t1.ALIAS like :alias");
+			hqlParamMap.put("alias", "%"+dto.getColumnName()+"%");
+		}
+		dto.getPageModel().setQueryHql(hqlBuffer.toString());
+		dto.getPageModel().setHqlParamMap(hqlParamMap);
+		jdbcTemplateWrapper.fillPagerModelData(dto.getPageModel(), UserVo.class, "t1.USER_ID");
 	}
 }

@@ -36,6 +36,36 @@ public class NormalAccountDto extends BaseDto{
 	/*收获地址*/
 	private String destinations;
 	
+	private Long hopId;
+	private Long locId;
+	private Long venId;
+	
+	
+	
+	public Long getHopId() {
+		return hopId;
+	}
+
+	public void setHopId(Long hopId) {
+		this.hopId = hopId;
+	}
+
+	public Long getLocId() {
+		return locId;
+	}
+
+	public void setLocId(Long locId) {
+		this.locId = locId;
+	}
+
+	public Long getVenId() {
+		return venId;
+	}
+
+	public void setVenId(Long venId) {
+		this.venId = venId;
+	}
+
 	/**
 	 * @return the destinations
 	 */

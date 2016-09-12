@@ -1,4 +1,25 @@
 $(function(){
+	$('#venPar').combobox({
+    	url:$WEB_ROOT_PATH+"/ven/vendorCtrl!getVenCombox.htm",
+    	panelHeight:"auto",
+        valueField:'vendorId',  
+        textField:'name',
+        mode: 'remote',
+    });
+ 	$("#hopPar").combobox({
+			url:$WEB_ROOT_PATH+'/hop/hospitalCtrl!getHospInfo.htm',
+			valueField:'hospitalId',							
+			textField:'hospitalName',
+			onSelect:function(rec){
+				$("#locPar").combobox({
+					url:$WEB_ROOT_PATH+'/hop/hopCtlocCtrl!getCtlocList.htm?dto.hopCtloc.hospid='+rec.hospitalId,
+					valueField:'hopCtlocId',							
+					textField:'name',
+					mode: 'remote'
+				});
+				
+			}
+	});
 	// 扩展validatebox的validType属性
 	$.extend($.fn.validatebox.defaults.rules, {
 	  //添加自己的表单验证规则
@@ -41,7 +62,9 @@ $(function(){
 	$("#searchNormalAccountBtn").click(function(){
 		$CommonUI.getDataGrid('#datagrid').datagrid('load',{
 			"normalAccountDto.columnName":$("#normalAccountColumnName").val(),
-			"normalAccountDto.columnValue":$("#normalAccountColumnValue").val()
+			"normalAccountDto.hopId":$CommonUI.getComboBox('#hopPar').combobox('getValue'),
+			"normalAccountDto.locId":$CommonUI.getComboBox('#locPar').combobox('getValue'),
+			"normalAccountDto.venId":$CommonUI.getComboBox('#venPar').combobox('getValue')
 		});
 	});
 	
@@ -120,7 +143,7 @@ $(function(){
 	//保存账户角色信息
 	$("#saveNormalAccountRole").click(function(){
 		var row = $("#datagrid").datagrid('getSelected');
-		var accountId = row.accountId;
+		var accountId = row.accountid;
 		
 		var roleId = "";
 		var rows = $("#normalAccountRoleDatagrid").datagrid('getSelections');
@@ -137,7 +160,7 @@ $(function(){
 				function(data){
 					if(data.message){
 						$CommonUI.getDataGrid('#normalAccountRoleDatagrid').datagrid({  
-				    		url:'normalAccountCtrl!getNormalAccountRole.htm?normalAccountDto.accountId='+$("#datagrid").datagrid('getSelected').accountId   
+				    		url:'normalAccountCtrl!getNormalAccountRole.htm?normalAccountDto.accountId='+$("#datagrid").datagrid('getSelected').accountid   
 				        });  
 					}
 					$CommonUI.alert(data.message);
@@ -193,44 +216,50 @@ function editNormalAccount(){
 	}
 	$.ajaxSettings.async = false;
 	var row = $("#datagrid").datagrid('getSelected');
-	if(row){
-		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.accountName']").val(row.accountName);
-		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.accountAlias']").val(row.accountAlias);
-		$("#saveOrUpdateTable input[name='normalAccountDto.accountAliasOld']").val(row.accountAlias);
-		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.normalUser.realName']").val(row.normalUser.realName);
+	var Id = row.accountid;
+	var url = $WEB_ROOT_PATH+ '/normalAccount/normalAccountCtrl!findbyId.htm?normalAccountDto.normalAccount.accountId=' + Id;
+	$("#normalAccountDialog").dialog("open");
+	$CommonUI.getDialog("#normalAccountDialog").dialog("setTitle", "修改");
+	$.getJSON(url, function(data) {
+		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.accountName']").val(data.normalAccount.accountName);
+		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.accountAlias']").val(data.normalAccount.accountAlias);
+		$("#saveOrUpdateTable input[name='normalAccountDto.accountAliasOld']").val(data.normalAccount.accountAlias);
+		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.normalUser.realName']").val(data.normalAccount.normalUser.realName);
 		
-		$CommonUI.getComboBox('#useState').combobox('setValues', [row.useState]);
-		$CommonUI.getComboBox('#normalUserSex').combobox('setValues', [row.normalUser.sex]);
-		$CommonUI.getDateBox('#normalUserBirthday').datebox('setValue', new Date(row.normalUser.birthday).format("yyyy-MM-dd"));
+		$CommonUI.getComboBox('#useState').combobox('setValues', [data.normalAccount.useState]);
+		$CommonUI.getComboBox('#normalUserSex').combobox('setValues', [data.normalAccount.normalUser.sex]);
+		$CommonUI.getDateBox('#normalUserBirthday').datebox('setValue', new Date(data.normalAccount.normalUser.birthday).format("yyyy-MM-dd"));
 		
-		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.normalUser.nation']").val(row.normalUser.nation);
-		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.normalUser.idCard']").val(row.normalUser.idCard);
-		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.normalUser.telephone']").val(row.normalUser.telephone);
-		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.normalUser.address']").val(row.normalUser.address);
-		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.normalUser.email']").val(row.normalUser.email);
-		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.normalUser.zipCode']").val(row.normalUser.zipCode);
-		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.normalUser.healthNumber']").val(row.normalUser.healthNumber);
-		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.normalUser.ssNumber']").val(row.normalUser.ssNumber);
-		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.normalUser.province']").val(row.normalUser.province);
-		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.description']").val(row.description);
-		
-		
-		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.sessionKey']").val(row.sessionKey);
-		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.password']").val(row.password);
-		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.accountId']").val(row.accountId);
-		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.normalUser.userId']").val(row.normalUser.userId);
-		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.normalUser.userCenterId']").val(row.normalUser.userCenterId);
-		$CommonUI.getComboBox('#onlineState').combobox('setValues', [row.onlineState]);
+		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.normalUser.nation']").val(data.normalAccount.normalUser.nation);
+		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.normalUser.idCard']").val(data.normalAccount.normalUser.idCard);
+		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.normalUser.telephone']").val(data.normalAccount.normalUser.telephone);
+		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.normalUser.address']").val(data.normalAccount.normalUser.address);
+		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.normalUser.email']").val(data.normalAccount.normalUser.email);
+		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.normalUser.zipCode']").val(data.normalAccount.normalUser.zipCode);
+		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.normalUser.healthNumber']").val(data.normalAccount.normalUser.healthNumber);
+		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.normalUser.ssNumber']").val(data.normalAccount.normalUser.ssNumber);
+		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.normalUser.province']").val(data.normalAccount.normalUser.province);
+		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.description']").val(data.normalAccount.description);
 		
 		
-		$CommonUI.getComboBox('#type').combobox('setValues', [row.normalUser.type]);
-		if(row.normalUser.locId!=null){
+		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.sessionKey']").val(data.normalAccount.sessionKey);
+		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.password']").val(data.normalAccount.password);
+		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.accountId']").val(data.normalAccount.accountId);
+		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.normalUser.userId']").val(data.normalAccount.normalUser.userId);
+		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.normalUser.userCenterId']").val(data.normalAccount.normalUser.userCenterId);
+		$CommonUI.getComboBox('#onlineState').combobox('setValues', [data.normalAccount.onlineState]);
+		
+		
+		$CommonUI.getComboBox('#type').combobox('setValues', [data.normalAccount.normalUser.type]);
+		vendorId=data.normalAccount.normalUser.vendorId;
+		locId=data.normalAccount.normalUser.locId;
+		if(locId!=null){
 			$("#loc").combobox({
 				url:$WEB_ROOT_PATH+'/hop/hopCtlocCtrl!getCtlocList.htm',
 				valueField:'hopCtlocId',							
 				textField:'name'
 			});
-			$CommonUI.getComboBox('#loc').combobox('setValues', [row.normalUser.locId]);
+			$CommonUI.getComboBox('#loc').combobox('setValues', [locId]);
 			$("#hop").combobox({
 				url:$WEB_ROOT_PATH+'/hop/hospitalCtrl!getHospInfo.htm',
 				valueField:'hospitalId',							
@@ -249,7 +278,7 @@ function editNormalAccount(){
 			$.post(
 				$WEB_ROOT_PATH+'/hop/hopCtlocCtrl!findHopId.htm',
 				{
-					"dto.hopCtloc.hopCtlocId":[row.normalUser.locId],
+					"dto.hopCtloc.hopCtlocId":[locId],
 				},
 				function(data){
 					$CommonUI.getComboBox('#hop').combobox('setValue', data.dto.hopCtloc.hospid);
@@ -259,7 +288,7 @@ function editNormalAccount(){
 			
 			
 		}
-		if(row.normalUser.vendorId!=null){
+		if(vendorId!=null){
 			$("#ven").combobox({
 				url:$WEB_ROOT_PATH+"/ven/vendorCtrl!getVenCombox.htm", //+[row.normalUser.vendorId],
 		    	panelHeight:"auto",
@@ -270,27 +299,21 @@ function editNormalAccount(){
 			$.post(
 				 $WEB_ROOT_PATH+"/ven/vendorCtrl!findById.htm",	
 				 {
-						'dto.vendor.vendorId':[row.normalUser.vendorId],
+						'dto.vendor.vendorId':[vendorId],
 				 },
 				 function(data){
-					 	vendorId=[row.normalUser.vendorId];
 					 	$CommonUI.getComboGrid('#ven').combobox("loadData",  [{"name":data,"vendorId":vendorId}]);
 						$CommonUI.getComboGrid('#ven').combobox('setValue', vendorId);
 				 }
 			);
-			$CommonUI.getComboGrid('#ven').combobox('setValue', row.normalUser.vendorId);
+			$CommonUI.getComboGrid('#ven').combobox('setValue', vendorId);
 		}
-		$CommonUI.getDateBox('#updateTime').datebox('setValue', new Date(row.updateTime).format("yyyy-MM-dd"));
-		$CommonUI.getDateBox('#loginTime').datebox('setValue', new Date(row.loginTime).format("yyyy-MM-dd"));
-		$CommonUI.getDateBox('#regTime').datebox('setValue', new Date(row.regTime).format("yyyy-MM-dd"));
-		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.logNum']").val(row.logNum);
-		
-	}
-	
-	$CommonUI.getDialog('#normalAccountDialog').dialog({  
-		title: '修改普通用户账户'  
-    });  
-	$('#normalAccountDialog').dialog('open');
+		$CommonUI.getDateBox('#updateTime').datebox('setValue', new Date(data.normalAccount.updateTime).format("yyyy-MM-dd"));
+		$CommonUI.getDateBox('#loginTime').datebox('setValue', new Date(data.normalAccount.loginTime).format("yyyy-MM-dd"));
+		$CommonUI.getDateBox('#regTime').datebox('setValue', new Date(data.normalAccount.regTime).format("yyyy-MM-dd"));
+		$("#saveOrUpdateTable input[name='normalAccountDto.normalAccount.logNum']").val(data.normalAccount.logNum);
+	});
+
 }
 
 //根据普通用户账户id删除普通用户账户
@@ -301,7 +324,7 @@ function cancelNormalAccount(){
 	}
 	$CommonUI.confirm('确定删除吗？', 'question',0,function(){
 		var row = $("#datagrid").datagrid('getSelected');
-		$.post("normalAccountCtrl!deleteNormalAccount.htm", {'normalAccountDto.normalAccount.accountId':row.accountId},function(){
+		$.post("normalAccountCtrl!deleteNormalAccount.htm", {'normalAccountDto.normalAccount.accountId':row.accountid},function(){
 			$CommonUI.alert("删除成功","","","",null);
 			$("#datagrid").datagrid('reload');
 		});
@@ -382,7 +405,7 @@ function normalAccountRole(){
 	var row = $("#datagrid").datagrid('getSelected');
 	//根据系统代码和账户id获取账户该系统下的角色
 	$CommonUI.getDataGrid('#normalAccountRoleDatagrid').datagrid({  
-		url:'normalAccountCtrl!getNormalAccountRole.htm?normalAccountDto.accountId='+row.accountId,   
+		url:'normalAccountCtrl!getNormalAccountRole.htm?normalAccountDto.accountId='+row.accountid,   
 		onLoadSuccess:function(){
 			var rows = $CommonUI.getDataGrid('#normalAccountRoleDatagrid').datagrid("getRows");
 			for(var i=0;i<rows.length;i++){
@@ -406,7 +429,7 @@ function normalAccountFunc(){
 	var row = $("#datagrid").datagrid('getSelected');
 	
 	$CommonUI.getTree('#normalAccountFuncTree').tree({
-		url:'normalAccountCtrl!getNormalAccountFunc.htm?normalAccountDto.accountId='+row.accountId
+		url:'normalAccountCtrl!getNormalAccountFunc.htm?normalAccountDto.accountId='+row.accountid
     });
 	
 	$('#normalAccountFuncWindow').window('open');

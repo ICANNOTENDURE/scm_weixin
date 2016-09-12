@@ -20,7 +20,6 @@ import com.dhcc.framework.app.blh.AbstractBaseBlh;
 import com.dhcc.framework.app.service.CommonService;
 import com.dhcc.framework.exception.DataBaseException;
 import com.dhcc.framework.transmission.event.BusinessRequest;
-import com.dhcc.framework.util.JsonUtils;
 import com.dhcc.framework.web.context.WebContextHolder;
 import com.dhcc.scm.dto.userManage.NormalAccountDto;
 import com.dhcc.scm.entity.hop.HopCtloc;
@@ -70,7 +69,8 @@ public class NormalAccountBlh extends AbstractBaseBlh{
 		try {
 			NormalAccountDto normalAccountDto = this.getDto(NormalAccountDto.class, req);
 			normalAccountDto.setColumnValue(new String(normalAccountDto.getColumnValue().getBytes("ISO-8859-1"),"UTF-8"));
-			this.normalAccountService.normalAccountList(normalAccountDto);
+			//this.normalAccountService.normalAccountList(normalAccountDto);
+			normalAccountService.listUser(normalAccountDto);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new DataBaseException(e.getMessage(), e);
@@ -468,5 +468,11 @@ public class NormalAccountBlh extends AbstractBaseBlh{
 		String vendorId=WebContextHolder.getContext().getVisit().getUserInfo().getVendorIdLong().toString();
 		WebContextHolder.getContext().getResponse().getWriter().write(vendorId);
 	
+	}
+	
+	
+	public void findbyId(BusinessRequest req){
+		NormalAccountDto normalAccountDto = this.getDto(NormalAccountDto.class, req);
+		normalAccountDto.setNormalAccount(commonService.get(NormalAccount.class, normalAccountDto.getNormalAccount().getAccountId()));
 	}
 }

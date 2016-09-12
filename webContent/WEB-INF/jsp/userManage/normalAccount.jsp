@@ -36,30 +36,47 @@
 	    		  pageList:[20,30,40,100],">
 			<thead>
 				<tr>
+					<!-- 
 					<th data-options="field:'accountName',width:30">账户名</th>
 					<th data-options="field:'accountAlias',width:30">账户别名</th>
 					<th
 						data-options="field:'useState',width:30,formatter:function(value,row,index){if (value==1){return '可用';} else if(value==2) {return '停用';} else {return '待审核';}}">使用状态</th>
 					<th
 						data-options="field:'onlineState',width:30,formatter:function(value,row,index){if (value==1){return '在线';} else if(value==2) {return '离线';} else {return '未知';}}">在线状态</th>
+					 -->
+					 <th data-options="field:'userid',hidden:true">userid</th>
+					 <th data-options="field:'accountid',hidden:true">accountid</th>
+					 <th data-options="field:'account',width:50">账户名</th>
+					 <th data-options="field:'type',width:20,formatter:function(value,row,index){if (value==0){return '平台用户';} else if(value==1) {return '医院用户';} else if(value==2) {return '供应商用户';}else if(value==3) {return '护士';}}">账号类型</th>
+					 <th data-options="field:'hop',width:50">医院</th>
+					 <th data-options="field:'loc',width:50">科室</th>
+					 <th data-options="field:'ven',width:100">供应商</th>
+					 <th data-options="field:'state',width:20,formatter:function(value,row,index){if (value==1){return '使用';} else if(value==2) {return '停用';} else if(value==3) {return '未审批';}}">状态</th>
 				</tr>
 			</thead>
 		</table>
 	</div>
 	<div id="toolbarCenter" style="height: auto">
-		<span>查询条件:</span> <select id="normalAccountColumnName"
-			panelHeight="auto" style="width: 100px">
-			<option value="accountName">账户名</option>
-			<option value="accountAlias">账户别名</option>
-		</select> <input id="normalAccountColumnValue" style="width: 200px;"
-			type="text" /> <a id="searchNormalAccountBtn" href="#"
+		账号		
+		<input id="normalAccountColumnValue" style="width: 150px;" type="text" /> 
+		医院:
+		<input style="width: 155px;" class="combobox" type="text" id="hopPar" />
+		科室:
+		<input style="width: 155px;" class="combobox" type="text"   id="locPar" />
+		供应商:
+		<input style="width: 255px;" class="combobox" type="text"  id="venPar" />				 				 
+		<a id="searchNormalAccountBtn" href="#"
 			class="linkbutton" iconCls="icon-search">查询</a>
 		<a id="addBt" class="linkbutton" onclick="javascript:addNormalAccount()"
 			data-options="iconCls:'icon-add',plain:true">增加</a> <a
 			class="linkbutton" data-options="iconCls:'icon-edit',plain:true"
-			onclick="javascript:editNormalAccount()">修改</a> <a class="linkbutton"
+			onclick="javascript:editNormalAccount()">修改</a> 
+		<!-- 
+		<a class="linkbutton"
 			data-options="iconCls:'icon-remove',plain:true"
-			onclick="javascript:cancelNormalAccount()">删除</a> <a class="linkbutton"
+			onclick="javascript:cancelNormalAccount()">删除</a> 
+		 -->
+		<a class="linkbutton"
 			data-options="iconCls:'icon-search',plain:true"
 			onclick="javascript:normalAccountRole()">角色分配</a>
 			 <a class="linkbutton"
@@ -86,8 +103,7 @@
 						name="normalAccountDto.normalAccount.accountAlias"
 						class="validatebox" type="text" style="width: 200px;"
 						data-options="
-			      required:true,
-			      validType:['accountAlias']
+			      required:true
 			      " />
 					</td>
 					<td class="textLabel" style="text-align: right; width: 20%">使用状态:</td>
