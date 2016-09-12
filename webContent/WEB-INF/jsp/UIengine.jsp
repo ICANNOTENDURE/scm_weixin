@@ -20,6 +20,7 @@
 <link rel="stylesheet" href="<%=request.getContextPath()%>/dist/css/skins/_all-skins.min.css">
 <!-- jQuery 2.1.4 -->
 <script src="<%=request.getContextPath()%>/js/jquery/jQuery-2.1.4.min.js"></script>
+<script src="<%=request.getContextPath()%>/js/layer/layer.js"></script>
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>

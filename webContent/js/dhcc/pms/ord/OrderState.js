@@ -146,10 +146,21 @@ function commentRow(value,row,index){
 }
 function comment(index){
 	orderid=$('#detailgrid').datagrid('getRows')[index]['orderid'];
-	$("#commentFrame")[0].src= getContextPath() + '/comment/CommentCtrl!listMain.htm?dto.evalute.orderId='+orderid;
-    $("#commentWin").dialog("setTitle", "评价");
-    $("#commentWin").dialog("center");
-    $("#commentWin").dialog("open");
+	url=getContextPath() +'/comment/CommentCtrl!listMain.htm?dto.evalute.orderId='+orderid;
+	//iframe层
+	window.parent.layer.open({
+	  type: 2,
+	  title: '评价',
+	  shadeClose: true,
+	  shade: 0.8,
+	  area: ['636px', '100%'],
+	  content:''+url+'' //iframe的url
+	}); 
+	
+	//$("#commentFrame")[0].src= getContextPath() + '/comment/CommentCtrl!listMain.htm?dto.evalute.orderId='+orderid;
+    //$("#commentWin").dialog("setTitle", "评价");
+    //$("#commentWin").dialog("center");
+    //$("#commentWin").dialog("open");
 }
 function getContextPath(){
 	var strFullPath=window.document.location.href;
