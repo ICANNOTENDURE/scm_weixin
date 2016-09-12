@@ -69,7 +69,7 @@ public class JdbcTemplateWrapper {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public List queryAllMatchListWithParaMap(String sql, Class className, Map paramMap){
 		if(logger.isInfoEnabled()){
-			logger.info(getSqlFromQueryData(sql,paramMap));
+			//logger.info(getSqlFromQueryData(sql,paramMap));
 		}
 		RowMapper rowMapper = new ObjectRowMapper(className);
 		return namedParameterJdbcTemplate.query(sql, paramMap, rowMapper);
@@ -86,7 +86,7 @@ public class JdbcTemplateWrapper {
 		RowMapper rowMapper = new ObjectRowMapper(className);
 		String sql = this.buildPageSql(pagerModel.getQueryHql(), startRow, pagerModel.getPageSize());
 		//if(logger.isInfoEnabled()){
-			logger.info(getSqlFromQueryData(sql, pagerModel.getHqlParamMap()));
+			//logger.info(getSqlFromQueryData(sql, pagerModel.getHqlParamMap()));
 		//}
 		List dataList = namedParameterJdbcTemplate.query(sql, pagerModel.getHqlParamMap(), rowMapper);
 		pagerModel.setPageData(dataList);
@@ -105,7 +105,7 @@ public class JdbcTemplateWrapper {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public List queryAllMatchListWithParaMap(String sql, Class clasz, Map paramMap,int pageNo,int pageSize,String columnNameForCount){
 		if(logger.isInfoEnabled()){
-			logger.info(getSqlFromQueryData(sql,paramMap));
+			//logger.info(getSqlFromQueryData(sql,paramMap));
 		}
 		//int totalRows = this.getResultCountWithValuesMap(sql, columnNameForCount, paramMap);
 		//pageNo = this.getValidPage(pageNo, totalRows, pageSize);
