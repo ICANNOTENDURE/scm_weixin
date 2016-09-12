@@ -299,9 +299,11 @@ public class MpMessageBlh extends AbstractBaseBlh {
 		messageDto.setStart(dto.getStartDate());
 		messageDto.setVenid(normalAccount.getNormalUser().getVendorId());
 		messageDto.setLocid(normalAccount.getNormalUser().getLocId());
+		messageDto.setPageModel(dto.getPageModel());
 		wxMessageService.listToDoTask(messageDto);
 		dto.setOrderInfos(messageDto.getOrderInfos());
 		dto.setPageModel(messageDto.getPageModel());
+		dto.setPageCount(messageDto.getPageCount());
 		return "mpToDoTask";
 	}
 	
