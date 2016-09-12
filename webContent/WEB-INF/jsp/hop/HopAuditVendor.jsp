@@ -7,7 +7,7 @@
 <%@include file="/WEB-INF/jsp/common/scriptInc.jsp"%>
 
 <link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/js/easyui/themes/dhcc/easyui.css">
+	href="<%=request.getContextPath()%>/js/easyui/themes/metro-blue/easyui.css">
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/js/easyui/jquery.easyui.min.js"></script>
 	<script type="text/javascript"
@@ -265,18 +265,18 @@ function AuditT(value,row,index){
 								 
 					<thead>
 						<tr>
-							<th data-options="field:'vendorid',hidden:true" width="1/13">IncId ID</th>
-							<th data-options="field:'code',sortable:true" width="1/13">代码</th>
-							<th data-options="field:'name',sortable:true" width="1/13">供应商</th>
-							<th data-options="field:'taxation',sortable:true" width="1/13">工商执照号</th>
-							<th data-options="field:'email',sortable:true" width="1/13">邮箱</th>
-							<th data-options="field:'contact',sortable:true" width="1/13">联系人</th>
-							<th data-options="field:'account',sortable:true" width="1/13">注册帐号</th>
-							<th data-options="field:'tel',sortable:true" width="1/13">电话</th>
-							<th data-options="field:'fax',sortable:true" width="1/13">传真</th>
-							<th data-options="field:'address',sortable:true" width="1/13">联系地址</th>	
-                        	<th data-options="field:'hopvendorid',hidden:true" width="1/13">HopVendorId ID</th>
-							<th data-options="field:'auditflag',formatter:AuditT,sortable:true" width="1/13">资质</th>	
+							<th data-options="field:'vendorid',hidden:true" >IncId ID</th>
+							<th data-options="field:'hopvendorid',hidden:true" width="1/13">HopVendorId ID</th>
+							<th data-options="field:'code',sortable:true,hidden:true" >代码</th>
+							<th data-options="field:'name',sortable:true" width="200">供应商</th>
+							<th data-options="field:'taxation',sortable:true" width="200">工商执照号</th>
+							<th data-options="field:'email',sortable:true" width="150">邮箱</th>
+							<th data-options="field:'contact',sortable:true" width="50">联系人</th>
+							<th data-options="field:'account',sortable:true,hidden:true" width="150">注册帐号</th>
+							<th data-options="field:'tel',sortable:true" width="90">电话</th>
+							<th data-options="field:'fax',sortable:true" width="90">传真</th>
+							<th data-options="field:'address',sortable:true" width="250">联系地址</th>	
+							<th data-options="field:'auditflag',formatter:AuditT,sortable:true" width="50">资质</th>	
 						</tr>
 					</thead>
 				</table>			

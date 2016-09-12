@@ -327,7 +327,7 @@ am-icon-spin {
 		
 		<!-- To the right -->
 		<!-- Default to the left -->
-		<!-- Main Footer  -->
+		<!-- Main Footer  
 		<footer class="main-footer">
 			
 			<div class="pull-right hidden-xs">By the Dhcc Pharmacy Team</div>
@@ -335,7 +335,7 @@ am-icon-spin {
 			<strong>Copyright &copy; 2015 <a href="#">东华软件股份公司</a>.
 			</strong> All rights reserved.
 		</footer>
-
+		-->
 		<!-- Control Sidebar -->
 		<aside class="control-sidebar control-sidebar-dark">
 			<!-- Create the tabs -->
