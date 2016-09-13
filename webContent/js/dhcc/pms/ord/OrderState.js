@@ -131,9 +131,9 @@ $(function (){
 		});
 	   
 	   $('#vendor').combobox({
-		    url:getContextPath()+"/hop/hopVendorCtrl!findHopVenComboxVos.htm",
+		    url:getContextPath()+"/ven/vendorCtrl!getVenCombox.htm",
 	    	panelHeight:"auto",
-	        valueField:'id',  
+	        valueField:'vendorId',  
 	        textField:'name',
 	        mode: 'remote',
 	   });
