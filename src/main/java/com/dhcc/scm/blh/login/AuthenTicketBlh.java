@@ -90,7 +90,7 @@ public class AuthenTicketBlh extends AbstractBaseBlh {
 		LoginDto loginDto = super.getDto(LoginDto.class, res);
 		
     	String servicePassword=PropertiesBean.getInstance().getProperty("confg.serviceKey");	
-    	logger.info("\n--------服务密码-------\n"+servicePassword);
+    	//logger.info("\n--------服务密码-------\n"+servicePassword);
     	
     	LoginVo loginVo=loginDto.getLoginVo();
     	String serviceTicket=loginVo.getServiceTicket();
@@ -98,7 +98,7 @@ public class AuthenTicketBlh extends AbstractBaseBlh {
     	String userName=loginVo.getUserName();
 
     	String serviceTicketDecrypt = AESCoder.aesCbcDecrypt(serviceTicket, servicePassword);
-        logger.info("\n-----------解密后的服务票据信息-----------\n"+serviceTicketDecrypt);
+        //logger.info("\n-----------解密后的服务票据信息-----------\n"+serviceTicketDecrypt);
         
 		@SuppressWarnings("unchecked")
 		Map<String, Object> ticket = JsonUtils.toObject(serviceTicketDecrypt, Map.class);
@@ -110,7 +110,7 @@ public class AuthenTicketBlh extends AbstractBaseBlh {
 		List<Map<String, String>> roleFuncList=(List<Map<String, String>>)ticket.get("roleFunc");
         
         String authenMsgDecrypt = AESCoder.aesCbcDecrypt(authenMsgC, sessionKey);
-        logger.info("\n-----------解密后的时间戳-----------\n"+authenMsgDecrypt);
+        //logger.info("\n-----------解密后的时间戳-----------\n"+authenMsgDecrypt);
         
         StringBuilder authenMsgS=new StringBuilder();
         String userType=""; //人员类型
@@ -119,7 +119,7 @@ public class AuthenTicketBlh extends AbstractBaseBlh {
         if (authenMsgDecrypt.equals(timestamp)){
         	String currentTime=OperTime.getCurrentTime();
         	double intervalTime=OperTime.getIntervalTime(currentTime, timestamp);
-        	logger.info("\n-----------intervalTime-----------\n"+intervalTime);
+        	//logger.info("\n-----------intervalTime-----------\n"+intervalTime);
         	if ((intervalTime>=-300)&&(intervalTime<=1800)) {
         		WebContext webContext = WebContextHolder.getContext();
         		

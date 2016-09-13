@@ -265,7 +265,7 @@ public class LoginDao extends HibernatePersistentObjectDAO<NormalAccount>{
 			roleFunc.deleteCharAt(roleFunc.length()-1);
 		}
 		roleFunc.append("]");
-		logger.info("\n-----roleFunc------\n"+roleFunc);
+		//logger.info("\n-----roleFunc------\n"+roleFunc);
 		return roleFunc.toString();
 	}
 	/**

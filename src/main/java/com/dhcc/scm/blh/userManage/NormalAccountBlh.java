@@ -149,11 +149,11 @@ public class NormalAccountBlh extends AbstractBaseBlh{
 			 String regex2 = "^((?!@).)+$";
 			 String regex3 = "^.{6,20}$";
 			 boolean flag = accountAlias.matches(regex1)&&accountAlias.matches(regex2)&&accountAlias.matches(regex3);
-			 if(!flag){
-				 normalAccountDto.setMessage("账户名不能以数字开头，不能包含'@',长度为6-20位");
-				 normalAccountDto.setSuccess(flag); 
-				 return false;
-			 }
+//			 if(!flag){
+//				 normalAccountDto.setMessage("账户名不能以数字开头，不能包含'@',长度为6-20位");
+//				 normalAccountDto.setSuccess(flag); 
+//				 return false;
+//			 }
 		}else{
 			normalAccountDto.setMessage("账户名不能为空");
 			normalAccountDto.setSuccess(false); 

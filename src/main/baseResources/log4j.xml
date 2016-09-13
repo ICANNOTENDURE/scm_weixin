@@ -90,7 +90,7 @@
 		<appender-ref ref="ConsoleAppender" />
 	</logger>
 	<root>
-		<level value="INFO" />
+		<level value="ERROR" />
 		<appender-ref ref="ErrorFileAppender" />
 		<appender-ref ref="ConsoleAppender" />
 	</root>
