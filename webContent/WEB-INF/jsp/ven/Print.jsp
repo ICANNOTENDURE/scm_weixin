@@ -92,11 +92,9 @@ body {font:12px/1.5  "宋体";color:#333}
 							<td>${invno}</td>
 							<td>${batno}</td>
 							<td>${expdate}</td>
-							<s:iterator value="dto.printVos"  id="printVos">
-							<td>${printVos.qualifdate}</td>
-							<td>${printVos.purloc}</td>
-							<td>${printVos.venincspec}</td>
-							</s:iterator>
+							<td>${qualifdate}</td>
+							<td>${purloc}</td>
+							<td>${spec}</td>
 							<td>${orderqty}</td>
 							<td>${manf}</td>
 							<td>${rp}</td>

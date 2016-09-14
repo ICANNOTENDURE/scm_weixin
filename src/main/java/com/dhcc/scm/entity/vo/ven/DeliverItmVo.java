@@ -24,6 +24,22 @@ public class DeliverItmVo implements java.io.Serializable{
 	
 	private String uom;
 	
+	private String spec;
+	
+	/**
+	 * @return the spec
+	 */
+	public String getSpec() {
+		return spec;
+	}
+
+	/**
+	 * @param spec the spec to set
+	 */
+	public void setSpec(String spec) {
+		this.spec = spec;
+	}
+
 	private Float deliverqty;
 	
 	private Float orderqty;

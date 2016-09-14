@@ -1169,6 +1169,7 @@ public class VenDeliverDao extends HibernatePersistentObjectDAO<VenDeliver> {
 		hqlBuffer.append("t3.VEN_INC_CODE as venincncode,  ");
 		hqlBuffer.append("t3.VEN_INC_NAME as venincname,  ");
 		hqlBuffer.append("t3.VEN_INC_UOMNAME as uom,  ");
+		hqlBuffer.append("t3.VEN_INC_SPEC as spec,  ");
 		hqlBuffer.append("t1.ORDSUB_QTY as deliverqty,  ");
 		hqlBuffer.append("t2.ORDER_VEN_QTY as orderqty,  ");
 		hqlBuffer.append("t1.ORDSUB_QTY as sendedqty,  ");

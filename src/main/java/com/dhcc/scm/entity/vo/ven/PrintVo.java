@@ -30,22 +30,6 @@ public class PrintVo implements java.io.Serializable{
 
 	private Long ordrid;
 	
-    private String venincspec;
-	
-	/**
-	 * @return the venincspec
-	 */
-	public String getVenincspec() {
-		return venincspec;
-	}
-
-	/**
-	 * @param venincspec the venincspec to set
-	 */
-	public void setVenincspec(String venincspec) {
-		this.venincspec = venincspec;
-	}
-	
 	private String orderno;
 	
 	private List<DeliverItmVo> deliverItmVos;
