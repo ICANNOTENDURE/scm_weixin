@@ -17,6 +17,7 @@ import com.dhcc.scm.entity.vo.ws.HisHvLabelWeb;
 import com.dhcc.scm.entity.vo.ws.HisInGdRec;
 import com.dhcc.scm.entity.vo.ws.HisIncLocQtyWeb;
 import com.dhcc.scm.entity.vo.ws.HisIncWeb;
+import com.dhcc.scm.entity.vo.ws.HisInvInfoItmWeb;
 import com.dhcc.scm.entity.vo.ws.HisInvInfoWeb;
 import com.dhcc.scm.entity.vo.ws.HisLocWeb;
 import com.dhcc.scm.entity.vo.ws.HisOrderWeb;
@@ -146,12 +147,22 @@ public interface HisInfoServiceInterface {
 
 	    @WebMethod
 	    @WebResult(name="operateResult")
-	    @WSDLDocumentation("获取发票号,通过入库子表id")
+	    @WSDLDocumentation("获取发票号,通过微信入库子表id")
 	    public OperateResult getInvByRec(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="ingdrecId")Long ingdrecId);
 
 	    @WebMethod
 	    @WebResult(name="operateResult")
-	    @WSDLDocumentation("更新平台发票号")
+	    @WSDLDocumentation("获取发票信息,通过发货子表id T_ORD_ORDETAILSUB")
+	    public HisInvInfoItmWeb getInvBySubId(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="subId")String subId);
+
+	    @WebMethod
+	    @WebResult(name="operateResult")
+	    @WSDLDocumentation("通过发货子表id T_ORD_ORDETAILSUB更新平台发票号")
+	    public OperateResult syncInvBySub(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="subId")String subId,@WebParam(name="invno")String invno);
+
+	    @WebMethod
+	    @WebResult(name="operateResult")
+	    @WSDLDocumentation("通过微信入库表 更新平台发票号")
 	    public OperateResult syncInvByRec(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="ingdrecId")Long ingdrecId,@WebParam(name="invno")String invno);
 	    
 	    

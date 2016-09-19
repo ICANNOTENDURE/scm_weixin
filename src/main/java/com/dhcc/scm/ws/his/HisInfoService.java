@@ -48,6 +48,7 @@ import com.dhcc.scm.entity.vo.ws.HisInGdRec;
 import com.dhcc.scm.entity.vo.ws.HisInGdRecItm;
 import com.dhcc.scm.entity.vo.ws.HisIncLocQtyWeb;
 import com.dhcc.scm.entity.vo.ws.HisIncWeb;
+import com.dhcc.scm.entity.vo.ws.HisInvInfoItmWeb;
 import com.dhcc.scm.entity.vo.ws.HisInvInfoWeb;
 import com.dhcc.scm.entity.vo.ws.HisLocWeb;
 import com.dhcc.scm.entity.vo.ws.HisOrderWeb;
@@ -393,8 +394,10 @@ public class HisInfoService implements HisInfoServiceInterface{
 			operateResult.setResultContent("程序异常->Exception:"+e.getMessage());
 			return operateResult;
 		}finally{
-			log.setOpResult(JsonUtils.toJson(operateResult));
-			commonService.saveOrUpdate(log);
+			if(!"0".equals(operateResult.getResultCode())){
+				log.setOpResult(JsonUtils.toJson(operateResult));
+				commonService.saveOrUpdate(log);
+			}
 		}
 		return operateResult;
 	}
@@ -877,7 +880,48 @@ public class HisInfoService implements HisInfoServiceInterface{
 		}
 		return list;
 	}
+	
+	
+	@Override
+	public HisInvInfoItmWeb getInvBySubId(String usename, String password, String subId) {
+		
+		HisInvInfoItmWeb hisInvInfoItmWeb=new HisInvInfoItmWeb();
+		NormalAccount normalAccount=ordBlh.checkWsParam(new OperateResult(), usename, password, null);
+		if(normalAccount==null){
+			return hisInvInfoItmWeb;
+		}
+		if(StringUtils.isBlank(subId)){
+			return hisInvInfoItmWeb;
+		}
+		OrderDetailSub orderDetailSub=commonService.get(OrderDetailSub.class, subId);
+		if(orderDetailSub!=null){
+			hisInvInfoItmWeb.setInvno(orderDetailSub.getOrdSubInvNo());
+			hisInvInfoItmWeb.setInvdate(orderDetailSub.getOrdSubInvDate());
+		}
+		return hisInvInfoItmWeb;
+	}
 
+	@Override
+	public OperateResult syncInvBySub(String usename, String password, String subId, String invno) {
+		
+		OperateResult operateResult=new OperateResult();
+		NormalAccount normalAccount=ordBlh.checkWsParam(operateResult, usename, password, null);
+		if(normalAccount==null){
+			return operateResult;
+		}
+		if(StringUtils.isBlank(subId)){
+			operateResult.setResultCode("-1");
+			operateResult.setResultContent("入参为空");
+			return operateResult;
+		}
+		OrderDetailSub orderDetailSub=commonService.get(OrderDetailSub.class, subId);
+		if(orderDetailSub!=null){
+			orderDetailSub.setOrdSubInvNo(invno);
+			commonService.saveOrUpdate(orderDetailSub);
+		}
+		return operateResult;
+	}
+	
 
     
     

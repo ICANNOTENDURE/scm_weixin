@@ -38,6 +38,28 @@ public class HisInvInfoItmWeb implements Serializable{
 	
 	private String orderno;
 	
+	private String invno;
+	
+	private Date invdate;
+	
+	
+	
+	public String getInvno() {
+		return invno;
+	}
+
+	public void setInvno(String invno) {
+		this.invno = invno;
+	}
+
+	public Date getInvdate() {
+		return invdate;
+	}
+
+	public void setInvdate(Date invdate) {
+		this.invdate = invdate;
+	}
+
 	/**
 	 * @return the batno
 	 */
