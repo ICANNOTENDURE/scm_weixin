@@ -279,10 +279,11 @@ public class VendorBlh extends AbstractBaseBlh {
 		VendorDto dto = super.getDto(VendorDto.class, res);
 		//删除upload文件夹下的所有文件
 		VenQualifPic venQualifPic=commonService.get(VenQualifPic.class,Long.valueOf(dto.getVenQualifPicId()));
-		String storePathString=ServletActionContext.getServletContext().getRealPath("/uploads")+"\\"+venQualifPic.getPath();
-		File tempFile = new File(storePathString);
 		try{
-			FileUtils.forceDelete(tempFile);
+			File file=new File(ServletActionContext.getServletContext().getRealPath(File.separator+"uploadPic"),venQualifPic.getPath());
+			if(file.exists()){
+				FileUtils.forceDelete(file);
+			}
 			commonService.delete(venQualifPic);
 			dto.setSuccess(true);
 			super.writeResult(dto.getVenQualifPicId());
