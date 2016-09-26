@@ -1139,6 +1139,32 @@ public class VenDeliverBlh extends AbstractBaseBlh {
 				
 				}
 				
+				 //在打印随行单中增加采购合同号  guoguomin 2016-9-26
+				if(orderDetail.getOrderVenIncId() != null){
+					long id=4;
+					String[] propertyNames={"qualifyIncId","sysQualifType.qualifTypeId"};
+					Object[] values={orderDetail.getOrderVenIncId(),id};
+					List<VenIncqQualif> incqQualifs2=commonService.findByProperties(VenIncqQualif.class, propertyNames, values);
+					if(incqQualifs2.size()>0){
+						VenIncqQualif venIncqQualif = commonService.get(VenIncqQualif.class, incqQualifs2.get(0).getQualifyId());
+						printVo.setQualifdpurno(venIncqQualif.getQualifDescription());
+					}
+				
+				}
+				
+				 //在打印随行单中增加商品注册证  guoguomin 2016-9-26
+				if(orderDetail.getOrderVenIncId() != null){
+					long id=7;
+					String[] propertyNames={"qualifyIncId","sysQualifType.qualifTypeId"};
+					Object[] values={orderDetail.getOrderVenIncId(),id};
+					List<VenIncqQualif> incqQualifs2=commonService.findByProperties(VenIncqQualif.class, propertyNames, values);
+					if(incqQualifs2.size()>0){
+						VenIncqQualif venIncqQualif = commonService.get(VenIncqQualif.class, incqQualifs2.get(0).getQualifyId());
+						printVo.setQualifprocer(venIncqQualif.getQualifDescription());
+					}
+				
+				}
+				
 				if (orderDetail.getOrderRecDestination() != null) {
 					HopCtlocDestination hopCtlocDestination = commonService.get(HopCtlocDestination.class, orderDetail.getOrderRecDestination());
 					printVo.setDestination(hopCtlocDestination.getDestination());
