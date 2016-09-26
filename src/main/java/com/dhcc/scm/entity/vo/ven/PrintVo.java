@@ -32,6 +32,40 @@ public class PrintVo implements java.io.Serializable{
 	
 	private String orderno;
 	
+	private String qualifprocer;
+	
+	private String qualifdpurno;
+	
+	
+
+	/**
+	 * @return the qualifprocer
+	 */
+	public String getQualifprocer() {
+		return qualifprocer;
+	}
+
+	/**
+	 * @param qualifprocer the qualifprocer to set
+	 */
+	public void setQualifprocer(String qualifprocer) {
+		this.qualifprocer = qualifprocer;
+	}
+
+	/**
+	 * @return the qualifdpurno
+	 */
+	public String getQualifdpurno() {
+		return qualifdpurno;
+	}
+
+	/**
+	 * @param qualifdpurno the qualifdpurno to set
+	 */
+	public void setQualifdpurno(String qualifdpurno) {
+		this.qualifdpurno = qualifdpurno;
+	}
+
 	private List<DeliverItmVo> deliverItmVos;
 	
 	/**
