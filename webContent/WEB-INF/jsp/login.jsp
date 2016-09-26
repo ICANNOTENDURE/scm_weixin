@@ -4,20 +4,18 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>东华电子商务平台</title>
-<script type="text/javascript" src="<%=request.getContextPath()%>/js/common.js"></script>
+
 <%@include file="/WEB-INF/jsp/common/bootstrap.jsp"%>
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/font-awesome/4.4.0/css/font-awesome.min.css" />
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/css/login/index.css" />
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/common.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/login/jquery.backgroundcover.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/login.js"></script>
-<script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/dhcc/login/fun.base.js"></script>
-<script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/dhcc/login/script.js"></script>
-<script src="<%=request.getContextPath()%>/js/security/aes.js"></script>
-<script src="<%=request.getContextPath()%>/js/security/login.js"></script>
-<script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/dhcc/pms/login/login.js"></script>	
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/dhcc/login/fun.base.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/dhcc/login/script.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/security/aes.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/security/login.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/dhcc/pms/login/login.js"></script>	
 </head>
 <body>
   <div class="index">
@@ -55,9 +53,9 @@
               <!--图片容器-->
               <div class="carousel-inner">
 
-                  <div class="item active"><img src="<%=request.getContextPath()%>/images/login/2.jpg" alt=""/></div>
-                  <div class="item"><img src="<%=request.getContextPath()%>/images/login/3.jpg" alt=""/></div>
-                  <div class="item"><img src="<%=request.getContextPath()%>/images/login/4.jpg" alt=""/></div>
+                  <div class="item active"><img src="<%=request.getContextPath()%>/images/login/2.jpg" alt="" style="height:440px;width: 100%"/></div>
+                  <div class="item"><img src="<%=request.getContextPath()%>/images/login/3.jpg" alt="" style="height:440px;width: 100%"/></div>
+                  <div class="item"><img src="<%=request.getContextPath()%>/images/login/4.jpg" alt="" style="height:440px;width: 100%"/></div>
               </div>
               <!--小圆圈容器-->
               <ol class="carousel-indicators">
