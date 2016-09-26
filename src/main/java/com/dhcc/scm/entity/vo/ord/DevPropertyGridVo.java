@@ -61,9 +61,15 @@ public class DevPropertyGridVo implements java.io.Serializable{
 	
 	private String purloc;
 	
-	
-	
+	private String substatus;
 
+	public String getSubstatus() {
+		return substatus;
+	}
+
+	public void setSubstatus(String substatus) {
+		this.substatus = substatus;
+	}
 
 	public String getSpec() {
 		return spec;

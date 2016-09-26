@@ -214,22 +214,24 @@ public class HisInfoService implements HisInfoServiceInterface{
 	@Override
 	public OperateResult getHopVendor(HisVendorWeb hisVendorWeb) {
 		OperateResult operateResult=new OperateResult();
-		SysLog log = new SysLog();
-		log.setOpArg(JsonUtils.toJson(hisVendorWeb));
-		log.setOpName("webservice同步医院供应商信息");
-		log.setOpDate(new Date());
-		log.setOpType("webservice");
-		log.setOpUser(hisVendorWeb.getUserName());
 		try {
-			
 			hopVendorBlh.syncHisVendor(operateResult, hisVendorWeb);
 		} catch (Exception e) {
 			operateResult.setResultCode("1");
 			operateResult.setResultContent("程序异常->Exception:"+e.getMessage());
 			return operateResult;
 		}finally{
-			log.setOpResult(JsonUtils.toJson(operateResult));
-			commonService.saveOrUpdate(log);
+			if(!"0".equals(operateResult.getResultCode())){
+				SysLog log = new SysLog();
+				log.setOpArg(JsonUtils.toJson(hisVendorWeb));
+				log.setOpName("webservice同步医院供应商信息");
+				log.setOpDate(new Date());
+				log.setOpType("webservice");
+				log.setOpUser(hisVendorWeb.getUserName());
+				log.setOpResult(JsonUtils.toJson(operateResult));
+				commonService.saveOrUpdate(log);
+			}
+
 		}
 		return operateResult;
 	}

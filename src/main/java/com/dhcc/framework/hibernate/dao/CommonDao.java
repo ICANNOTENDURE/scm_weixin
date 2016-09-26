@@ -30,6 +30,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.internal.CriteriaImpl;
 import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.type.FloatType;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
@@ -871,7 +872,7 @@ public  class CommonDao  {
 		}
 		return queryObject.list();
 	}
-	
+
 	/**
 	 * 以命名参数形式占位符SQL查询  
 	 * @param sql

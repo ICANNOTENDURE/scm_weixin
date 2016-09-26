@@ -111,9 +111,11 @@ public class OrderStateBlh extends AbstractBaseBlh {
 		try {
 			List<OrderDetailSub> orderDetailSubs=commonService.findByProperty(OrderDetailSub.class, "ordSubDetailId", dto.getOrderDetailSub().getOrdSubDetailId());
 			OrderDetail orderDetail=commonService.get(OrderDetail.class, dto.getOrderDetailSub().getOrdSubDetailId());
-			if(orderDetail.getOrderState().floatValue()!=2f){
+			Long state=orderDetail.getOrderState();
+			if((state.longValue()!=2l)&&(state.longValue()!=10l)){
 				dto.getOperateResult().setResultCode("-1");
-				dto.getOperateResult().setResultContent("已发货，不能增加批次");
+				dto.getOperateResult().setResultContent("已发货完成，不能增加批次");
+				super.writeJSON(dto.getOperateResult());
 				return;
 			}
 			float devlQty=0;
@@ -258,7 +260,7 @@ public class OrderStateBlh extends AbstractBaseBlh {
 				OrderDetail orderDetail=commonService.get(OrderDetail.class, orderDetailSub.getOrdSubDetailId());
 				float ordqty=orderDetail.getOrderVenQty().floatValue();
 				ordqty=ordqty-orderDetailSub.getOrderSubQty().floatValue();
-				if(!orderDetail.getOrderState().toString().equals("2")){
+				if((!orderDetail.getOrderState().toString().equals("2"))&&(!orderDetail.getOrderState().toString().equals("10"))){
 					dto.getOperateResult().setResultCode("-1");
 					dto.getOperateResult().setResultContent("有明细以发货,不能修改!<br>");
 					continue;

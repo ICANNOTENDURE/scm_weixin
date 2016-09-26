@@ -118,12 +118,20 @@ public class OrderStateDao extends HibernatePersistentObjectDAO<Order> {
 					}
 					orderDetailSub.setOrdSubStatus("Y");
 					super.saveOrUpdate(orderDetailSub);
+					
+					Long state=10l;
 					OrderDetail orderDetail=super.get(OrderDetail.class, orderDetailSub.getOrdSubDetailId());
-					orderDetail.setOrderState(3l);
+					List<Double>  totalQtys=super.findByHql("select sum(orderSubQty) from OrderDetailSub where ordSubStatus=? and ordSubDetailId=?", "Y",orderDetailSub.getOrdSubDetailId());
+					if(totalQtys.size()>=1){
+						if(totalQtys.get(0).doubleValue()==((Double)orderDetail.getOrderVenQty().doubleValue())){
+							state=3l;
+						}
+					}
+					orderDetail.setOrderState(state);
 					super.saveOrUpdate(orderDetail);
 					
 					ExeState exeState = new ExeState();
-					exeState.setStateId(Long.valueOf(3));
+					exeState.setStateId(state);
 					exeState.setUserid(Long.valueOf(WebContextHolder.getContext().getVisit().getUserInfo().getId()));
 					exeState.setOrdId(orderDetail.getOrderId());
 					exeState.setRemark(orderDetailSub.getOrdSubInvNo());
@@ -331,6 +339,7 @@ public class OrderStateDao extends HibernatePersistentObjectDAO<Order> {
 		hqlBuffer.append("t3.state_name statedesc, ");
 		hqlBuffer.append("t5.ctloc_name as recloc, ");
 		hqlBuffer.append("t4.ordsub_expdate as expdate, ");
+		hqlBuffer.append("t4.ordsub_status as substatus, ");
 		hqlBuffer.append("t4.ordsub_arrivedate as arrivedate, ");
 		hqlBuffer.append("t4.ordsub_invno as invno, ");
 		hqlBuffer.append("t4.ordsub_batno as batno, ");

@@ -688,7 +688,7 @@ public class HopVendorBlh extends AbstractBaseBlh {
 			return;
 		}
 		HopCtloc hopCtloc = commonService.get(HopCtloc.class, normalAccount.getNormalUser().getLocId());
-		operateResult.setResultContent("success");
+		operateResult.setResultCode("0");
 		for (HisVendorItmWeb hisVendorItmWeb : hisVendorWeb.getHisVendorItmWebs()) {
 
 			if (StringUtils.isNullOrEmpty(hisVendorItmWeb.getBusinessRegNo())) {
@@ -696,12 +696,17 @@ public class HopVendorBlh extends AbstractBaseBlh {
 				operateResult.setResultContent("工商执照注册号/统一社会信用代码为空,");
 				continue;
 			}
-			String[] incPropertyNames = { "hopHopId", "businessRegNo" };
-			Object[] incValues = { hopCtloc.getHospid(), hisVendorItmWeb.getBusinessRegNo() };
+			if (StringUtils.isNullOrEmpty(hisVendorItmWeb.getCode())) {
+				operateResult.setResultCode("-12");
+				operateResult.setResultContent("his的code不能为空,");
+				continue;
+			}
+			//String[] incPropertyNames = { "hopHopId", "businessRegNo" };
+			String[] incPropertyNames = { "hopHopId", "hopCode" };
+			Object[] incValues = { hopCtloc.getHospid(), hisVendorItmWeb.getCode()};
 			List<HopVendor> hopVendors = commonService.findByProperties(HopVendor.class, incPropertyNames, incValues);
 
 			if (hopVendors.size() > 0) {
-
 				hopVendors.get(0).setBusinessRegNo(hisVendorItmWeb.getBusinessRegNo());
 				hopVendors.get(0).setHopName(hisVendorItmWeb.getName());
 				hopVendors.get(0).setHopCode(hisVendorItmWeb.getCode());

@@ -297,7 +297,7 @@ function sendClick(){
 		}
 		var ordStr="";
 		for(var i=0;i<rows.length;i++){
-			if(rows[i].stateid==2){
+			if((rows[i].stateid==2)||(rows[i].stateid==10)){
 				if(rows[i].ordersubid!=null){
 					if(ordStr==""){
 						ordStr=rows[i].ordersubid;
@@ -465,14 +465,14 @@ function updInvClick(){
             <th data-options="field:'orderid',hidden:true">orderId</th>
             <th data-options="field:'ordersubid',hidden:true">orderSubId</th>
             <th data-options="field:'stateid',hidden:true">orderSubId</th>
-            <th data-options="field:'orderno',sortable:true,fixColumnSize:150">订单号</th>
-			<th data-options="field:'veninccode',width:50,sortable:true,fixColumnSize:150">药品代码</th>
+            <th data-options="field:'orderno',width:50,sortable:true">订单号</th>
+			<th data-options="field:'veninccode',width:50,sortable:true,hidden:true">药品代码</th>
 			<th data-options="field:'venincname',width:150,sortable:true">药品名称</th>
 			<th data-options="field:'purloc',sortable:true,fixColumnSize:100">请求科室</th>
 			<th data-options="field:'spec',sortable:true,fixColumnSize:100">规格</th>
 			<th data-options="field:'form',sortable:true,fixColumnSize:50">型号</th>
-			<th data-options="field:'ordqty',sortable:true,fixColumnSize:100">订单数</th>
-			<th data-options="field:'uom',sortable:true,fixColumnSize:100">单位</th>
+			<th data-options="field:'ordqty',sortable:true,width:50">订单数</th>
+			<th data-options="field:'uom',sortable:true,width:100">单位</th>
 			<th data-options="field:'rp',width:70,sortable:true">价格</th>
 			
 			<th data-options="field:'batno',width:70,sortable:true,editor : {
@@ -485,7 +485,7 @@ function updInvClick(){
 			 <th data-options="field:'arrivedate',width:70,sortable:true,editor : {
 						type : 'datebox'
                 	}">预计送达日期</th>	
-               <th data-options="field:'devqty',width:70,sortable:true,editor : {
+               <th data-options="field:'devqty',width:40,sortable:true,editor : {
 						type : 'numberbox',
                     	options : {
                         	required : true,
@@ -500,7 +500,7 @@ function updInvClick(){
 						type : 'datebox'
                 	}">发票日期</th>	  	
 			  <th data-options="field:'operatedate',sortable:true,fixColumnSize:100">录入时间</th>
-			  <th data-options="field:'operatuser',sortable:true,fixColumnSize:100">更新人</th>
+			  <th data-options="field:'substatus',sortable:true,fixColumnSize:50">状态</th>
 			  <th data-options="field:'operate',sortable:true,fixColumnSize:50,formatter:deleteOrdSub">操作</th>		
         </tr>   
     	</thead>
