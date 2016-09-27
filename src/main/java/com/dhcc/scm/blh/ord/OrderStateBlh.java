@@ -112,7 +112,12 @@ public class OrderStateBlh extends AbstractBaseBlh {
 			List<OrderDetailSub> orderDetailSubs=commonService.findByProperty(OrderDetailSub.class, "ordSubDetailId", dto.getOrderDetailSub().getOrdSubDetailId());
 			OrderDetail orderDetail=commonService.get(OrderDetail.class, dto.getOrderDetailSub().getOrdSubDetailId());
 			Long state=orderDetail.getOrderState();
-			if((state.longValue()!=2l)&&(state.longValue()!=10l)){
+			//一个订单可以发多次货，保证发货数不大于订单数就可以继续发货
+			//2:确认订单/下载订单
+			//10:部分发货
+			//5:评价
+			//4:收货
+			if((state.longValue()!=2l)&&(state.longValue()!=10l)&&(state.longValue()!=4l)&&(state.longValue()!=5l)){
 				dto.getOperateResult().setResultCode("-1");
 				dto.getOperateResult().setResultContent("已发货完成，不能增加批次");
 				super.writeJSON(dto.getOperateResult());
