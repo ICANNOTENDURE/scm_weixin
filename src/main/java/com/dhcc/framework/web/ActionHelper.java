@@ -42,9 +42,12 @@ public abstract class ActionHelper {
 		String page = WebContextHolder.getContext().getRequest().getParameter("page");
 		String sort=WebContextHolder.getContext().getRequest().getParameter("sort");
 		String order=WebContextHolder.getContext().getRequest().getParameter("order");
+		String q=WebContextHolder.getContext().getRequest().getParameter("q");
+		
 		if(actionRef.getBaseDto()!=null){
 			actionRef.getBaseDto().initTradeAccount();
 			WebContextHolder.getContext().setTradeAccount(actionRef.getBaseDto().getTradeAccount());
+			actionRef.getBaseDto().setComgridparam(q);
 		}else{
 			BaseAction.logger.info(actionRef.getClass() +" getBaseDto()  return null ");
 		}

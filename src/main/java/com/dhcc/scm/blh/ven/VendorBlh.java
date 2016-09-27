@@ -220,7 +220,6 @@ public class VendorBlh extends AbstractBaseBlh {
 		if(dto.getVendor()!=null){
 			dto.getVendor().setName(new String(dto.getVendor().getName().getBytes("ISO8859-1"), "UTF-8").trim());
 		}
-		//WebContextHolder.getContext().getResponse().getWriter().write(JsonUtils.toJson(vendorService.findVenComboList(dto)));
 		super.writeJSON(vendorService.findVenComboList(dto));
 	}
 	
