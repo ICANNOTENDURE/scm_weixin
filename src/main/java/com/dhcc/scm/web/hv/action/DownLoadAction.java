@@ -159,7 +159,6 @@ public class DownLoadAction extends ActionSupport {
 		cell = row.createCell(4, HSSFCell.CELL_TYPE_STRING);
 		cell.setCellValue(printDate);
 		
-		
 		row = sheet.createRow(1);        //创建第一行
 		
 		cell = row.createCell(0, HSSFCell.CELL_TYPE_STRING);
@@ -229,7 +228,6 @@ public class DownLoadAction extends ActionSupport {
 			if(hvInvNoVo.getQty()!=null){
 				cell.setCellValue(hvInvNoVo.getQty());
 			}
-			
 			
 			cell = row.createCell(7, HSSFCell.CELL_TYPE_STRING);
 			if(hvInvNoVo.getRp()!=null){
