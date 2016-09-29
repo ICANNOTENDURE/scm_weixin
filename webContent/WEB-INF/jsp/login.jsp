@@ -52,8 +52,8 @@
           <div data-ride="carousel" id="carousel_container" class="carousel slide">
               <!--图片容器-->
               <div class="carousel-inner">
-
-                  <div class="item active"><img src="<%=request.getContextPath()%>/images/login/2.jpg" alt="" style="height:440px;width: 100%"/></div>
+				  <div class="item active"><img src="<%=request.getContextPath()%>/images/login/guoqing.jpg" alt="" style="height:440px;width: 100%"/></div>	
+                  <div class="item"><img src="<%=request.getContextPath()%>/images/login/2.jpg" alt="" style="height:440px;width: 100%"/></div>
                   <div class="item"><img src="<%=request.getContextPath()%>/images/login/3.jpg" alt="" style="height:440px;width: 100%"/></div>
                   <div class="item"><img src="<%=request.getContextPath()%>/images/login/4.jpg" alt="" style="height:440px;width: 100%"/></div>
               </div>
@@ -62,7 +62,7 @@
                   <li data-slide-to="0" data-target="#carousel_container"></li>
                   <li data-slide-to="1" data-target="#carousel_container"></li>
                   <li data-slide-to="2" data-target="#carousel_container"></li>
-                  <!--<li data-slide-to="3" data-target="#carousel_container"></li>-->
+                  <li data-slide-to="3" data-target="#carousel_container"></li>
               </ol>
               <!--左右按钮容器-->
               <a href="#carousel_container" data-slide="prev" class="left carousel-control">
