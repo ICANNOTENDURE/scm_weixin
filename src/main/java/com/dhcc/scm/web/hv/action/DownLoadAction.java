@@ -10,6 +10,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
@@ -37,6 +39,7 @@ import com.opensymphony.xwork2.ActionSupport;
 @Namespace(value = "/hv")
 @Scope("prototype")
 @Action(value = "downLoadCtrl", results = {
+		
 		@Result(name = "downLoad",type = "stream", 
 		params = { "contentType","application/octet-stream;charset=UTF-8", 
 		           "inputName", "inputStream",
@@ -60,8 +63,6 @@ public class DownLoadAction extends ActionSupport {
 	private Date stDate;
 	
 	private Date edDate;
-	
-	
 	
 	/**
 	 * @return the stDate
@@ -130,15 +131,36 @@ public class DownLoadAction extends ActionSupport {
 		downloadFileName=UUID.randomUUID().toString()+".xls";
 		String outputFile = ServletActionContext.getServletContext().getRealPath("/downloads")+File.separator+downloadFileName;
 		
-       
 		HSSFWorkbook workbook = new HSSFWorkbook();
 		HSSFSheet sheet = workbook.createSheet();  
-		
+		Date date = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		String stTime = formatter.format(stDate);
+		String edTime = formatter.format(edDate);
+		String printDate = formatter.format(date);
+		  
 		//sheet.protectSheet("123");
 		HSSFCell cell=null;
 		HSSFRow row=null;
 		
-		row = sheet.createRow(0);        //创建第一行
+		row = sheet.createRow(0);
+		cell = row.createCell(0, HSSFCell.CELL_TYPE_STRING);
+		cell.setCellValue("供应商高值物资统计表");
+		
+		cell = row.createCell(1, HSSFCell.CELL_TYPE_STRING);
+		cell.setCellValue("统计日期");
+		
+		cell = row.createCell(2, HSSFCell.CELL_TYPE_STRING);
+		cell.setCellValue(stTime+"-"+edTime);
+		
+		cell = row.createCell(3, HSSFCell.CELL_TYPE_STRING);
+		cell.setCellValue("打印日期");
+		
+		cell = row.createCell(4, HSSFCell.CELL_TYPE_STRING);
+		cell.setCellValue(printDate);
+		
+		
+		row = sheet.createRow(1);        //创建第一行
 		
 		cell = row.createCell(0, HSSFCell.CELL_TYPE_STRING);
 		cell.setCellValue("医嘱日期");
@@ -170,8 +192,6 @@ public class DownLoadAction extends ActionSupport {
 		cell = row.createCell(9, HSSFCell.CELL_TYPE_STRING);
 		cell.setCellValue("同步标志");
 		
-
-		
 		HvLabelDto hvLabelDto=new HvLabelDto();
 		hvLabelDto.setOrdStart(stDate);
 		hvLabelDto.setOrdEnd(edDate);
@@ -179,7 +199,7 @@ public class DownLoadAction extends ActionSupport {
 		hvLabelDto.getPageModel().setPageSize(99999999);
 		hvLabelDto.getPageModel().setPageNo(1);
 		hvLabelService.list(hvLabelDto);
-		int i=1;
+		int i=2;
 		for(Object o:hvLabelDto.getPageModel().getPageData()){
 			HvInvNoVo hvInvNoVo=(HvInvNoVo)o;
 			row = sheet.createRow(i);        //创建第一行
@@ -221,7 +241,6 @@ public class DownLoadAction extends ActionSupport {
 			
 			cell = row.createCell(9, HSSFCell.CELL_TYPE_STRING);
 			cell.setCellValue(hvInvNoVo.getFlag());
-			
 
 			++i;
 		}
