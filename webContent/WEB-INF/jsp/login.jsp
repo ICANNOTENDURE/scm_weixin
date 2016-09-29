@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>东华电子商务平台</title>
+<title>东华医疗供应链平台</title>
 
 <%@include file="/WEB-INF/jsp/common/bootstrap.jsp"%>
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/font-awesome/4.4.0/css/font-awesome.min.css" />
@@ -52,8 +52,8 @@
           <div data-ride="carousel" id="carousel_container" class="carousel slide">
               <!--图片容器-->
               <div class="carousel-inner">
-
-                  <div class="item active"><img src="<%=request.getContextPath()%>/images/login/2.jpg" alt="" style="height:440px;width: 100%"/></div>
+				  <div class="item active"><img src="<%=request.getContextPath()%>/images/login/guoqing.jpg" alt="" style="height:440px;width: 100%"/></div>	
+                  <div class="item"><img src="<%=request.getContextPath()%>/images/login/2.jpg" alt="" style="height:440px;width: 100%"/></div>
                   <div class="item"><img src="<%=request.getContextPath()%>/images/login/3.jpg" alt="" style="height:440px;width: 100%"/></div>
                   <div class="item"><img src="<%=request.getContextPath()%>/images/login/4.jpg" alt="" style="height:440px;width: 100%"/></div>
               </div>
@@ -62,7 +62,7 @@
                   <li data-slide-to="0" data-target="#carousel_container"></li>
                   <li data-slide-to="1" data-target="#carousel_container"></li>
                   <li data-slide-to="2" data-target="#carousel_container"></li>
-                  <!--<li data-slide-to="3" data-target="#carousel_container"></li>-->
+                  <li data-slide-to="3" data-target="#carousel_container"></li>
               </ol>
               <!--左右按钮容器-->
               <a href="#carousel_container" data-slide="prev" class="left carousel-control">
@@ -76,7 +76,7 @@
     <!--轮播图-->
     <!--登录框 SCQ-->
     <div class="loginboxP_cq loginbox_cq">
-      <div class="tcq">东华电商用户登陆&nbsp;<!-- <a href="" class="tcq1">注册新用户</a> --></div>
+      <div class="tcq">东华医疗供应链平台用户登录&nbsp;<!-- <a href="" class="tcq1">注册新用户</a> --></div>
       <div class="form-group">
         <div class="input-group">
           <div class="input-group-addon"><i class="fa fa-user"></i></div>

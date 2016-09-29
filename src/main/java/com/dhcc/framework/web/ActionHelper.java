@@ -47,7 +47,9 @@ public abstract class ActionHelper {
 		if(actionRef.getBaseDto()!=null){
 			actionRef.getBaseDto().initTradeAccount();
 			WebContextHolder.getContext().setTradeAccount(actionRef.getBaseDto().getTradeAccount());
-			actionRef.getBaseDto().setComgridparam(q);
+			if(StringUtils.isNotBlank(q)){
+				actionRef.getBaseDto().setComgridparam(q);
+			}
 		}else{
 			BaseAction.logger.info(actionRef.getClass() +" getBaseDto()  return null ");
 		}
