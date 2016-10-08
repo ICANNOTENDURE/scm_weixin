@@ -74,11 +74,14 @@ body {font:12px/1.5  "宋体";color:#333}
 						<th class="t4">商品名称</th>
 						<th class="t5">发票</th>
 						<th class="t5">批号</th>
+						<th class="t5">采购合同号</th>
+						<th class="t5">商品注册证</th>
 						<th class="t5">效期</th>
 						<th class="t4">商品注册证效期</th>
 						<th class="t5">请求科室</th>
 						<th class="t5">规格</th>
 						<th class="t5">数量</th>
+						<th class="t5">发货数量</th>
 						<th class="t5">产地</th>
 						<th class="t5">进价</th>
 						<th class="t7">商品金额</th>
@@ -91,11 +94,14 @@ body {font:12px/1.5  "宋体";color:#333}
 							<td><div class="p-name">${venincname}</div></td>
 							<td>${invno}</td>
 							<td>${batno}</td>
+							<td>${qualifdpurno}</td>
+							<td>${qualifprocer}</td>
 							<td>${expdate}</td>
 							<td>${qualifdate}</td>
 							<td>${purloc}</td>
 							<td>${spec}</td>
 							<td>${orderqty}</td>
+							<td>${sendedqty}</td>
 							<td>${manf}</td>
 							<td>${rp}</td>
 							<td>￥${rpamt}</td>
