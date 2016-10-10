@@ -76,7 +76,7 @@
     <!--轮播图-->
     <!--登录框 SCQ-->
     <div class="loginboxP_cq loginbox_cq">
-      <div class="tcq">东华医疗供应链平台用户登录&nbsp;<!-- <a href="" class="tcq1">注册新用户</a> --></div>
+      <div class="tcq">登录云平台&nbsp;<!-- <a href="" class="tcq1">注册新用户</a> --></div>
       <div class="form-group">
         <div class="input-group">
           <div class="input-group-addon"><i class="fa fa-user"></i></div>

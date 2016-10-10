@@ -16,7 +16,7 @@ $(function(){
 	    },
 	    telphone:{
 	    	validator: function(value, param){ 
-		    	if (/^1((3|5|8){1}\d{1}|70)\d{8}$/.test(value)){
+		    	if (/^1[34578]\d{9}$/.test(value)){
 		    		return true;
 		    	} else {
 		    		return false;
