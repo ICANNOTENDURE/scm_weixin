@@ -254,12 +254,7 @@ function addPropertyGrid(ordqty,enableQty,ordno,veninccode,venincname,rp){
 	                              {"name":"商品名称","value":venincname,"group":"订单信息"},    
 	                              {"name":"订单数量","value":ordqty,"group":"订单信息"},
 	                              {"name":"未发货数","value":enableQty,"group":"订单信息"},    
-	                              {"name":"发票号","value":"","group":"录入信息","editor":{    
-	                                  "type":"validatebox",    
-	                                  "options":{    
-	                                      "required":"true"   
-	                                  }    
-	                              }},    
+	                              {"name":"发票号","value":"","group":"录入信息","editor":'text'},    
 	                              {"name":"批号","value":"","group":"录入信息","editor":{    
 	                                  "type":"validatebox",    
 	                                  "options":{    
@@ -334,7 +329,7 @@ function addBatNewClick(){
 	rp=$("#batgrid").propertygrid('getRows')[5].value;
 	qty=$("#batgrid").propertygrid('getRows')[9].value;
 	orderid=$("#datagrid").datagrid('getSelections')[0].orderid;
-	if((invno=="")|(qty=="")||(rp=="")){
+	if((qty=="")||(rp=="")){
 		$.messager.alert("提示","请填写必填项");
 		return;
 	}

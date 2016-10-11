@@ -1,4 +1,6 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="/struts-tags" prefix="s"%>
 <!DOCTYPE html">
 <html>
 <head>
@@ -52,17 +54,22 @@
           <div data-ride="carousel" id="carousel_container" class="carousel slide">
               <!--图片容器-->
               <div class="carousel-inner">
-				  <div class="item active"><img src="<%=request.getContextPath()%>/images/login/guoqing.jpg" alt="" style="height:440px;width: 100%"/></div>	
-                  <div class="item"><img src="<%=request.getContextPath()%>/images/login/2.jpg" alt="" style="height:440px;width: 100%"/></div>
-                  <div class="item"><img src="<%=request.getContextPath()%>/images/login/3.jpg" alt="" style="height:440px;width: 100%"/></div>
-                  <div class="item"><img src="<%=request.getContextPath()%>/images/login/4.jpg" alt="" style="height:440px;width: 100%"/></div>
+              	 <s:iterator value="banners" status="status">
+              	 	<s:if test="#status.count==1">
+              	 		<div class="item active">
+              	 	</s:if>
+					<s:else>
+						<div class="item">
+					</s:else>
+						<img src="<%=request.getContextPath()%>/uploadPic/${bannerPath}" alt="" style="height:440px;width: 100%"/>
+					</div>	
+				 </s:iterator>
               </div>
               <!--小圆圈容器-->
               <ol class="carousel-indicators">
-                  <li data-slide-to="0" data-target="#carousel_container"></li>
-                  <li data-slide-to="1" data-target="#carousel_container"></li>
-                  <li data-slide-to="2" data-target="#carousel_container"></li>
-                  <li data-slide-to="3" data-target="#carousel_container"></li>
+              	 <s:iterator value="banners" status="status">
+					 <li data-slide-to="${status.count}" data-target="#carousel_container"></li>	
+				 </s:iterator>
               </ol>
               <!--左右按钮容器-->
               <a href="#carousel_container" data-slide="prev" class="left carousel-control">
