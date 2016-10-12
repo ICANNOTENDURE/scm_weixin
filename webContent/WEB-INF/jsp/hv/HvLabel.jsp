@@ -34,7 +34,7 @@
 	</div>
 
 
-	<table id="datagrid" style="height: 250px" title="高值条码录入"
+	<table id="datagrid" style="height: 250px" title="高值发票录入"
 		data-options="toolbar:'#toolbar',fitColumns:true,singleSelect:true,pagination:true">
 	</table>
 

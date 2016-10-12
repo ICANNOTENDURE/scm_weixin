@@ -270,7 +270,7 @@ function enCodeItm(value,row,index){
 			</select>
 			<a href="#" class="linkbutton" iconCls="icon-print" id="printBTN" plain=true>打印随行单(按商品)</a>
 		 	<a href="#" class="linkbutton" iconCls="icon-print" id="printOrderBTN"  style="display:none"  plain=true>打印订单(按订单)</a>
-		 	<a href="#" class="linkbutton" iconCls="icon-print" id="printByQtyBTN"  plain=true>打印高职</a>
+		 	<a href="#" class="linkbutton" iconCls="icon-print" id="printByQtyBTN"  plain=true>打印高值</a>
 		 	<a href="#" class="linkbutton" iconCls="icon-print" id="printByQtySelectBTN"  style="display:none" plain=true>打印明细(按数量,勾选明细)</a>
 		 		
 		 </div>
