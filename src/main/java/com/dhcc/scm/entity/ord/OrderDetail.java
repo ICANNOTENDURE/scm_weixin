@@ -124,7 +124,18 @@ public class OrderDetail implements Serializable {
 	@Transient
 	private String form;	
 	
+	@Transient
+	private String purloc;
 	
+	
+
+	public String getPurloc() {
+		return purloc;
+	}
+
+	public void setPurloc(String purloc) {
+		this.purloc = purloc;
+	}
 
 	public String getForm() {
 		return form;

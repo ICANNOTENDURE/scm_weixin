@@ -17,55 +17,66 @@ public class VenQualifyWebItm implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	/**
-	 * 工商执照
-	 */
-	private String businessLicenseNo;//工商执照号
-	private List<HisPicWeb> businessLicensePics;//照片
-	private Date businessLicenseExpDate;//效期
+	private String venCode;
 	
-	/**
-	 * 器械经营许可
-	 */
-	private String equipmentPermit;//许可证号
-	private List<HisPicWeb> equipmentPermitPics;//照片
-	private Date equipmentPermitExpDate;//效期
-	public String getBusinessLicenseNo() {
-		return businessLicenseNo;
+	private String text;
+	
+	private Date exp;
+	
+	private List<HisPicWeb> pics;
+	
+	/*
+	G：工商执照号
+	S：税务执照
+	Q：器械经营许可证
+	P：器械生成许可证
+	T：器械注册证
+	J：进口注册登
+	*/
+	private String type;
+	
+	
+	
+	public String getType() {
+		return type;
 	}
-	public void setBusinessLicenseNo(String businessLicenseNo) {
-		this.businessLicenseNo = businessLicenseNo;
+
+	public void setType(String type) {
+		this.type = type;
 	}
-	public List<HisPicWeb> getBusinessLicensePics() {
-		return businessLicensePics;
+
+	public String getVenCode() {
+		return venCode;
 	}
-	public void setBusinessLicensePics(List<HisPicWeb> businessLicensePics) {
-		this.businessLicensePics = businessLicensePics;
+
+	public void setVenCode(String venCode) {
+		this.venCode = venCode;
 	}
-	public Date getBusinessLicenseExpDate() {
-		return businessLicenseExpDate;
+
+	public String getText() {
+		return text;
 	}
-	public void setBusinessLicenseExpDate(Date businessLicenseExpDate) {
-		this.businessLicenseExpDate = businessLicenseExpDate;
+
+	public void setText(String text) {
+		this.text = text;
 	}
-	public String getEquipmentPermit() {
-		return equipmentPermit;
+
+	public Date getExp() {
+		return exp;
 	}
-	public void setEquipmentPermit(String equipmentPermit) {
-		this.equipmentPermit = equipmentPermit;
+
+	public void setExp(Date exp) {
+		this.exp = exp;
 	}
-	public List<HisPicWeb> getEquipmentPermitPics() {
-		return equipmentPermitPics;
+
+	public List<HisPicWeb> getPics() {
+		return pics;
 	}
-	public void setEquipmentPermitPics(List<HisPicWeb> equipmentPermitPics) {
-		this.equipmentPermitPics = equipmentPermitPics;
+
+	public void setPics(List<HisPicWeb> pics) {
+		this.pics = pics;
 	}
-	public Date getEquipmentPermitExpDate() {
-		return equipmentPermitExpDate;
-	}
-	public void setEquipmentPermitExpDate(Date equipmentPermitExpDate) {
-		this.equipmentPermitExpDate = equipmentPermitExpDate;
-	}
+	
 	
 	
 	

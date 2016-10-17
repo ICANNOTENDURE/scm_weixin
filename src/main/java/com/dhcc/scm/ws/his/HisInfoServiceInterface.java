@@ -183,7 +183,7 @@ public interface HisInfoServiceInterface {
 
 	    @WebMethod
 	    @WebResult(name="operateResult")
-	    @WSDLDocumentation("库房扫码确认完成")
+	    @WSDLDocumentation("供应商资质信息")
 	    public VenQualifyWeb getVenQualify(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="hopVenCodes")List<String> hopVenCodes);
 
 	    @WebMethod
@@ -201,7 +201,13 @@ public interface HisInfoServiceInterface {
 	    @WSDLDocumentation("高值条码完成，确认完成信息,或者取消flag=Y 入库完成 flag=N 取消入库完成")
 	    public OperateResult cmpHvInv(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="label")String label,@WebParam(name="vendorCode")String vendorCode,@WebParam(name="flag")String flag);
 	    
-
+	    
+	    @WebMethod
+	    @WebResult(name="operateResult")
+	    @WSDLDocumentation("高值条码同步入库单号")
+	    public OperateResult updHvRecNo(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="label")String label,@WebParam(name="vendorCode")String vendorCode,@WebParam(name="no")String no);
+	    
+	    
 	    @WebMethod
 	    @WebResult(name="name")
 	    @WSDLDocumentation("医院获取供应商商品上传图片名称")

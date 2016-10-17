@@ -59,8 +59,19 @@ public class HvLabel implements Serializable{
 	@Column(name="hv_rp")
 	private Float hvRp;
 	
+	@Column(name="hv_recno")
+	private String hvRecNo;
 	
 	
+	
+	public String getHvRecNo() {
+		return hvRecNo;
+	}
+
+	public void setHvRecNo(String hvRecNo) {
+		this.hvRecNo = hvRecNo;
+	}
+
 	public Float getHvRp() {
 		return hvRp;
 	}

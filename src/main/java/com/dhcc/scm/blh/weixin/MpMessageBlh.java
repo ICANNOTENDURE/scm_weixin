@@ -183,6 +183,10 @@ public class MpMessageBlh extends AbstractBaseBlh {
 					detail.setSpec(venInc.getVenIncSpec());
 					HopInc hopInc=commonService.get(HopInc.class, detail.getOrderHopIncId());
 					detail.setForm(hopInc.getIncForm());
+					if(detail.getOrderPurLoc()!=null){
+						HopCtloc hopCtloc=commonService.get(HopCtloc.class, detail.getOrderPurLoc());
+						detail.setPurloc(hopCtloc.getName());
+					}
 				}
 				dto.setOrderDetails(details);
 				if (details.size() > 0) {

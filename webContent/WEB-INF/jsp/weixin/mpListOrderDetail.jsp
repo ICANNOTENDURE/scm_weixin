@@ -154,6 +154,7 @@
 				<th>规格</th>
 				<th>型号</th>
 				<th>价格</th>
+				<th>请求科室</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -165,6 +166,7 @@
 					<td>${detail.spec}</td>
 					<td>${detail.form}</td>
 					<td>${detail.orderRp}</td>
+					<td>${detail.purloc}</td>
 				</tr>
 			</s:iterator>
 		</tbody>
