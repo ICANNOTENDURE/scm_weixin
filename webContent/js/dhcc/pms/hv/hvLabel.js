@@ -172,7 +172,7 @@ function save(){
 		return;
 	}
 	
-	 var changes=$('#datagrid').datagrid('getChanges');
+	 var changes=$('#datagrid').datagrid('getRows'); //$('#datagrid').datagrid('getChanges');
 	 if(changes.length==0){
 		 $CommonUI.alert("没有修改记录");
 		 return
