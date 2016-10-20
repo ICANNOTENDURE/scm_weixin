@@ -98,7 +98,7 @@ $(function() {
 		
 		ff=$(this).attr("checked");
 		if(ff==undefined){
-			$('#datagrid').datagrid('rejectChanges');
+			//$('#datagrid').datagrid('rejectChanges');
 			return;
 		}
 		$('#datagrid').datagrid('endEdit', 0);
@@ -181,7 +181,7 @@ function save(){
 	for(var j=0;j<changes.length;j++){
 		InvNoObj= new Object();
 		InvNoObj.hvInvNo=changes[j]["invno"];
-		if(changes[j]["invnodate"]!=""){
+		if((changes[j]["invnodate"]!="")&&(changes[j]["invnodate"]!=null)){
 			InvNoObj.hvInvNoDate=changes[j]["invnodate"]+" 00:00:00";
 		}
 		InvNoObj.hvId=changes[j]["id"];
