@@ -35,8 +35,10 @@ import com.dhcc.scm.entity.ord.OrderDetailSub;
 import com.dhcc.scm.entity.st.StInGdRecItm;
 import com.dhcc.scm.entity.sys.SysLog;
 import com.dhcc.scm.entity.userManage.NormalAccount;
+import com.dhcc.scm.entity.ven.VenHopInc;
 import com.dhcc.scm.entity.ven.VenInc;
 import com.dhcc.scm.entity.ven.VenIncPic;
+import com.dhcc.scm.entity.ven.VenIncqQualif;
 import com.dhcc.scm.entity.ven.VenQualifPic;
 import com.dhcc.scm.entity.ven.VenQualification;
 import com.dhcc.scm.entity.ven.Vendor;
@@ -625,8 +627,10 @@ public class HisInfoService implements HisInfoServiceInterface {
 			operateResult.setResultContent("程序异常->Exception:" + e.getMessage());
 			return venQualifyWeb;
 		} finally {
-			log.setOpResult(JsonUtils.toJson(operateResult));
-			commonService.saveOrUpdate(log);
+			if(!"0".equals(operateResult.getResultCode())){
+				log.setOpResult(JsonUtils.toJson(operateResult));
+				commonService.saveOrUpdate(log);
+			}
 		}
 		return venQualifyWeb;
 	}
@@ -937,6 +941,98 @@ public class HisInfoService implements HisInfoServiceInterface {
 		tmpHvLabel.setHvRecNo(no);
 		commonService.saveOrUpdate(tmpHvLabel);
 		return operateResult;
+	}
+
+	@Override
+	public VenQualifyWeb getVenIncQualify(String usename, String password, String hopVenIncCode) {
+		VenQualifyWeb venQualifyWeb = new VenQualifyWeb();
+		OperateResult operateResult = new OperateResult();
+		venQualifyWeb.setOperateResult(operateResult);
+
+		try {
+
+			NormalAccount normalAccount = ordBlh.checkWsParam(operateResult, usename, password, null);
+			if (normalAccount == null) {
+				return venQualifyWeb;
+			}
+			List<VenQualifyWebItm> venQualifyWebItms = new ArrayList<VenQualifyWebItm>();
+			HopCtloc ctloc = commonService.get(HopCtloc.class, normalAccount.getNormalUser().getLocId());
+
+	
+			String[] propertyNames = { "incHospid", "incBarCode" };
+			Object[] values = { ctloc.getHospid(), hopVenIncCode};
+			
+			List<HopInc> hopIncs = commonService.findByProperties(HopInc.class, propertyNames, values);
+			if (hopIncs.size()==0) {
+				return venQualifyWeb;
+			}
+			List<VenHopInc> venhopIncs=commonService.findByProperty(VenHopInc.class, "hopIncId", hopIncs.get(0).getIncId());
+			if(venhopIncs.size()==0){
+				return venQualifyWeb;
+			}
+	
+			List<VenIncqQualif> qualifications = commonService.findByProperty(VenIncqQualif.class, "qualifyIncId", venhopIncs.get(0).getVenIncId());
+			for (VenIncqQualif qualification : qualifications) {
+				VenQualifyWebItm venQualifyWebItm = new VenQualifyWebItm();
+				venQualifyWebItm.setExp(qualification.getQualifDate());
+				venQualifyWebItm.setText(qualification.getQualifDescription());
+				venQualifyWebItm.setType(qualification.getSysQualifType().getCode());
+				venQualifyWebItm.setVenCode(hopVenIncCode);
+				venQualifyWebItms.add(venQualifyWebItm);
+			}
+			
+			venQualifyWeb.setVenQualifyWebItms(venQualifyWebItms);
+			
+			operateResult.setResultCode("0");
+			operateResult.setResultContent("success");
+		} catch (Exception e) {
+			operateResult.setResultCode("1");
+			operateResult.setResultContent("程序异常->Exception:" + e.getMessage());
+			return venQualifyWeb;
+		} finally {
+			if(!"0".equals(operateResult.getResultCode())){
+				SysLog log = new SysLog();
+				log.setOpArg("usename:" + usename + ",password:" + password + ",hopVenCode:" + hopVenIncCode);
+				log.setOpName("webservice查询供应商商品资质信息：》cmpOrder");
+				log.setOpDate(new Date());
+				log.setOpType("webservice");
+				log.setOpUser(usename);
+				log.setOpResult(JsonUtils.toJson(operateResult));
+				commonService.saveOrUpdate(log);
+			}
+		}
+		return venQualifyWeb;
+	}
+
+	@Override
+	public List<HisPicWeb> getVenIncPic(String usename, String password, String hopVenIncCode) {
+		
+		List<HisPicWeb> picWebs=new ArrayList<HisPicWeb>();
+		OperateResult operateResult=new OperateResult();
+		NormalAccount normalAccount = ordBlh.checkWsParam(operateResult, usename, password, null);
+		if (normalAccount == null) {
+			return picWebs;
+		}
+		HopCtloc ctloc = commonService.get(HopCtloc.class, normalAccount.getNormalUser().getLocId());
+
+		String[] propertyNames = { "incHospid", "incBarCode" };
+		Object[] values = { ctloc.getHospid(), hopVenIncCode};
+		
+		List<HopInc> hopIncs = commonService.findByProperties(HopInc.class, propertyNames, values);
+		if (hopIncs.size()==0) {
+			return picWebs;
+		}
+		List<VenHopInc> venhopIncs=commonService.findByProperty(VenHopInc.class, "hopIncId", hopIncs.get(0).getIncId());
+		if(venhopIncs.size()==0){
+			return picWebs;
+		}
+		List<VenIncPic> incPics=commonService.findByProperty(VenIncPic.class, "venIncPicVenincid", venhopIncs.get(0).getVenIncId());
+		for(VenIncPic incPic:incPics){
+			HisPicWeb hisPicWeb=new HisPicWeb("INC", incPic.getVenIncPicPath());
+			picWebs.add(hisPicWeb);
+		}
+		
+		return picWebs;
 	}
 
 }

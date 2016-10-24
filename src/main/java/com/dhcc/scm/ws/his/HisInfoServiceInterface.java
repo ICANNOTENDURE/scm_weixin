@@ -22,6 +22,7 @@ import com.dhcc.scm.entity.vo.ws.HisInvInfoWeb;
 import com.dhcc.scm.entity.vo.ws.HisLocWeb;
 import com.dhcc.scm.entity.vo.ws.HisOrderWeb;
 import com.dhcc.scm.entity.vo.ws.HisOrderWebVo;
+import com.dhcc.scm.entity.vo.ws.HisPicWeb;
 import com.dhcc.scm.entity.vo.ws.HisVendorWeb;
 import com.dhcc.scm.entity.vo.ws.OperateResult;
 import com.dhcc.scm.entity.vo.ws.VenQualifyWeb;
@@ -185,7 +186,18 @@ public interface HisInfoServiceInterface {
 	    @WebResult(name="operateResult")
 	    @WSDLDocumentation("供应商资质信息")
 	    public VenQualifyWeb getVenQualify(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="hopVenCodes")List<String> hopVenCodes);
+	    
+	    @WebMethod
+	    @WebResult(name="operateResult")
+	    @WSDLDocumentation("供应商品商资质信息")
+	    public VenQualifyWeb getVenIncQualify(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="hopVenIncCode")String hopVenIncCode);
+	    
+	    @WebMethod
+	    @WebResult(name="operateResult")
+	    @WSDLDocumentation("供应商品商图片信息")
+	    public List<HisPicWeb> getVenIncPic(@WebParam(name="usename")String usename,@WebParam(name="password")String password,@WebParam(name="hopVenIncCode")String hopVenIncCode);
 
+	    
 	    @WebMethod
 	    @WebResult(name="operateResult")
 	    @WSDLDocumentation("his传送高值医嘱条码信息")
