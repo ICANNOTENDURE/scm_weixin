@@ -693,6 +693,9 @@ public class HisInfoService implements HisInfoServiceInterface {
 					return operateResult;
 				} else {
 					hvLabel.setHvId(tmphvLabel.getHvId());
+					hvLabel.setHvInvNo(tmphvLabel.getHvInvNo());
+					hvLabel.setHvInvNoDate(tmphvLabel.getHvInvNoDate());
+					hvLabel.setHvRecNo(tmphvLabel.getHvRecNo());
 				}
 			}
 			// 弋矶山医院商品编码和供应商商品编号相同
