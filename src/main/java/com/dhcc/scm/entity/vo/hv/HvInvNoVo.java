@@ -28,7 +28,18 @@ public class HvInvNoVo {
 	
 	private Float rp;
 	
+	private String recno;
 	
+	
+	
+	public String getRecno() {
+		return recno;
+	}
+
+	public void setRecno(String recno) {
+		this.recno = recno;
+	}
+
 	public Float getRp() {
 		return rp;
 	}

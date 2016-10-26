@@ -86,6 +86,11 @@ $(function() {
 			"sortable" : false,
 			"hidden" : false,
 			"width":50
+		}, {
+			"title" : "入库单号",
+			"field" : "recno",
+			"hidden" : false,
+			"width":100
 		}] ]
 	});
 

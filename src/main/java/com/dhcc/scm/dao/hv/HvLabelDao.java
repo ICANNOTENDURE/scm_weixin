@@ -40,6 +40,7 @@ public class HvLabelDao extends HibernatePersistentObjectDAO<HvLabel> {
 		hqlBuffer.append("  t1.hv_id as id , ");
 		hqlBuffer.append("	t1.hv_invno as invno , ");
 		hqlBuffer.append("   t1.hv_invnodate as invnodate , ");
+		hqlBuffer.append("   t1.hv_recno as recno , ");
 		hqlBuffer.append("	t1.hv_label as label , ");
 		hqlBuffer.append("	t1.hv_orddate as orddate , ");
 		hqlBuffer.append("	t1.hv_qty as qty, ");

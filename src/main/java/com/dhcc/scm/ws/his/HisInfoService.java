@@ -418,14 +418,9 @@ public class HisInfoService implements HisInfoServiceInterface {
 		// TODO Auto-generated method stub
 
 		FileWrapper fileWrapper = new FileWrapper();
-		SysLog log = new SysLog();
-		log.setOpArg("type:" + type + ",path:" + name);
-		log.setOpName("webservice下载图片：》downLoadPic");
-		log.setOpDate(new Date());
-		log.setOpType("webservice");
+
 		if (StringUtils.isBlank(name)) {
 			fileWrapper.setResultContent("path不能为空");
-			log.setOpResult("path不能为空");
 			return fileWrapper;
 		}
 		try {
@@ -438,7 +433,6 @@ public class HisInfoService implements HisInfoServiceInterface {
 			result = result.substring(0, index);
 			fileWrapper.setFileName(name);
 			fileWrapper.setFileExtension(com.dhcc.framework.util.FileUtils.getFileExp(name));
-			log.setOpAfter(result + "uploads/weixin/" + name);
 			String path = "uploads/weixin/";
 			switch (type) {
 			case "ORDER":
@@ -462,12 +456,9 @@ public class HisInfoService implements HisInfoServiceInterface {
 			fileWrapper.setResultCode("0");
 		} catch (Exception e) {
 			e.printStackTrace();
-			log.setOpResult(e.getMessage());
 			fileWrapper.setResultCode("-11");
 			fileWrapper.setResultContent(e.getMessage());
 			return fileWrapper;
-		} finally {
-			commonService.saveOrUpdate(log);
 		}
 		return fileWrapper;
 	}
