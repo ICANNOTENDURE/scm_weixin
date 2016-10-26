@@ -1,6 +1,5 @@
 package com.dhcc.scm.ws.wx;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -14,7 +13,6 @@ import me.chanjar.weixin.mp.bean.WxMpTemplateMessage;
 import org.apache.commons.lang3.StringUtils;
 
 import com.dhcc.framework.app.service.CommonService;
-import com.dhcc.framework.common.config.PropertiesBean;
 import com.dhcc.scm.blh.ord.OrdBlh;
 import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.HopVendor;
@@ -38,7 +36,7 @@ public class WeiXinService implements WeiXinServiceInterface {
 	
 	@Override
 	public OperateResult sendMessage(String usename, String password,
-			String vendorCode, String msg) {
+			String vendorCode, String msg, String keyword1, String keyword2) {
 		OperateResult operateResult=new OperateResult();
 		NormalAccount normalAccount = ordBlh.checkWsParam(operateResult, usename, password, null);
 		if (normalAccount == null) {
@@ -62,11 +60,6 @@ public class WeiXinService implements WeiXinServiceInterface {
 			operateResult.setResultContent("供应商未对照");
 			return operateResult;
 		}
-		String host = PropertiesBean.getInstance().getProperty("config.sci.dns");
-		String templateid = PropertiesBean.getInstance().getProperty("config.weixin.mp.template.commonMessage");
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-		
 		List<NormalUser> normalUsers=commonService.findByProperty(NormalUser.class, "vendorId", hopVendor.getHopVenId());
 		if(normalUsers.size()==0){
 			operateResult.setResultContent("供应商没有注册用户");
@@ -74,9 +67,11 @@ public class WeiXinService implements WeiXinServiceInterface {
 		}
 		Hospital hospital = commonService.get(Hospital.class, ctloc.getHospid());
 		WxMpTemplateMessage templateMessage = new WxMpTemplateMessage();
-		templateMessage.setTemplateId(templateid);
-		templateMessage.getDatas().add(new WxMpTemplateData("first", hospital.getHospitalName()+"给您的新消息", "#173177"));
-		templateMessage.getDatas().add(new WxMpTemplateData("msg", msg, "#173177"));
+		templateMessage.setTemplateId("gRfbpFFfcWgtoWo2k56Am9HSUKFKe_rjtaYreeMe8UU");
+		templateMessage.getDatas().add(new WxMpTemplateData("first", hospital.getHospitalName()+"给您的过期提醒", "#173177"));
+		templateMessage.getDatas().add(new WxMpTemplateData("keyword1", keyword1, "#173177"));
+		templateMessage.getDatas().add(new WxMpTemplateData("keyword2", keyword2, "#173177"));
+		templateMessage.getDatas().add(new WxMpTemplateData("remark", msg, "#173177"));
 		try {
 			for(NormalUser normalUser:normalUsers){
 				String[] propertyNames={"wxMpSciPointer","wxMpSend"};
