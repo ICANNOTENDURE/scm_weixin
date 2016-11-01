@@ -9,6 +9,7 @@ $(function() {
 		pageSize:50,
 		pageList:[50,100,200],
 		onClickRow:onClickRow,
+		onLoadSuccess: compute,//加载完毕后执行计算
 		columns : [ [ {
 			"title" : "id",
 			"field" : "id",
@@ -219,7 +220,18 @@ function selectClick() {
 	$("#datagrid").datagrid('load', json);
 }
 
-
+//指定列求和
+function compute() {//计算函数
+    var rows = $('#datagrid').datagrid('getRows')//获取当前的数据行
+    var qtotal = 0//计算qty的总和
+    ,rtotal=0;//统计rp的总和
+    for (var i = 0; i < rows.length; i++) {
+        qtotal += rows[i]['qty'];
+        rtotal += rows[i]['rp'];
+    }
+    //新增一行显示统计信息
+    $('#datagrid').datagrid('appendRow', { orddate: '<b>合计：</b>', qty: qtotal, rp: rtotal });
+}
 
 
 

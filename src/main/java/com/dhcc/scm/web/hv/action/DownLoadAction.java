@@ -198,7 +198,7 @@ public class DownLoadAction extends ActionSupport {
 		hvLabelDto.getPageModel().setPageSize(99999999);
 		hvLabelDto.getPageModel().setPageNo(1);
 		hvLabelService.list(hvLabelDto);
-		int i=2;
+		int i=2; float totalQty=0;float totalRp=0;
 		for(Object o:hvLabelDto.getPageModel().getPageData()){
 			HvInvNoVo hvInvNoVo=(HvInvNoVo)o;
 			row = sheet.createRow(i);        //创建第一行
@@ -223,15 +223,16 @@ public class DownLoadAction extends ActionSupport {
 				cell.setCellValue(hvInvNoVo.getInvnodate());
 			}
 			
-			
 			cell = row.createCell(6, HSSFCell.CELL_TYPE_STRING);
 			if(hvInvNoVo.getQty()!=null){
 				cell.setCellValue(hvInvNoVo.getQty());
+				totalQty +=hvInvNoVo.getQty();
 			}
 			
 			cell = row.createCell(7, HSSFCell.CELL_TYPE_STRING);
 			if(hvInvNoVo.getRp()!=null){
 				cell.setCellValue(hvInvNoVo.getRp());
+				totalRp+=hvInvNoVo.getRp();
 			}
 			
 			cell = row.createCell(8, HSSFCell.CELL_TYPE_STRING);
@@ -242,6 +243,16 @@ public class DownLoadAction extends ActionSupport {
 
 			++i;
 		}
+		
+		row = sheet.createRow(i);
+		cell = row.createCell(0, HSSFCell.CELL_TYPE_STRING);
+		cell.setCellValue("合计");
+		
+		cell = row.createCell(6, HSSFCell.CELL_TYPE_STRING);
+		cell.setCellValue(totalQty);
+			
+		cell = row.createCell(7, HSSFCell.CELL_TYPE_STRING);
+		cell.setCellValue(totalRp);
 		
 		try {
 			FileOutputStream fOut = new FileOutputStream(outputFile);
