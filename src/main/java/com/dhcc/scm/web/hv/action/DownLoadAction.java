@@ -185,11 +185,11 @@ public class DownLoadAction extends ActionSupport {
 		cell = row.createCell(7, HSSFCell.CELL_TYPE_STRING);
 		cell.setCellValue("单价");
 		
-		cell = row.createCell(8, HSSFCell.CELL_TYPE_STRING);
-		cell.setCellValue("医院");
+		//cell = row.createCell(8, HSSFCell.CELL_TYPE_STRING);
+		//cell.setCellValue("医院");
 		
-		cell = row.createCell(9, HSSFCell.CELL_TYPE_STRING);
-		cell.setCellValue("同步标志");
+		//cell = row.createCell(9, HSSFCell.CELL_TYPE_STRING);
+		//cell.setCellValue("同步标志");
 		
 		HvLabelDto hvLabelDto=new HvLabelDto();
 		hvLabelDto.setOrdStart(stDate);
@@ -220,7 +220,9 @@ public class DownLoadAction extends ActionSupport {
 			
 			cell = row.createCell(5, HSSFCell.CELL_TYPE_STRING);
 			if(hvInvNoVo.getInvnodate()!=null){
-				cell.setCellValue(hvInvNoVo.getInvnodate());
+				cell.setCellValue(hvInvNoVo.getInvnodate().toString());
+			}else{
+				cell.setCellValue(new String(""));
 			}
 			
 			cell = row.createCell(6, HSSFCell.CELL_TYPE_STRING);
@@ -235,11 +237,11 @@ public class DownLoadAction extends ActionSupport {
 				totalRp+=hvInvNoVo.getRp();
 			}
 			
-			cell = row.createCell(8, HSSFCell.CELL_TYPE_STRING);
-			cell.setCellValue(hvInvNoVo.getHosp());
+			//cell = row.createCell(8, HSSFCell.CELL_TYPE_STRING);
+			//cell.setCellValue(hvInvNoVo.getHosp());
 			
-			cell = row.createCell(9, HSSFCell.CELL_TYPE_STRING);
-			cell.setCellValue(hvInvNoVo.getFlag());
+			//cell = row.createCell(9, HSSFCell.CELL_TYPE_STRING);
+			//cell.setCellValue(hvInvNoVo.getFlag());
 
 			++i;
 		}
