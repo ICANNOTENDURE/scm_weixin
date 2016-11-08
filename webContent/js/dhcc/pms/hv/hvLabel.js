@@ -18,7 +18,7 @@ $(function() {
 		}, {
 			"title" : "医嘱日期",
 			"field" : "orddate",
-			"sortable" : false,
+			"sortable" : true,
 			"hidden" : false,
 			"width":100
 		}, {
@@ -36,7 +36,7 @@ $(function() {
 		}, {
 			"title" : "规格",
 			"field" : "spec",
-			"sortable" : false,
+			"sortable" : true,
 			"hidden" : false,
 			"width":100
 		}, {
@@ -97,7 +97,7 @@ $(function() {
 
 	
 	$("#down").on('click',function(){
-	  	window.location.href="downLoadCtrl!downLoad.htm?stDate="+$("#StDate").datebox('getValue')+"&edDate="+$("#EdDate").datebox('getValue');   
+	  	window.location.href="downLoadCtrl!downLoad.htm?stDate="+$("#StDate").datebox('getValue')+"&edDate="+$("#EdDate").datebox('getValue')+"&sort="+$('#datagrid').datagrid("options").sortName+"&order="+$('#datagrid').datagrid("options").sortOrder;   
 	});
 	
 	$("#auto").on('click',function(){

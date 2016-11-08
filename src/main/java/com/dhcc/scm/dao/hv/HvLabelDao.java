@@ -80,8 +80,14 @@ public class HvLabelDao extends HibernatePersistentObjectDAO<HvLabel> {
 			hqlBuffer.append("  and  t1.hv_flag is null ");
 		}
 		
-		if(StringUtils.isNotBlank(dto.getSort())){
+		if("venincname".equals(dto.getSort())){
 			hqlBuffer.append(" order by  t3.VEN_INC_NAME "+dto.getSortOrder());
+		}
+		if("spec".equals(dto.getSort())){
+			hqlBuffer.append(" order by t3.VEN_INC_SPEC "+dto.getSortOrder());
+		}
+		if("orddate".equals(dto.getSort())){
+			hqlBuffer.append(" order by t1.hv_orddate "+dto.getSortOrder());
 		}
 		
 		if(dto.getPageModel()==null){

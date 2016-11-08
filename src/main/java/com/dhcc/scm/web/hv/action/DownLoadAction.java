@@ -64,6 +64,27 @@ public class DownLoadAction extends ActionSupport {
 	
 	private Date edDate;
 	
+	private String sort;
+	
+	private String order;
+	
+	
+	public String getSort() {
+		return sort;
+	}
+
+	public void setSort(String sort) {
+		this.sort = sort;
+	}
+
+	public String getOrder() {
+		return order;
+	}
+
+	public void setOrder(String order) {
+		this.order = order;
+	}
+
 	/**
 	 * @return the stDate
 	 */
@@ -194,6 +215,8 @@ public class DownLoadAction extends ActionSupport {
 		HvLabelDto hvLabelDto=new HvLabelDto();
 		hvLabelDto.setOrdStart(stDate);
 		hvLabelDto.setOrdEnd(edDate);
+		hvLabelDto.setSort(sort);
+		hvLabelDto.setSortOrder(order);
 		hvLabelDto.setPageModel(new PagerModel());
 		hvLabelDto.getPageModel().setPageSize(99999999);
 		hvLabelDto.getPageModel().setPageNo(1);
