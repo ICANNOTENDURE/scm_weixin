@@ -156,8 +156,17 @@ public class DownLoadAction extends ActionSupport {
 		HSSFSheet sheet = workbook.createSheet();  
 		Date date = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		String stTime = formatter.format(stDate);
-		String edTime = formatter.format(edDate);
+		String stTime,edTime;
+		if(stDate!=null){
+		 stTime = formatter.format(stDate);
+		}else {
+			stTime = "";
+		}
+		if(edDate!=null){
+		 edTime = formatter.format(edDate);
+		}else {
+			edTime = "";
+		}
 		String printDate = formatter.format(date);
 		  
 		//sheet.protectSheet("123");
@@ -172,7 +181,11 @@ public class DownLoadAction extends ActionSupport {
 		cell.setCellValue("统计日期");
 		
 		cell = row.createCell(2, HSSFCell.CELL_TYPE_STRING);
-		cell.setCellValue(stTime+"-"+edTime);
+		if((stTime == "")&&(edTime == "")){
+		cell.setCellValue(stTime+edTime);
+		}else{
+			cell.setCellValue(stTime+"-"+edTime);
+		}
 		
 		cell = row.createCell(3, HSSFCell.CELL_TYPE_STRING);
 		cell.setCellValue("打印日期");
