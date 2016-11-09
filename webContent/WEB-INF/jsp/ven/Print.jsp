@@ -40,7 +40,7 @@ body {font:12px/1.5  "宋体";color:#333}
 			<div class="m1">
 				<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb1">
 					<tr>
-						<td class="t1"><strong>订单编号：</strong>${printVos.hisno}</td>
+						<td class="t1"><strong>订单编号：</strong><strong style="font-size:200%">${printVos.hisno}</strong></td>
 						<td class="t2"><strong>订购时间：</strong>${printVos.orderDate}</td>
 					</tr>
 				</table>
