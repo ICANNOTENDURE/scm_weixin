@@ -60,7 +60,7 @@ body {font:12px/1.5  "宋体";color:#333}
 						class="tb3">
 						<tr>
 							<td class="t8"><img
-								src="<%=request.getContextPath()%>/sys/qrCodeCtrl!qrAndroid.htm?dto.content=${dto.printVos[0].ordrid}&dto.codeType=ByOrder"
+								src="<%=request.getContextPath()%>/sys/qrCodeCtrl!qrAndroid.htm?dto.content=${dto.printVos[0].ordrid}&dto.codeType=ByOrder&dto.text=${dto.printVos[0].hisno}"
 								style='height: 100; width: 100px'> </img></td>
 
 						</tr>
