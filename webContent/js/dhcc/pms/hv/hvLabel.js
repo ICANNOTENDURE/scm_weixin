@@ -97,7 +97,7 @@ $(function() {
 
 	
 	$("#down").on('click',function(){
-	  	window.location.href="downLoadCtrl!downLoad.htm?stDate="+$("#StDate").datebox('getValue')+"&edDate="+$("#EdDate").datebox('getValue')+"&sort="+$('#datagrid').datagrid("options").sortName+"&order="+$('#datagrid').datagrid("options").sortOrder;   
+	  	window.location.href="downLoadCtrl!downLoad.htm?stDate="+$("#StDate").datebox('getValue')+"&edDate="+$("#EdDate").datebox('getValue')+"&sort="+$('#datagrid').datagrid("options").sortName+"&order="+$('#datagrid').datagrid("options").sortOrder+"&incname="+$("input[name='dto.incname']").val();   
 	});
 	
 	$("#auto").on('click',function(){
@@ -185,6 +185,7 @@ function save(){
 	 }
 	par=[];
 	for(var j=0;j<changes.length;j++){
+		if(changes[j]["id"]==undefined){continue;}
 		InvNoObj= new Object();
 		InvNoObj.hvInvNo=changes[j]["invno"];
 		if((changes[j]["invnodate"]!="")&&(changes[j]["invnodate"]!=null)){

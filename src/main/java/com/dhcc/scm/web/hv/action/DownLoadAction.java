@@ -10,7 +10,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
@@ -68,7 +67,18 @@ public class DownLoadAction extends ActionSupport {
 	
 	private String order;
 	
+	private String incname;
 	
+	
+	
+	public String getIncname() {
+		return incname;
+	}
+
+	public void setIncname(String incname) {
+		this.incname = incname;
+	}
+
 	public String getSort() {
 		return sort;
 	}
@@ -230,6 +240,7 @@ public class DownLoadAction extends ActionSupport {
 		hvLabelDto.setOrdEnd(edDate);
 		hvLabelDto.setSort(sort);
 		hvLabelDto.setSortOrder(order);
+		hvLabelDto.setIncname(incname);
 		hvLabelDto.setPageModel(new PagerModel());
 		hvLabelDto.getPageModel().setPageSize(99999999);
 		hvLabelDto.getPageModel().setPageNo(1);
