@@ -10,12 +10,14 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -186,7 +188,7 @@ public class DownLoadAction extends ActionSupport {
 		row = sheet.createRow(0);
 		cell = row.createCell(0, HSSFCell.CELL_TYPE_STRING);
 		cell.setCellValue("供应商高值物资统计表");
-		
+
 		cell = row.createCell(1, HSSFCell.CELL_TYPE_STRING);
 		cell.setCellValue("统计日期");
 		
@@ -240,7 +242,13 @@ public class DownLoadAction extends ActionSupport {
 		hvLabelDto.setOrdEnd(edDate);
 		hvLabelDto.setSort(sort);
 		hvLabelDto.setSortOrder(order);
-		hvLabelDto.setIncname(incname);
+		if(StringUtils.isNotBlank(incname)){
+			try {
+				hvLabelDto.setIncname(new String(incname .getBytes("ISO8859-1")).toString());
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
 		hvLabelDto.setPageModel(new PagerModel());
 		hvLabelDto.getPageModel().setPageSize(99999999);
 		hvLabelDto.getPageModel().setPageNo(1);
