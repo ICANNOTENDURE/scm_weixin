@@ -11,10 +11,10 @@ $(function() {
 		onClickRow:onClickRow,
 		onLoadSuccess: compute,//加载完毕后执行计算
 		columns : [ [ {
-			"title" : "id",
+			"title" : "序列号",
 			"field" : "id",
 			"sortable" : false,
-			"hidden" : true
+			"hidden" : false
 		}, {
 			"title" : "医嘱日期",
 			"field" : "orddate",
@@ -231,7 +231,7 @@ function compute() {//计算函数
         rtotal += rows[i]['rp'];
     }
     //新增一行显示统计信息
-    $('#datagrid').datagrid('appendRow', { orddate: '<b>合计：</b>', qty: qtotal, rp: rtotal });
+    $('#datagrid').datagrid('appendRow', { id: '<b>合计：</b>', qty: qtotal, rp: rtotal });
 }
 
 
