@@ -18,8 +18,23 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/security/aes.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/security/login.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/dhcc/pms/login/login.js"></script>	
+<script src="<%=request.getContextPath()%>/js/layer/layer.js"></script>
 </head>
 <body>
+   <script>
+   layer.open({
+       type: 1
+       ,title: false
+       ,area: '300px;'
+       ,closeBtn :false
+       ,shade: 0.8
+       ,btn: ['我已阅读']
+       ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+       ,moveType: 1 //拖拽模式，0或者1
+       ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">皖医弋矶山医院通知<br><br>&nbsp;&nbsp;&nbsp;请各个厂家及供应商仔细核对当月发票，若有差错，从即日起当月将不办理入库并推迟六个月入库，各供应商按要求及时递送发票。若有其他操作方面的问题，请及时与东华沟通。近期医院将出台票据管理规定！谢谢合作！</div>'
+       
+     });
+   </script>
   <div class="index">
     <!--LOGO-->
     <div class="login_header">

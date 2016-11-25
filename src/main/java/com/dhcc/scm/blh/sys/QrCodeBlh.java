@@ -47,6 +47,9 @@ public class QrCodeBlh extends AbstractBaseBlh {
 			QrCodeUtil.CODE128(dto.getContent());
 		}else{
 			QrCode code=new QrCode(dto.getContent(), dto.getCodeType(),dto.getSeq());
+			if(StringUtils.isNotBlank(dto.getText())){
+				code.setText(dto.getText());
+			}
 			QrCodeUtil.QrCode(JsonUtils.toJson(code),false);
 		}
 

@@ -19,7 +19,18 @@ public class QrCodeDto extends BaseDto {
 	
 	private String code128;
 	
+	private String text;
 	
+	
+	
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
 
 	public String getCode128() {
 		return code128;
