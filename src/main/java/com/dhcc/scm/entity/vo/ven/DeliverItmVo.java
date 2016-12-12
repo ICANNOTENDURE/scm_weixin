@@ -26,6 +26,49 @@ public class DeliverItmVo implements java.io.Serializable{
 	
 	private String spec;
 	
+	private Long venincrowid;
+	
+	private String qualifprocer;
+	
+	private String qualifdpurno;
+	
+	private Date qualifdate;
+	
+	
+	
+	
+	public String getQualifprocer() {
+		return qualifprocer;
+	}
+
+	public void setQualifprocer(String qualifprocer) {
+		this.qualifprocer = qualifprocer;
+	}
+
+	public String getQualifdpurno() {
+		return qualifdpurno;
+	}
+
+	public void setQualifdpurno(String qualifdpurno) {
+		this.qualifdpurno = qualifdpurno;
+	}
+
+	public Date getQualifdate() {
+		return qualifdate;
+	}
+
+	public void setQualifdate(Date qualifdate) {
+		this.qualifdate = qualifdate;
+	}
+
+	public Long getVenincrowid() {
+		return venincrowid;
+	}
+
+	public void setVenincrowid(Long venincrowid) {
+		this.venincrowid = venincrowid;
+	}
+
 	/**
 	 * @return the spec
 	 */

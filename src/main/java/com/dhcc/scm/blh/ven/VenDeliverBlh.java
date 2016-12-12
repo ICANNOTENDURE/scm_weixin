@@ -1126,44 +1126,7 @@ public class VenDeliverBlh extends AbstractBaseBlh {
 					HopCtloc ctloc1 = commonService.get(HopCtloc.class, orderDetail.getOrderPurLoc());
 				    printVo.setPurloc(ctloc1.getName());
 				}
-                 //在打印随行单中增加商品注册证效期  guoguomin
-				if(orderDetail.getOrderVenIncId() != null){
-					long id=31;
-					String[] propertyNames={"qualifyIncId","sysQualifType.qualifTypeId"};
-					Object[] values={orderDetail.getOrderVenIncId(),id};
-					List<VenIncqQualif> incqQualifs2=commonService.findByProperties(VenIncqQualif.class, propertyNames, values);
-					if(incqQualifs2.size()>0){
-						VenIncqQualif venIncqQualif = commonService.get(VenIncqQualif.class, incqQualifs2.get(0).getQualifyId());
-						printVo.setQualifdate(venIncqQualif.getQualifDate());
-					}
-				
-				}
-				
-				 //在打印随行单中增加采购合同号  guoguomin 2016-9-26
-				if(orderDetail.getOrderVenIncId() != null){
-					long id=4;
-					String[] propertyNames={"qualifyIncId","sysQualifType.qualifTypeId"};
-					Object[] values={orderDetail.getOrderVenIncId(),id};
-					List<VenIncqQualif> incqQualifs2=commonService.findByProperties(VenIncqQualif.class, propertyNames, values);
-					if(incqQualifs2.size()>0){
-						VenIncqQualif venIncqQualif = commonService.get(VenIncqQualif.class, incqQualifs2.get(0).getQualifyId());
-						printVo.setQualifdpurno(venIncqQualif.getQualifDescription());
-					}
-				
-				}
-				
-				 //在打印随行单中增加商品注册证  guoguomin 2016-9-26
-				if(orderDetail.getOrderVenIncId() != null){
-					long id=7;
-					String[] propertyNames={"qualifyIncId","sysQualifType.qualifTypeId"};
-					Object[] values={orderDetail.getOrderVenIncId(),id};
-					List<VenIncqQualif> incqQualifs2=commonService.findByProperties(VenIncqQualif.class, propertyNames, values);
-					if(incqQualifs2.size()>0){
-						VenIncqQualif venIncqQualif = commonService.get(VenIncqQualif.class, incqQualifs2.get(0).getQualifyId());
-						printVo.setQualifprocer(venIncqQualif.getQualifDescription());
-					}
-				
-				}
+     
 				
 				if (orderDetail.getOrderRecDestination() != null) {
 					HopCtlocDestination hopCtlocDestination = commonService.get(HopCtlocDestination.class, orderDetail.getOrderRecDestination());
@@ -1182,6 +1145,40 @@ public class VenDeliverBlh extends AbstractBaseBlh {
 				Float sumamt = 0f;
 				for (Object o : dto.getPageModel().getPageData()) {
 					DeliverItmVo deliverItmVo = (DeliverItmVo) o;
+		            //在打印随行单中增加商品注册证效期  guoguomin
+					if(deliverItmVo.getVenincrowid() != null){
+						long id=31;
+						String[] propertyNames={"qualifyIncId","sysQualifType.qualifTypeId"};
+						Object[] values={deliverItmVo.getVenincrowid(),id};
+						List<VenIncqQualif> incqQualifs2=commonService.findByProperties(VenIncqQualif.class, propertyNames, values);
+						if(incqQualifs2.size()>0){
+							deliverItmVo.setQualifdate(incqQualifs2.get(0).getQualifDate());
+						}
+					
+					}
+					
+					 //在打印随行单中增加采购合同号  guoguomin 2016-9-26
+					if(deliverItmVo.getVenincrowid() != null){
+						long id=4;
+						String[] propertyNames={"qualifyIncId","sysQualifType.qualifTypeId"};
+						Object[] values={deliverItmVo.getVenincrowid(),id};
+						List<VenIncqQualif> incqQualifs2=commonService.findByProperties(VenIncqQualif.class, propertyNames, values);
+						if(incqQualifs2.size()>0){
+							deliverItmVo.setQualifdpurno( incqQualifs2.get(0).getQualifDescription());
+						}
+					}
+					
+					 //在打印随行单中增加商品注册证  guoguomin 2016-9-26
+					if(deliverItmVo.getVenincrowid() != null){
+						long id=7;
+						String[] propertyNames={"qualifyIncId","sysQualifType.qualifTypeId"};
+						Object[] values={deliverItmVo.getVenincrowid(),id};
+						List<VenIncqQualif> incqQualifs2=commonService.findByProperties(VenIncqQualif.class, propertyNames, values);
+						if(incqQualifs2.size()>0){
+							deliverItmVo.setQualifprocer(incqQualifs2.get(0).getQualifDescription());
+						}
+					
+					}
 					printVo.getDeliverItmVos().add(deliverItmVo);
 					sumamt = sumamt + deliverItmVo.getRpamt().floatValue();
 
