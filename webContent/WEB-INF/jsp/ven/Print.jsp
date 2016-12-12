@@ -9,7 +9,7 @@
 </title>
     <style type="text/css">
 * {margin:0;padding:0}
-body {font:12px/1.5  "宋体";color:#333}
+body {font:18px/1.5  "宋体";color:#333}
 .w{width:100%}
 .m1 td{height:0.6cm;line-height:0.6cm;}
 .t3,.t7,.t6{width:1.6cm}
@@ -40,7 +40,7 @@ body {font:12px/1.5  "宋体";color:#333}
 			<div class="m1">
 				<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb1">
 					<tr>
-						<td class="t1"><strong>订单编号：</strong><strong style="font-size:200%">${printVos.hisno}</strong></td>
+						<td class="t1"><strong>订单编号：</strong><strong style="font-size:140%">${printVos.hisno}</strong></td>
 						<td class="t2"><strong>订购时间：</strong>${printVos.orderDate}</td>
 					</tr>
 				</table>

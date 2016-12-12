@@ -2,6 +2,29 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+<style type="text/css">
+.datagrid-cell {
+    margin: 0;
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    padding: 0 4px;
+    padding-top: 0px;
+    padding-right: 4px;
+    padding-bottom: 0px;
+    padding-left: 4px;
+    white-space: nowrap;
+    word-wrap: normal;
+    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    height: 18px;
+    line-height: 18px;
+    font-weight: normal;
+    font-size: 15px;
+}
+</style>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title></title>
@@ -194,8 +217,8 @@ function enCodeItm(value,row,index){
 						<!-- 
 						<th data-options="field:'qrcode',fixColumnSize:80,formatter:enCode,align:'center'">二维码</th>
 						 -->
-						<th data-options="field:'hopname',width:90">医院</th>
-						<th data-options="field:'statedesc',width:50">状态</th>
+						<th data-options="field:'hopname',width:110">医院</th>
+						<th data-options="field:'statedesc',width:90">状态</th>
 						<th data-options="field:'emflag',width:20">加急</th>
 						<th data-options="field:'purloc',width:90,hidden:true">入库科室</th>
 						<th data-options="field:'recloc',width:90">收货科室</th>
@@ -228,7 +251,7 @@ function enCodeItm(value,row,index){
 						<!-- 
 						<th data-options="field:'qrCodeItm',fixColumnSize:50,formatter:enCodeItm,align:'center'">二维码</th>
 						 -->
-						<th data-options="field:'venincncode',width:90">代码</th>
+						<th data-options="field:'venincncode',width:110">代码</th>
 						<th data-options="field:'venincname',width:150">名称</th>
 						<th data-options="field:'deliverqty',width:90">数量</th>
 						<th data-options="field:'rp',width:90">进价</th>
