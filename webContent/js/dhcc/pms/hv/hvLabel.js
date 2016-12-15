@@ -16,7 +16,11 @@ $(function() {
 			"sortable" : false,
 			"hidden" : false,
 			"formatter":function(value,row,index){
-				return index+1;
+				if(value=="<b>合计：</b>"){
+					return value;
+				}else{
+					return index+1;
+				}
 			}
 		},{
 			"title" : "id",
