@@ -52,7 +52,8 @@ body {font:18px/1.5  "宋体";color:#333}
 				</table>
 				<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tb3">
 					<tr>
-						<td class="t8"><strong>收货地址：</strong>${printVos.destination}</td>
+						<td class="t1"><strong>收货地址：</strong>${printVos.destination}</td>
+						<td class="t2"><strong>供应商：</strong>${printVos.venname}</td>
 
 				    </tr>
 				</table>

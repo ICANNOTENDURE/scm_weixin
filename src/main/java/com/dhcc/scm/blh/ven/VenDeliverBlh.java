@@ -1117,6 +1117,7 @@ public class VenDeliverBlh extends AbstractBaseBlh {
 				Hospital hospital = commonService.get(Hospital.class, orderDetail.getOrderHopId());
 				//VenIncqQualif venIncqQualif = new VenIncqQualif();
 				HopCtloc ctloc = commonService.get(HopCtloc.class, orderDetail.getOrderRecLoc());
+				Vendor vendor = commonService.get(Vendor.class, orderDetail.getOrderVenId());
 				PrintVo printVo = new PrintVo();
 				printVo.setHisno(orderDetail.getOrderNo());
 				printVo.setOrdrid(orderDetail.getOrderId());
@@ -1135,6 +1136,7 @@ public class VenDeliverBlh extends AbstractBaseBlh {
                // printVo.setQualifdate(venIncqQualif.getQualifDate());
 				printVo.setHopname(hospital.getHospitalName());
 				printVo.setRecloc(ctloc.getName());
+				printVo.setVenname(vendor.getName());
 
 				printVo.setDeliverItmVos(new ArrayList<DeliverItmVo>());
 				PagerModel model = new PagerModel();

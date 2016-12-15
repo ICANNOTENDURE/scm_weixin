@@ -36,7 +36,23 @@ public class PrintVo implements java.io.Serializable{
 	
 	private String qualifdpurno;
 	
+    private String venname;
 	
+	
+
+	/**
+	 * @return the venname
+	 */
+	public String getVenname() {
+		return venname;
+	}
+
+	/**
+	 * @param venname the venname to set
+	 */
+	public void setVenname(String venname) {
+		this.venname = venname;
+	}
 
 	/**
 	 * @return the qualifprocer
