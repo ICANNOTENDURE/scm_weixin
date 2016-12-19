@@ -106,6 +106,14 @@ public class HisInfoService implements HisInfoServiceInterface {
 		try {
 			hopIncBlh.syncHisInc(operateResult, hisIncWeb);
 		} catch (Exception e) {
+			SysLog log = new SysLog();
+			log.setOpArg(JsonUtils.toJson(hisIncWeb));
+			log.setOpName("webservice同步医院商品信息");
+			log.setOpDate(new Date());
+			log.setOpResult(e.getMessage());
+			log.setOpType("webservice");
+			log.setOpUser(hisIncWeb.getUserName());
+			commonService.saveOrUpdate(log);
 			operateResult.setResultCode("1");
 			operateResult.setResultContent("程序异常->Exception:" + e.getMessage());
 			return operateResult;
@@ -139,23 +147,22 @@ public class HisInfoService implements HisInfoServiceInterface {
 	@Override
 	public HisInvInfoWeb getRecItmByInv(String invNo, String hopName, String venName) {
 		HisInvInfoWeb hisInvInfoWeb = new HisInvInfoWeb();
-
-		SysLog log = new SysLog();
+		
 		try {
 			blh.getRecItmByInvWSSub(invNo, hopName, venName, hisInvInfoWeb);
-
+		} catch (Exception e) {
+			SysLog log = new SysLog();
 			log.setOpArg(JsonUtils.toJson(hisInvInfoWeb) + ",invNo:" + invNo + ",venName:" + venName);
 			log.setOpName("webservice医院入库查找发票");
 			log.setOpDate(new Date());
 			log.setOpResult(JsonUtils.toJson(hisInvInfoWeb.getResultContent()));
 			log.setOpType("webservice");
 			log.setOpUser(hopName);
-		} catch (Exception e) {
+			log.setOpResult(e.getMessage());
+			commonService.saveOrUpdate(log);
 			hisInvInfoWeb.setResultCode("1");
 			hisInvInfoWeb.setResultContent("程序异常1:" + e.getMessage());
-			log.setOpResult(e.getMessage());
-		} finally {
-			commonService.saveOrUpdate(log);
+			return hisInvInfoWeb;
 		}
 		return hisInvInfoWeb;
 	}

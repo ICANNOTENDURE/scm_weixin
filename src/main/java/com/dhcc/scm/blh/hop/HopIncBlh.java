@@ -49,9 +49,9 @@ import com.dhcc.scm.dto.sys.SysImpModelDto;
 import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.HopInc;
 import com.dhcc.scm.entity.hop.HopIncAlias;
+import com.dhcc.scm.entity.hop.HopVendor;
 import com.dhcc.scm.entity.manf.HopManf;
 import com.dhcc.scm.entity.sys.ImpModel;
-import com.dhcc.scm.entity.sys.SysLog;
 import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.ven.VenHopInc;
 import com.dhcc.scm.entity.ven.VenInc;
@@ -420,16 +420,7 @@ public class HopIncBlh extends AbstractBaseBlh {
 	 */
 	public void syncHisInc(OperateResult operateResult, HisIncWeb hisIncWeb) {
 
-		this.syncHisIncSub(operateResult, hisIncWeb);
-		SysLog log = new SysLog();
-		log.setOpArg(JsonUtils.toJson(hisIncWeb));
-		log.setOpName("webservice同步医院商品信息");
-		log.setOpDate(new Date());
-		log.setOpResult(JsonUtils.toJson(operateResult));
-		log.setOpType("webservice");
-		log.setOpUser(hisIncWeb.getUserName());
-		commonService.saveOrUpdate(log);
-
+		syncHisIncSub(operateResult, hisIncWeb);
 	}
 
 	public void syncHisIncSub(OperateResult operateResult, HisIncWeb hisIncWeb) {
@@ -482,6 +473,50 @@ public class HopIncBlh extends AbstractBaseBlh {
 				}
 			}
 			commonService.saveOrUpdate(hopInc);
+			
+			
+			//自动对照商品
+			//供应商没有该商品，插入供应商商品表
+			if(org.apache.commons.lang3.StringUtils.isBlank(hisIncItmWeb.getVenCode())){
+				continue;
+			}
+			HopVendor hopVendor=commonService.getVenByCode(hisIncItmWeb.getVenCode(), hopCtloc.getHospid());
+			if(hopVendor==null){
+				continue;
+			}
+			if(hopVendor.getHopVenId()==null){
+				continue;
+			}
+			VenInc venInc=commonService.getVenIncByBarCode(hopVendor.getHopVenId(), hisIncItmWeb.getBarCode());
+			if(venInc==null){
+				venInc=new VenInc();
+				venInc.setVenIncAddDate(new Date());
+				venInc.setVenIncBarCode(hisIncItmWeb.getBarCode());
+				venInc.setVenIncForm(hisIncItmWeb.getForm());
+				venInc.setVenIncCode(hisIncItmWeb.getVenIncCode());
+				venInc.setVenIncName(hisIncItmWeb.getVenIncName());
+				venInc.setVenIncSpec(hisIncItmWeb.getVenIncSpec());
+				venInc.setVenIncVenid(hopVendor.getHopVenId());
+				venInc.setVenIncSp(hisIncItmWeb.getVenIncSp());
+				venInc.setVenIncPrice(hisIncItmWeb.getVenIncPrice());
+				venInc.setVenIncUomname(hisIncItmWeb.getVenIncUom());
+				if(org.apache.commons.lang3.StringUtils.isNotBlank(hisIncItmWeb.getVenIncName())){
+					venInc.setVenIncAlias(PingYinUtil.getPingYin(hisIncItmWeb.getVenIncName()));
+				}
+				commonService.saveOrUpdate(venInc);
+			}
+			
+			if(!commonService.checkIncIsCon(venInc.getVenIncId(),hopInc.getIncId())){
+				VenHopInc venHopInc=new VenHopInc();
+				venHopInc.setHopFac(1f);
+				venHopInc.setVenIncFac(1f);
+				venHopInc.setHopRp(hisIncItmWeb.getVenIncPrice());
+				venHopInc.setHopIncId(hopInc.getIncId());
+				venHopInc.setVenIncId(venInc.getVenIncId());
+				venHopInc.setVenHopAuditflag("Y");
+				commonService.saveOrUpdate(venHopInc);
+			}
+			
 		}
 	}
 	

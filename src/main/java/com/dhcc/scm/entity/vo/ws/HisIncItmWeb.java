@@ -43,8 +43,19 @@ public class HisIncItmWeb implements Serializable{
 	//型号
 	private String form;
 	
+	private String venCode;
 	
 	
+	
+	
+	public String getVenCode() {
+		return venCode;
+	}
+
+	public void setVenCode(String venCode) {
+		this.venCode = venCode;
+	}
+
 	public String getForm() {
 		return form;
 	}
