@@ -58,10 +58,7 @@ $(function() {
 			"hidden" : false,
 			"width":100,
 			"editor":{    
-                "type":"validatebox",    
-                "options":{    
-                    "required":"true"   
-                }    
+                "type":"validatebox"   
             }
 		}, {
 			"title" : "发票日期",
@@ -70,10 +67,7 @@ $(function() {
 			"hidden" : false,
 			"width":100,
 			"editor":{    
-                "type":"datebox",    
-                "options":{    
-                    "required":"true"   
-                }    
+                "type":"datebox"   
             }
 		}, {
 			"title" : "数量",
