@@ -211,25 +211,30 @@ public class DownLoadAction extends ActionSupport {
 		cell.setCellValue("医嘱日期");
 		
 		cell = row.createCell(1, HSSFCell.CELL_TYPE_STRING);
-		cell.setCellValue("条码");
-		
-		cell = row.createCell(2, HSSFCell.CELL_TYPE_STRING);
 		cell.setCellValue("商品名称");
 		
-		cell = row.createCell(3, HSSFCell.CELL_TYPE_STRING);
+		cell = row.createCell(2, HSSFCell.CELL_TYPE_STRING);
 		cell.setCellValue("规格");
 		
-		cell = row.createCell(4, HSSFCell.CELL_TYPE_STRING);
-		cell.setCellValue("发票号");
+		//cell = row.createCell(4, HSSFCell.CELL_TYPE_STRING);
+		//cell.setCellValue("发票号");
 		
-		cell = row.createCell(5, HSSFCell.CELL_TYPE_STRING);
-		cell.setCellValue("发票日期");
+		//cell = row.createCell(5, HSSFCell.CELL_TYPE_STRING);
+		//cell.setCellValue("发票日期");
 		
-		cell = row.createCell(6, HSSFCell.CELL_TYPE_STRING);
+		
+		
+		cell = row.createCell(3, HSSFCell.CELL_TYPE_STRING);
 		cell.setCellValue("数量");
 		
-		cell = row.createCell(7, HSSFCell.CELL_TYPE_STRING);
+		cell = row.createCell(4, HSSFCell.CELL_TYPE_STRING);
 		cell.setCellValue("单价");
+		
+		cell = row.createCell(5, HSSFCell.CELL_TYPE_STRING);
+		cell.setCellValue("条码");
+		
+		cell = row.createCell(6, HSSFCell.CELL_TYPE_STRING);
+		cell.setCellValue("供应商名称");
 		
 		//cell = row.createCell(8, HSSFCell.CELL_TYPE_STRING);
 		//cell.setCellValue("医院");
@@ -262,35 +267,38 @@ public class DownLoadAction extends ActionSupport {
 			cell.setCellValue(hvInvNoVo.getOrddate().toString());
 			
 			cell = row.createCell(1, HSSFCell.CELL_TYPE_STRING);
-			cell.setCellValue(hvInvNoVo.getLabel());
-			
-			cell = row.createCell(2, HSSFCell.CELL_TYPE_STRING);
 			cell.setCellValue(hvInvNoVo.getVenincname());
 			
-			cell = row.createCell(3, HSSFCell.CELL_TYPE_STRING);
+			cell = row.createCell(2, HSSFCell.CELL_TYPE_STRING);
 			cell.setCellValue(hvInvNoVo.getSpec());
 			
-			cell = row.createCell(4, HSSFCell.CELL_TYPE_STRING);
-			cell.setCellValue(hvInvNoVo.getInvno());
+			//cell = row.createCell(4, HSSFCell.CELL_TYPE_STRING);
+			//cell.setCellValue(hvInvNoVo.getInvno());
 			
-			cell = row.createCell(5, HSSFCell.CELL_TYPE_STRING);
-			if(hvInvNoVo.getInvnodate()!=null){
-				cell.setCellValue(hvInvNoVo.getInvnodate().toString());
-			}else{
-				cell.setCellValue(new String(""));
-			}
+			//cell = row.createCell(5, HSSFCell.CELL_TYPE_STRING);
+			//if(hvInvNoVo.getInvnodate()!=null){
+			//	cell.setCellValue(hvInvNoVo.getInvnodate().toString());
+			//}else{
+			//	cell.setCellValue(new String(""));
+			//}
 			
-			cell = row.createCell(6, HSSFCell.CELL_TYPE_STRING);
+			cell = row.createCell(3, HSSFCell.CELL_TYPE_STRING);
 			if(hvInvNoVo.getQty()!=null){
 				cell.setCellValue(hvInvNoVo.getQty());
 				totalQty +=hvInvNoVo.getQty();
 			}
 			
-			cell = row.createCell(7, HSSFCell.CELL_TYPE_STRING);
+			cell = row.createCell(4, HSSFCell.CELL_TYPE_STRING);
 			if(hvInvNoVo.getRp()!=null){
 				cell.setCellValue(hvInvNoVo.getRp());
 				totalRp+=hvInvNoVo.getRp();
 			}
+			
+			cell = row.createCell(5, HSSFCell.CELL_TYPE_STRING);
+			cell.setCellValue(hvInvNoVo.getLabel());
+			
+			cell = row.createCell(6, HSSFCell.CELL_TYPE_STRING);
+			cell.setCellValue(hvInvNoVo.getName());
 			
 			//cell = row.createCell(8, HSSFCell.CELL_TYPE_STRING);
 			//cell.setCellValue(hvInvNoVo.getHosp());
@@ -305,10 +313,10 @@ public class DownLoadAction extends ActionSupport {
 		cell = row.createCell(0, HSSFCell.CELL_TYPE_STRING);
 		cell.setCellValue("合计");
 		
-		cell = row.createCell(6, HSSFCell.CELL_TYPE_STRING);
+		cell = row.createCell(3, HSSFCell.CELL_TYPE_STRING);
 		cell.setCellValue(totalQty);
 			
-		cell = row.createCell(7, HSSFCell.CELL_TYPE_STRING);
+		cell = row.createCell(4, HSSFCell.CELL_TYPE_STRING);
 		cell.setCellValue(totalRp);
 		
 		try {

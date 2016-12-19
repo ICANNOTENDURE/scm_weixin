@@ -47,11 +47,13 @@ public class HvLabelDao extends HibernatePersistentObjectDAO<HvLabel> {
 		hqlBuffer.append("	t2.HOSPITAL_NAME as hosp , ");
 		hqlBuffer.append("	t3.VEN_INC_NAME as venincname , ");
 		hqlBuffer.append("	t3.VEN_INC_PRICE as rp , ");
-		hqlBuffer.append("	t3.VEN_INC_SPEC as spec  ");
+		hqlBuffer.append("	t3.VEN_INC_SPEC as spec , ");
+		hqlBuffer.append("	t4.name as name  ");
 		hqlBuffer.append("	FROM ");
 		hqlBuffer.append(" t_hv_label t1 ");
 		hqlBuffer.append(" LEFT JOIN t_sys_hospital t2 ON t1.hv_hopid = t2.HOSPITAL_ID ");
 		hqlBuffer.append(" left join t_ven_inc t3 on t3.VEN_INC_ROWID  =t1.hv_venincid  ");
+		hqlBuffer.append(" left join t_ven_vendor t4 on t4.VEN_ID  =t1.hv_vendorid  ");
 		hqlBuffer.append(" where 1=1 ");
 		Map<String, Object> hqlParamMap = new HashMap<String, Object>();
 		
