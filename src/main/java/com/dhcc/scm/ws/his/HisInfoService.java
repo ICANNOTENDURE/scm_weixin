@@ -39,6 +39,7 @@ import com.dhcc.scm.entity.ven.VenHopInc;
 import com.dhcc.scm.entity.ven.VenInc;
 import com.dhcc.scm.entity.ven.VenIncPic;
 import com.dhcc.scm.entity.ven.VenIncqQualif;
+import com.dhcc.scm.entity.ven.VenIncqQualifPic;
 import com.dhcc.scm.entity.ven.VenQualifPic;
 import com.dhcc.scm.entity.ven.VenQualification;
 import com.dhcc.scm.entity.ven.Vendor;
@@ -603,7 +604,7 @@ public class HisInfoService implements HisInfoServiceInterface {
 						VenQualifyWebItm venQualifyWebItm = new VenQualifyWebItm();
 						venQualifyWebItm.setExp(qualification.getExpdate());
 						venQualifyWebItm.setText(qualification.getDescription());
-						venQualifyWebItm.setPics(castVO(qualification.getVenQualifPics()));
+						venQualifyWebItm.setPics(castVO(qualification.getVenQualifPics(),"VENDOR"));
 						venQualifyWebItm.setType(qualification.getVenQualifType().getCode());
 						venQualifyWebItm.setVenCode(hopvenCode);
 						venQualifyWebItms.add(venQualifyWebItm);
@@ -626,12 +627,12 @@ public class HisInfoService implements HisInfoServiceInterface {
 		return venQualifyWeb;
 	}
 
-	private List<HisPicWeb> castVO(List<VenQualifPic> qualifPics) {
+	private List<HisPicWeb> castVO(List<VenQualifPic> qualifPics,String type) {
 		List<HisPicWeb> hisPicWebs = new ArrayList<HisPicWeb>();
 		if (qualifPics == null)
 			return hisPicWebs;
 		for (VenQualifPic pic : qualifPics) {
-			HisPicWeb hisPicWeb = new HisPicWeb("VENDOR", pic.getPath());
+			HisPicWeb hisPicWeb = new HisPicWeb(type, pic.getPath());
 			hisPicWebs.add(hisPicWeb);
 		}
 		return hisPicWebs;
@@ -972,6 +973,12 @@ public class HisInfoService implements HisInfoServiceInterface {
 				venQualifyWebItm.setText(qualification.getQualifDescription());
 				venQualifyWebItm.setType(qualification.getSysQualifType().getCode());
 				venQualifyWebItm.setVenCode(hopVenIncCode);
+				venQualifyWebItm.setPics(new ArrayList<HisPicWeb>());
+				for(VenIncqQualifPic venIncqQualifPic:qualification.getIncqQualifPics()){
+					
+					venQualifyWebItm.getPics().add(new HisPicWeb("INCQUALIFY",venIncqQualifPic.getPicPath()));
+				}
+				
 				venQualifyWebItms.add(venQualifyWebItm);
 			}
 			
