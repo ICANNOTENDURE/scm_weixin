@@ -509,12 +509,14 @@ public class HopIncBlh extends AbstractBaseBlh {
 			if(!commonService.checkIncIsCon(venInc.getVenIncId(),hopInc.getIncId())){
 				VenHopInc venHopInc=new VenHopInc();
 				venHopInc.setHopFac(1f);
-				venHopInc.setVenIncFac(1f);
+				venHopInc.setVenFac(1f);
 				venHopInc.setHopRp(hisIncItmWeb.getVenIncPrice());
 				venHopInc.setHopIncId(hopInc.getIncId());
 				venHopInc.setVenIncId(venInc.getVenIncId());
 				venHopInc.setVenHopAuditflag("Y");
 				commonService.saveOrUpdate(venHopInc);
+				hopInc.setIncAuditFlag("Y");
+				commonService.saveOrUpdate(hopInc);
 			}
 			
 		}
