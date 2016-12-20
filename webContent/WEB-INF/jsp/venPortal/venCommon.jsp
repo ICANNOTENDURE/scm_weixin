@@ -65,6 +65,17 @@
 			<li><a
 				href="<%=request.getContextPath()%>/ven/vendorCtrl!vendorImpInv.htm"><span
 					class="am-icon-upload"></span> 上传发票</a></li>
+				
+				<li class="am-dropdown" data-am-dropdown><a
+				class="am-dropdown-toggle" data-am-dropdown-toggle
+				href="javascript:;"><span class="am-icon-book"></span>  统计 <span
+					class="am-icon-caret-down"></span></a>
+				<ul class="am-dropdown-content">
+					<li><a
+						href="<%=request.getContextPath()%>/ven/vendorCtrl!venStatistics.htm"><span
+							class="am-icon-barcode"></span> 药品汇总统计出货单</a></li>
+				</ul></li>
+					
 			<li class="am-dropdown" data-am-dropdown><a
 				class="am-dropdown-toggle" data-am-dropdown-toggle
 				href="javascript:;"><span class="am-icon-book"></span> 订单 <span
