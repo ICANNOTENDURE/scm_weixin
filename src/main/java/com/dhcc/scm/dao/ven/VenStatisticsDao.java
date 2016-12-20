@@ -35,14 +35,11 @@ public class VenStatisticsDao extends HibernatePersistentObjectDAO<HvLabel> {
 	@SuppressWarnings("unchecked")
 	public void listvenStatistics(VenStatisticsDto dto){
 		
-
 		StringBuffer hqlBuffer = new StringBuffer();
 		hqlBuffer.append("  SELECT ");
 		hqlBuffer.append("  t4.VEN_INC_NAME as venincname , ");
 		hqlBuffer.append("  sum(t1.ordsub_qty) as ordsubqty , ");
 		hqlBuffer.append("	t1.ordsub_rp as ordsubrp , ");
-		//hqlBuffer.append("  t1.ORDSUB_HIS_QTY as ordsubhisqty , ");
-		//hqlBuffer.append("  t1.ORDSUB_HIS_RP as ordsubhisrp , ");
 		hqlBuffer.append("	sum(t1.ordsub_qty*t1.ordsub_rp) as ordsubrpamt , ");
 		hqlBuffer.append("	t3.HOSPITAL_NAME  as hosp ,");
 		hqlBuffer.append("  t1.ordsub_date as ordsubdate ");
@@ -53,9 +50,7 @@ public class VenStatisticsDao extends HibernatePersistentObjectDAO<HvLabel> {
 		hqlBuffer.append(" left join t_ven_inc t4 on t4.VEN_INC_ROWID= t2.ORDER_VEN_INC_ID   ");
 		hqlBuffer.append(" left join t_hv_label t5 on t5.hv_venincid = t4.VEN_INC_ROWID ");
 		hqlBuffer.append(" where 1=1 ");
-		
 		Map<String, Object> hqlParamMap = new HashMap<String, Object>();
-		
 		hqlBuffer.append("  and  t5.hv_vendorid=:vendorid ");
 		hqlParamMap.put("vendorid", WebContextHolder.getContext().getVisit().getUserInfo().getVendorIdLong());
 		if(dto.getOrdStart()!=null){
@@ -75,8 +70,6 @@ public class VenStatisticsDao extends HibernatePersistentObjectDAO<HvLabel> {
 			hqlBuffer.append("  and  t3.HOSPITAL_NAME like :hosp ");
 			hqlParamMap.put("hosp", "%"+dto.getHosp()+"%");
 		}
-		
-		
 		if("venincname".equals(dto.getSort())){
 			hqlBuffer.append(" order by  t4.VEN_INC_NAME "+dto.getSortOrder());
 		}
@@ -97,13 +90,7 @@ public class VenStatisticsDao extends HibernatePersistentObjectDAO<HvLabel> {
 		dto.getPageModel().setTotals(total);
 		List<VenStatisticsVo> dataList=jdbcTemplateWrapper.queryAllMatchListWithParaMap(hqlBuffer.toString(), VenStatisticsVo.class, hqlParamMap, dto.getPageModel().getPageNo(), dto.getPageModel().getPageSize(), "t1.ORDSUB_ID");
 		dto.getPageModel().setPageData(dataList);
-		
-		
-		//dto.getPageModel().setQueryHql(hqlBuffer.toString());
-		//dto.getPageModel().setHqlParamMap(hqlParamMap);
-		//jdbcTemplateWrapper.fillPagerModelData(dto.getPageModel(), VenStatisticsVo.class, "t1.ORDSUB_ID");
 
-	
 	}
 		
 }
