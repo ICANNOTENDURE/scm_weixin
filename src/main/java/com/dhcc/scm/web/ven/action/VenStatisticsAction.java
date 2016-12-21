@@ -23,10 +23,8 @@ import com.dhcc.scm.dto.ven.VenStatisticsDto;
 @Scope("prototype")
 @Action(value = "venStatisticsCtrl", results = {
 		@Result(name = "list", location = "/WEB-INF/jsp/ven/VenStatistics.jsp"),
-		//@Result(name = "print", location = "/WEB-INF/jsp/ven/PrintVEN.jsp"),
 		@Result(name = "listMain", location = "/WEB-INF/jsp/ven/VenStatistics.jsp")})
 @Blh("venStatisticsBlh")
-@JsonResults({@JResult(BlhMethod="findById",ognlExpress="dto.venStatistics")})
 public class VenStatisticsAction extends BaseAction {
 	
 	private static final long serialVersionUID = 1L;
