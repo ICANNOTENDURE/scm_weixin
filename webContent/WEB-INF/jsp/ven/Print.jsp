@@ -9,7 +9,7 @@
 </title>
     <style type="text/css">
 * {margin:0;padding:0}
-body {font:18px/1.5  "宋体";color:#333}
+body {font:10px/1.5  "宋体";color:#333}
 .w{width:100%}
 .m1 td{height:0.6cm;line-height:0.6cm;}
 .t3,.t7,.t6{width:1.6cm}
@@ -73,12 +73,12 @@ body {font:18px/1.5  "宋体";color:#333}
 						<th class="t3">商品编号</th>
 					<!--	<th class="t3">条码</th>  -->
 						<th class="t4">商品名称</th>
-						<th class="t5">发票</th>
+						<!-- <th class="t5">发票</th> -->
 						<th class="t5">批号</th>
 						<th class="t5">采购合同号</th>
 						<th class="t5">商品注册证</th>
 						<th class="t5">效期</th>
-						<th class="t4">商品注册证效期</th>
+						<th class="t5">商品注册证效期</th>
 						<th class="t5">请求科室</th>
 						<th class="t5">规格</th>
 						<th class="t5">数量</th>
@@ -93,7 +93,7 @@ body {font:18px/1.5  "宋体";color:#333}
 							<td>${venincncode}</td>
 						<!--  	<td><img  src="<%=request.getContextPath()%>/sys/qrCodeCtrl!qrAndroid.htm?dto.content=${deliveritmid}&dto.codeType='ByInc'" style='height: 100;width: 100px'> </img></td> -->
 							<td><div class="p-name">${venincname}</div></td>
-							<td>${invno}</td>
+							<%-- <td>${invno}</td> --%>
 							<td>${batno}</td>
 							<td>${qualifdpurno}</td>
 							<td>${qualifprocer}</td>
