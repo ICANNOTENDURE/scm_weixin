@@ -38,7 +38,43 @@
 
 
 	<table id="datagrid" title="供应商商品信息维护"
-		data-options="toolbar:'#toolbar',fitColumns:true,singleSelect:true,pagination:true">
+		data-options="toolbar:'#toolbar',fitColumns:true,singleSelect:true,pagination:true"
+		style="height:350px;">
+	</table>
+	
+	
+	<div id="tb" class="toolbar">
+		<a id="UnaddBt" class="linkbutton" onclick="javascript:UnaddClick()"
+			data-options="iconCls:'icon-add',plain:true">资质信息维护</a>  
+		<a id="clear" class="linkbutton" onclick="javascript:clearRow()"
+			data-options="iconCls:'icon-remove',plain:true">删除</a>
+	</div>
+	
+	<table id="datagridmore" title="已选商品" class="datagrid"
+		data-options="toolbar:'#tb',
+								iconCls:'icon-edit',
+								 fitColumns:true,
+								 singleSelect:true,
+								 pagination:false,
+				    			 method:'post',
+				    			 rownumbers:true,
+				    			 striped:true,
+				    			 singleselect:true,
+				    			 pageSize:3,
+				    			 pageList:[3,6,9],
+				    			 onClickRow:function(index,row){
+				    			 	setindex(index);
+				    			 }
+								 "
+		style="height:250px;width:1088px;">
+		<thead>
+			<tr>
+				<th data-options="field:'venincid',width:100,hidden:true">商品id</th>
+				<th data-options="field:'veninccode',width:100">商品代码</th>
+				<th data-options="field:'venincname',width:100">商品名称</th>
+				<th data-options="field:'manfname',width:100">厂商</th>
+			</tr>
+		</thead>
 	</table>
 
 	<div id="drugInfoWin" class="dialog"
@@ -46,7 +82,7 @@
 		style="vertical-align: top;">
 		<form id="incdetail" method="post">
 			<div id="tt" class="tabs" style="width: 900; height: 600;">
-				<div title="基本信息">
+				<div title="基本信息" id="ass">
 					<table style="width: 900;" id="tableDetail">
 						<tr style="display: none">
 							<input type="hidden" name="dto.venInc.venIncId" />
@@ -152,6 +188,33 @@
 			</div>
 		</form>
 	</div>
+	
+	<!-- 已选商品的弹出窗口 -->
+	<div id="drugInfoWinmore" class="dialog"
+		data-options="modal:true,width:900,height:600,closed:true,buttons:'#btnDivmore'"
+		style="vertical-align: top;">
+		<form id="incdetailmore" method="post">
+			<div id="ttmore" class="tabs" style="width: 900; height: 600;">
+				<div title="资质信息" data-options="" style="overflow: auto;">
+					<table style="width: 100%;" id="qualifyDetailmore">
+					</table>
+				</div>
+			</div>
+
+			<div id="btnDivmore" align="center">
+				<table cellpadding="0" cellspacing="0" style="width: 100%">
+					<tr>
+						<td style="text-align: center;"><a id="saveOrUpdateIncBtnmore"
+							class="linkbutton" data-options="iconCls:'icon-save'">提交</a> <a
+							id="cancelBtn1" class="linkbutton"
+							data-options="iconCls:'icon-cancel'"
+							onclick="javascript:cancelClickmore()">取消</a></td>
+					</tr>
+				</table>
+			</div>
+		</form>
+	</div>
+	
 
 	<div id="searchIncWin" class="dialog" title="查询商品信息"
 		data-options="modal:true,width:400,height:300,closed:true,buttons:'#searchBtnDiv0'"

@@ -16,6 +16,9 @@ public class VenIncQualifyPicDto extends BaseDto {
 	private static final long serialVersionUID = 1L;
 	
 	private Long venIncId;
+	
+	// 封装多个商品的Id串
+	private String venIncArrId;
 
 	private File upload;
 	
@@ -91,7 +94,13 @@ public class VenIncQualifyPicDto extends BaseDto {
 		this.uploadFileName = uploadFileName;
 	}  
 	
-	
+	public String getVenIncArrId() {
+		return venIncArrId;
+	}
+
+	public void setVenIncArrId(String venIncArrId) {
+		this.venIncArrId = venIncArrId;
+	} 
 	
 	
 	

@@ -103,7 +103,7 @@ $(function (){
 	    url:$WEB_ROOT_PATH+'/ven/venIncCtrl!listInfo.htm',
 	    iconCls:'icon-edit',//图标
 	    method:'post',
-	    fit:true,
+	    //fit:true,
 	    fitColumns:true,
 	    columns:[[ 
 	        {field:'venincid',title:'表ID',hidden:true},  
@@ -130,7 +130,49 @@ $(function (){
 	        {field:'venincsubcatid',title:'图片顺序',hidden:true},
 	    ]],
 	    pageSize:20,
-	    pageList:[20,30,40,50]
+	    pageList:[20,30,40,50],
+		onDblClickRow:function(rowIndex, rowData){
+			var rows = $('#datagrid').datagrid('getSelections'); //供应商维护
+			var rowsLength = $('#datagridmore').datagrid('getRows'); //已选择
+			if(rowsLength.length==0){
+				// 在第二行的位置插入一个新行
+				$('#datagridmore').datagrid('insertRow',{
+					//index: 0,	// 索引从0开始
+					row: {
+						venincid:rowData.venincid,
+						veninccode: rowData.veninccode,
+						venincname: rowData.venincname,
+						manfname: rowData.manfname
+					}
+				});
+			}
+			else{
+				var flag = true;//不相等  
+				for (var i = 0; i <= rows.length - 1; i++)//未选择  
+		        {
+				for (var j = 0; j <= rowsLength.length - 1; j++)//已选择  
+	               {  
+	                   if (rows[i].veninccode == rowsLength[j].veninccode){  
+	                       flag = false;//相等  
+	                       $CommonUI.alert('已选择相同的商品代码！');  
+	                       break;  
+	                   }  
+	                   else {  
+	                       flag = true;  
+	                   }  
+	               }
+		        }
+				if (flag == true) {  
+	                   $('#datagridmore').datagrid("appendRow", {  
+	                	   venincid:rowData.venincid,
+	                	   veninccode: rowData.veninccode,
+	                	   venincname: rowData.venincname,
+						   manfname: rowData.manfname 
+	                   });  
+	               }  
+				
+			}//esle end
+		}//双击 end
 	});
 	
 	//新增或更新成功的回调函数
@@ -155,7 +197,7 @@ $(function (){
                 	return true;
                 }
                
-             
+                
                 jsonObj = new Object();
                 if(qualifyId!='null'){
                 	jsonObj.qualifyId = qualifyId;
@@ -172,6 +214,7 @@ $(function (){
                        }
                 	jsonObj.qualifDescription=qualifDescription;
                 }
+                
                 typeObj=new Object();
                 typeObj.qualifTypeId=textTypeId;
                 jsonObj.sysQualifType=typeObj;
@@ -181,8 +224,10 @@ $(function (){
                 }
             }));
         }
+        
 		$.post($WEB_ROOT_PATH + "/ven/venIncQualifyPicCtrl!saveQualify.htm", {
-            "dto.incQualifStr": jQuery.toJSON(venQualifTypeList)
+            "dto.incQualifStr": jQuery.toJSON(venQualifTypeList),
+            
         },
         function(data) {
             //$CommonUI.alert(data.dto.message, "", "", "", null);
@@ -199,6 +244,7 @@ $(function (){
 		//$("#drugInfoWin").dialog('close');
 	}
 	
+	
 	//新增或更新失败的回调函数
 	function err(xhr,textStatus,errorThrown){
 		$CommonUI.alert("faile");	
@@ -213,6 +259,79 @@ $(function (){
 		}
 	});
 	
+	//已选择商品 新增和修改 lvpeng 16-1-12
+	$("#saveOrUpdateIncBtnmore").on('click', function() {	
+		
+		if($CommonUI.getForm('#incdetailmore').form('validate')){
+			$("#saveOrUpdateIncBtnmore").hide();
+			var rows=$CommonUI.getDataGrid("#datagridmore").datagrid('getRows');
+			
+			var venQualifTypeList = [];
+			
+			var attrId = new Array();
+			//拼接id串
+			for(var j=0;j<rows.length;j++){
+				attrId.push(rows[j].venincid);
+			}
+			attrId=attrId.join("#");
+			
+			if ($("#qualifyDetailmore tr").length >= 1) {
+	            $("#qualifyDetailmore tr").each((function() {
+	            	qualifDate = $(this).find("input[name='qualifDate']").val();
+	                qualifDescription = $(this).find("input[name='qualifDescription']").val();
+	               
+	                //qualifyId=$(this).attr("data-qualifyId");
+	                textTypeId=$(this).attr("data-typeId");
+	                textType=$(this).attr("data-type");
+	                if(textType=="图片"){
+	                	return true;
+	                }
+	               
+	             
+	                jsonObj = new Object();
+	                //if(qualifyId!='null'){
+	                	//jsonObj.qualifyId = qualifyId;
+	                //}
+	                if(textType=="日期"){
+		                if((jQuery.trim(qualifDate)!="")){
+		                	jsonObj.qualifDate = qualifDate+" 00:00:00";
+		                }else{
+		                	return true;
+		                }
+	                }else{
+	                	   if(jQuery.trim(qualifDescription)==""){
+	                       	return true;
+	                       }
+	                	jsonObj.qualifDescription=qualifDescription;
+	                }
+	                typeObj=new Object();
+	                typeObj.qualifTypeId=textTypeId;
+	                jsonObj.sysQualifType=typeObj;
+	                //jsonObj.qualifyIncId = Id;
+	                if ((qualifDate != "")) {
+	                    venQualifTypeList.push(jsonObj);
+	                }
+	            }));
+	        }
+				
+				$.post($WEB_ROOT_PATH + "/ven/venIncQualifyPicCtrl!saveQualifymore.htm", {
+			        "dto.incQualifStr": jQuery.toJSON(venQualifTypeList),
+			        "dto.venIncArrId": attrId,
+			    },
+			    function(data) {
+			        //$CommonUI.alert(data.dto.message, "", "", "", null);
+			        $("#saveOrUpdateIncBtnmore").show();
+			        if(data.resultCode=="0"){
+			        	$CommonUI.alert("操作成功");
+			        }else{
+			        	$CommonUI.alert(data.resultContent);
+			        }
+			    },
+			    "json");
+			
+	          } //if end
+				
+	});
 	
 	// 点击查询的提交按钮
 	$("#searchIncInfoBtn").on('click', function() {
@@ -424,6 +543,7 @@ function listPic(Id){
 			 'json'
 	 );
 }
+
 //显示资质信息
 function listQualify(Id){
 	$.post(
@@ -456,7 +576,7 @@ function listQualify(Id){
 					 	}
 					 	if(dd.fieldtype=="图片"){
 					 		 html=html+"<input  type='file' name='upload' id='qualifyUploadInput"+dd.type+"' data-id="+dd.type+"></input>";
-					 		if(dd.incqQualifPics!=null){
+					 		 if(dd.incqQualifPics!=null){
 					 			 if(dd.incqQualifPics.length>=1){
 					 				$.each(dd.incqQualifPics,function(j,ddd){
 					 					imgQualifyPreId="imgQualifyPre"+ddd.picId;
@@ -547,6 +667,128 @@ function listQualify(Id){
 			 'json'
 	 );
 }
+
+//已选商品资质  lvpeng 16-1-12
+function listQualifymore(Id){
+	$.post(
+			 $WEB_ROOT_PATH+'/sys/sysQualifTypeCtrl!getVenIncQualify.htm',
+			 {
+				 "dto.venIncId":null,
+			 },
+			 function(data){
+				 $('#qualifyDetailmore').html("");
+				 $.each(data,function(i,dd){
+
+					 	//imgUrl=$WEB_ROOT_PATH +"/uploadPic/"+dd.venIncPicPath;
+					 	//imgId="item"+dd.venIncPicId;
+					 	html="<tr data-typeId='"+dd.type+"' data-type='"+dd.fieldtype+"' data-qualifyId='"+dd.qualif+"'>";
+					 	html=html+"<td class='textLabel' >"+dd.name+":</td>";
+					 	html=html+"<td>";
+					 	if(dd.fieldtype=="文本"){
+					 		html=html+"<input type='text' name='qualifDescription'  ";
+					 		if(dd.description!=null){
+					 			html=html+"value='"+dd.description;
+					 		}
+					 		html=html+"' />";
+					 	}
+					 	if(dd.fieldtype=="日期"){
+					 		html=html+"<input  class='datebox' type='text' name='qualifDate' ";
+					 		if(dd.expdate!=null){
+					 			html=html+"value='"+dd.expdate;
+					 		}
+					 		html=html+"' />";
+					 	}
+					 	if(dd.fieldtype=="图片"){
+					 		 html=html+"<input  type='file' name='uploadmore' id='qualifyUploadInputmore"+dd.type+"' data-id="+dd.type+"></input>";
+					 		if(dd.incqQualifPics!=null){
+					 			 if(dd.incqQualifPics.length>=1){
+					 				$.each(dd.incqQualifPics,function(j,ddd){
+					 					imgQualifyPreId="imgQualifyPre"+ddd.picId;
+					 					imgUrl=$WEB_ROOT_PATH +"/uploadPic/venIncQualify/"+ddd.picPath;
+							 			html=html+"<div id='imgQualify"+ddd.picId+"'><img src="+imgUrl+" width=105px height=105px></img>";
+								 		
+							 			html=html+"<a class='linkbutton' data-options='plain:true' onclick='javascript:viewPic("+imgQualifyPreId+")'>预览</a>";
+								 		html=html+"<a class='linkbutton' data-options='plain:true' onclick='javascript:delQualifyPic("+ddd.picId+")'>删除</a>";
+								 		html=html+"<div id='"+imgQualifyPreId+"' src='"+imgUrl+"' style='float:left'></div></div>";
+					 				});
+					 			 }
+					 		}
+					 	}
+					 	html=html+"</td>";
+					 	html=html+"</tr>";
+					 	$('#qualifyDetailmore').append(html);
+				 });
+				 //初始华ui
+				 $.parser.parse($('#qualifyDetailmore'));
+				//注册上传事件
+				 if( $("#qualifyDetailmore input[type=file]").length<1){
+					 return;
+				 }
+				 $("#qualifyDetailmore input[type=file]").each(function() {
+					var qualifyTypeId=$(this).attr("data-id");
+					var curObj=$(this);
+					$(this).uploadify({
+					        'swf': $WEB_ROOT_PATH + '/images/uploadify.swf',
+					        'uploader': $WEB_ROOT_PATH + '/ven/venIncQualifyPicCtrl!uploadPicmore.htm',
+					        'buttonText':'上传图片',
+					        'fileTypeDesc': '支持的格式：',
+					        'fileTypeExts': '*.jpg;*.jpeg;*.png',
+					        'fileSizeLimit': '30MB',
+					        'width': '60',
+					        'height': '20',
+					        'fileObjName':'dto.upload',
+					        'auto': true,
+					        'removeCompleted':true,
+					        'onUploadStart': function(file) {
+					        	$(curObj).uploadify("settings", 'formData', {'dto.venIncArrId':Id,'dto.qualifyTypeId':qualifyTypeId,'dto.uploadFileName': file.name});
+					        },
+					        
+					        //上传成功
+					        'onUploadSuccess':function(file, data, response){
+					        	var obj=eval('('+data+')');
+					        	if(obj.operateResult.resultCode=="0"){
+					        		html="";
+					        		typeId=obj.qualifyTypeId;
+					        		imgQualifyPreId="imgQualifyPre"+obj.incqQualifPic.picId;
+								 	imgUrl=$WEB_ROOT_PATH +"/uploadPic/venIncQualify/"+obj.incqQualifPic.picPath;
+						 			html=html+"<div id='imgQualify"+obj.incqQualifPic.picId+"'><img src="+imgUrl+" width=105px height=105px></img>";
+								 	html=html+"<div><a class='dhc-linkbutton l-btn l-btn-plain'  onclick='javascript:viewPic("+imgQualifyPreId+")' ><span class='l-btn-left'><span class='l-btn-text'>预览</span></span></a>";
+								 	html=html+"<a class='dhc-linkbutton l-btn l-btn-plain'  onclick='javascript:delQualifyPicmore("+obj.incqQualifPic.picId+")' ><span class='l-btn-left'><span class='l-btn-text'>删除</span></span></a></div>";
+						 			//html=html+"<a class='linkbutton' data-options='plain:true' onclick='javascript:viewPic("+imgQualifyPreId+")'>预览</a>";
+							 		//html=html+"<a class='linkbutton' data-options='plain:true' onclick='javascript:delQualifyPic("+obj.incqQualifPic.picId+")'>删除</a>";
+							 		html=html+"<div id='"+imgQualifyPreId+"' src='"+imgUrl+"' style='float:left'></div>";
+							 		$("#qualifyUploadInput"+typeId).parent().parent().append(html);
+					        		
+					        	}else{
+					        		$CommonUI.alert(obj.operateResult.resultContent);
+					        	};
+					        },
+					        
+					        //检测FLASH失败调用
+					        'onFallback': function() {
+					            alert("您未安装FLASH控件，无法上传图片！请安装FLASH控件后再试。");
+					        },
+					        //返回一个错误，选择文件的时候触发
+					        'onSelectError': function(file, errorCode, errorMsg) {
+					            switch (errorCode) {
+					            case - 100 : alert("上传的文件数量已经超出系统限制的" + $('#file_upload').uploadify('settings', 'queueSizeLimit') + "个文件！");
+					                break;
+					            case - 110 : alert("文件 [" + file.name + "] 大小超出系统限制的" + $('#file_upload').uploadify('settings', 'fileSizeLimit') + "大小！");
+					                break;
+					            case - 120 : alert("文件 [" + file.name + "] 大小异常！");
+					                break;
+					            case - 130 : alert("文件 [" + file.name + "] 类型不正确！");
+					                break;
+					            }
+					        }
+					    });
+				  });
+				  //注册上传事件
+	         },
+			 'json'
+	 );
+}
+
 function viewPic(imgId){
 	$CommonUI.imageTransfer(imgId,$WEB_ROOT_PATH+"/js",600,450,{
 		'Close':true,
@@ -567,6 +809,23 @@ function delQualifyPic(picId){
 		 );
 	});
 }
+
+//已选商品删除图片 lvpeng 16-1-12
+function delQualifyPicmore(picId){
+	$CommonUI.confirm('确定删除吗？', 'question', 0, function(){
+		$.post(
+				 $WEB_ROOT_PATH+'/ven/venIncQualifyPicCtrl!delete.htm',
+				 {
+					 "dto.incqQualifPic.picId":picId,
+				 },
+				 function(data){
+					 $("#imgQualify"+picId).remove();
+		         },
+				 'json'
+		 );
+	});
+}
+
 function delPic(picId){
 	$CommonUI.confirm('确定删除吗？', 'question', 0, function(){
 		$.post(
@@ -587,6 +846,11 @@ function delPic(picId){
 // 取消按钮
 function cancelClick() {
 	$CommonUI.getWindow("#drugInfoWin").dialog("close");
+}
+
+//已选商品取消按钮 lvpeng 16-1-12
+function cancelClickmore() {
+	$CommonUI.getWindow("#drugInfoWinmore").dialog("close");
 }
 
 //刪除記錄
@@ -623,6 +887,46 @@ function delRow() {
 
 }
 
+//清空已选择商品信息 lvpeng 16-1-11
+function clearRow(){
+	if ($CommonUI.getDataGrid("#datagridmore").datagrid('getSelections').length != 1) {
+		$CommonUI.alert('请选一个删除');
+		return;
+	}
+	$('#datagridmore').datagrid('deleteRow',rowindex);
+}
+
+//获取选中的行号 lvpeng 16-1-11
+function setindex(index){
+	rowindex=index;
+}
+
+
+//已选商品上传资质  lvpeng 16-1-11
+function UnaddClick() {
+	var row=$CommonUI.getDataGrid("#datagridmore").datagrid('getRows');
+	var attrId = new Array()
+	if(row.length<1){
+		$CommonUI.alert('请选择商品！');
+		return;
+	}
+
+	$CommonUI.getDialog("#drugInfoWinmore").dialog("setTitle","商品信息");
+	$CommonUI.getDialog("#drugInfoWinmore").dialog("center");
+	$CommonUI.getDialog("#drugInfoWinmore").dialog("open");
+	$CommonUI.getForm('#incdetailmore').form('clear');
+	$("#saveOrUpdateIncBtnmore").show();
+	$("tr[name='trPic']").remove();
+	$("tr[name='trPro']").remove();
+	$('#qualifyDetailmore').html("");
+	
+	for(var i=0;i<row.length;i++){
+		//attrId[i]=row[i].venincid+",";
+		attrId.push(row[i].venincid);
+	}
+	attrId=attrId.join("#")
+	listQualifymore(attrId);
+}
 //条件查询提交事件
 function selectClick() {
 	$CommonUI.getDialog("#searchIncWin").dialog("center");
@@ -734,3 +1038,6 @@ function printSelectHv(){
 			 	+"&dto.venReaptPrn="+venReaptPrn
 	 );
 }
+
+
+
