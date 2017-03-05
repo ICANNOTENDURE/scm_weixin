@@ -290,7 +290,7 @@ public class DownLoadAction extends ActionSupport {
 			
 			cell = row.createCell(4, HSSFCell.CELL_TYPE_STRING);
 			if(hvInvNoVo.getRp()!=null){
-				cell.setCellValue(hvInvNoVo.getRp());
+				cell.setCellValue(hvInvNoVo.getRp().toString());
 				totalRp+=hvInvNoVo.getRp();
 			}
 			
@@ -317,7 +317,7 @@ public class DownLoadAction extends ActionSupport {
 		cell.setCellValue(totalQty);
 			
 		cell = row.createCell(4, HSSFCell.CELL_TYPE_STRING);
-		cell.setCellValue(totalRp);
+		cell.setCellValue(String.valueOf(totalRp));
 		
 		try {
 			FileOutputStream fOut = new FileOutputStream(outputFile);

@@ -235,10 +235,19 @@ function compute() {//计算函数
     for (var i = 0; i < rows.length; i++) {
         qtotal += rows[i]['qty'];
         rtotal += rows[i]['rp'];
+        
     }
+    rptotal=toDecimal(rtotal)
     //新增一行显示统计信息
-    $('#datagrid').datagrid('appendRow', { rowId: '<b>合计：</b>', qty: qtotal, rp: rtotal });
+    $('#datagrid').datagrid('appendRow', { rowId: '<b>合计：</b>', qty: qtotal, rp: rptotal });
 }
-
+//JS 数字相加出现多个小数的问题
+function toDecimal(x) {    
+    var val = Number(x)   
+   if(!isNaN(parseFloat(val))) {    
+      val = val.toFixed(2);    
+   }    
+   return  val;     
+}  
 
 
