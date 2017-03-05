@@ -6,7 +6,7 @@ $(function (){
 	$('#eddate').datebox('setValue',new Date().format("yyyy-MM-dd"));
 
 	$('#datagrid').datagrid({  
-	    url:$WEB_ROOT_PATH+'/ord/putShippSumCtrl!list.htm',
+	    url:$WEB_ROOT_PATH+'/ord/putShippSumCtrl!list.htm?',
 	    method:'post',
 	    fit:true,
 	    fitColumns:true,
@@ -28,12 +28,12 @@ $(function (){
 				{field:'rpamt',title:'金额',width:100,sortable:true},
 				{field:'venname',title:'供应商',width:150}	
 		 ]]
-		 /*
+		 ,
 		queryParams: {
 			"dto.stdate":$("#stdate").datebox('getValue'),
 			"dto.eddate":$("#eddate").datebox('getValue'),
 		},
-		*/
+		
 	}); 
 
 	$("#search").on('click', function() {

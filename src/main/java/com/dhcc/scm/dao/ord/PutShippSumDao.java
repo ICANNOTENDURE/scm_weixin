@@ -55,7 +55,6 @@ public class PutShippSumDao extends HibernatePersistentObjectDAO<PutShippSumVo>{
 		hqlBuffer.append(" where 1=1 ");
 		
 		if(dto.getStdate()!=null){
-			System.out.println(dto.getStdate());
 			hqlBuffer.append("  and  t1.ORDSUB_DATE>=:start ");
 			hqlParamMap.put("start", dto.getStdate());
 		}
@@ -100,22 +99,22 @@ public class PutShippSumDao extends HibernatePersistentObjectDAO<PutShippSumVo>{
 
 		StringBuffer hqlBuffer = new StringBuffer();
 		hqlBuffer.append("select ");
-		hqlBuffer.append("t1.ORDSUB_ID as deliveritmid,  ");
-		hqlBuffer.append("t3.VEN_INC_ROWID as venincrowid,  ");
-		hqlBuffer.append("t3.VEN_INC_CODE as venincncode,  ");
-		hqlBuffer.append("t3.VEN_INC_NAME as venincname,  ");
-		hqlBuffer.append("t3.VEN_INC_UOMNAME as uom,  ");
-		hqlBuffer.append("t3.VEN_INC_SPEC as spec,  ");
+		hqlBuffer.append("t1.ORDSUB_ID as deliveritmid,  "); //发货表id
+		hqlBuffer.append("t3.VEN_INC_ROWID as venincrowid,  "); //主键id
+		hqlBuffer.append("t3.VEN_INC_CODE as venincncode,  "); // 代码
+		hqlBuffer.append("t3.VEN_INC_NAME as venincname,  "); //描述
+		hqlBuffer.append("t3.VEN_INC_UOMNAME as uom,  "); //
+		hqlBuffer.append("t3.VEN_INC_SPEC as spec,  "); 
 		hqlBuffer.append("t1.ORDSUB_QTY as deliverqty,  ");
 		hqlBuffer.append("t2.ORDER_VEN_QTY as orderqty,  ");
-		hqlBuffer.append("t1.ORDSUB_QTY as sendedqty,  ");
-		hqlBuffer.append("t1.ORDSUB_BATNO as batno,  ");
-		hqlBuffer.append("t1.ORDSUB_INVNO as invno,  ");
-		hqlBuffer.append("t1.ORDSUB_EXPDATE as expdate,  ");
-		hqlBuffer.append("t1.ORDSUB_RP as rp,  ");
+		hqlBuffer.append("t1.ORDSUB_QTY as sendedqty,  "); //数量
+		hqlBuffer.append("t1.ORDSUB_BATNO as batno,  "); //批号
+		hqlBuffer.append("t1.ORDSUB_INVNO as invno,  "); //发票号
+		hqlBuffer.append("t1.ORDSUB_EXPDATE as expdate,  "); //效期
+		hqlBuffer.append("t1.ORDSUB_RP as rp,  "); //进价
 		hqlBuffer.append(" round(t1.ORDSUB_RP*t1.ORDSUB_QTY,2) as rpamt,  ");
-		hqlBuffer.append("t2.ORDER_ID as orderitmid,  ");
-		hqlBuffer.append("t5.HOSPITAL_NAME as hopname,  ");
+		hqlBuffer.append("t2.ORDER_ID as orderitmid,  "); // 订单表主键	id
+		hqlBuffer.append("t5.HOSPITAL_NAME as hopname,  "); 
 		hqlBuffer.append("t4.NAME as manf  ");
 		hqlBuffer.append("from T_ORD_ORDERDETAILSUB t1 ");
 		hqlBuffer.append("LEFT JOIN T_ORD_ORDERDETAIL t2 ON T1.ORDSUB_DETAIL_ID = t2.ORDER_ID ");
