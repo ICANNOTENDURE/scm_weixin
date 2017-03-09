@@ -44,16 +44,35 @@ public class PutShippSumDao extends HibernatePersistentObjectDAO<PutShippSumVo>{
 	@SuppressWarnings("unchecked")
 	public void listPutShippSum(PutShippSumDto dto){
 		StringBuffer hqlBuffer = new StringBuffer();
-		Map<String, Object> hqlParamMap = new HashMap<String, Object>();
 		hqlBuffer.append("select t1.ORDSUB_INVNO as invno, ");
 		hqlBuffer.append(" t1.ORDSUB_USERID as userid,t1.ORDSUB_DATE as date,");
 		hqlBuffer.append(" sum(round(t1.ORDSUB_RP*t1.ORDSUB_QTY,2)) as rpamt, ");
+		hqlBuffer.append(" t2.ORDER_VEN_ID as vendor, ");
 		hqlBuffer.append(" t3.`NAME` as venname");
 		hqlBuffer.append(" from t_ord_orderdetailsub as t1 ");
 		hqlBuffer.append(" LEFT JOIN T_ORD_ORDERDETAIL t2 on t1.ORDSUB_DETAIL_ID=t2.ORDER_ID ");
 		hqlBuffer.append(" LEFT JOIN t_ven_vendor as t3 on t2.ORDER_VEN_ID=t3.VEN_ID ");
 		hqlBuffer.append(" where 1=1 ");
 		
+		Map<String, Object> hqlParamMap = new HashMap<String, Object>();		
+		Long userType=WebContextHolder.getContext().getVisit().getUserInfo().getUserType();
+		
+		if(userType==null){
+			return;
+		}
+		
+		//医院
+		if(userType==1){
+			hqlBuffer.append("and t2.ORDER_HOP_ID=:tmphop ");
+			hqlParamMap.put("tmphop", WebContextHolder.getContext().getVisit().getUserInfo().getHopId());
+		}
+		
+		//供应商
+		if(userType==2){
+			hqlBuffer.append("  and  t2.ORDER_VEN_ID=:vendorid ");
+			hqlParamMap.put("vendorid", WebContextHolder.getContext().getVisit().getUserInfo().getVendorIdLong());
+		}
+
 		if(dto.getStdate()!=null){
 			hqlBuffer.append("  and  t1.ORDSUB_DATE>=:start ");
 			hqlParamMap.put("start", dto.getStdate());
@@ -62,9 +81,10 @@ public class PutShippSumDao extends HibernatePersistentObjectDAO<PutShippSumVo>{
 			hqlBuffer.append("  and  t1.ORDSUB_DATE<=:end ");
 			hqlParamMap.put("end", dto.getEddate());
 		}
-		if(StringUtils.isNotBlank(dto.getVenname())){
-			hqlBuffer.append("  and  t3.`NAME` like :venincname");
-			hqlParamMap.put("venincname", "%"+dto.getVenname()+"%");
+		if(dto.getVendor()!= null){
+			System.out.println(dto.getVendor());
+			hqlBuffer.append("  and  t2.ORDER_VEN_ID=:venid");
+			hqlParamMap.put("venid", dto.getVendor());
 		}
 		
 //		if("venname".equals(dto.getSort())){
@@ -114,25 +134,33 @@ public class PutShippSumDao extends HibernatePersistentObjectDAO<PutShippSumVo>{
 		hqlBuffer.append("t1.ORDSUB_RP as rp,  "); //进价
 		hqlBuffer.append(" round(t1.ORDSUB_RP*t1.ORDSUB_QTY,2) as rpamt,  ");
 		hqlBuffer.append("t2.ORDER_ID as orderitmid,  "); // 订单表主键	id
+		hqlBuffer.append("t2.ORDER_VEN_ID as venid,  "); // 供应商id
 		hqlBuffer.append("t5.HOSPITAL_NAME as hopname,  "); 
-		hqlBuffer.append("t4.NAME as manf  ");
-		hqlBuffer.append("from T_ORD_ORDERDETAILSUB t1 ");
-		hqlBuffer.append("LEFT JOIN T_ORD_ORDERDETAIL t2 ON T1.ORDSUB_DETAIL_ID = t2.ORDER_ID ");
-		hqlBuffer.append("LEFT JOIN T_VEN_INC t3 ON t3.VEN_INC_ROWID = t2.ORDER_VEN_INC_ID ");
-		hqlBuffer.append("left join t_hop_manf t4 on t4.id=t3.VEN_INC_MANFID ");
-		hqlBuffer.append("left join T_SYS_HOSPITAL t5 on t5.HOSPITAL_ID=t2.ORDER_HOP_ID ");
+		hqlBuffer.append("t4.NAME as manf ");
+		//hqlBuffer.append("t6.`NAME` as venname  ");
+		
+		hqlBuffer.append("from T_ORD_ORDERDETAILSUB t1 "); //发货表
+		hqlBuffer.append("LEFT JOIN T_ORD_ORDERDETAIL t2 ON T1.ORDSUB_DETAIL_ID = t2.ORDER_ID ");  //订单表和发货表
+		hqlBuffer.append("LEFT JOIN T_VEN_INC t3 ON t3.VEN_INC_ROWID = t2.ORDER_VEN_INC_ID "); //产品信息表和订单表
+		hqlBuffer.append("left join t_hop_manf t4 on t4.id=t3.VEN_INC_MANFID "); //厂商表和产品信息表
+		hqlBuffer.append("left join T_SYS_HOSPITAL t5 on t5.HOSPITAL_ID=t2.ORDER_HOP_ID "); //医院表和订单表
+		//hqlBuffer.append("LEFT JOIN t_ven_vendor as t6 on t2.ORDER_VEN_ID=t6.VEN_ID "); //供应商和订单表
 		hqlBuffer.append("where 1=1 ");
 		Map<String, Object> hqlParamMap = new HashMap<String, Object>();
         
-
-		if(org.apache.commons.lang.StringUtils.isNotBlank(dto.getInvno())){
-			hqlBuffer.append("and t1.ORDSUB_INVNO=:invno ");
+		//org.apache.commons.lang.StringUtils.isNotBlank;
+		if(dto.getInvno().equals("null")){
+			hqlBuffer.append("and t2.ORDER_VEN_ID=:venid ");
+			hqlParamMap.put("venid", dto.getVendor());
+		}else{
+			hqlBuffer.append("and t1.ORDSUB_INVNO=:invno "); 
 			hqlParamMap.put("invno", dto.getInvno());
 		}
 		
 		if(dto.getPageModel()==null){
 			dto.setPageModel(new PagerModel());
 		}
+		
 		dto.getPageModel().setQueryHql(hqlBuffer.toString());
 		dto.getPageModel().setHqlParamMap(hqlParamMap);
 		jdbcTemplateWrapper.fillPagerModelData(dto.getPageModel(), DeliverItmVo.class, "t1.ORDSUB_ID");

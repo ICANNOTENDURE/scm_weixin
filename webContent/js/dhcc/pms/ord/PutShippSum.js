@@ -26,9 +26,11 @@ $(function (){
 		        {field:'date',title:'日期',width:100,sortable:true},
 				{field:'invno',title:'发票号',width:100,formatter:OpenOrdDetail},
 				{field:'rpamt',title:'金额',width:100,sortable:true},
-				{field:'venname',title:'供应商',width:150}	
+				{field:'venname',title:'供应商',width:150},
+				{field:'vendor',title:'供应商id',width:150,hidden:true}	
 		 ]]
 		 ,
+		//data:[{venname: "ven123", invno:"", rpamt: "73976.4", date:"2016-07-30"}],
 		queryParams: {
 			"dto.stdate":$("#stdate").datebox('getValue'),
 			"dto.eddate":$("#eddate").datebox('getValue'),
@@ -60,18 +62,18 @@ $(function (){
 
 });
 
-function OpenOrdDetail(value, rowData, rowIndex){
+function OpenOrdDetail(value,rowData, rowIndex){
 	if(value==null){
-		
+		return "<a onclick=\'openord(\""+value+"\",\""+rowData.vendor+"\")\' href='#' style='text-decoration:none;'><span style='color:blue;'>"+"无发票号"+"</span></a>";
 	}else{
-		return "<a onclick=\'openord(\""+value+"\")\' href='#' style='text-decoration:none;'><span style='color:blue;'>"+value+"</span></a>";
+		return "<a onclick=\'openord(\""+value+"\",\""+rowData.vendor+"\")\' href='#' style='text-decoration:none;'><span style='color:blue;'>"+value+"</span></a>";
 	}
 }
 
-function openord(value){
+function openord(value,venname){
 	$('#detail').dialog('open');
 	$('#detailgrid').datagrid({  
-	    url:'putShippSumCtrl!listDeliverItm.htm?dto.invno='+value,
+	    url:'putShippSumCtrl!listDeliverItm.htm?dto.invno='+value+'&dto.vendor='+venname,
 	    method:'post',
 	    fit:true,
 	    loadMsg:'加载数据中.....',

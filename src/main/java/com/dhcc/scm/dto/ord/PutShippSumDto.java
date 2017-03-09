@@ -13,6 +13,8 @@ import com.dhcc.framework.transmission.dto.BaseDto;
  */
 public class PutShippSumDto extends BaseDto{
 	
+	private Long vendor;
+	
 	private String venname;
 	
 	private float rpamt;
@@ -28,6 +30,16 @@ public class PutShippSumDto extends BaseDto{
 	public Date getDate() {
 		return date;
 	}
+
+	public String getVenname() {
+		return venname;
+	}
+
+
+	public void setVenname(String venname) {
+		this.venname = venname;
+	}
+
 
 	public void setDate(Date date) {
 		this.date = date;
@@ -49,12 +61,12 @@ public class PutShippSumDto extends BaseDto{
 		this.eddate = eddate;
 	}
 
-	public String getVenname() {
-		return venname;
+	public Long getVendor() {
+		return vendor;
 	}
-	
-	public void setVenname(String venname) {
-		this.venname = venname;
+
+	public void setVendor(Long vendor) {
+		this.vendor = vendor;
 	}
 
 	public float getRpamt() {
