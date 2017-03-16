@@ -16,6 +16,7 @@ import com.dhcc.framework.common.PagerModel;
 import com.dhcc.framework.hibernate.dao.HibernatePersistentObjectDAO;
 import com.dhcc.framework.transmission.dto.BaseDto;
 import com.dhcc.framework.util.StringUtils;
+import com.dhcc.framework.web.context.WebContextHolder;
 import com.dhcc.scm.dto.hop.HospitalDto;
 import com.dhcc.scm.entity.hop.Hospital;
 
@@ -94,11 +95,17 @@ public class HospitalDao extends HibernatePersistentObjectDAO<Hospital> {
 	
 	@SuppressWarnings("unchecked")
 	public List<Hospital> getHospInfo(Hospital hospital) {
+		Long type=WebContextHolder.getContext().getVisit().getUserInfo().getUserType();
+		Long hopId=WebContextHolder.getContext().getVisit().getUserInfo().getHopId();
 		StringBuffer hqlBuffer = new StringBuffer();
 		hqlBuffer.append(" select new Hospital(");
 		hqlBuffer.append(" h.hospitalId, ");
 		hqlBuffer.append(" h.hospitalName) ");
 		hqlBuffer.append(" from Hospital h");
+		///1 医院用户
+		if (type==1){
+			hqlBuffer.append(" where h.hospitalId="+hopId);
+		}
 		
 		return (List<Hospital>)this.findByHql(hqlBuffer.toString());
 		
