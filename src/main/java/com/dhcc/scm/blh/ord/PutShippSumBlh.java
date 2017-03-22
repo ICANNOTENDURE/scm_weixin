@@ -4,6 +4,8 @@
  */
 package com.dhcc.scm.blh.ord;
 
+import java.io.UnsupportedEncodingException;
+
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 import com.dhcc.framework.app.blh.AbstractBaseBlh;
@@ -42,7 +44,7 @@ public class PutShippSumBlh extends AbstractBaseBlh {
 		PutShippSumService.list(dto);
 	}
 	
-	public void listDeliverItm(BusinessRequest res){
+	public void listDeliverItm(BusinessRequest res) throws UnsupportedEncodingException{
 		
 		PutShippSumDto dto = super.getDto(PutShippSumDto.class, res);
 		//调用对应的service方法

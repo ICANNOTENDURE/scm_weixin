@@ -4,6 +4,8 @@
  */
 package com.dhcc.scm.service.ord.impl;
 
+import java.io.UnsupportedEncodingException;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -26,7 +28,7 @@ public class PutShippSumServiceImpl implements PutShippSumService {
 		PutShippSumDao.listPutShippSum(dto);
 	}
 	
-	public void listDeliverItm(PutShippSumDto dto) {
+	public void listDeliverItm(PutShippSumDto dto) throws UnsupportedEncodingException {
 		// TODO Auto-generated method stub
 		PutShippSumDao.listDeliverItm(dto);
 	}

@@ -4,6 +4,7 @@
 package com.dhcc.scm.dao.ord;
 
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +46,7 @@ public class PutShippSumDao extends HibernatePersistentObjectDAO<PutShippSumVo>{
 	public void listPutShippSum(PutShippSumDto dto){
 		StringBuffer hqlBuffer = new StringBuffer();
 		hqlBuffer.append("select t1.ORDSUB_INVNO as invno, ");
-		hqlBuffer.append(" t1.ORDSUB_USERID as userid,t1.ORDSUB_DATE as date,");
+		hqlBuffer.append(" t1.ORDSUB_USERID as userid,t1.ORDSUB_INGDREC_DATE as date,");
 		hqlBuffer.append(" sum(round(t1.ORDSUB_RP*t1.ORDSUB_QTY,2)) as rpamt, ");
 		hqlBuffer.append(" t2.ORDER_VEN_ID as vendor, ");
 		hqlBuffer.append(" t3.`NAME` as venname");
@@ -53,7 +54,7 @@ public class PutShippSumDao extends HibernatePersistentObjectDAO<PutShippSumVo>{
 		hqlBuffer.append(" LEFT JOIN T_ORD_ORDERDETAIL t2 on t1.ORDSUB_DETAIL_ID=t2.ORDER_ID ");
 		hqlBuffer.append(" LEFT JOIN t_ven_vendor as t3 on t2.ORDER_VEN_ID=t3.VEN_ID ");
 		hqlBuffer.append(" where 1=1 ");
-		
+		hqlBuffer.append(" and t1.ORDSUB_STATUS='t' ");
 		Map<String, Object> hqlParamMap = new HashMap<String, Object>();		
 		Long userType=WebContextHolder.getContext().getVisit().getUserInfo().getUserType();
 		
@@ -74,15 +75,14 @@ public class PutShippSumDao extends HibernatePersistentObjectDAO<PutShippSumVo>{
 		}
 
 		if(dto.getStdate()!=null){
-			hqlBuffer.append("  and  t1.ORDSUB_DATE>=:start ");
+			hqlBuffer.append("  and  t1.ORDSUB_INGDREC_DATE>=:start ");
 			hqlParamMap.put("start", dto.getStdate());
 		}
 		if(dto.getEddate()!=null){
-			hqlBuffer.append("  and  t1.ORDSUB_DATE<=:end ");
+			hqlBuffer.append("  and  t1.ORDSUB_INGDREC_DATE<=:end ");
 			hqlParamMap.put("end", dto.getEddate());
 		}
 		if(dto.getVendor()!= null){
-			System.out.println(dto.getVendor());
 			hqlBuffer.append("  and  t2.ORDER_VEN_ID=:venid");
 			hqlParamMap.put("venid", dto.getVendor());
 		}
@@ -94,7 +94,7 @@ public class PutShippSumDao extends HibernatePersistentObjectDAO<PutShippSumVo>{
 //			hqlBuffer.append(" group by t1.ORDSUB_INVNO "+dto.getSortOrder());
 //		}
 		
-		hqlBuffer.append(" group by t3.`NAME`, t1.ORDSUB_INVNO");
+		hqlBuffer.append(" group by t1.ORDSUB_INVNO, t3.`NAME`");
 		
 		if(dto.getPageModel()==null){
 			dto.setPageModel(new PagerModel());
@@ -111,12 +111,13 @@ public class PutShippSumDao extends HibernatePersistentObjectDAO<PutShippSumVo>{
 	* @Description: TODO(入库发票明细使用) 
 	* @param @param dto    设定文件 
 	* @return void    返回类型 
+	 * @throws UnsupportedEncodingException 
 	* @throws 
 	* @author lvpeng   
 	* @date 2017年1月5日 下午2:10:10
 	 */
-	public void listDeliverItm(PutShippSumDto dto) {
-
+	public void listDeliverItm(PutShippSumDto dto) throws UnsupportedEncodingException {
+		
 		StringBuffer hqlBuffer = new StringBuffer();
 		hqlBuffer.append("select ");
 		hqlBuffer.append("t1.ORDSUB_ID as deliveritmid,  "); //发货表id
@@ -149,12 +150,16 @@ public class PutShippSumDao extends HibernatePersistentObjectDAO<PutShippSumVo>{
 		Map<String, Object> hqlParamMap = new HashMap<String, Object>();
         
 		//org.apache.commons.lang.StringUtils.isNotBlank;
-		if(dto.getInvno().equals("null")){
-			hqlBuffer.append("and t2.ORDER_VEN_ID=:venid ");
+		String val=new String(dto.getInvno().getBytes("ISO-8859-1"),"utf-8");
+		
+		if((val==null)||("".equals(val))){
+			hqlBuffer.append("and t2.ORDER_VEN_ID=:venid "); 
 			hqlParamMap.put("venid", dto.getVendor());
+			hqlBuffer.append("and t1.ORDSUB_INVNO=:invno "); 
+			hqlParamMap.put("invno", val);
 		}else{
 			hqlBuffer.append("and t1.ORDSUB_INVNO=:invno "); 
-			hqlParamMap.put("invno", dto.getInvno());
+			hqlParamMap.put("invno", val);
 		}
 		
 		if(dto.getPageModel()==null){

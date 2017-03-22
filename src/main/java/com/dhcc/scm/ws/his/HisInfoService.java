@@ -560,6 +560,7 @@ public class HisInfoService implements HisInfoServiceInterface {
 				OrderDetailSub orderDetailSub = commonService.get(OrderDetailSub.class, sub);
 				if (orderDetailSub != null) {
 					orderDetailSub.setOrdSubStatus(flag);
+					orderDetailSub.setOrdIngdrecDate(new Date());
 					commonService.saveOrdSub(orderDetailSub, "库房扫码入库确认", normalAccount.getAccountId());
 					succ++;
 				}

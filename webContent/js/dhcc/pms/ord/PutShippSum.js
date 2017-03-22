@@ -12,7 +12,7 @@ $(function (){
 	    fitColumns:true,
 	    loadMsg:'加载数据中.....',
 	    toolbar:'#toolbar',
-	    singleSelect:false,
+	    singleSelect:true,
 	    pagination:true,
 	    rownumbers:true,
 		title:'入库发票汇总(单击发票号查看明细)',
@@ -23,7 +23,7 @@ $(function (){
 //					sortable : false,
 //					hidden : false,
 //				},
-		        {field:'date',title:'日期',width:100,sortable:true},
+		        {field:'date',title:'入库日期',width:100,sortable:true},
 				{field:'invno',title:'发票号',width:100,formatter:OpenOrdDetail},
 				{field:'rpamt',title:'金额',width:100,sortable:true},
 				{field:'venname',title:'供应商',width:150},
@@ -63,7 +63,7 @@ $(function (){
 });
 
 function OpenOrdDetail(value,rowData, rowIndex){
-	if(value==null){
+	if((value==null)||(value=="")){
 		return "<a onclick=\'openord(\""+value+"\",\""+rowData.vendor+"\")\' href='#' style='text-decoration:none;'><span style='color:blue;'>"+"无发票号"+"</span></a>";
 	}else{
 		return "<a onclick=\'openord(\""+value+"\",\""+rowData.vendor+"\")\' href='#' style='text-decoration:none;'><span style='color:blue;'>"+value+"</span></a>";
@@ -78,8 +78,11 @@ function openord(value,venname){
 	    fit:true,
 	    loadMsg:'加载数据中.....',
 	    pagination:true,
+	    pageNumber:1,
+	    pageSize:20,
 	    fitColumns:true,
 	    rownumbers:true,
+	    singleSelect:true,
 	    columns:[[ 
 	            {field:'venincncode',title:'代码',width:100,sortable:true},  	
 	  	        {field:'venincname',title:'名称',width:100},
@@ -87,6 +90,7 @@ function openord(value,venname){
 	  	        {field:'rp',title:'进价',width:100},
 	  	        {field:'uom',title:'单位',width:100},
 	  	        {field:'batno',title:'批号',width:100},
+	  	        {field:'invno',title:'发票号',width:100},
 	  	        {field:'expdate',title:'效期',width:100},
 	  	        {field:'orderqty',title:'订单数',width:100}, 
 	  	        {field:'sendedqty',title:'已发货数量',width:100},
