@@ -7,6 +7,7 @@ package com.dhcc.scm.service.hop;
 import java.util.List;
 
 import com.dhcc.scm.dto.hop.HopVendorDto;
+import com.dhcc.scm.dto.ven.VendorDto;
 import com.dhcc.scm.entity.hop.HopVendor;
 import com.dhcc.scm.entity.vo.combo.ComboxVo;
 
@@ -33,6 +34,17 @@ public interface HopVendorService {
 	* @version V1.0
 	 */
 	public void listHopCon(HopVendorDto dto);
+	/**
+	 * 
+	* @Title: HopVendorService.java
+	* @Description: TODO(用一句话描述该文件做什么)
+	* @param dto
+	* @return:void 
+	* @author xuchao
+	* @date 2014年6月11日 上午10:07:19
+	* @version V1.0
+	 */
+	public void listHopVendor(HopVendorDto dto);
 	
 	/**
 	 * 
@@ -104,5 +116,7 @@ public interface HopVendorService {
 	public HopVendor getHopVendoByBarCode(String barcode,Long hopid);
 
 //	public void listHopVen(VendorDto dto);//add hxy 
+	
+	public void listRegVen(VendorDto dto);
 	
 }

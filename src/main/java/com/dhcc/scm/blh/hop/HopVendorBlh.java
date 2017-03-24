@@ -214,8 +214,8 @@ public class HopVendorBlh extends AbstractBaseBlh {
 				HopVendor hopVendor = commonService.get(HopVendor.class, dto.getHopVendor().getHopVendorId());
 				List<VenReghop> venReghops = commonService.findByProperty(VenReghop.class, "venid", hopVendor.getHopVenId());// 为了共用优化到上边来的
 				String flag = "Y";
-				if (org.apache.commons.lang3.StringUtils.isNotBlank(hopVendor.getHopAuditFlag())) {
-					flag = hopVendor.getHopAuditFlag();
+				if ("Y".equals(hopVendor.getHopAuditFlag())) {
+					flag = "N";
 				}
 				hopVendor.setHopAuditFlag(flag);
 				commonService.saveOrUpdate(hopVendor);
@@ -351,7 +351,23 @@ public class HopVendorBlh extends AbstractBaseBlh {
 		// 调用对应的service方法
 		hopVendorService.listHopCon(dto);
 	}
+	/**
+	 * 
+	 * @Title: HopVendorBlh.java
+	 * @Description: TODO(用一句话描述该文件做什么)
+	 * @param res
+	 * @return:void
+	 * @author xuchao
+	 * @date 2017年3月15日 上午10:08:12
+	 * @version V1.0
+	 */
+	public void listHopVendor(BusinessRequest res) {
 
+		HopVendorDto dto = super.getDto(HopVendorDto.class, res);
+
+		// 调用对应的service方法
+		hopVendorService.listHopVendor(dto);
+	}
 	/**
 	 * 
 	 * @Title: HopVendorBlh.java
@@ -375,7 +391,31 @@ public class HopVendorBlh extends AbstractBaseBlh {
 		}
 		dto.setOpFlg("1");
 	}
-
+	/**
+	 * @Description: 医院用户自己对照审批一次完成
+	 * @param res
+	 */
+	public void conAndAudit(BusinessRequest res) {
+		HopVendorDto dto = super.getDto(HopVendorDto.class, res);
+		HopVendor hopVendor=commonService.get(HopVendor.class, dto.getHopVendor().getHopVendorId());
+		Vendor vendor=commonService.get(Vendor.class, dto.getHopVendor().getHopVenId());
+		VenReghop reghop=commonService.get(VenReghop.class, dto.getRegId());
+		reghop.setAduitflag(dto.getFlag());
+		if("H".equals(dto.getFlag())){
+			vendor.setAudit_flag("Y");
+			hopVendor.setHopAuditFlag("Y");
+			hopVendor.setHopVenId(dto.getHopVendor().getHopVenId());
+		}
+		if("HN".equals(dto.getFlag())){
+			vendor.setAudit_flag("N");
+			hopVendor.setHopAuditFlag("N");
+		}
+		commonService.saveOrUpdate(reghop);
+		commonService.saveOrUpdate(hopVendor);
+		commonService.saveOrUpdate(vendor);
+		dto.setOpFlg("1");
+		super.writeJSON(dto);
+	}
 	/**
 	 * 
 	 * @Title: HopVendorBlh.java

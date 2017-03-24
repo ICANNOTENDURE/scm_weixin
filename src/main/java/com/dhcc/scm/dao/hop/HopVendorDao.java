@@ -24,6 +24,7 @@ import com.dhcc.framework.util.PingYinUtil;
 import com.dhcc.framework.util.StringUtils;
 import com.dhcc.framework.web.context.WebContextHolder;
 import com.dhcc.scm.dto.hop.HopVendorDto;
+import com.dhcc.scm.dto.ven.VendorDto;
 import com.dhcc.scm.entity.hop.HopVendor;
 import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.userManage.NormalUser;
@@ -31,6 +32,7 @@ import com.dhcc.scm.entity.ven.Vendor;
 import com.dhcc.scm.entity.vo.combo.ComboxVo;
 import com.dhcc.scm.entity.vo.hop.HopVendorDetailVo;
 import com.dhcc.scm.entity.vo.hop.HopVendorVo;
+import com.dhcc.scm.entity.vo.ven.VendorVo;
 
 @Repository
 public class HopVendorDao extends HibernatePersistentObjectDAO<HopVendor> {
@@ -171,7 +173,77 @@ public class HopVendorDao extends HibernatePersistentObjectDAO<HopVendor> {
 		dto.getPageModel().setHqlParamMap(hqlParamMap);
 		jdbcTemplateWrapper.fillPagerModelData(dto.getPageModel(), HopVendorVo.class, "h_venid");
 	}
-	
+	/**
+	 * 
+	* @Title: HopVendorDao.java
+	* @Description: TODO(用一句话描述该文件做什么)
+	* @param dto
+	* @return:void 
+	* @author zhouxin  
+	* @date 2014年6月11日 上午9:59:48
+	* @version V1.0
+	 */
+	public void listHopVendor(HopVendorDto dto){
+		Long hopId=WebContextHolder.getContext().getVisit().getUserInfo().getHopId();
+		Long type=WebContextHolder.getContext().getVisit().getUserInfo().getUserType();
+		StringBuffer hqlBuffer = new StringBuffer();
+		hqlBuffer.append("select ");
+		hqlBuffer.append("t1.H_VENID as hopvenid, ");
+		hqlBuffer.append("t1.H_NAME as hopvenname, ");
+		hqlBuffer.append("t3.hospital_name as hopname, ");
+		hqlBuffer.append("t1.H_code as hopvencode, ");
+		hqlBuffer.append("t2.name as venname, ");
+		hqlBuffer.append("t1.H_AUDITFLAG as hopauditflag, ");
+		hqlBuffer.append("t1.h_vendorid as venid ");
+		
+		hqlBuffer.append("from t_hop_vendor t1 ");
+		hqlBuffer.append("left join t_ven_vendor t2 on t1.h_vendorid=t2.ven_id ");
+		hqlBuffer.append("left join t_sys_hospital t3 on t3.hospital_id=t1.h_hopid ");
+		hqlBuffer.append("where 1=1 ");
+		Map<String, Object> hqlParamMap = new HashMap<String, Object>();
+		if(type.longValue()==1){
+			hqlBuffer.append("and t1.h_hopid=:hopid ");
+			hqlParamMap.put("hopid",hopId);
+		}
+
+		if(dto.getHopVendor()!=null){
+			if (!StringUtils.isNullOrEmpty(dto.getHopVendor().getHopAlias())){
+				hqlBuffer.append("and t1.h_alias like :hvalias ");
+				hqlParamMap.put("hvalias", "%"+dto.getHopVendor().getHopAlias()+"%");
+			}
+			if (!StringUtils.isNullOrEmpty(dto.getHopVendor().getHopCode())){
+				hqlBuffer.append("and t1.h_code like :hvcode ");
+				hqlParamMap.put("hvcode", "%"+dto.getHopVendor().getHopCode()+"%");
+			}
+			if (!StringUtils.isNullOrEmpty(dto.getHopVendor().getHopName())){
+				hqlBuffer.append("and t1.h_name like :hvname ");
+				hqlParamMap.put("hvname", "%"+dto.getHopVendor().getHopName()+"%");
+			}
+			if (dto.getHopVendor().getHopVenId()!=null){
+				hqlBuffer.append("and t1.H_VENDORID =:hvendorid ");
+				hqlParamMap.put("hvendorid", dto.getHopVendor().getHopVenId());
+			}		
+		}
+		if(dto.getFlag()!=null){
+			if (dto.getFlag().equals("2")){
+				hqlBuffer.append("and t1.h_vendorid is null ");
+			}
+			if (dto.getFlag().equals("1")){
+				hqlBuffer.append("and t1.h_vendorid is not null ");
+			}
+		}
+		if(dto.getAuditFlag()!=null){
+			if(dto.getAuditFlag().equals("2")){
+				hqlBuffer.append("and t1.H_AUDITFLAG!='Y' or t1.H_AUDITFLAG is null ");
+			}
+			if(dto.getAuditFlag().equals("1")){
+				hqlBuffer.append("and t1.H_AUDITFLAG='Y' ");
+			}
+		}
+		dto.getPageModel().setQueryHql(hqlBuffer.toString());
+		dto.getPageModel().setHqlParamMap(hqlParamMap);
+		jdbcTemplateWrapper.fillPagerModelData(dto.getPageModel(), HopVendorVo.class, "h_venid");
+	}
 	/**
 	 * 
 	* @Title: HopVendorDao.java
@@ -436,5 +508,68 @@ public class HopVendorDao extends HibernatePersistentObjectDAO<HopVendor> {
 			hqlBuffer.append(" order by name ");
 			return (List<ComboxVo>)jdbcTemplateWrapper.queryAllMatchListWithParaMap(hqlBuffer.toString(), ComboxVo.class, hqlParamMap, 1,BaseConstants.COMBOX_PAGE_SIZE, "id");
 
+	}
+	
+	/**
+	 * @author Administrator
+	 * @see 医院显示供应商注册<br>
+	 * 		<p>只用于医院自己对照审核供应商使用</p>
+	 * 
+	 * 	
+	 */
+	public void listRegVen(VendorDto dto){
+		Map<String, Object> hqlParamMap = new HashMap<String, Object>();
+		Long hopId=WebContextHolder.getContext().getVisit().getUserInfo().getHopId();
+		
+		StringBuffer sqlStr = new StringBuffer();
+		sqlStr.append("select ");
+		sqlStr.append("t1.REGHOP_ID regid, ");
+		sqlStr.append("t2.VEN_ID vendorid, ");
+		sqlStr.append("t2.CODE code, ");
+		sqlStr.append("t2.NAME name, ");
+		sqlStr.append("t2.ADDRESS address, ");
+		sqlStr.append("t2.FAX fax, ");
+		sqlStr.append("t2.TEL tel, ");
+		sqlStr.append("t2.ACCOUNT account, ");
+		sqlStr.append("t2.CONTACT contact, ");
+		sqlStr.append("t2.EMAIL email, ");
+		sqlStr.append("t2.TAXATION taxation ");
+		sqlStr.append("from ");
+		sqlStr.append("t_ven_reghop t1 ") ; 
+		sqlStr.append("left join t_ven_vendor t2 on t1.REGHOP_VENID=T2.ven_id ");
+		sqlStr.append("where 1=1 ");
+		
+		sqlStr.append(" and REGHOP_HOPID=:hopid ");
+		hqlParamMap.put("hopid", hopId);
+		//审批资质
+		if(org.apache.commons.lang.StringUtils.isNotBlank(dto.getAuditFlag())){
+			if(dto.getAuditFlag().equals("1")){
+				sqlStr.append(" and t1.REGHOP_ADUIT_FLAG='H' " );
+			}
+			if(dto.getAuditFlag().equals("2")){
+				sqlStr.append(" and t1.REGHOP_ADUIT_FLAG='HN' " );
+			}
+			if(dto.getAuditFlag().equals("3")){
+				sqlStr.append(" and t1.REGHOP_ADUIT_FLAG is null " );
+			}
+		}
+		if(dto.getVendor()!=null){
+			if(org.apache.commons.lang.StringUtils.isNotBlank(dto.getVendor().getName())){
+				sqlStr.append(" and t2.NAME like :name" );
+				hqlParamMap.put("name", "%"+dto.getVendor().getName().trim()+"%");
+			}
+			if(org.apache.commons.lang.StringUtils.isNotBlank(dto.getVendor().getAlias())){
+				sqlStr.append(" and t2.ALIAS like :alias" );
+				hqlParamMap.put("alias", "%"+dto.getVendor().getAlias().trim()+"%");
+			}
+		}
+		if(org.apache.commons.lang.StringUtils.isNotBlank(dto.getInputStr())){
+			sqlStr.append(" and (t2.ACCOUNT=:inputStr or t2.TAXATION=:inputStr or t1.EMAIL=:inputStr)" );
+			hqlParamMap.put("inputStr", dto.getInputStr().trim());
+		}
+		dto.getPageModel().setQueryHql(sqlStr.toString());
+		dto.getPageModel().setHqlParamMap(hqlParamMap);
+		jdbcTemplateWrapper.fillPagerModelData(dto.getPageModel(), VendorVo.class, "t1.REGHOP_ID");
+	
 	}
 }

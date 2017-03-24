@@ -110,5 +110,9 @@ public class VendorServiceImpl implements VendorService {
 		// TODO Auto-generated method stub
 		vendorDao.listVendorHistory(dto);
 	}
-
+	@Override
+	public void listHopVendor(VendorDto dto) {
+		// TODO Auto-generated method stub
+		vendorDao.listHopVendor(dto);
+	}
 }

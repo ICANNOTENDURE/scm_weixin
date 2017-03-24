@@ -7,7 +7,8 @@ public class HisPicWeb {
 	private String picType;
 	
 	private String picName;
-
+	public HisPicWeb() {
+	}
 	public HisPicWeb(String picType, String picName) {
 		super();
 		this.picType = picType;

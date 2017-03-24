@@ -34,6 +34,8 @@ public class VendorVo {
 	
 	private String auditflag;//add hxy
 	
+	private Long regid;
+	
 	//hxy 2016-03-30 历史查询 尝试
 	private Long loguserid;
 	private Date logdate;
@@ -176,6 +178,14 @@ public class VendorVo {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Long getRegid() {
+		return regid;
+	}
+
+	public void setRegid(Long regid) {
+		this.regid = regid;
 	}
 	
 	

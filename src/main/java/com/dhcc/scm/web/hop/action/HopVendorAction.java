@@ -34,7 +34,8 @@ import com.dhcc.scm.entity.ven.Vendor;
 		@Result(name = "listDetail", location = "/WEB-INF/jsp/hop/HopVendorDetail.jsp"),
 		@Result(name = "HistoryDetail", location = "/WEB-INF/jsp/hop/HistoryDetail.jsp"),
 		@Result(name = "HopAuditVendor", location = "/WEB-INF/jsp/hop/HopAuditVendor.jsp"),
-		@Result(name = "ContranstVendor", location = "/WEB-INF/jsp/hop/ContranstVendor.jsp")})
+		@Result(name = "ContranstVendor", location = "/WEB-INF/jsp/hop/ContranstVendor.jsp"),
+		@Result(name = "HopContranstVendor", location = "/WEB-INF/jsp/hop/HopContranstVendor.jsp")})	
 @Blh("hopVendorBlh")
 @JsonResults({@JResult(BlhMethod="findById",ognlExpress="dto.hopVendor"),
 			  @JResult(BlhMethod="contranstVendor",ognlExpress="dto"),
@@ -118,6 +119,10 @@ public class HopVendorAction extends BaseAction {
 		//直接返回jsp hxy
 		if("HopAuditVendor".equals(super.getBusinessFlow())){
 			return "HopAuditVendor";
+		}
+		//直接返回jsp 
+		if("HopContranstVendor".equals(super.getBusinessFlow())){
+			return "HopContranstVendor";
 		}
 		//直接返回jsp
 		if("HistoryDetail".equals(super.getBusinessFlow())){

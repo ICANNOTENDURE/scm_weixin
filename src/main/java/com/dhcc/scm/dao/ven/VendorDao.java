@@ -344,7 +344,74 @@ public class VendorDao extends HibernatePersistentObjectDAO<Vendor> {
 		dto.getPageModel().setHqlParamMap(hqlParamMap);
 		jdbcTemplateWrapper.fillPagerModelData(dto.getPageModel(), VendorVo.class, "t1.VEN_ID");
 	}
-	
+	/**
+	 * 
+	* @Title: listVendor 
+	* @Description: TODO(查询供应商，供应商注册审核时使用) 
+	* @param @param name    设定文件 
+	* @return void    返回类型 
+	* @throws 
+	* @author zhouxin   
+	* @date 2015年5月20日 上午8:28:31
+	 */
+	public void listHopVendor(VendorDto dto){
+		
+		
+		Map<String, Object> hqlParamMap = new HashMap<String, Object>();
+		Long hopId=WebContextHolder.getContext().getVisit().getUserInfo().getHopId();
+		Long type=WebContextHolder.getContext().getVisit().getUserInfo().getUserType();
+		
+		StringBuffer sqlStr = new StringBuffer();
+		sqlStr.append("select ");
+		sqlStr.append("t1.VEN_ID vendorid, ");
+		sqlStr.append("t1.CODE code, ");
+		sqlStr.append("t1.NAME name, ");
+		sqlStr.append("t1.ADDRESS address, ");
+		sqlStr.append("t1.FAX fax, ");
+		sqlStr.append("t1.TEL tel, ");
+		sqlStr.append("t1.ACCOUNT account, ");
+		sqlStr.append("t1.CONTACT contact, ");
+		sqlStr.append("t1.EMAIL email, ");
+		sqlStr.append("t1.TAXATION taxation, ");
+		sqlStr.append("t2.H_AUDITFLAG auditflag, ");//add hxy
+		sqlStr.append("t2.H_VENID hopvendorid ");//主键
+		sqlStr.append("from ");
+		sqlStr.append("T_VEN_VENDOR t1 ") ; 
+		sqlStr.append("left join T_HOP_VENDOR t2 on t1.VEN_ID=T2.H_VENDORID ");
+		sqlStr.append("where 1=1 ");
+		//根据登录人员做判断   感觉还是有问题
+			sqlStr.append(" and t2.H_HOPID="+hopId);
+		
+		//审批资质
+		if(org.apache.commons.lang.StringUtils.isNotBlank(dto.getAuditFlag())){
+			if(dto.getAuditFlag().equals("1")){
+				sqlStr.append(" and t2.H_AUDITFLAG='Y' " );
+			}
+			if(dto.getAuditFlag().equals("2")){
+				sqlStr.append(" and t2.H_AUDITFLAG='N' " );
+			}
+			if(dto.getAuditFlag().equals("3")){
+				sqlStr.append(" and t2.H_AUDITFLAG is null " );
+			}
+		}
+		if(dto.getVendor()!=null){
+			if(org.apache.commons.lang.StringUtils.isNotBlank(dto.getVendor().getName())){
+				sqlStr.append(" and t1.NAME like :name" );
+				hqlParamMap.put("name", "%"+dto.getVendor().getName().trim()+"%");
+			}
+			if(org.apache.commons.lang.StringUtils.isNotBlank(dto.getVendor().getAlias())){
+				sqlStr.append(" and t1.ALIAS like :alias" );
+				hqlParamMap.put("alias", "%"+dto.getVendor().getAlias().trim()+"%");
+			}
+		}
+		if(org.apache.commons.lang.StringUtils.isNotBlank(dto.getInputStr())){
+			sqlStr.append(" and (t1.ACCOUNT=:inputStr or t1.TAXATION=:inputStr or t1.EMAIL=:inputStr)" );
+			hqlParamMap.put("inputStr", dto.getInputStr().trim());
+		}
+		dto.getPageModel().setQueryHql(sqlStr.toString());
+		dto.getPageModel().setHqlParamMap(hqlParamMap);
+		jdbcTemplateWrapper.fillPagerModelData(dto.getPageModel(), VendorVo.class, "t1.VEN_ID");
+	}
 	/**
 	*@Title: listVendorHistory 
 	* @Description: TODO(供应商审核历史) 
@@ -377,4 +444,7 @@ public class VendorDao extends HibernatePersistentObjectDAO<Vendor> {
 		dto.getPageModel().setHqlParamMap(hqlParamMap);
 		jdbcTemplateWrapper.fillPagerModelData(dto.getPageModel(), VendorVo.class, "t1.VEN_ID");
 	}
+	
+	
+
 }

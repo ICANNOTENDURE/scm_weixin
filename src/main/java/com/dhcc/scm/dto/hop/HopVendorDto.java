@@ -54,9 +54,21 @@ public class HopVendorDto extends BaseDto {
 	
 	private String uploadFileName;
 	
+	private Long regId;
 	
 	
 	
+	
+	
+	
+	public Long getRegId() {
+		return regId;
+	}
+
+	public void setRegId(Long regId) {
+		this.regId = regId;
+	}
+
 	/**
 	 * @return the uploadFileName
 	 */

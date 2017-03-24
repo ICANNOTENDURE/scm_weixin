@@ -14,6 +14,7 @@ import com.dhcc.framework.app.service.CommonService;
 import com.dhcc.framework.common.PagerModel;
 import com.dhcc.scm.dao.hop.HopVendorDao;
 import com.dhcc.scm.dto.hop.HopVendorDto;
+import com.dhcc.scm.dto.ven.VendorDto;
 import com.dhcc.scm.entity.hop.HopVendor;
 import com.dhcc.scm.entity.vo.combo.ComboxVo;
 import com.dhcc.scm.service.hop.HopVendorService;
@@ -64,7 +65,11 @@ public class HopVendorServiceImpl implements HopVendorService {
 		// TODO Auto-generated method stub
 		hopVendorDao.listHopCon(dto);
 	}
-
+	@Override
+	public void listHopVendor(HopVendorDto dto) {
+		// TODO Auto-generated method stub
+		hopVendorDao.listHopVendor(dto);
+	}
 	/* (non-Javadoc)
 	 * @see com.dhcc.pms.service.hop.HopVendorService#exportVendor(com.dhcc.pms.dto.hop.HopVendorDto)
 	 */
@@ -126,6 +131,12 @@ public class HopVendorServiceImpl implements HopVendorService {
 			return null;
 		}
 		return hopVendors.get(0);
+	}
+
+	@Override
+	public void listRegVen(VendorDto dto) {
+		// TODO Auto-generated method stub
+		hopVendorDao.listRegVen(dto);
 	}
 
 }

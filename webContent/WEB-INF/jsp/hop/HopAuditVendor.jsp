@@ -111,7 +111,7 @@ function AuditT(value,row,index){
  //拒绝时候弹出审核意见录入框  
  function ReClick(row){
     hopvendorid=$('#datagrid').datagrid('getRows')[row]['hopvendorid']; //主键
-	var title="";
+	var title="拒绝原因";
 	var content="审核意见:";
 	$.messager.prompt(title,content,function(r){    
 	    if (r){  	    		    

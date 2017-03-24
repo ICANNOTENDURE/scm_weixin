@@ -40,6 +40,7 @@ import com.dhcc.scm.entity.ven.VenQualification;
 import com.dhcc.scm.entity.ven.Vendor;
 import com.dhcc.scm.entity.vo.ven.PortalInfoVo;
 import com.dhcc.scm.entity.vo.ven.VenQualifTypeVO;
+import com.dhcc.scm.service.hop.HopVendorService;
 import com.dhcc.scm.service.ven.VenIncAdviceService;
 import com.dhcc.scm.service.ven.VendorService;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -54,6 +55,9 @@ public class VendorBlh extends AbstractBaseBlh {
 	
 	@Resource
 	private VenIncAdviceService venIncAdviceService;
+	
+	@Resource
+	private HopVendorService hopVendorService;
 	
 	@Resource
 	private CommonService commonService;
@@ -90,6 +94,21 @@ public class VendorBlh extends AbstractBaseBlh {
 		VendorDto dto = super.getDto(VendorDto.class, res);
 		//调用对应的service方法
 		vendorService.listVendor(dto);
+	}
+	/**
+	 * 
+	* @Title: listVendor 
+	* @Description: TODO(供应商注册审核时使用) 
+	* @param @param res    设定文件 
+	* @return void    返回类型 
+	* @throws 
+	* @author zhouxin   
+	* @date 2015年5月20日 上午9:07:03
+	 */
+	public void listHopVendor(BusinessRequest res) {
+		VendorDto dto = super.getDto(VendorDto.class, res);
+		//调用对应的service方法
+		vendorService.listHopVendor(dto);
 	}
 	/**
 	 * 
@@ -394,5 +413,17 @@ public class VendorBlh extends AbstractBaseBlh {
 		List<Long> incQtyNum=commonService.findByDetachedCriteria(incQtyCriteria);
 		portalInfoVo.setIncQtyNum(incQtyNum.get(0).intValue());	
 		super.writeJSON(portalInfoVo);
+	}
+
+	/**
+	 * 
+	 * @Title: HopVendorBlh.java
+	 * @Description: TODO(查询注册登录医院的供应商)
+	 * @version V1.0
+	 */
+	public void listRegVen(BusinessRequest res){
+		VendorDto dto = super.getDto(VendorDto.class, res);
+		hopVendorService.listRegVen(dto);
+		
 	}
 }
