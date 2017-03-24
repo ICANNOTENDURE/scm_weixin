@@ -38,7 +38,7 @@
 			<input class="combobox" panelHeight="auto" type="hidden" style="width:150px;display:none;" id="ordno"/>
 			-->
 			供应商:
-			<input class="combobox" panelHeight="auto" name="dto.venname" style="width:200px" id="vendor"/>
+			<input class="combobox" panelHeight="auto" name="dto.vendor" style="width:200px" id="vendor"/>
 			<div style="display:none"> 
 			发票号:
 			<input class="combobox" panelHeight="auto" name="dto.invno" style="width:250px" id="invno"/>

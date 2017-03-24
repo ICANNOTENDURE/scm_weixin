@@ -6,13 +6,13 @@ $(function (){
 	$('#eddate').datebox('setValue',new Date().format("yyyy-MM-dd"));
 
 	$('#datagrid').datagrid({  
-	    url:$WEB_ROOT_PATH+'/ord/putShippSumCtrl!list.htm',
+	    url:$WEB_ROOT_PATH+'/ord/putShippSumCtrl!list.htm?',
 	    method:'post',
 	    fit:true,
 	    fitColumns:true,
 	    loadMsg:'加载数据中.....',
 	    toolbar:'#toolbar',
-	    singleSelect:false,
+	    singleSelect:true,
 	    pagination:true,
 	    rownumbers:true,
 		title:'入库发票汇总(单击发票号查看明细)',
@@ -23,17 +23,19 @@ $(function (){
 //					sortable : false,
 //					hidden : false,
 //				},
-		        {field:'date',title:'日期',width:100,sortable:true},
+		        {field:'date',title:'入库日期',width:100,sortable:true},
 				{field:'invno',title:'发票号',width:100,formatter:OpenOrdDetail},
 				{field:'rpamt',title:'金额',width:100,sortable:true},
-				{field:'venname',title:'供应商',width:150}	
+				{field:'venname',title:'供应商',width:150},
+				{field:'vendor',title:'供应商id',width:150,hidden:true}	
 		 ]]
-		 /*
+		 ,
+		//data:[{venname: "ven123", invno:"", rpamt: "73976.4", date:"2016-07-30"}],
 		queryParams: {
 			"dto.stdate":$("#stdate").datebox('getValue'),
 			"dto.eddate":$("#eddate").datebox('getValue'),
 		},
-		*/
+		
 	}); 
 
 	$("#search").on('click', function() {
@@ -60,24 +62,27 @@ $(function (){
 
 });
 
-function OpenOrdDetail(value, rowData, rowIndex){
-	if(value==null){
-		
+function OpenOrdDetail(value,rowData, rowIndex){
+	if((value==null)||(value=="")){
+		return "<a onclick=\'openord(\""+value+"\",\""+rowData.vendor+"\")\' href='#' style='text-decoration:none;'><span style='color:blue;'>"+"无发票号"+"</span></a>";
 	}else{
-		return "<a onclick=\'openord(\""+value+"\")\' href='#' style='text-decoration:none;'><span style='color:blue;'>"+value+"</span></a>";
+		return "<a onclick=\'openord(\""+value+"\",\""+rowData.vendor+"\")\' href='#' style='text-decoration:none;'><span style='color:blue;'>"+value+"</span></a>";
 	}
 }
 
-function openord(value){
+function openord(value,venname){
 	$('#detail').dialog('open');
 	$('#detailgrid').datagrid({  
-	    url:'putShippSumCtrl!listDeliverItm.htm?dto.invno='+value,
+	    url:'putShippSumCtrl!listDeliverItm.htm?dto.invno='+value+'&dto.vendor='+venname,
 	    method:'post',
 	    fit:true,
 	    loadMsg:'加载数据中.....',
 	    pagination:true,
+	    pageNumber:1,
+	    pageSize:20,
 	    fitColumns:true,
 	    rownumbers:true,
+	    singleSelect:true,
 	    columns:[[ 
 	            {field:'venincncode',title:'代码',width:100,sortable:true},  	
 	  	        {field:'venincname',title:'名称',width:100},
@@ -85,6 +90,7 @@ function openord(value){
 	  	        {field:'rp',title:'进价',width:100},
 	  	        {field:'uom',title:'单位',width:100},
 	  	        {field:'batno',title:'批号',width:100},
+	  	        {field:'invno',title:'发票号',width:100},
 	  	        {field:'expdate',title:'效期',width:100},
 	  	        {field:'orderqty',title:'订单数',width:100}, 
 	  	        {field:'sendedqty',title:'已发货数量',width:100},

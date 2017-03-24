@@ -20,7 +20,15 @@ public class PutShippSumVo implements java.io.Serializable{
 	private Float rpamt;
 	//日期
 	private	Date date;
+	//供应商id
+	private	Long vendor;
 	
+	public Long getVendor() {
+		return vendor;
+	}
+	public void setVendor(Long vendor) {
+		this.vendor = vendor;
+	}
 	public String getVenname() {
 		return venname;
 	}
