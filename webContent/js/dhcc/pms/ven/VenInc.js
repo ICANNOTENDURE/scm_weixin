@@ -453,8 +453,11 @@ function editRow() {
   					$("#saveOrUpdateIncBtn").show();
   					$CommonUI.getForm('#incdetail').form('clear');	
   					var row =$("#datagrid").datagrid('getSelected');	
-
-  					$("#venIncManfid").combobox("loadData",  [{"name":row.manfname,"id":row.venincmanfid}]);
+  					if((row.venincmanfid=="")||(row.venincmanfid==null)){
+  						$("#venIncManfid").combobox("reload");
+  					}else{
+  						$("#venIncManfid").combobox("loadData",  [{"name":row.manfname,"id":row.venincmanfid}]);
+  				    }
   					var url = $WEB_ROOT_PATH+'/ven/venIncCtrl.htm?BLHMI=findById&dto.venInc.venIncId='+Id;
   					$("#drugInfoWin").dialog("open");
   					$CommonUI.getDialog("#drugInfoWin").dialog("setTitle","修改商品信息");
