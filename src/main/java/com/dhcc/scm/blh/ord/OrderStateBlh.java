@@ -371,24 +371,26 @@ public class OrderStateBlh extends AbstractBaseBlh {
 			}
 			//判断接收医院是否需要判断供应商资质过期
 			SysAppParam appParam=commonService.getSysAppParam(BaseConstants.CHECK_QUALIFY, hopId);
-			if("1".equals(appParam.getAppValue())){
-				//判断供应商资质是否过期
-				String checkString=venQualifTypeService.checkVenQualify(vendorId);
-				if(org.apache.commons.lang3.StringUtils.isNotBlank(checkString)){
-					sb.append(checkString+"<br>");
-				}
-				
-				for(String id:idArr){
-					OrderDetailSub orderDetailSub=commonService.get(OrderDetailSub.class,id);
-					if(orderDetailSub!=null){
-						if(org.apache.commons.lang3.StringUtils.isNotBlank((orderDetailSub.getOrdSubStatus()))) {continue;}
-						OrderDetail orderDetail=commonService.get(OrderDetail.class, orderDetailSub.getOrdSubDetailId());
-						
-						//判断商品资质是否过期
-						checkString=venQualifTypeService.checkVenIncQualify(orderDetail.getOrderVenIncId());
-						if(org.apache.commons.lang3.StringUtils.isNotBlank(checkString)){
-							VenInc inc=commonService.get(VenInc.class, orderDetail.getOrderVenIncId());
-							sb.append("("+inc.getVenIncName()+")"+checkString+"<br>");
+			if(appParam!=null){
+				if("1".equals(appParam.getAppValue())){
+					//判断供应商资质是否过期
+					String checkString=venQualifTypeService.checkVenQualify(vendorId);
+					if(org.apache.commons.lang3.StringUtils.isNotBlank(checkString)){
+						sb.append(checkString+"<br>");
+					}
+					
+					for(String id:idArr){
+						OrderDetailSub orderDetailSub=commonService.get(OrderDetailSub.class,id);
+						if(orderDetailSub!=null){
+							if(org.apache.commons.lang3.StringUtils.isNotBlank((orderDetailSub.getOrdSubStatus()))) {continue;}
+							OrderDetail orderDetail=commonService.get(OrderDetail.class, orderDetailSub.getOrdSubDetailId());
+							
+							//判断商品资质是否过期
+							checkString=venQualifTypeService.checkVenIncQualify(orderDetail.getOrderVenIncId());
+							if(org.apache.commons.lang3.StringUtils.isNotBlank(checkString)){
+								VenInc inc=commonService.get(VenInc.class, orderDetail.getOrderVenIncId());
+								sb.append("("+inc.getVenIncName()+")"+checkString+"<br>");
+							}
 						}
 					}
 				}
