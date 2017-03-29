@@ -114,7 +114,7 @@
       <button type="button" class="btn btn-primary btn-lg btn-block" onclick="javascript: SendAuthen();">登录</button>
         <p></p>
       <a href="javascript:vendorRegist();" class="edit_pw">供应商注册</a>
-      <a href="javascript:forgetPassword();" class="edit_pw">找回密码</a>
+      <a href="javascript:forgetPassword();" style="float: left;margin-left: 35;">找回密码</a>
       <a href="javascript:auditResult();" class="edit_room">查询审核结果</a>
     </div>
     <!--登录框 ECQ-->
