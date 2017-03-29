@@ -394,8 +394,9 @@ public class HopVendorBlh extends AbstractBaseBlh {
 	/**
 	 * @Description: 医院用户自己对照审批一次完成
 	 * @param res
+	 * @throws EmailException 
 	 */
-	public void conAndAudit(BusinessRequest res) {
+	public void conAndAudit(BusinessRequest res) throws EmailException {
 		HopVendorDto dto = super.getDto(HopVendorDto.class, res);
 		HopVendor hopVendor=commonService.get(HopVendor.class, dto.getHopVendor().getHopVendorId());
 		Vendor vendor=commonService.get(Vendor.class, dto.getHopVendor().getHopVenId());
@@ -405,14 +406,24 @@ public class HopVendorBlh extends AbstractBaseBlh {
 			vendor.setAudit_flag("Y");
 			hopVendor.setHopAuditFlag("Y");
 			hopVendor.setHopVenId(dto.getHopVendor().getHopVenId());
+			if (org.apache.commons.lang.StringUtils.isNotBlank(vendor.getEmail())) {
+				List<NormalAccount> normalAccounts = commonService.findByProperty(NormalAccount.class, "accountAlias", vendor.getEmail());
+				if (normalAccounts.size() > 0) {
+						normalAccounts.get(0).setUseState("1");
+						normalAccounts.get(0).getNormalUser().setUseState("1");
+						commonService.saveOrUpdate(normalAccounts.get(0));
+				}
+			}
 		}
 		if("HN".equals(dto.getFlag())){
 			vendor.setAudit_flag("N");
 			hopVendor.setHopAuditFlag("N");
 		}
+
 		commonService.saveOrUpdate(reghop);
 		commonService.saveOrUpdate(hopVendor);
 		commonService.saveOrUpdate(vendor);
+		sendMailByVendor(hopVendor);
 		dto.setOpFlg("1");
 		super.writeJSON(dto);
 	}

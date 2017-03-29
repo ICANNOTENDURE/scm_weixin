@@ -14,6 +14,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
 
 import com.dhcc.framework.app.blh.AbstractBaseBlh;
+import com.dhcc.framework.app.service.CommonService;
 import com.dhcc.framework.common.PagerModel;
 import com.dhcc.framework.transmission.event.BusinessRequest;
 import com.dhcc.framework.util.JsonUtils;
@@ -32,7 +33,10 @@ public class HospitalBlh extends AbstractBaseBlh {
 
 	@Resource
 	private HospitalService hospitalService;
-
+	
+	@Resource
+	private CommonService commonService;
+	
 	public HospitalBlh() {
 		
 	}
@@ -105,12 +109,28 @@ public class HospitalBlh extends AbstractBaseBlh {
 		
 	}
 	
+	
+	/**
+	 * 通过登录人员类型获取医院列表
+	 * @author Administrator
+	 * @param res
+	 * @throws Exception
+	 */
+	
 	public void getHospInfo(BusinessRequest res) throws Exception{
 		HospitalDto dto = super.getDto(HospitalDto.class, res);
-		
 		List<Hospital> hospitals=new ArrayList<Hospital>();
-		hospitals=hospitalService.getHospInfo(dto);
 		WebContext webContext = WebContextHolder.getContext();
+		String type=webContext.getVisit().getUserInfo().getUserType().toString();
+		//0,工作，1医院,2,供应商,3护士
+		if("0".equals(type)){
+			hospitals=hospitalService.getHospInfo(dto);
+		}
+		if(("1".equals(type))||("3".equals(type))){
+			Long hop=webContext.getVisit().getUserInfo().getHopId();
+			Hospital hospital=commonService.get(Hospital.class, hop);
+			hospitals.add(hospital);
+		}
 		webContext.getResponse().getWriter().write(JsonUtils.toJson(hospitals));
 	
 	}
