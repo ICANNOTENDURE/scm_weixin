@@ -21,6 +21,7 @@ import com.dhcc.scm.entity.hop.HopVendor;
 import com.dhcc.scm.entity.hv.HvLabel;
 import com.dhcc.scm.entity.ord.OrderDetail;
 import com.dhcc.scm.entity.ord.OrderDetailSub;
+import com.dhcc.scm.entity.sys.SysAppParam;
 import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.ven.VenInc;
 import com.dhcc.scm.entity.vo.ws.OperateResult;
@@ -237,5 +238,12 @@ public interface CommonService {
 	 * @see  :根据高值条码获取高值信息
 	 */
 	public HvLabel getHvLabel(String label,Long hopId,Long vendorId);
+	
+	/**
+	 * @see ： 根据参数代码和医院id获取参数值
+	 * @param code
+	 * @param hopId
+	 */
+	public SysAppParam getSysAppParam(String code,Long hopId);
 	
 }

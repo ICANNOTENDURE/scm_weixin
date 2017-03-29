@@ -112,6 +112,11 @@ public abstract class BaseConstants {
 	public static final String ADD_HIS_INTERFACE="INSERTHIS";
 	
 	/**
+	 * 判断供应商资质
+	 */
+	public static final String CHECK_QUALIFY="CHECKQUALIFY";
+	
+	/**
 	 * 微信id
 	 */
 	public static final String WEIXIN_SESSION_ID="WEIXINSESSIONID";

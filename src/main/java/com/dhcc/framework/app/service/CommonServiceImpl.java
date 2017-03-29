@@ -46,6 +46,7 @@ import com.dhcc.scm.entity.hv.HvLabel;
 import com.dhcc.scm.entity.ord.ExeState;
 import com.dhcc.scm.entity.ord.OrderDetail;
 import com.dhcc.scm.entity.ord.OrderDetailSub;
+import com.dhcc.scm.entity.sys.SysAppParam;
 import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.ven.VenHopInc;
 import com.dhcc.scm.entity.ven.VenInc;
@@ -1369,6 +1370,17 @@ public class CommonServiceImpl implements CommonService {
 		}
 		return null;
 		
+	}
+
+	@Override
+	public SysAppParam getSysAppParam(String code, Long hopId) {
+		String[] propertyNames = {"appCode", "appHopId"};
+		Object[] values = {code, hopId};
+		List<SysAppParam>  hvLabels = commonDao.findByProperties(SysAppParam.class,propertyNames, values);
+		if(hvLabels.size()>0){
+			return hvLabels.get(0);
+		}
+		return null;
 	}
 	
 }

@@ -26,15 +26,18 @@ import com.dhcc.scm.dto.ord.OrderStateDto;
 import com.dhcc.scm.entity.ord.ExeState;
 import com.dhcc.scm.entity.ord.OrderDetail;
 import com.dhcc.scm.entity.ord.OrderDetailSub;
+import com.dhcc.scm.entity.sys.SysAppParam;
 import com.dhcc.scm.entity.sys.SysLog;
 import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.ven.VenDeliveritm;
+import com.dhcc.scm.entity.ven.VenInc;
 import com.dhcc.scm.entity.vo.ws.OperateResult;
 import com.dhcc.scm.entity.vo.ws.OrdWebVo;
 import com.dhcc.scm.entity.vo.ws.OrderWebVo;
 import com.dhcc.scm.service.ord.OrderStateService;
 import com.dhcc.scm.service.userManage.NormalAccountService;
 import com.dhcc.scm.service.ven.VenDeliverService;
+import com.dhcc.scm.service.ven.VenQualifTypeService;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 
@@ -55,7 +58,8 @@ public class OrderStateBlh extends AbstractBaseBlh {
 	@Resource
 	private VenDeliverService venDeliverService;
 	
-
+	@Resource
+	private VenQualifTypeService venQualifTypeService;
 	
 	public OrderStateBlh() {
 		
@@ -351,10 +355,50 @@ public class OrderStateBlh extends AbstractBaseBlh {
 		
 		OrderStateDto dto = super.getDto(OrderStateDto.class, res);
 		dto.setOperateResult(new OperateResult());
+		Long vendorId=WebContextHolder.getContext().getVisit().getUserInfo().getVendorIdLong();
+		StringBuffer sb=new StringBuffer();
+		String[] idArr=dto.getOrderIdStr().split("\\^");
 		try {
-			ordertateService.saveOrderSubCmp(dto);
-			dto.getOperateResult().setResultCode("1");
-			
+			//接收医院id
+			Long hopId=0l;
+			for(String id:idArr){
+				if(org.apache.commons.lang3.StringUtils.isBlank(id)) continue;
+				OrderDetailSub orderDetailSub=commonService.get(OrderDetailSub.class,id);
+				if(orderDetailSub!=null){
+					OrderDetail orderDetail=commonService.get(OrderDetail.class, orderDetailSub.getOrdSubDetailId());
+					hopId=orderDetail.getOrderHopId();
+				}
+			}
+			//判断接收医院是否需要判断供应商资质过期
+			SysAppParam appParam=commonService.getSysAppParam(BaseConstants.CHECK_QUALIFY, hopId);
+			if("1".equals(appParam.getAppValue())){
+				//判断供应商资质是否过期
+				String checkString=venQualifTypeService.checkVenQualify(vendorId);
+				if(org.apache.commons.lang3.StringUtils.isNotBlank(checkString)){
+					sb.append(checkString+"<br>");
+				}
+				
+				for(String id:idArr){
+					OrderDetailSub orderDetailSub=commonService.get(OrderDetailSub.class,id);
+					if(orderDetailSub!=null){
+						if(org.apache.commons.lang3.StringUtils.isNotBlank((orderDetailSub.getOrdSubStatus()))) {continue;}
+						OrderDetail orderDetail=commonService.get(OrderDetail.class, orderDetailSub.getOrdSubDetailId());
+						
+						//判断商品资质是否过期
+						checkString=venQualifTypeService.checkVenIncQualify(orderDetail.getOrderVenIncId());
+						if(org.apache.commons.lang3.StringUtils.isNotBlank(checkString)){
+							VenInc inc=commonService.get(VenInc.class, orderDetail.getOrderVenIncId());
+							sb.append("("+inc.getVenIncName()+")"+checkString+"<br>");
+						}
+					}
+				}
+			}
+			if(org.apache.commons.lang3.StringUtils.isNotBlank(sb.toString())){
+				dto.getOperateResult().setResultContent(sb.toString());;
+			}else{
+				ordertateService.saveOrderSubCmp(dto);
+				dto.getOperateResult().setResultCode("1");
+			}
 			super.writeJSON(dto.getOperateResult());
 		} catch (Exception e) {
 			e.printStackTrace();

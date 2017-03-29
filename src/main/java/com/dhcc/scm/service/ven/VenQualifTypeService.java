@@ -19,5 +19,16 @@ public interface VenQualifTypeService {
 	
 	public VenQualifType findById(VenQualifTypeDto dto);
 	
-
+	/**
+	 * 检查供应商商品资质是否过期
+	 * @param 商品id
+	 * @return 
+	 */
+	public String checkVenIncQualify(Long id);
+	/**
+	 * 检查供应商资质是否过期
+	 * @param venId
+	 * @return
+	 */
+	public String checkVenQualify(Long venId);
 }

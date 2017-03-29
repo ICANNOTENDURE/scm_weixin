@@ -4,14 +4,12 @@
  */
 package com.dhcc.scm.service.ven.impl;
 
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 
 import com.dhcc.framework.app.service.CommonService;
-import com.dhcc.framework.app.service.CommonServiceImpl;
 import com.dhcc.framework.common.PagerModel;
-
-import javax.annotation.Resource;
-
 import com.dhcc.scm.dao.ven.VenQualifTypeDao;
 import com.dhcc.scm.dto.ven.VenQualifTypeDto;
 import com.dhcc.scm.entity.ven.VenQualifType;
@@ -53,6 +51,18 @@ public class VenQualifTypeServiceImpl implements VenQualifTypeService {
 	
 		dto.setVenQualifType(venQualifTypeDao.findById(dto.getVenQualifType()));
 		return dto.getVenQualifType();
+	}
+
+	@Override
+	public String checkVenIncQualify(Long id) {
+		// TODO Auto-generated method stub
+		return venQualifTypeDao.checkVenIncQualify(id);
+	}
+
+	@Override
+	public String checkVenQualify(Long venId) {
+		// TODO Auto-generated method stub
+		return venQualifTypeDao.checkVenQualify(venId);
 	}
 
 }
