@@ -80,7 +80,7 @@ $(function(){
 	<div class="am-g am-container" style="margin-top: 20px">
 		<section class="am-panel dhcc-panel-mt"> <header
 			class="am-panel-hd">
-		<h3 class="am-panel-title">供应商注册</h3>
+		<h3 class="am-panel-title">找回密码</h3>
 		</header>
 		<form class="am-form am-form-horizontal" id="detailsForm">
 			<div class="am-panel-bd" style="min-height: 327px">
