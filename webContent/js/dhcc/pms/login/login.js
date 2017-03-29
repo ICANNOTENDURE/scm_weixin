@@ -61,5 +61,9 @@ function vendorRegist(){
 function auditResult(){
 	window.location.href=$WEB_ROOT_PATH+"/nur/nurseCtrl!queryAudit.htm";
 }
+//****忘记密码***//
+function forgetPassword(){
+	window.location.href=$WEB_ROOT_PATH+"/ven/vendorCtrl!forgetPassword.htm";
+}
 
 

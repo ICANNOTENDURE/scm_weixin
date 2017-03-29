@@ -4,6 +4,7 @@
  */
 package com.dhcc.scm.blh.sys;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -24,7 +25,9 @@ import com.dhcc.framework.web.context.WebContextHolder;
 import com.dhcc.scm.dto.sys.SendMailDto;
 import com.dhcc.scm.entity.hop.Hospital;
 import com.dhcc.scm.entity.ord.OrderDetail;
+import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.ven.Vendor;
+import com.dhcc.scm.entity.vo.ws.OperateResult;
 
 @Component
 public class SendMailBlh extends AbstractBaseBlh {
@@ -87,7 +90,7 @@ public class SendMailBlh extends AbstractBaseBlh {
 				Cookie[]  cookies=WebContextHolder.getContext().getRequest().getCookies();
 				for(Cookie cookie:cookies){
 					if(cookie.getName().equals("code")){
-						super.writeResult("验证码已发,请1分钟后再发");
+						super.writeResult("验证码已发,请5分钟后再发");
 						return;
 					}
 				}	
@@ -98,7 +101,7 @@ public class SendMailBlh extends AbstractBaseBlh {
 				msg.append("<br>");
 				SendMailUtil.sendEmailByAsync("供应链平台验证", msg.toString(),dto.getRecUser(),60 * 1000);
 				Cookie cookie=new Cookie("code", code);
-				cookie.setMaxAge(60);
+				cookie.setMaxAge(60*5);
 				WebContextHolder.getContext().getResponse().addCookie(cookie);
 			} catch (EmailException e) {
 				e.printStackTrace();
@@ -158,5 +161,49 @@ public class SendMailBlh extends AbstractBaseBlh {
 			}
 		}
 		super.writeResult(String.valueOf(flag));
+	}
+	/**
+	 * 
+	 * @Description: TODO()
+	 * @version V1.0
+	 * @throws IOException 
+	 */
+	public void updatePassword(BusinessRequest res) throws IOException{
+		OperateResult operateResult=new OperateResult();
+		String email=getParameter("email");
+		String code=getParameter("code");
+		String pwd=getParameter("pwd");
+		String confirmPwd=getParameter("confirmPwd");
+
+		operateResult.setResultContent("验证码失效，请重新发送");
+		Cookie[]  cookies=WebContextHolder.getContext().getRequest().getCookies();
+		for(Cookie cookie:cookies){
+			if(cookie.getName().equals("code")){
+				if(cookie.getValue().equals(code.trim())){
+					cookie.setMaxAge(0);
+					String[] propertyNames={"accountAlias"};
+					Object[] values={email.trim()};
+					List<NormalAccount> accounts=commonService.findByProperties(NormalAccount.class, propertyNames, values);
+					if(accounts.size()==0){
+						operateResult.setResultContent("账号不存在");
+					}else{
+						if("1".equals(accounts.get(0).getUseState())){
+							accounts.get(0).setPassword(pwd);
+							commonService.saveOrUpdate(accounts.get(0));
+							operateResult.setResultCode("0");
+						}else{
+							operateResult.setResultContent("账号状态异常");
+						}
+					}
+					break;
+				}else{
+					operateResult.setResultContent("验证码错误");
+				}
+			}
+		}
+		if(!pwd.equals(confirmPwd)){
+			operateResult.setResultContent("两次密码输入不一致");
+		}
+		writeJSON(operateResult);
 	}
 }

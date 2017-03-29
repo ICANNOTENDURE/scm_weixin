@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.struts2.ServletActionContext;
@@ -33,6 +34,7 @@ import com.dhcc.framework.web.context.WebContextHolder;
 import com.dhcc.scm.dto.ven.VendorDto;
 import com.dhcc.scm.entity.hop.HopVendorLog;
 import com.dhcc.scm.entity.ord.OrderDetail;
+import com.dhcc.scm.entity.userManage.NormalAccount;
 import com.dhcc.scm.entity.ven.VenInc;
 import com.dhcc.scm.entity.ven.VenQualifPic;
 import com.dhcc.scm.entity.ven.VenQualifType;
@@ -40,6 +42,7 @@ import com.dhcc.scm.entity.ven.VenQualification;
 import com.dhcc.scm.entity.ven.Vendor;
 import com.dhcc.scm.entity.vo.ven.PortalInfoVo;
 import com.dhcc.scm.entity.vo.ven.VenQualifTypeVO;
+import com.dhcc.scm.entity.vo.ws.OperateResult;
 import com.dhcc.scm.service.hop.HopVendorService;
 import com.dhcc.scm.service.ven.VenIncAdviceService;
 import com.dhcc.scm.service.ven.VendorService;

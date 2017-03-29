@@ -41,6 +41,7 @@ import com.dhcc.scm.service.ven.VendorService;
 		@Result(name = "update", location = "/WEB-INF/jsp/ven/update.jsp"),
 		@Result(name = "upload", location = "/WEB-INF/jsp/ven/22.jsp"),
 		@Result(name = "contranstInc", location = "/WEB-INF/jsp/ven/ContranstInc2.jsp"),
+		@Result(name = "forgetPassword", location = "/WEB-INF/jsp/ven/forgetPassword.jsp"),
 		@Result(name = "listMain", location = "/WEB-INF/jsp/ven/Vendor.jsp") })
 @Blh("vendorBlh")
 @JsonResults({@JResult(BlhMethod="save",ognlExpress="dto")})
@@ -107,7 +108,10 @@ public class VendorAction extends BaseAction {
 		//统计
 		if("venStatistics".equals(super.getBusinessFlow())){
 					return "venStatistics";
-				}
+		}
+		if("forgetPassword".equals(super.getBusinessFlow())){
+			return "forgetPassword";
+		}
 		return null;
 	}
 
