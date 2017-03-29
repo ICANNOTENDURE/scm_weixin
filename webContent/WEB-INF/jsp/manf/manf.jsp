@@ -16,9 +16,13 @@
 		<a id="addBt" class="linkbutton" onclick="javascript:addClick()"
 			data-options="iconCls:'icon-add',plain:true">增加</a> <a
 			class="linkbutton" data-options="iconCls:'icon-edit',plain:true"
-			onclick="javascript:editRow()">修改</a> <a class="linkbutton"
+			onclick="javascript:editRow()">修改</a> 
+			<!--  
+			<a class="linkbutton"
 			data-options="iconCls:'icon-remove',plain:true"
-			onclick="javascript:delRow()">删除</a> <a class="linkbutton"
+			onclick="javascript:delRow()">删除</a> 
+			-->
+			<a class="linkbutton"
 			data-options="iconCls:'icon-search',plain:true"
 			onclick="javascript:selectClick()">查询</a>
 	</div>
