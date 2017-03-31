@@ -33,6 +33,7 @@ public class HvLabelDto extends BaseDto {
 	
 	private String incname;
 	
+	private String spec;
 	
 	private Long venIncIdPrn;
 	
@@ -51,6 +52,17 @@ public class HvLabelDto extends BaseDto {
 	
 	
 	
+	
+	public String getSpec() {
+		return spec;
+	}
+
+
+	public void setSpec(String spec) {
+		this.spec = spec;
+	}
+
+
 	public List<String> getBarCodes() {
 		return barCodes;
 	}
