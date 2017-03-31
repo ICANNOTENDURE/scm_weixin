@@ -57,8 +57,8 @@ public class HvLabelDao extends HibernatePersistentObjectDAO<HvLabel> {
 		hqlBuffer.append(" where 1=1 ");
 		Map<String, Object> hqlParamMap = new HashMap<String, Object>();
 		
-		/*hqlBuffer.append("  and  t1.hv_vendorid=:vendorid ");
-		hqlParamMap.put("vendorid", WebContextHolder.getContext().getVisit().getUserInfo().getVendorIdLong());*/
+		hqlBuffer.append("  and  t1.hv_vendorid=:vendorid ");
+		hqlParamMap.put("vendorid", WebContextHolder.getContext().getVisit().getUserInfo().getVendorIdLong());
 		if(dto.getOrdStart()!=null){
 			hqlBuffer.append("  and  t1.hv_orddate>=:start ");
 			hqlParamMap.put("start", dto.getOrdStart());
