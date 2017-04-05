@@ -80,8 +80,9 @@ public class ChartDao extends HibernatePersistentObjectDAO<Chart> {
 		hqlBuffer.append(" sum(t2.devqty)  as value1 ");
 		hqlBuffer.append(" from T_ORD_ORDERDETAIL t1  ");
 		hqlBuffer.append(" left join (SELECT ORDSUB_DETAIL_ID,sum(ORDSUB_QTY) as devqty from T_ORD_ORDERDETAILSUB GROUP BY ORDSUB_DETAIL_ID) t2 on t2.ORDSUB_DETAIL_ID=t1.ORDER_ID ");
-		hqlBuffer.append(" where  t1.ORDER_ODATE>=curdate()-365 ");
+		hqlBuffer.append(" where  t1.ORDER_ODATE >= date_sub(CURDATE(),interval 6 month) ");
 		hqlBuffer.append(" group by date_format(t1.ORDER_ODATE,'%Y-%c')    ");
+		/*hqlBuffer.append(" ORDER BY t1.ORDER_ODATE  LIMIT 6,12   ");*/
 		dto.setChartVOs(jdbcTemplateWrapper.queryAllMatchListWithParaMap(hqlBuffer.toString(), ChartVO.class, hqlParamMap, 1, 6, "name"));
 	
 	}
