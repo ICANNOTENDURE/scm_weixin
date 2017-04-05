@@ -41,8 +41,7 @@ public class VenStatisticsDao extends HibernatePersistentObjectDAO<HvLabel> {
 		hqlBuffer.append("  sum(t1.ordsub_qty) as ordsubqty , ");
 		hqlBuffer.append("	t1.ordsub_rp as ordsubrp , ");
 		hqlBuffer.append("	sum(t1.ordsub_qty*t1.ordsub_rp) as ordsubrpamt , ");
-		hqlBuffer.append("	t3.HOSPITAL_NAME  as hosp ,");
-		hqlBuffer.append("  t1.ordsub_date as ordsubdate ");
+		hqlBuffer.append("	t3.HOSPITAL_NAME  as hosp ");
 		hqlBuffer.append("	FROM ");
 		hqlBuffer.append(" T_ORD_ORDERDETAILSUB t1 ");
 		hqlBuffer.append(" LEFT JOIN T_ORD_ORDERDETAIL t2 ON t2.ORDER_ID = t1.ordsub_detail_id  ");
