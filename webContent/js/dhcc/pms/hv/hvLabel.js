@@ -103,7 +103,7 @@ $(function() {
 
 	
 	$("#down").on('click',function(){
-	  	window.location.href="downLoadCtrl!downLoad.htm?stDate="+$("#StDate").datebox('getValue')+"&edDate="+$("#EdDate").datebox('getValue')+"&sort="+$('#datagrid').datagrid("options").sortName+"&order="+$('#datagrid').datagrid("options").sortOrder+"&incname="+$("input[name='dto.incname']").val();   
+	  	window.location.href="downLoadCtrl!downLoad.htm?stDate="+$("#StDate").datebox('getValue')+"&edDate="+$("#EdDate").datebox('getValue')+"&sort="+$('#datagrid').datagrid("options").sortName+"&order="+$('#datagrid').datagrid("options").sortOrder+"&incname="+$("input[name='dto.incname']").val()+"&spec="+$("input[name='dto.spec']").val()+"&invno="+$("input[name='dto.invno']").val()+"&flag="+$("#flag").combobox("getValue");   
 	});
 	
 	$("#auto").on('click',function(){

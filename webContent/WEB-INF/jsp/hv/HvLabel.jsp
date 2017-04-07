@@ -16,7 +16,7 @@
 			发票号:<input type="text" name="dto.invno"  style="width:100px">
 			规格：<input type="text" name="dto.spec"  style="width:100px"> 
 			商品名称:<input type="text" name="dto.incname"  style="width:100px">
-			同步标志:<select class="combobox" panelHeight="auto" style="width:100px"  name="dto.flag">
+			同步标志:<select class="combobox" panelHeight="auto" style="width:100px"  name="dto.flag" id="flag">
 								<option value="0">空</option>
 								<option value="1">已同步</option>
 								<option value="2">未同步</option>

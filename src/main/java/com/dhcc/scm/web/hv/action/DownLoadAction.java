@@ -71,8 +71,42 @@ public class DownLoadAction extends ActionSupport {
 	
 	private String incname;
 	
+	private String spec;
+	
+    private String flag;
+	
+	private String invno;
 	
 	
+	
+	
+	public String getFlag() {
+		return flag;
+	}
+
+	
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
+
+	
+	public String getInvno() {
+		return invno;
+	}
+
+	
+	public void setInvno(String invno) {
+		this.invno = invno;
+	}
+
+	public String getSpec() {
+		return spec;
+	}
+
+	public void setSpec(String spec) {
+		this.spec = spec;
+	}
+
 	public String getIncname() {
 		return incname;
 	}
@@ -246,10 +280,27 @@ public class DownLoadAction extends ActionSupport {
 		hvLabelDto.setOrdStart(stDate);
 		hvLabelDto.setOrdEnd(edDate);
 		hvLabelDto.setSort(sort);
-		hvLabelDto.setSortOrder(order);
+		hvLabelDto.setSort(sort);
+		hvLabelDto.setFlag(flag);
 		if(StringUtils.isNotBlank(incname)){
 			try {
-				hvLabelDto.setIncname(new String(incname .getBytes("ISO8859-1")).toString());
+				//String var =new String(incname.getBytes("gbk"),"utf-8");
+				String var =new String(incname.getBytes("ISO8859-1")).toString();
+				hvLabelDto.setIncname(var);
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
+		if(StringUtils.isNotBlank(spec)){
+			try {
+				hvLabelDto.setSpec(new String(spec.getBytes("ISO8859-1")).toString());
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
+		if(StringUtils.isNotBlank(invno)){
+			try {
+				hvLabelDto.setInvno(new String(invno.getBytes("ISO8859-1")).toString());
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
