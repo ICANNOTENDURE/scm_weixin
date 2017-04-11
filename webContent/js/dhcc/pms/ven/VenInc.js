@@ -250,9 +250,40 @@ $(function (){
 		$CommonUI.alert("faile");	
 	}
 	
+	// 检查下拉数据一致
+	function checkitem(code,data){
+		
+		if(code=="MF"){
+			var flag=0;//是否存在的标记 
+			var mandata=$('#venIncManfid').combobox('getData');
+			var value=new Array(mandata.length);
+			for (var i = 0; i < mandata.length; i++)
+        	{
+        		if(data==mandata[i].name)
+        		{
+        			flag=1
+        		}
+        	}
+			return flag;
+		}
+		
+		
+	}
+	
 	// 新增和修改
 	$("#saveOrUpdateIncBtn").on('click', function() {
 		
+		var data=$('#venIncManfid').combobox('getText');
+		var manflag=checkitem("MF",data);
+		
+		if (manflag!=1){
+			$CommonUI.alert("输入厂商有误，请从下拉中选择！");
+			$('#venIncManfid').combobox('setValue','');
+			return;
+		}else{
+			
+		}
+      
 		if($CommonUI.getForm('#incdetail').form('validate')){
 			$("#saveOrUpdateIncBtn").hide();
 			postReq($WEB_ROOT_PATH+'/ven/venIncCtrl!save.htm',"#incdetail",succ,err,{skipHidden:false});
