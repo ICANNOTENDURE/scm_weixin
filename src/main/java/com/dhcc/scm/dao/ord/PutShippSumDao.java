@@ -8,6 +8,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
@@ -45,8 +47,8 @@ public class PutShippSumDao extends HibernatePersistentObjectDAO<PutShippSumVo>{
 	@SuppressWarnings("unchecked")
 	public void listPutShippSum(PutShippSumDto dto){
 		StringBuffer hqlBuffer = new StringBuffer();
-		hqlBuffer.append("select t1.ORDSUB_INVNO as invno, ");
-		hqlBuffer.append(" t1.ORDSUB_USERID as userid,t1.ORDSUB_INGDREC_DATE as date,");
+		hqlBuffer.append("select (CASE WHEN t1.ORDSUB_INVNO='' THEN '无发票号' WHEN t1.ORDSUB_INVNO IS NULL THEN '无发票号' ELSE t1.ORDSUB_INVNO END) as invno, ");
+		hqlBuffer.append(" t1.ORDSUB_INGDREC_DATE as date,");
 		hqlBuffer.append(" sum(round(t1.ORDSUB_RP*t1.ORDSUB_QTY,2)) as rpamt, ");
 		hqlBuffer.append(" t2.ORDER_VEN_ID as vendor, ");
 		hqlBuffer.append(" t3.`NAME` as venname");
@@ -120,7 +122,8 @@ public class PutShippSumDao extends HibernatePersistentObjectDAO<PutShippSumVo>{
 		
 		StringBuffer hqlBuffer = new StringBuffer();
 		hqlBuffer.append("select ");
-		hqlBuffer.append("t1.ORDSUB_ID as deliveritmid,  "); //发货表id
+		hqlBuffer.append("t1.ORDSUB_ID as deliveritmid,  "); //发货表id 
+		hqlBuffer.append("t1.ORDSUB_INGDREC_DATE as date,  "); 
 		hqlBuffer.append("t3.VEN_INC_ROWID as venincrowid,  "); //主键id
 		hqlBuffer.append("t3.VEN_INC_CODE as venincncode,  "); // 代码
 		hqlBuffer.append("t3.VEN_INC_NAME as venincname,  "); //描述
@@ -151,15 +154,26 @@ public class PutShippSumDao extends HibernatePersistentObjectDAO<PutShippSumVo>{
         
 		//org.apache.commons.lang.StringUtils.isNotBlank;
 		String val=new String(dto.getInvno().getBytes("ISO-8859-1"),"utf-8");
+		//boolean flag=HasDigit(val);
 		
-		if((val==null)||("".equals(val))){
+		if(val.equals("无发票号")){
+			//val ="";
 			hqlBuffer.append("and t2.ORDER_VEN_ID=:venid "); 
 			hqlParamMap.put("venid", dto.getVendor());
-			hqlBuffer.append("and t1.ORDSUB_INVNO=:invno "); 
-			hqlParamMap.put("invno", val);
+			hqlBuffer.append("and t1.ORDSUB_INVNO='' "); 
+			//hqlParamMap.put("invno", val);
 		}else{
 			hqlBuffer.append("and t1.ORDSUB_INVNO=:invno "); 
 			hqlParamMap.put("invno", val);
+		}
+		
+		if(dto.getStdate()!=null){
+			hqlBuffer.append("  and  t1.ORDSUB_INGDREC_DATE>=:start ");
+			hqlParamMap.put("start", dto.getStdate());
+		}
+		if(dto.getEddate()!=null){
+			hqlBuffer.append("  and  t1.ORDSUB_INGDREC_DATE<=:end ");
+			hqlParamMap.put("end", dto.getEddate());
 		}
 		
 		if(dto.getPageModel()==null){
@@ -169,5 +183,18 @@ public class PutShippSumDao extends HibernatePersistentObjectDAO<PutShippSumVo>{
 		dto.getPageModel().setQueryHql(hqlBuffer.toString());
 		dto.getPageModel().setHqlParamMap(hqlParamMap);
 		jdbcTemplateWrapper.fillPagerModelData(dto.getPageModel(), DeliverItmVo.class, "t1.ORDSUB_ID");
-}
+	}
+	
+	/*
+	// 判断一个字符串是否含有数字
+	public boolean HasDigit(String content) {
+	    boolean flag = false;
+	    Pattern p = Pattern.compile(".*\\d+.*");
+	    Matcher m = p.matcher(content);
+	    if (m.matches()) {
+	        flag = true;
+	    }
+	    return flag;
+	}
+	*/
 }
