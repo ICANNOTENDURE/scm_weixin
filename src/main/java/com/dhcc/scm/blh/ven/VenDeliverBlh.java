@@ -1271,21 +1271,25 @@ public class VenDeliverBlh extends AbstractBaseBlh {
 			if (dto.getOrdIdStr().contains(" ")) {
 				dto.setOrdIdStr(dto.getOrdIdStr().replace(" ", "+"));
 			}
-			String[] ords = dto.getOrdIdStr().split(",");
+			String[] ordsubstr = dto.getOrdSubIdStr().split("#");
+
 			List<PrintByQtyVo> printByQtyVos = new ArrayList<PrintByQtyVo>();
-			for (String ordno : ords) {
-				ordno = AESCoder.aesCbcDecrypt(ordno.trim(), servicePassword);
-				OrderDetail orderDetail = commonService.get(OrderDetail.class, Long.valueOf(ordno));
+			for (int n= 0; n <ordsubstr.length; n++) {				
+				String[] ord=dto.getOrdIdStr().split(",");
+				String ordno = AESCoder.aesCbcDecrypt(ord[n].trim(), servicePassword);
+				OrderDetail orderDetail = commonService.get(OrderDetail.class, Long.valueOf(ordno)); //通过订单id找到 记录
 				if (orderDetail != null) {
 					VenInc venInc = commonService.get(VenInc.class, orderDetail.getOrderVenIncId());
-					String[] propertyNames = { "ordSubDetailId", "ordSubStatus" };
-					Object[] values = { orderDetail.getOrderId(), "Y" };
-					List<OrderDetailSub> detailSubs = commonService.findByProperties(OrderDetailSub.class, propertyNames, values);
-					for (OrderDetailSub orderDetailSub : detailSubs) {
+					String[] ordsub=ordsubstr[n].split(",");
+					for (int j = 0; j < ordsub.length; j++) { 
+					String[] propertyNames = { "ordSubId", "ordSubStatus" };
+					Object[] values = { ordsub[j], "Y" };
+					List<OrderDetailSub> detailSubs = commonService.findByProperties(OrderDetailSub.class, propertyNames, values); //通过订单id和标志找到发货表某条记录
+					for (OrderDetailSub orderDetailSub : detailSubs) { //多条记录 
 						String insertFlag="N";
 						List<OrdLabel> ordLabels = commonService.findByProperty(OrdLabel.class, "labelParentId", orderDetailSub.getOrdSubId());
 						if (ordLabels.size() == 0) {
-							insertFlag = "Y";
+							insertFlag = "Y";	
 						}
 						if (insertFlag.equals("Y")) {
 							for (int i = 0; i < orderDetailSub.getOrderSubQty(); i++) {
@@ -1309,6 +1313,7 @@ public class VenDeliverBlh extends AbstractBaseBlh {
 							}
 						}
 					}
+				}
 				}
 			}
 			dto.setPrintByQtyVos(printByQtyVos);

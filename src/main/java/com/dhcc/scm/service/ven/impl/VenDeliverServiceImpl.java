@@ -19,6 +19,7 @@ import com.dhcc.scm.entity.hop.HopCtloc;
 import com.dhcc.scm.entity.hop.HopCtlocDestination;
 import com.dhcc.scm.entity.hop.Hospital;
 import com.dhcc.scm.entity.ord.OrderDetail;
+import com.dhcc.scm.entity.ord.OrderDetailSub;
 import com.dhcc.scm.entity.ord.State;
 import com.dhcc.scm.entity.ven.VenDeliveritm;
 import com.dhcc.scm.entity.vo.ven.DeliverVo;
@@ -177,6 +178,22 @@ public class VenDeliverServiceImpl implements VenDeliverService {
 			DeliverVo deliverVo=(DeliverVo)o;
 			if(StringUtils.isNotBlank(deliverVo.getHisno())){
 				List<OrderDetail> details=venDeliverDao.findByProperty(OrderDetail.class, "orderNo", deliverVo.getHisno());
+				//OrderDetail orderDetail=details.get(0);
+				String orderStr="";
+				for(int i= 0;i <details.size();i++){
+					OrderDetail orderDetails=details.get(i);
+					long orderId = orderDetails.getOrderId();
+					List<OrderDetailSub> detailSubs = venDeliverDao.findByProperty(OrderDetailSub.class, "ordSubDetailId", orderId); 
+					if(detailSubs.size()==0) continue;
+					for (int j = 0; j < detailSubs.size(); j++) {
+						if(orderStr.length()==0){
+						   orderStr=detailSubs.get(j).getOrdSubId();
+						}else{
+						   orderStr=orderStr+","+detailSubs.get(j).getOrdSubId();
+						}
+					}
+					deliverVo.setDeliveridstr(orderStr);
+				}
 				OrderDetail orderDetail=details.get(0);
 				Hospital hospital=venDeliverDao.get(Hospital.class, orderDetail.getOrderHopId());
 				HopCtloc ctloc=venDeliverDao.get(HopCtloc.class, orderDetail.getOrderRecLoc());

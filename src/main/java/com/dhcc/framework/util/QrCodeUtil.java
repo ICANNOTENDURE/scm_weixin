@@ -62,7 +62,7 @@ public final class QrCodeUtil {
 	public static void CODE128(String content) throws IOException, WriterException {
 		
 
-		int width = 200; // 图像宽度
+		int width = 180; // 图像宽度
 		int height = 100; // 图像高度
 		String format = "png";// 图像类型
 		Map<EncodeHintType, Object> hints = new HashMap<EncodeHintType, Object>();

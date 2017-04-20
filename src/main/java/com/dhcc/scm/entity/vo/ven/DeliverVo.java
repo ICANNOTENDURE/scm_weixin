@@ -26,6 +26,8 @@ public class DeliverVo implements java.io.Serializable{
 	private String hopname;
 	//发货单ID
 	private Long deliverid;
+	//发货单ID串
+	private String deliveridstr;
 	//接收订单时间
 	private Timestamp deliveraccpectdate;
 	//发货时间
@@ -39,6 +41,15 @@ public class DeliverVo implements java.io.Serializable{
 	
 	
 	
+
+	public String getDeliveridstr() {
+		return deliveridstr;
+	}
+
+	public void setDeliveridstr(String deliveridstr) {
+		this.deliveridstr = deliveridstr;
+	}
+
 	/**
 	 * @return the serialno
 	 */

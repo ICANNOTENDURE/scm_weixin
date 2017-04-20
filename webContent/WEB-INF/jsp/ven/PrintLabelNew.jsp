@@ -153,8 +153,14 @@
     			$CommonUI.alert("请选择！");
                 return;
             }
-    		orderStr="";
+    		orderStr="";orderSubStr="";
             $.each(selected, function (index, item) {
+            	if(orderSubStr==""){
+            		orderSubStr=item.deliveridstr;
+            	}else{
+            		orderSubStr=orderSubStr+","+item.deliveridstr;
+            	};
+            	
             	if(orderStr==""){
             		orderStr=item.serialno;
             	}else{
@@ -164,7 +170,7 @@
             
             prtCodeType=$('#prtCodeType').combobox('getValue');
             code128=prtCodeType=="1"?"":"Y";
-            window.open($WEB_ROOT_PATH+"/ven/venDeliverCtrl!PrintByQty.htm?dto.ordIdStr="+orderStr+"&dto.code128="+code128);
+            window.open($WEB_ROOT_PATH+"/ven/venDeliverCtrl!PrintByQty.htm?dto.ordIdStr="+orderStr+"&dto.ordSubIdStr="+orderSubStr+"&dto.code128="+code128);
     	});
      	//打印明细(按数量,勾选明细)
     	$('#printByQtySelectBTN').on('click',function(){
@@ -214,6 +220,7 @@ function enCodeItm(value,row,index){
 						<th data-options="field:'ck',checkbox:true"></th>
 						<th data-options="field:'serialno',hidden:true"></th>
 						<th data-options="field:'hisno',width:90">订单号</th>
+						<th data-options="field:'deliveridstr',hidden:true">发货id串</th>
 						<!-- 
 						<th data-options="field:'qrcode',fixColumnSize:80,formatter:enCode,align:'center'">二维码</th>
 						 -->

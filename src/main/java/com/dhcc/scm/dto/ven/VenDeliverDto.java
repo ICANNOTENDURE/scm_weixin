@@ -39,6 +39,7 @@ public class VenDeliverDto extends BaseDto {
 	private String operateType;
 	private String orderno;
 	private String ordIdStr;
+	private String ordSubIdStr;
 	private List<PrintVo> printVos;
 	private List<OrderDetailSub> orderDetailSubs;
 	private String uploadFileName;
@@ -49,7 +50,17 @@ public class VenDeliverDto extends BaseDto {
 	
 	
 	
-	
+	//增加
+
+	public String getOrdSubIdStr() {
+		return ordSubIdStr;
+	}
+
+
+	public void setOrdSubIdStr(String ordSubIdStr) {
+		this.ordSubIdStr = ordSubIdStr;
+	}
+
 
 	public String getCode128() {
 		return code128;
