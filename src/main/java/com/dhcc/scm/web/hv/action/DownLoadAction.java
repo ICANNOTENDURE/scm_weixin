@@ -280,7 +280,7 @@ public class DownLoadAction extends ActionSupport {
 		hvLabelDto.setOrdStart(stDate);
 		hvLabelDto.setOrdEnd(edDate);
 		hvLabelDto.setSort(sort);
-		hvLabelDto.setSort(sort);
+		hvLabelDto.setSortOrder(order);
 		hvLabelDto.setFlag(flag);
 		if(StringUtils.isNotBlank(incname)){
 			try {
